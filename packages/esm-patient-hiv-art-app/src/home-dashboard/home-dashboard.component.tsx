@@ -1,11 +1,15 @@
 import React from "react";
-import { Grid, Column } from "@carbon/react";
 import { Home } from "@carbon/react/icons";
 import styles from "./home-dashboard.scss";
 import { useTranslation } from "react-i18next";
+import SSEMRTab from "./components/tabs/SSEMRTab";
+import { useHomeDashboard } from "./hooks/useHomeDashboard";
+import StatCard from "./components/cards/StatCard";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
+
+  const { tabInfo, stats } = useHomeDashboard();
 
   return (
     <div className={styles.parent}>
@@ -16,8 +20,24 @@ const HomeDashboard = () => {
         <p className={styles.dashboardText}>{t("dashboard", "Dashboard")}</p>
       </div>
 
-      {/* ..................Body................. */}
-      <div className={styles.body}></div>
+      {/* ..................Tabs................. */}
+      <div className={styles.tabs}>
+        {tabInfo.map((item) => (
+          <SSEMRTab
+            name={item.title}
+            key={item.title}
+            handler={undefined}
+            isActive={undefined}
+          />
+        ))}
+      </div>
+
+      {/* ...................Stats.................... */}
+      <div className={styles.stats}>
+        {stats.map((stat) => (
+          <StatCard item={stat} key={stat.title} />
+        ))}
+      </div>
     </div>
   );
 };
