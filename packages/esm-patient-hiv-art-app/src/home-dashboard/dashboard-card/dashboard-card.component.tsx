@@ -21,8 +21,6 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
     ? { borderColor: customBorderColor }
     : {};
 
-  console.log("Count inside DashboardCard:", count);
-
   return (
     <div
       className={`${styles.dashboardCardContainer} ${styles.customBorder}`}

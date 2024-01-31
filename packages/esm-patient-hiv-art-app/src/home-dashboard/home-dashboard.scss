@@ -1,53 +1,33 @@
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/colors';
 @use '@carbon/styles/scss/type';
+@import "../root.scss";
 
-.homeContainer {
-    margin: 20px;
-}
-.dashboardCard{
-    margin: spacing.$spacing-05 0;
-}
-
-
-.dashboardCard {
+.parent{
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin: spacing.$spacing-05 0;
-  column-gap: spacing.$spacing-07;
-  justify-content: flex-start;
-  overflow: hidden;
+  flex-direction: column;
+  gap: 4rem;
 }
 
-.header {
-  @include type.type-style("heading-05");
-  color: colors.$gray-100;
+.titleContainer{
   display: flex;
   align-items: center;
-
-  .icon {
-    margin-right: 10px;
-    fill: #0072c3;
-    width: 3rem;
-    height: 5rem;
-  }
-
-  .titleContainer {
-    text-align: left;
-  }
-
-  .title{
-    @include type.type-style("heading-05");
-    color: colors.$gray-100;
-  }
-  .subTitle {
-    @include type.type-style("body-01");
-    color: colors.$gray-70;
-    margin: 0;
-  }
+  width: 100%;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.tabs {
-  margin-top: 1rem;
+svg.homeIcon{
+  font-size: x-large;
+  font-weight: 700;
+  fill: #0072c3;
+  stroke: #0072c3;
+}
+
+.titleText{
+  font-size: x-large;
+}
+
+.dashboardText{
+  width: 100%;
 }
