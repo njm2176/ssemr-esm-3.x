@@ -2,11 +2,11 @@ import React from "react";
 import { Home } from "@carbon/react/icons";
 import styles from "./home-dashboard.scss";
 import { useTranslation } from "react-i18next";
-import SSEMRTab from "./components/tabs/SSEMRTab";
 import { useHomeDashboard } from "./hooks/useHomeDashboard";
 import StatCard from "./components/cards/StatCard";
-import { SimpleBarChart } from "@carbon/charts";
 import "@carbon/charts/styles.css";
+import NewlyEnrolled from "./charts/NewlyEnrolled";
+import SSEMRTab from "./components/tabs/SSEMRTab";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
@@ -42,7 +42,9 @@ const HomeDashboard = () => {
       </div>
 
       {/* ...............Charts....................... */}
-      <div className={styles.chartWrapper}></div>
+      <div className={styles.chartWrapper}>
+        <NewlyEnrolled />
+      </div>
     </div>
   );
 };
