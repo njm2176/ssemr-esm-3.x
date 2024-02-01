@@ -7,6 +7,7 @@ import StatCard from "./components/cards/StatCard";
 import "@carbon/charts/styles.css";
 import NewlyEnrolled from "./charts/NewlyEnrolled";
 import SSEMRTab from "./components/tabs/SSEMRTab";
+import CurrentlyEnrolled from "./charts/CurrentArtClients";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
@@ -44,6 +45,7 @@ const HomeDashboard = () => {
       {/* ...............Charts....................... */}
       <div className={styles.chartWrapper}>
         <NewlyEnrolled />
+        <CurrentlyEnrolled />
       </div>
     </div>
   );

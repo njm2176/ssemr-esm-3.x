@@ -74,8 +74,8 @@ svg.homeIcon{
 
 
 .chartWrapper{
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   flex-wrap: nowrap;
   width: 100%;
   gap: 4rem;
