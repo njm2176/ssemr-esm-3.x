@@ -9,6 +9,15 @@ import NewlyEnrolled from "./charts/NewlyEnrolled";
 import SSEMRTab from "./components/tabs/SSEMRTab";
 import CurrentlyEnrolled from "./charts/CurrentArtClients";
 import ActiveClients from "./charts/ActiveClients";
+import AdultARTRegimen from "./charts/AdultArtRegimen";
+import ChildArtRegimen from "./charts/ChildArtRegimen";
+import UnderCommunityCare from "./charts/UnderCommunityCare";
+import DueForViralLoad from "./charts/DueForViralLoad";
+import ViralLoadSamples from "./charts/ViralLoadSamples";
+import ViralLoadCoverage from "./charts/ViralLoadCoverage";
+import ViralLoadSuppression from "./charts/ViralLoadSuppression";
+import HighViralLoadCascade from "./charts/HighViralLoadCascade";
+import ChartCard from "./components/cards/ChartCard";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
@@ -45,10 +54,56 @@ const HomeDashboard = () => {
 
       {/* ...............Charts....................... */}
       <div className={styles.chartWrapper}>
-        <NewlyEnrolled />
-        <CurrentlyEnrolled />
-        <ActiveClients />
+        <ChartCard>
+          <NewlyEnrolled />
+        </ChartCard>
+        <ChartCard>
+          <CurrentlyEnrolled />
+        </ChartCard>
+        <ChartCard>
+          <ActiveClients />
+        </ChartCard>
       </div>
+
+      {/* ...............Charts....................... */}
+      <div className={styles.chartWrapper}>
+        <ChartCard>
+          <AdultARTRegimen />
+        </ChartCard>
+        <ChartCard>
+          <ChildArtRegimen />
+        </ChartCard>
+        <ChartCard>
+          <UnderCommunityCare />
+        </ChartCard>
+      </div>
+
+      {/* ...............Charts....................... */}
+      <div className={styles.twoGridChartWrapper}>
+        <ChartCard>
+          <DueForViralLoad />
+        </ChartCard>
+        <ChartCard>
+          <ViralLoadSamples />
+        </ChartCard>
+      </div>
+
+      {/* ...............Charts....................... */}
+      <div className={styles.chartWrapper}>
+        <ChartCard>
+          <DueForViralLoad />
+        </ChartCard>
+        <ChartCard>
+          <ViralLoadCoverage />
+        </ChartCard>
+        <ChartCard>
+          <ViralLoadSuppression />
+        </ChartCard>
+      </div>
+
+      <ChartCard>
+        <HighViralLoadCascade />
+      </ChartCard>
     </div>
   );
 };
