@@ -391,3 +391,14 @@ export const currentARTClients = {
     },
   },
 };
+
+export const activeClientData = [
+  {
+    group: "Inactive",
+    value: 20000,
+  },
+  {
+    group: "Active",
+    value: 65000,
+  },
+];
