@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import SSEMRTab from "./components/tabs/SSEMRTab";
 import { useHomeDashboard } from "./hooks/useHomeDashboard";
 import StatCard from "./components/cards/StatCard";
+import { SimpleBarChart } from "@carbon/charts";
+import "@carbon/charts/styles.css";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
@@ -38,6 +40,9 @@ const HomeDashboard = () => {
           <StatCard item={stat} key={stat.title} />
         ))}
       </div>
+
+      {/* ...............Charts....................... */}
+      <div className={styles.chartWrapper}></div>
     </div>
   );
 };
