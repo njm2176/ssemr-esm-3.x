@@ -20,7 +20,7 @@ export const useHomeDashboard = () => {
       title: "Children and adolescent",
     },
     {
-      title: "pregnant and Breatfeeding Women",
+      title: "pregnant and Breastfeeding Women",
     },
     {
       title: "Clients returning from interrupted treatment",
