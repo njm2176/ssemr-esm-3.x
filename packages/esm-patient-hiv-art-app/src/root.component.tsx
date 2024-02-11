@@ -1,6 +1,5 @@
 import React from "react";
 import { SWRConfig } from "swr";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomeDashboard from "./home-dashboard/home-dashboard.component";
 
 const swrConfiguration = {
@@ -8,7 +7,6 @@ const swrConfiguration = {
 };
 
 const RootComponent: React.FC = () => {
-  console.log("Root Component");
   return (
     <main>
       <SWRConfig value={swrConfiguration}>

@@ -1,0 +1,40 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/colors';
+@use '@carbon/styles/scss/type';
+@import "../../../root.scss";
+
+.card{
+  padding: .5rem 1rem;
+  border: 1px solid $primary-color;
+  border-radius: 8px;
+  font-size: small;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: 2.5rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.title{
+  color: $primary-color;
+  font-size: medium;
+}
+
+.stat{
+  font-size: x-large;
+  margin-top: auto;
+}
+
+.spinner{
+  margin-top: auto;
+}
+
+
+.chartCard{
+  padding: .8rem;
+  border: 1px solid $primary-color;
+  border-radius: 8px;
+  box-shadow: 5px 5px 5px #D3D3D3;
+}

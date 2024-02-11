@@ -1,53 +1,94 @@
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/colors';
 @use '@carbon/styles/scss/type';
+@import "../root.scss";
 
-.homeContainer {
-    margin: 20px;
-}
-.dashboardCard{
-    margin: spacing.$spacing-05 0;
-}
-
-
-.dashboardCard {
+.parent{
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin: spacing.$spacing-05 0;
-  column-gap: spacing.$spacing-07;
-  justify-content: flex-start;
-  overflow: hidden;
+  flex-direction: column;
+  gap: 4rem;
+  width: 100%;
 }
 
-.header {
-  @include type.type-style("heading-05");
-  color: colors.$gray-100;
+.titleContainer{
   display: flex;
   align-items: center;
-
-  .icon {
-    margin-right: 10px;
-    fill: #0072c3;
-    width: 3rem;
-    height: 5rem;
-  }
-
-  .titleContainer {
-    text-align: left;
-  }
-
-  .title{
-    @include type.type-style("heading-05");
-    color: colors.$gray-100;
-  }
-  .subTitle {
-    @include type.type-style("body-01");
-    color: colors.$gray-70;
-    margin: 0;
-  }
+  width: 100%;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.tabs {
-  margin-top: 1rem;
+svg.homeIcon{
+  font-size: x-large;
+  font-weight: 700;
+  fill: #0072c3;
+  stroke: #0072c3;
+}
+
+.titleText{
+  font-size: x-large;
+}
+
+.dashboardText{
+  width: 100%;
+}
+
+
+.tabs{
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.stats{
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.statIconWrapper{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 3rem;
+  height: 3rem;
+  background-color: $primary-color;
+  border-radius: 50%;
+  border: 1px solid $primary-color;
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+
+}
+
+.statIcon{
+  width: 1.5rem;
+  height:1.5rem;
+  fill: white;
+}
+
+
+.chartWrapper{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+  gap: 2rem;
+}
+
+.twoGridChartWrapper{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  gap: 2rem;
+}
+
+.chart{
+ display: flex;
+ width: 100%;
+ height: auto;
 }
