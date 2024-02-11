@@ -23,7 +23,7 @@ import styles from "../field.scss";
 export function setIdentifierSource(
   identifierSource: IdentifierSource,
   identifierValue: string,
-  initialValue: string,
+  initialValue: string
 ): {
   identifierValue: string;
   autoGeneration: boolean;
@@ -37,14 +37,14 @@ export function setIdentifierSource(
     identifierValue: autoGeneration
       ? "auto-generated"
       : identifierValue !== "auto-generated"
-        ? identifierValue
-        : initialValue,
+      ? identifierValue
+      : initialValue,
   };
 }
 
 export function initializeIdentifier(
   identifierType: PatientIdentifierType,
-  identifierProps,
+  identifierProps
 ): PatientIdentifierValue {
   return {
     identifierTypeUuid: identifierType.uuid,
@@ -56,19 +56,19 @@ export function initializeIdentifier(
     ...setIdentifierSource(
       identifierProps?.selectedSource ?? identifierType.identifierSources?.[0],
       identifierProps?.identifierValue,
-      identifierProps?.initialValue ?? "",
+      identifierProps?.initialValue ?? ""
     ),
   };
 }
 
 export function deleteIdentifierType(
   identifiers: FormValues["identifiers"],
-  identifierFieldName,
+  identifierFieldName
 ) {
   return Object.fromEntries(
     Object.entries(identifiers).filter(
-      ([fieldName]) => fieldName !== identifierFieldName,
-    ),
+      ([fieldName]) => fieldName !== identifierFieldName
+    )
   );
 }
 
@@ -76,7 +76,7 @@ export const Identifiers: React.FC = () => {
   const { identifierTypes } = useContext(ResourcesContext);
   const isLoading = !identifierTypes;
   const { values, setFieldValue, initialFormValues, isOffline } = useContext(
-    PatientRegistrationContext,
+    PatientRegistrationContext
   );
   const { t } = useTranslation();
   const layout = useLayoutType();
@@ -95,8 +95,8 @@ export const Identifiers: React.FC = () => {
             type.required ||
             !!defaultPatientIdentifierTypes?.find(
               (defaultIdentifierTypeUuid) =>
-                defaultIdentifierTypeUuid === type.uuid,
-            ),
+                defaultIdentifierTypeUuid === type.uuid
+            )
         )
         .filter((type) => !values.identifiers[type.fieldName])
         .forEach((type) => {
@@ -104,7 +104,7 @@ export const Identifiers: React.FC = () => {
             type,
             values.identifiers[type.uuid] ??
               initialFormValues.identifiers[type.uuid] ??
-              {},
+              {}
           );
         });
       /*
@@ -129,7 +129,7 @@ export const Identifiers: React.FC = () => {
 
   const closeIdentifierSelectionOverlay = useCallback(
     () => setShowIdentifierOverlay(false),
-    [setShowIdentifierOverlay],
+    [setShowIdentifierOverlay]
   );
 
   if (isLoading && !isOffline) {
