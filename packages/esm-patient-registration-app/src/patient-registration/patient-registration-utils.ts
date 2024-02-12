@@ -254,9 +254,10 @@ export const filterUndefinedPatientIdenfier = (patientIdenfiers) =>
     )
   );
 
-export const appendArtObject = (artObject, filteredIdentifiers) => {
-  return [...filteredIdentifiers, artObject];
-};
+export const appendArtObject = (
+  artObject,
+  filteredIdentifiers
+): PatientIdentifierValue[] => [...filteredIdentifiers, artObject];
 
 export const latestFirstEncounter = (a: Encounter, b: Encounter) =>
   new Date(b.encounterDatetime).getTime() -
