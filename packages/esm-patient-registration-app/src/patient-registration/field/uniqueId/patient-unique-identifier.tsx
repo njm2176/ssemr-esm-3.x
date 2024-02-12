@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Tile,
@@ -12,6 +12,8 @@ import {
 import styles from "./patient-unique-identifier.scss";
 import { FormikProps, FormikValues } from "formik";
 import { facilities } from "./assets/identifier-assets";
+import { ResourcesContext } from "../../../offline.resources";
+import { ARTContext } from "../../ArtContext";
 
 interface PatientIdentifierProps {
   props: FormikProps<FormikValues>;
@@ -82,7 +84,6 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   const [combinedValue, setCombinedValue] = useState<string>("");
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log("event", event);
     const newState = event.target.value;
     setSelectedState(newState);
     setSelectedFacility("");
@@ -99,7 +100,6 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newArtNumber = event.target.value;
-    console.log("Art Number changed:", newArtNumber);
     setArtNumber(newArtNumber);
   };
 
@@ -107,8 +107,11 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
     console.log("Input blurred");
   };
 
+  const { changeART, artNumber: contextARTNumber } = useContext(ARTContext);
+
   useEffect(() => {
     setCombinedValue(`${selectedFacility}${artNumber}`);
+    changeART(`${selectedFacility}${artNumber}`);
   }, [selectedFacility, artNumber]);
 
   //To-Do

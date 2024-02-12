@@ -14,7 +14,7 @@ import capitalize from "lodash-es/capitalize";
 export function parseAddressTemplateXml(addressTemplate: string) {
   const templateXmlDoc = new DOMParser().parseFromString(
     addressTemplate,
-    "text/xml",
+    "text/xml"
   );
   const nameMappings = templateXmlDoc.querySelector("nameMappings");
   const properties = nameMappings.getElementsByTagName("entry");
@@ -35,17 +35,17 @@ export function parseAddressTemplateXml(addressTemplate: string) {
         regex,
         regexFormat,
       };
-    },
+    }
   );
 
   const addressValidationSchema = Yup.object(
     validationSchemaObjs.reduce((final, current) => {
       final[current.name] = Yup.string().matches(
         current.regex,
-        current.regexFormat,
+        current.regexFormat
       );
       return final;
-    }, {}),
+    }, {})
   );
 
   const addressFieldValues = Array.prototype.map.call(
@@ -56,7 +56,7 @@ export function parseAddressTemplateXml(addressTemplate: string) {
         name,
         defaultValue: "",
       };
-    },
+    }
   );
   return {
     addressFieldValues,
@@ -66,7 +66,7 @@ export function parseAddressTemplateXml(addressTemplate: string) {
 export function parseAddressTemplateXmlOld(addressTemplate: string) {
   const templateXmlDoc = new DOMParser().parseFromString(
     addressTemplate,
-    "text/xml",
+    "text/xml"
   );
   const nameMappings = templateXmlDoc
     .querySelector("nameMappings")
@@ -93,10 +93,10 @@ export function parseAddressTemplateXmlOld(addressTemplate: string) {
     validationSchemaObjs.reduce((final, current) => {
       final[current.name] = Yup.string().matches(
         current.regex,
-        current.regexFormat,
+        current.regexFormat
       );
       return final;
-    }, {}),
+    }, {})
   );
 
   const addressFieldValues: Array<{ name: string; defaultValue: string }> =
@@ -116,7 +116,7 @@ export function parseAddressTemplateXmlOld(addressTemplate: string) {
 function findElementValueInXmlDoc(
   fieldName: string,
   elementSelector: string,
-  doc: XMLDocument,
+  doc: XMLDocument
 ) {
   return (
     doc
@@ -147,7 +147,7 @@ export function getFormValuesFromFhirPatient(patient: fhir.Patient) {
   result.givenName = patientName?.given[0];
   result.middleName = patientName?.given[1];
   result.familyName = patientName?.family;
-  result.addNameInLocalLanguage = !!additionalPatientName ? true : undefined;
+  result.addNameInLocalLanguage = additionalPatientName ? true : undefined;
   result.additionalGivenName = additionalPatientName?.given[0];
   result.additionalMiddleName = additionalPatientName?.given[1];
   result.additionalFamilyName = additionalPatientName?.family;
@@ -209,7 +209,7 @@ export function getAddressFieldValuesFromFhirPatient(patient: fhir.Patient) {
 }
 
 export function getPatientUuidMapFromFhirPatient(
-  patient: fhir.Patient,
+  patient: fhir.Patient
 ): PatientUuidMapType {
   const patientName = patient.name[0];
   const additionalPatientName = patient.name[1];
@@ -227,7 +227,7 @@ export function getPatientUuidMapFromFhirPatient(
 }
 
 export function getPatientIdentifiersFromFhirPatient(
-  patient: fhir.Patient,
+  patient: fhir.Patient
 ): Array<PatientIdentifier> {
   return patient.identifier.map((identifier) => {
     return {
@@ -238,7 +238,7 @@ export function getPatientIdentifiersFromFhirPatient(
 }
 
 export function getPhonePersonAttributeValueFromFhirPatient(
-  patient: fhir.Patient,
+  patient: fhir.Patient
 ) {
   const result = {};
   if (patient.telecom) {
@@ -250,9 +250,13 @@ export function getPhonePersonAttributeValueFromFhirPatient(
 export const filterUndefinedPatientIdenfier = (patientIdenfiers) =>
   Object.fromEntries(
     Object.entries<PatientIdentifierValue>(patientIdenfiers).filter(
-      ([key, value]) => value.identifierValue !== undefined,
-    ),
+      ([key, value]) => value.identifierValue !== undefined
+    )
   );
+
+export const appendArtObject = (artObject, filteredIdentifiers) => {
+  return [...filteredIdentifiers, artObject];
+};
 
 export const latestFirstEncounter = (a: Encounter, b: Encounter) =>
   new Date(b.encounterDatetime).getTime() -
