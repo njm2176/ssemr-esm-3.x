@@ -37,6 +37,7 @@ import {
 import { SectionWrapper } from "./section/section-wrapper.component";
 import BeforeSavePrompt from "./before-save-prompt";
 import styles from "./patient-registration.scss";
+import ArtProvider from "./ArtContext";
 
 let exportedInitialFormValuesForTesting = {} as FormValues;
 
@@ -271,29 +272,31 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
               </div>
             </div>
             <div className={styles.infoGrid}>
-              <PatientRegistrationContext.Provider
-                value={{
-                  identifierTypes: identifierTypes,
-                  validationSchema,
-                  setValidationSchema,
-                  values: props.values,
-                  inEditMode,
-                  setFieldValue: props.setFieldValue,
-                  setCapturePhotoProps,
-                  currentPhoto: photo?.imageSrc,
-                  isOffline,
-                  initialFormValues: props.initialValues,
-                  setInitialFormValues,
-                }}
-              >
-                {sections.map((section, index) => (
-                  <SectionWrapper
-                    key={`registration-section-${section.id}`}
-                    sectionDefinition={section}
-                    index={index}
-                  />
-                ))}
-              </PatientRegistrationContext.Provider>
+              <ArtProvider>
+                <PatientRegistrationContext.Provider
+                  value={{
+                    identifierTypes: identifierTypes,
+                    validationSchema,
+                    setValidationSchema,
+                    values: props.values,
+                    inEditMode,
+                    setFieldValue: props.setFieldValue,
+                    setCapturePhotoProps,
+                    currentPhoto: photo?.imageSrc,
+                    isOffline,
+                    initialFormValues: props.initialValues,
+                    setInitialFormValues,
+                  }}
+                >
+                  {sections.map((section, index) => (
+                    <SectionWrapper
+                      key={`registration-section-${section.id}`}
+                      sectionDefinition={section}
+                      index={index}
+                    />
+                  ))}
+                </PatientRegistrationContext.Provider>
+              </ArtProvider>
             </div>
           </div>
         </Form>

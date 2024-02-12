@@ -107,7 +107,7 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
     console.log("Input blurred");
   };
 
-  const { changeART, artNumber: contextARTNumber } = useContext(ARTContext);
+  const { changeART } = useContext(ARTContext);
 
   useEffect(() => {
     setCombinedValue(`${selectedFacility}${artNumber}`);
