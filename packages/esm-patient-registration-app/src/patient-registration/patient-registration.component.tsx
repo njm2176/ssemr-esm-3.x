@@ -72,14 +72,14 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
     : !!(uuidOfPatientToEdit && patientToEdit);
   const showDummyData = useMemo(
     () => localStorage.getItem("openmrs:devtools") === "true" && !inEditMode,
-    [inEditMode],
+    [inEditMode]
   );
   const { data: photo } = usePatientPhoto(patientToEdit?.id);
   const savePatientTransactionManager = useRef(
-    new SavePatientTransactionManager(),
+    new SavePatientTransactionManager()
   );
   const fieldDefinition = config?.fieldDefinitions?.filter(
-    (def) => def.type === "address",
+    (def) => def.type === "address"
   );
 
   useEffect(() => {
@@ -91,14 +91,14 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
       .map(
         (sectionName) =>
           config.sectionDefinitions.filter((s) => s.id == sectionName)[0] ??
-          builtInSections.filter((s) => s.id == sectionName)[0],
+          builtInSections.filter((s) => s.id == sectionName)[0]
       )
       .filter((s) => s);
   }, [config.sections, config.sectionDefinitions]);
 
   const onFormSubmit = async (
     values: FormValues,
-    helpers: FormikHelpers<FormValues>,
+    helpers: FormikHelpers<FormValues>
   ) => {
     const abortController = new AbortController();
     helpers.setSubmitting(true);
@@ -119,18 +119,18 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
         currentSession,
         config,
         savePatientTransactionManager.current,
-        abortController,
+        abortController
       );
 
       showSnackbar({
         subtitle: inEditMode
           ? t(
               "updatePatientSuccessSnackbarSubtitle",
-              "The patient's information has been successfully updated",
+              "The patient's information has been successfully updated"
             )
           : t(
               "registerPatientSuccessSnackbarSubtitle",
-              "The patient can now be found by searching for them using their name or ID number",
+              "The patient can now be found by searching for them using their name or ID number"
             ),
         title: inEditMode
           ? t("updatePatientSuccessSnackbarTitle", "Patient Details Updated")
@@ -142,7 +142,7 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
       const afterUrl = new URLSearchParams(search).get("afterUrl");
       const redirectUrl = interpolateUrl(
         afterUrl || config.links.submitButton,
-        { patientUuid: values.patientUuid },
+        { patientUuid: values.patientUuid }
       );
 
       setTarget(redirectUrl);
@@ -153,11 +153,11 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
             title: inEditMode
               ? t(
                   "updatePatientErrorSnackbarTitle",
-                  "Patient Details Update Failed",
+                  "Patient Details Update Failed"
                 )
               : t(
                   "registrationErrorSnackbarTitle",
-                  "Patient Registration Failed",
+                  "Patient Registration Failed"
                 ),
             subtitle: error.message,
             kind: "error",
@@ -168,11 +168,11 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
           title: inEditMode
             ? t(
                 "updatePatientErrorSnackbarTitle",
-                "Patient Details Update Failed",
+                "Patient Details Update Failed"
               )
             : t(
                 "registrationErrorSnackbarTitle",
-                "Patient Registration Failed",
+                "Patient Registration Failed"
               ),
           subtitle: error.responseBody.error.message,
           kind: "error",
