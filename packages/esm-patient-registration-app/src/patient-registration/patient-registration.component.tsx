@@ -115,9 +115,11 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
 
     const appendedValues = appendArtObject(artObject, filteredValues);
 
+    console.log("filtered values", filteredValues);
+
     const updatedFormValues = {
       ...values,
-      identifiers: appendedValues,
+      identifiers: filteredValues,
     };
     try {
       await savePatientForm(
@@ -159,6 +161,7 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
 
       setTarget(redirectUrl);
     } catch (error) {
+      console.log("error", error);
       if (error.responseBody?.error?.globalErrors) {
         error.responseBody.error.globalErrors.forEach((error) => {
           showSnackbar({
