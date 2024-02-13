@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "../home-dashboard.scss";
 import { openmrsFetch } from "@openmrs/esm-framework";
 import { useFetch } from "../../hooks/useFetch";
+import { DashboardContext } from "../context/DashboardContext";
 
 export const useHomeDashboard = () => {
   const [url, setUrl] = useState("/ws/fhir2/R4/Patient");
 
-  const { loading, data, error, makeRequest } = useFetch();
-
-  useEffect(() => {
-    makeRequest(url);
-  }, []);
+  const { newlyEnrolledClients } = useContext(DashboardContext);
 
   const tabInfo = [
     {
@@ -34,6 +31,7 @@ export const useHomeDashboard = () => {
     {
       title: "Newly enrolled clients",
       url: "/ws/rest/v1/ssemr/dashboard/newClients",
+      stat: newlyEnrolledClients.length,
       icon: (
         <div className={styles.statIconWrapper}>
           <svg
@@ -49,6 +47,7 @@ export const useHomeDashboard = () => {
     {
       title: "Active clients (TX_CURR)",
       url: "/ws/rest/v1/ssemr/dashboard/activeClients",
+      stat: "",
       icon: (
         <div className={styles.statIconWrapper}>
           <svg
@@ -64,6 +63,7 @@ export const useHomeDashboard = () => {
     {
       title: "On appointment",
       url: "/ws/rest/v1/ssemr/dashboard/newClients",
+      stat: "",
       icon: (
         <div className={styles.statIconWrapper}>
           <svg
@@ -79,6 +79,7 @@ export const useHomeDashboard = () => {
     {
       title: "Missed appointments",
       url: "/ws/rest/v1/ssemr/dashboard/missedAppointment",
+      stat: "",
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -97,6 +98,7 @@ export const useHomeDashboard = () => {
     {
       title: "Interruptions in Treatment(Iit)",
       url: "/ws/rest/v1/ssemr/dashboard/interruptedInTreatment",
+      stat: "",
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -115,6 +117,7 @@ export const useHomeDashboard = () => {
     {
       title: "Returned to Treatment(Tx_Rtt)",
       url: "/ws/rest/v1/ssemr/dashboard/interruptedInTreatment",
+      stat: "",
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -133,6 +136,7 @@ export const useHomeDashboard = () => {
     {
       title: "Due for viral load",
       url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
+      stat: "",
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -151,6 +155,7 @@ export const useHomeDashboard = () => {
     {
       title: "High viral load",
       url: "/ws/rest/v1/ssemr/dashboard/highVl",
+      stat: "",
       icon: (
         <div
           className={styles.statIconWrapper}

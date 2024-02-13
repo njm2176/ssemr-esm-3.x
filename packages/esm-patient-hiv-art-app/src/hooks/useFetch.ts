@@ -6,13 +6,15 @@ export const useFetch = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
-  const makeRequest = async (url) => {
+  const makeRequest = async (url, onResult) => {
     try {
       setLoading(true);
       const response = await openmrsFetch(url);
       setData(response.data);
+      onResult(response.data, null);
     } catch (error) {
       setError(error);
+      onResult(null, error);
     } finally {
       setLoading(false);
     }
