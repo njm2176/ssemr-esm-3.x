@@ -31,14 +31,14 @@ export async function fetchCurrentSession(): Promise<Session> {
 
 export async function fetchAddressTemplate() {
   const { data } = await cacheAndFetch<AddressTemplate>(
-    "/ws/rest/v1/addresstemplate",
+    "/ws/rest/v1/addresstemplate"
   );
   return data;
 }
 
 export async function fetchAllRelationshipTypes() {
   const { data } = await cacheAndFetch(
-    "/ws/rest/v1/relationshiptype?v=default",
+    "/ws/rest/v1/relationshiptype?v=default"
   );
   return data;
 }
@@ -51,7 +51,7 @@ export async function fetchAllFieldDefinitionTypes() {
   }
 
   const fieldDefinitionPromises = config.fieldDefinitions.map((def) =>
-    fetchFieldDefinitionType(def),
+    fetchFieldDefinitionType(def)
   );
 
   const fieldDefinitionResults = await Promise.all(fieldDefinitionPromises);
@@ -75,7 +75,7 @@ async function fetchFieldDefinitionType(fieldDefinition) {
 
   if (fieldDefinition.answerConceptSetUuid) {
     await cacheAndFetch(
-      `/ws/rest/v1/concept/${fieldDefinition.answerConceptSetUuid}`,
+      `/ws/rest/v1/concept/${fieldDefinition.answerConceptSetUuid}`
     );
   }
   const { data } = await cacheAndFetch(apiUrl);
@@ -94,7 +94,7 @@ export async function fetchPatientIdentifierTypesWithSources(): Promise<
   const [autoGenOptions, ...allIdentifierSources] = await Promise.all([
     fetchAutoGenerationOptions(),
     ...identifierTypes.map((identifierType) =>
-      fetchIdentifierSources(identifierType.uuid),
+      fetchIdentifierSources(identifierType.uuid)
     ),
   ]);
 
@@ -119,10 +119,10 @@ async function fetchPatientIdentifierTypes(): Promise<
   const [patientIdentifierTypesResponse, primaryIdentifierTypeResponse] =
     await Promise.all([
       cacheAndFetch(
-        "/ws/rest/v1/patientidentifiertype?v=custom:(display,uuid,name,format,required,uniquenessBehavior)",
+        "/ws/rest/v1/patientidentifiertype?v=custom:(display,uuid,name,format,required,uniquenessBehavior)"
       ),
       cacheAndFetch(
-        "/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.primaryIdentifierType",
+        "/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.primaryIdentifierType"
       ),
     ]);
 
@@ -138,9 +138,9 @@ async function fetchPatientIdentifierTypes(): Promise<
       ? [
           mapPatientIdentifierType(
             patientIdentifierTypes?.find(
-              (type) => type.uuid === primaryIdentifierTypeUuid,
+              (type) => type.uuid === primaryIdentifierTypeUuid
             ),
-            true,
+            true
           ),
         ]
       : [];
@@ -158,7 +158,7 @@ async function fetchPatientIdentifierTypes(): Promise<
 
 async function fetchIdentifierSources(identifierType: string) {
   return await cacheAndFetch(
-    `/ws/rest/v1/idgen/identifiersource?v=default&identifierType=${identifierType}`,
+    `/ws/rest/v1/idgen/identifiersource?v=default&identifierType=${identifierType}`
   );
 }
 
@@ -180,14 +180,14 @@ async function cacheAndFetch<T = any>(url?: string) {
   });
 }
 
-function mapPatientIdentifierType(patientIdentifierType, isPrimary) {
+function mapPatientIdentifierType(patientIdentifierTypeObject, isPrimary) {
   return {
-    name: patientIdentifierType.display,
-    fieldName: camelCase(patientIdentifierType.name),
-    required: patientIdentifierType.required,
-    uuid: patientIdentifierType.uuid,
-    format: patientIdentifierType.format,
+    name: patientIdentifierTypeObject?.display,
+    fieldName: camelCase(patientIdentifierTypeObject?.name),
+    required: patientIdentifierTypeObject?.required,
+    uuid: patientIdentifierTypeObject?.uuid,
+    format: patientIdentifierTypeObject?.format,
     isPrimary,
-    uniquenessBehavior: patientIdentifierType.uniquenessBehavior,
+    uniquenessBehavior: patientIdentifierTypeObject?.uniquenessBehavior,
   };
 }
