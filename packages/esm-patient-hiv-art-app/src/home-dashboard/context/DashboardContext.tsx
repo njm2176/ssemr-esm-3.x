@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 
 export const DashboardContext = createContext(null);
-const DashboardProvider = () => {
+const DashboardProvider = ({ children }) => {
   const [data, setData] = useState([]);
 
   return (
