@@ -17,28 +17,29 @@ import {
 import { FormManager } from "./patient-registration/form-manager";
 import { PatientRegistration } from "./patient-registration/patient-registration.component";
 import styles from "./root.scss";
+import ArtProvider from "./patient-registration/ArtContext";
 
 export default function Root() {
   const isOnline = useConnectivity();
   const currentSession = useSession();
   const { data: addressTemplate } = useSWRImmutable(
     "patientRegistrationAddressTemplate",
-    fetchAddressTemplate,
+    fetchAddressTemplate
   );
   const { data: relationshipTypes } = useSWRImmutable(
     "patientRegistrationRelationshipTypes",
-    fetchAllRelationshipTypes,
+    fetchAllRelationshipTypes
   );
   const { data: identifierTypes } = useSWRImmutable(
     "patientRegistrationPatientIdentifiers",
-    fetchPatientIdentifierTypesWithSources,
+    fetchPatientIdentifierTypesWithSources
   );
   const savePatientForm = useMemo(
     () =>
       isOnline
         ? FormManager.savePatientFormOnline
         : FormManager.savePatientFormOffline,
-    [isOnline],
+    [isOnline]
   );
 
   return (
@@ -55,28 +56,30 @@ export default function Root() {
             currentSession,
           }}
         >
-          <BrowserRouter basename={window.getOpenmrsSpaBase()}>
-            <Routes>
-              <Route
-                path="patient-registration"
-                element={
-                  <PatientRegistration
-                    savePatientForm={savePatientForm}
-                    isOffline={!isOnline}
-                  />
-                }
-              />
-              <Route
-                path="patient/:patientUuid/edit"
-                element={
-                  <PatientRegistration
-                    savePatientForm={savePatientForm}
-                    isOffline={!isOnline}
-                  />
-                }
-              />
-            </Routes>
-          </BrowserRouter>
+          <ArtProvider>
+            <BrowserRouter basename={window.getOpenmrsSpaBase()}>
+              <Routes>
+                <Route
+                  path="patient-registration"
+                  element={
+                    <PatientRegistration
+                      savePatientForm={savePatientForm}
+                      isOffline={!isOnline}
+                    />
+                  }
+                />
+                <Route
+                  path="patient/:patientUuid/edit"
+                  element={
+                    <PatientRegistration
+                      savePatientForm={savePatientForm}
+                      isOffline={!isOnline}
+                    />
+                  }
+                />
+              </Routes>
+            </BrowserRouter>
+          </ArtProvider>
         </ResourcesContext.Provider>
       </Grid>
     </main>

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Tile,
@@ -12,6 +12,8 @@ import {
 import styles from "./patient-unique-identifier.scss";
 import { FormikProps, FormikValues } from "formik";
 import { facilities } from "./assets/identifier-assets";
+import { ResourcesContext } from "../../../offline.resources";
+import { ARTContext } from "../../ArtContext";
 
 interface PatientIdentifierProps {
   props: FormikProps<FormikValues>;
@@ -82,7 +84,6 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   const [combinedValue, setCombinedValue] = useState<string>("");
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log("event", event);
     const newState = event.target.value;
     setSelectedState(newState);
     setSelectedFacility("");
@@ -99,7 +100,6 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newArtNumber = event.target.value;
-    console.log("Art Number changed:", newArtNumber);
     setArtNumber(newArtNumber);
   };
 
@@ -107,8 +107,11 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
     console.log("Input blurred");
   };
 
+  const { changeART } = useContext(ARTContext);
+
   useEffect(() => {
     setCombinedValue(`${selectedFacility}${artNumber}`);
+    changeART(`${selectedFacility}${artNumber}`);
   }, [selectedFacility, artNumber]);
 
   //To-Do
@@ -118,30 +121,30 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
     }
   }, [selectedState]);
 
-  useEffect(() => {
-    const data = {
-      identifiers: [
-        {
-          identifier: combinedValue,
-          identifierType: "e6baf185-38ed-4815-9476-f98d2cc2b331",
-          preferred: true,
-        },
-      ],
-    };
-
-    // Fetch data or perform any side effect with the updated data object
-    // This effect will be triggered whenever combinedValue changes
-    fetch("/openmrs/ws/rest/v1/patient", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.text())
-      .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
-  }, [combinedValue]);
+  // useEffect(() => {
+  //   const data = {
+  //     identifiers: [
+  //       {
+  //         identifier: combinedValue,
+  //         identifierType: "e6baf185-38ed-4815-9476-f98d2cc2b331",
+  //         preferred: true,
+  //       },
+  //     ],
+  //   };
+  //
+  //   // Fetch data or perform any side effect with the updated data object
+  //   // This effect will be triggered whenever combinedValue changes
+  //   fetch("/openmrs/ws/rest/v1/patient", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then((response) => response.text())
+  //     .then((result) => console.log(result))
+  //     .catch((error) => console.log("error", error));
+  // }, [combinedValue]);
 
   return (
     <div id="patientIdentifier">
