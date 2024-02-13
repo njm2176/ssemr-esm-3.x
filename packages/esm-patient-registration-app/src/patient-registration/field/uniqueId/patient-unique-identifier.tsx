@@ -121,30 +121,30 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
     }
   }, [selectedState]);
 
-  useEffect(() => {
-    const data = {
-      identifiers: [
-        {
-          identifier: combinedValue,
-          identifierType: "e6baf185-38ed-4815-9476-f98d2cc2b331",
-          preferred: true,
-        },
-      ],
-    };
-
-    // Fetch data or perform any side effect with the updated data object
-    // This effect will be triggered whenever combinedValue changes
-    fetch("/openmrs/ws/rest/v1/patient", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.text())
-      .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
-  }, [combinedValue]);
+  // useEffect(() => {
+  //   const data = {
+  //     identifiers: [
+  //       {
+  //         identifier: combinedValue,
+  //         identifierType: "e6baf185-38ed-4815-9476-f98d2cc2b331",
+  //         preferred: true,
+  //       },
+  //     ],
+  //   };
+  //
+  //   // Fetch data or perform any side effect with the updated data object
+  //   // This effect will be triggered whenever combinedValue changes
+  //   fetch("/openmrs/ws/rest/v1/patient", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then((response) => response.text())
+  //     .then((result) => console.log(result))
+  //     .catch((error) => console.log("error", error));
+  // }, [combinedValue]);
 
   return (
     <div id="patientIdentifier">

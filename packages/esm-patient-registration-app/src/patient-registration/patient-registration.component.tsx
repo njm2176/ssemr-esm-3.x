@@ -39,6 +39,7 @@ import { SectionWrapper } from "./section/section-wrapper.component";
 import BeforeSavePrompt from "./before-save-prompt";
 import styles from "./patient-registration.scss";
 import { ARTContext } from "./ArtContext";
+
 let exportedInitialFormValuesForTesting = {} as FormValues;
 
 export interface PatientRegistrationProps {
@@ -105,24 +106,32 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
     const abortController = new AbortController();
     helpers.setSubmitting(true);
 
-    console.log("hit");
     const filteredValues = filterUndefinedPatientIdenfier(values.identifiers);
 
     const artObject = {
-      identifier: artNumber,
-      identifierType: "e6baf185-38ed-4815-9476-f98d2cc2b331",
+      identifierTypeUuid: "e6baf185-38ed-4815-9476-f98d2cc2b331",
+      identifierName: "Unique ART Number",
+      preferred: false,
+      initialValue: "",
+      required: false,
+      identifierValue: artNumber,
+      selectedSource: {
+        name: "",
+        autoGeneration: "",
+        uuid: "",
+      },
     };
 
-    const appendedValues = appendArtObject(artObject, filteredValues);
+    filteredValues["uniqueArtNumber"] = artObject;
 
-    console.log("filtered values", filteredValues);
+    // const appendedValues = appendArtObject(artObject, filteredValues);
 
     const updatedFormValues = {
       ...values,
       identifiers: filteredValues,
     };
     try {
-      await savePatientForm(
+      const res = await savePatientForm(
         !inEditMode,
         updatedFormValues,
         patientUuidMap,
