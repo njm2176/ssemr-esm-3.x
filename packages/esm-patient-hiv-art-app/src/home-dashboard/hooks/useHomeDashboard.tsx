@@ -9,8 +9,6 @@ export const useHomeDashboard = () => {
   const [allClients, setAllClients] = useState(null);
   const [newlyEnrolledClients, setNewlyEnrolledClients] = useState(null);
 
-  console.log("newly", newlyEnrolledClients);
-
   const { makeRequest } = useFetch();
 
   const getClientData = async ({ url, params = "", onResult }) => {
@@ -47,8 +45,6 @@ export const useHomeDashboard = () => {
       },
     });
   };
-
-  console.log("all", allClients);
 
   const getNewlyEnrolledClients = async () => {
     const formatDate = (date: Date) => {
