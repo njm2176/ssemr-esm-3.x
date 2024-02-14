@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./index.scss";
-import { useFetch } from "../../../hooks/useFetch";
 import { Loading } from "@carbon/react";
 
 const StatCard = ({ item }) => {

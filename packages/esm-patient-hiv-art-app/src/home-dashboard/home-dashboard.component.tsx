@@ -34,9 +34,9 @@ const HomeDashboard = () => {
    * Call reusable requests ONCE in the parent component
    */
   useEffect(() => {
-    getActiveClients();
-    getAllClients();
-    getNewlyEnrolledClients();
+    // getActiveClients();
+    // getAllClients();
+    // getNewlyEnrolledClients();
   }, []);
 
   return (
