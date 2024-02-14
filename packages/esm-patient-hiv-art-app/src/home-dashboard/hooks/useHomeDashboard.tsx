@@ -118,7 +118,7 @@ export const useHomeDashboard = () => {
       url: "/ws/rest/v1/ssemr/dashboard/activeClients",
       onResult(responseData, error) {
         if (responseData) {
-          setActiveClients(responseData);
+          // setActiveClients(responseData);
         }
         if (error) {
           return error;
@@ -131,7 +131,9 @@ export const useHomeDashboard = () => {
     await getClientData({
       url: "/ws/fhir2/R4/Patient",
       onResult: (responseData, error) => {
-        if (responseData) setAllClients(responseData);
+        if (responseData) {
+          // setAllClients(responseData);
+        }
         if (error) return error;
       },
     });
@@ -163,7 +165,7 @@ export const useHomeDashboard = () => {
       onResult: (responseData, error) => {
         if (responseData) {
           console.log("response data", responseData);
-          setNewlyEnrolledClients(responseData);
+          // setNewlyEnrolledClients(responseData);
         }
         if (error) return error;
       },
