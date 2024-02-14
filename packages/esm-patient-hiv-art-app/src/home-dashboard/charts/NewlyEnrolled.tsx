@@ -7,24 +7,13 @@ import useSWR from "swr";
 import { openmrsFetch } from "@openmrs/esm-framework";
 
 const NewlyEnrolled = () => {
-  const { newlyEnrolledClients } = useHomeDashboard();
+  const { newlyEnrolledClients, getDummyData } = useHomeDashboard();
 
   const { data, error } = useSWR(
     "/ws/rest/v1/ssemr/dashboard/newClients?startDate=2024/01/15&endDate=2024/02/14",
     openmrsFetch,
     {}
   );
-
-  const formatSummary = () => {
-    const monthsArray = Object.keys(newlyEnrolledClients?.summary?.groupYear);
-
-    const formattedData = monthsArray.map((month) => ({
-      month: month,
-      clients: newlyEnrolledClients.summary.groupYear[month],
-    }));
-
-    return formattedData;
-  };
 
   const options = {
     title: "Newly Enrolled Clients",
@@ -47,7 +36,7 @@ const NewlyEnrolled = () => {
   return (
     <div className="">
       {newlyEnrolledClients?.summary && (
-        <LineChart data={formatSummary()} options={options} />
+        <LineChart data={getDummyData()} options={options} />
       )}
     </div>
   );

@@ -3,101 +3,102 @@ import styles from "../home-dashboard.scss";
 import { DashboardContext } from "../context/DashboardContext";
 import { useFetch } from "../../hooks/useFetch";
 
+const dummy = {
+  results: [
+    {
+      uuid: "d2a5da7e-7962-491c-b9e5-f37ada37ef4b",
+      name: "Test User",
+      identifier: "10003E0",
+      sex: "M",
+      dateEnrolled: "2024-02-14 05:14:04",
+      childOrAdolescent: "False",
+      pregnantAndBreastfeeding: false,
+      returningFromIT: false,
+      returningToTreatment: false,
+    },
+    {
+      uuid: "2d61ad12-ac7b-42d2-9f56-c11648fa680b",
+      name: "Test Test",
+      identifier: "10003LJ",
+      sex: "M",
+      dateEnrolled: "2024-02-14 05:14:04",
+      childOrAdolescent: "True",
+      pregnantAndBreastfeeding: false,
+      returningFromIT: false,
+      returningToTreatment: false,
+    },
+    {
+      uuid: "8128f265-8b5e-4510-b0d2-2faf8f45d373",
+      name: "Catarina Ayor Zenab",
+      identifier: "10004JM",
+      sex: "F",
+      dateEnrolled: "2024-02-14 05:14:04",
+      childOrAdolescent: "True",
+      pregnantAndBreastfeeding: false,
+      returningFromIT: false,
+      returningToTreatment: false,
+    },
+    {
+      uuid: "5e8f1b7e-1233-42ca-8dfd-aea517c5abe9",
+      name: "Taban John Deng",
+      identifier: "10004ND",
+      sex: "M",
+      dateEnrolled: "2024-02-14 05:14:04",
+      childOrAdolescent: "False",
+      pregnantAndBreastfeeding: false,
+      returningFromIT: false,
+      returningToTreatment: false,
+    },
+    {
+      uuid: "7a54e192-8d13-4ac2-ad5b-8e39b2ed3c1d",
+      name: "Mathiang Yak Anek",
+      identifier: "10004KK",
+      sex: "F",
+      dateEnrolled: "2024-02-14 05:14:04",
+      childOrAdolescent: "False",
+      pregnantAndBreastfeeding: false,
+      returningFromIT: false,
+      returningToTreatment: false,
+    },
+    {
+      uuid: "340b22e9-cb1d-4ac1-a045-355cdba7b363",
+      name: "Joseph Bol Deng",
+      identifier: "10004LH",
+      sex: "M",
+      dateEnrolled: "2024-02-14 05:14:04",
+      childOrAdolescent: "True",
+      pregnantAndBreastfeeding: false,
+      returningFromIT: false,
+      returningToTreatment: false,
+    },
+  ],
+  summary: {
+    groupYear: {
+      Jan: 10,
+      Feb: 80,
+      Mar: 6,
+      Apr: 20,
+    },
+    groupMonth: {
+      Week1: 10,
+      Week2: 10,
+      Week3: 10,
+      Week4: 10,
+    },
+    groupWeek: {
+      Mon: 10,
+      Tue: 10,
+      Wed: 10,
+      Thu: 10,
+      Fri: 10,
+    },
+  },
+};
 export const useHomeDashboard = () => {
   const { filters } = useContext(DashboardContext);
-  const [activeClients, setActiveClients] = useState(null);
-  const [allClients, setAllClients] = useState(null);
-  const [newlyEnrolledClients, setNewlyEnrolledClients] = useState({
-    results: [
-      {
-        uuid: "d2a5da7e-7962-491c-b9e5-f37ada37ef4b",
-        name: "Test User",
-        identifier: "10003E0",
-        sex: "M",
-        dateEnrolled: "2024-02-14 05:14:04",
-        childOrAdolescent: "False",
-        pregnantAndBreastfeeding: false,
-        returningFromIT: false,
-        returningToTreatment: false,
-      },
-      {
-        uuid: "2d61ad12-ac7b-42d2-9f56-c11648fa680b",
-        name: "Test Test",
-        identifier: "10003LJ",
-        sex: "M",
-        dateEnrolled: "2024-02-14 05:14:04",
-        childOrAdolescent: "True",
-        pregnantAndBreastfeeding: false,
-        returningFromIT: false,
-        returningToTreatment: false,
-      },
-      {
-        uuid: "8128f265-8b5e-4510-b0d2-2faf8f45d373",
-        name: "Catarina Ayor Zenab",
-        identifier: "10004JM",
-        sex: "F",
-        dateEnrolled: "2024-02-14 05:14:04",
-        childOrAdolescent: "True",
-        pregnantAndBreastfeeding: false,
-        returningFromIT: false,
-        returningToTreatment: false,
-      },
-      {
-        uuid: "5e8f1b7e-1233-42ca-8dfd-aea517c5abe9",
-        name: "Taban John Deng",
-        identifier: "10004ND",
-        sex: "M",
-        dateEnrolled: "2024-02-14 05:14:04",
-        childOrAdolescent: "False",
-        pregnantAndBreastfeeding: false,
-        returningFromIT: false,
-        returningToTreatment: false,
-      },
-      {
-        uuid: "7a54e192-8d13-4ac2-ad5b-8e39b2ed3c1d",
-        name: "Mathiang Yak Anek",
-        identifier: "10004KK",
-        sex: "F",
-        dateEnrolled: "2024-02-14 05:14:04",
-        childOrAdolescent: "False",
-        pregnantAndBreastfeeding: false,
-        returningFromIT: false,
-        returningToTreatment: false,
-      },
-      {
-        uuid: "340b22e9-cb1d-4ac1-a045-355cdba7b363",
-        name: "Joseph Bol Deng",
-        identifier: "10004LH",
-        sex: "M",
-        dateEnrolled: "2024-02-14 05:14:04",
-        childOrAdolescent: "True",
-        pregnantAndBreastfeeding: false,
-        returningFromIT: false,
-        returningToTreatment: false,
-      },
-    ],
-    summary: {
-      groupYear: {
-        Jan: 10,
-        Feb: 10,
-        Mar: 10,
-        Apr: 10,
-      },
-      groupMonth: {
-        Week1: 10,
-        Week2: 10,
-        Week3: 10,
-        Week4: 10,
-      },
-      groupWeek: {
-        Mon: 10,
-        Tue: 10,
-        Wed: 10,
-        Thu: 10,
-        Fri: 10,
-      },
-    },
-  });
+  const [activeClients, setActiveClients] = useState(dummy);
+  const [allClients, setAllClients] = useState(dummy);
+  const [newlyEnrolledClients, setNewlyEnrolledClients] = useState(dummy);
 
   const { makeRequest } = useFetch();
 
@@ -167,6 +168,17 @@ export const useHomeDashboard = () => {
         if (error) return error;
       },
     });
+  };
+
+  const getDummyData = () => {
+    const monthsArray = Object.keys(dummy?.summary?.groupYear);
+
+    const formattedData = monthsArray.map((month) => ({
+      month: month,
+      clients: dummy.summary.groupYear[month],
+    }));
+
+    return formattedData;
   };
 
   const tabInfo = [
@@ -343,5 +355,6 @@ export const useHomeDashboard = () => {
     getAllClients,
     newlyEnrolledClients,
     getNewlyEnrolledClients,
+    getDummyData,
   };
 };
