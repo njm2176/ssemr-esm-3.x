@@ -70,7 +70,10 @@ export const useHomeDashboard = () => {
         new Date()
       )}`,
       onResult: (responseData, error) => {
-        if (responseData) setNewlyEnrolledClients(responseData);
+        if (responseData) {
+          console.log("response data", responseData);
+          setNewlyEnrolledClients(responseData);
+        }
         if (error) return error;
       },
     });
