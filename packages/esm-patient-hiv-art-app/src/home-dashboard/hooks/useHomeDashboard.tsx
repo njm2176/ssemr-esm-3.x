@@ -191,8 +191,7 @@ export const useHomeDashboard = () => {
     {
       title: "Newly enrolled clients",
       url: "/ws/rest/v1/ssemr/dashboard/newClients",
-      // stat: newlyEnrolledClients?.entry?.length,
-      stat: "0",
+      stat: newlyEnrolledClients?.results?.length,
       icon: (
         <div className={styles.statIconWrapper}>
           <svg
