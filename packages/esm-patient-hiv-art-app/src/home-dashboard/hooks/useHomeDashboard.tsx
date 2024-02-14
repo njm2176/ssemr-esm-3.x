@@ -1,13 +1,84 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "../home-dashboard.scss";
-import { openmrsFetch } from "@openmrs/esm-framework";
-import { useFetch } from "../../hooks/useFetch";
 import { DashboardContext } from "../context/DashboardContext";
+import { useFetch } from "../../hooks/useFetch";
 
 export const useHomeDashboard = () => {
-  const [url, setUrl] = useState("/ws/fhir2/R4/Patient");
+  const { filters } = useContext(DashboardContext);
+  const [activeClients, setActiveClients] = useState(null);
+  const [allClients, setAllClients] = useState(null);
+  const [newlyEnrolledClients, setNewlyEnrolledClients] = useState(null);
 
-  const { newlyEnrolledClients } = useContext(DashboardContext);
+  console.log("newly", newlyEnrolledClients);
+
+  const { makeRequest } = useFetch();
+
+  const getClientData = async ({ url, params = "", onResult }) => {
+    try {
+      await makeRequest(url + filters + params, onResult);
+    } catch (e) {
+      return e;
+    }
+  };
+
+  /**
+   * Reused AJAX requests defined here to avoid repeating them in individual components
+   */
+  const getActiveClients = async () => {
+    await getClientData({
+      url: "/ws/rest/v1/ssemr/dashboard/activeClients",
+      onResult(responseData, error) {
+        if (responseData) {
+          setActiveClients(responseData);
+        }
+        if (error) {
+          return error;
+        }
+      },
+    });
+  };
+
+  const getAllClients = async () => {
+    await getClientData({
+      url: "/ws/fhir2/R4/Patient",
+      onResult: (responseData, error) => {
+        if (responseData) setAllClients(responseData);
+        if (error) return error;
+      },
+    });
+  };
+
+  console.log("all", allClients);
+
+  const getNewlyEnrolledClients = async () => {
+    const formatDate = (date: Date) => {
+      const day = date.getDate();
+      const month =
+        date.getMonth() + 1 < 10
+          ? `0${date.getMonth() + 1}`
+          : date.getMonth() + 1;
+      const year = date.getFullYear();
+
+      return `${month}/${day}/${year}`;
+    };
+
+    const thirtyDaysAgo = () => {
+      const today = new Date();
+      const thirtyDaysAgo = new Date(today);
+      thirtyDaysAgo.setDate(today.getDate() - 30);
+      return formatDate(thirtyDaysAgo);
+    };
+
+    await getClientData({
+      url: `/ws/rest/v1/ssemr/dashboard/newClients?startDate=${thirtyDaysAgo()}&endDate=${formatDate(
+        new Date()
+      )}`,
+      onResult: (responseData, error) => {
+        if (responseData) setNewlyEnrolledClients(responseData);
+        if (error) return error;
+      },
+    });
+  };
 
   const tabInfo = [
     {
@@ -31,7 +102,7 @@ export const useHomeDashboard = () => {
     {
       title: "Newly enrolled clients",
       url: "/ws/rest/v1/ssemr/dashboard/newClients",
-      stat: newlyEnrolledClients.length,
+      stat: newlyEnrolledClients?.entry?.length,
       icon: (
         <div className={styles.statIconWrapper}>
           <svg
@@ -47,7 +118,7 @@ export const useHomeDashboard = () => {
     {
       title: "Active clients (TX_CURR)",
       url: "/ws/rest/v1/ssemr/dashboard/activeClients",
-      stat: "",
+      stat: "0",
       icon: (
         <div className={styles.statIconWrapper}>
           <svg
@@ -63,7 +134,7 @@ export const useHomeDashboard = () => {
     {
       title: "On appointment",
       url: "/ws/rest/v1/ssemr/dashboard/newClients",
-      stat: "",
+      stat: "0",
       icon: (
         <div className={styles.statIconWrapper}>
           <svg
@@ -79,7 +150,7 @@ export const useHomeDashboard = () => {
     {
       title: "Missed appointments",
       url: "/ws/rest/v1/ssemr/dashboard/missedAppointment",
-      stat: "",
+      stat: "0",
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -98,7 +169,7 @@ export const useHomeDashboard = () => {
     {
       title: "Interruptions in Treatment(Iit)",
       url: "/ws/rest/v1/ssemr/dashboard/interruptedInTreatment",
-      stat: "",
+      stat: "0",
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -117,7 +188,7 @@ export const useHomeDashboard = () => {
     {
       title: "Returned to Treatment(Tx_Rtt)",
       url: "/ws/rest/v1/ssemr/dashboard/interruptedInTreatment",
-      stat: "",
+      stat: "0",
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -136,7 +207,7 @@ export const useHomeDashboard = () => {
     {
       title: "Due for viral load",
       url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
-      stat: "",
+      stat: "0",
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -155,7 +226,7 @@ export const useHomeDashboard = () => {
     {
       title: "High viral load",
       url: "/ws/rest/v1/ssemr/dashboard/highVl",
-      stat: "",
+      stat: "0",
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -173,5 +244,15 @@ export const useHomeDashboard = () => {
     },
   ];
 
-  return { tabInfo, stats };
+  return {
+    tabInfo,
+    stats,
+    getClientData,
+    activeClients,
+    getActiveClients,
+    allClients,
+    getAllClients,
+    newlyEnrolledClients,
+    getNewlyEnrolledClients,
+  };
 };
