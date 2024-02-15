@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
 import { PieChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
-import { activeClientData } from "../dummy/data";
 import { useHomeDashboard } from "../hooks/useHomeDashboard";
 
 const ActiveClients = () => {
-  const { activeClients, getDummyData, allClients } = useHomeDashboard();
+  const { activeClients, allClients } = useHomeDashboard();
 
   const formatData = () => {
     return [
