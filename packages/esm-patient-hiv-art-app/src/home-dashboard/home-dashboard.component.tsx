@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Home } from "@carbon/react/icons";
 import styles from "./home-dashboard.scss";
 import { useTranslation } from "react-i18next";
@@ -22,7 +22,22 @@ import ChartCard from "./components/cards/ChartCard";
 const HomeDashboard = () => {
   const { t } = useTranslation();
 
-  const { tabInfo, stats } = useHomeDashboard();
+  const {
+    tabInfo,
+    stats,
+    getActiveClients,
+    getAllClients,
+    getNewlyEnrolledClients,
+  } = useHomeDashboard();
+
+  /**
+   * Call reusable requests ONCE in the parent component
+   */
+  useEffect(() => {
+    getActiveClients();
+    getAllClients();
+    getNewlyEnrolledClients();
+  }, []);
 
   return (
     <div className={styles.parent}>
