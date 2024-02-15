@@ -25,8 +25,11 @@ export const PhoneField: React.FC<InputProps> = () => {
   const [altCountryCode, setAltCountryCode] = useState("");
   const [altPhoneValue, setAltPhoneValue] = useState("");
 
+  const [phoneError, setPhoneError] = useState("");
+  const [altPhoneError, setAltPhoneError] = useState("");
+
   const handleCountryCodeChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
+    event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const selectedCountryCode = event.target.value;
     setCountryCode(selectedCountryCode);
@@ -34,11 +37,17 @@ export const PhoneField: React.FC<InputProps> = () => {
   };
 
   const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPhoneValue(event.target.value);
+    const value = event.target.value;
+    if (/^\d{9}$/.test(value)) {
+      setPhoneValue(value);
+      setPhoneError("");
+    } else {
+      setPhoneError("Phone number must be 9 digits");
+    }
   };
 
   const handleAltCountryCodeChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
+    event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const selectedCountryCode = event.target.value;
     setAltCountryCode(selectedCountryCode);
@@ -46,7 +55,13 @@ export const PhoneField: React.FC<InputProps> = () => {
   };
 
   const handleAltPhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPhoneValue(event.target.value);
+    const value = event.target.value;
+    if (/^\d{9}$/.test(value)) {
+      setAltPhoneValue(value);
+      setAltPhoneError("");
+    } else {
+      setAltPhoneError("Phone number must be 9 digits");
+    }
   };
 
   const handleSubmit = (event) => {
@@ -73,12 +88,13 @@ export const PhoneField: React.FC<InputProps> = () => {
             name="TelephoneNumber"
             labelText={t(
               "phoneNumberInputLabelText",
-              "Clients Telephone Number",
+              "Clients Telephone Number"
             )}
             light={true}
             value={phoneValue}
             onChange={handlePhoneChange}
           />
+          {phoneError && <div className={styles.error}>{phoneError}</div>}
         </div>
       </div>
       <div className={styles.fieldRow}>
@@ -97,12 +113,13 @@ export const PhoneField: React.FC<InputProps> = () => {
             name="alternativeTelephonePhone"
             labelText={t(
               "phoneNumberInputLabelText",
-              "Alternative Telephone Number",
+              "Alternative Telephone Number"
             )}
             light={true}
             value={altPhoneValue}
             onChange={handleAltPhoneChange}
           />
+          {altPhoneError && <div className={styles.error}>{altPhoneError}</div>}
         </div>
       </div>
     </div>
