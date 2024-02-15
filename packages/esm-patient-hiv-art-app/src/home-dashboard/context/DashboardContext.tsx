@@ -27,7 +27,10 @@ const DashboardProvider = ({ children }) => {
 
   const { makeRequest } = useFetch();
 
-  const [activeClients, setActiveClients] = useState(dummy);
+  const [activeClients, setActiveClients] = useState({
+    raw: null,
+    processedChartData: [],
+  });
   const [allClients, setAllClients] = useState(dummy);
   const [newlyEnrolledClients, setNewlyEnrolledClients] = useState({
     raw: null,
@@ -70,9 +73,16 @@ const DashboardProvider = ({ children }) => {
       url: "/ws/rest/v1/ssemr/dashboard/activeClients",
       onResult(responseData, error) {
         if (responseData) {
-          setActiveClients(responseData);
+          setActiveClients((prev) => ({
+            ...prev,
+            processedChartData: formatDataAgainstTime(responseData),
+          }));
         }
         if (error) {
+          setActiveClients((prev) => ({
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
+          }));
           return error;
         }
       },
@@ -243,7 +253,7 @@ const DashboardProvider = ({ children }) => {
     {
       title: "Active clients (TX_CURR)",
       url: "/ws/rest/v1/ssemr/dashboard/activeClients",
-      stat: activeClients?.results?.length,
+      stat: activeClients?.raw?.results?.length,
       icon: (
         <div className={styles.statIconWrapper}>
           <svg

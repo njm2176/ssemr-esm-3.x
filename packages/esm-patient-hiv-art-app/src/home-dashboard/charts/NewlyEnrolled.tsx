@@ -1,18 +1,19 @@
 import React, { useContext } from "react";
 import { LineChart } from "@carbon/charts-react";
+import { SkeletonPlaceholder } from "@carbon/react";
 import "@carbon/charts/styles.css";
-import "./index.scss";
+import styles from "./index.scss";
 import { DashboardContext } from "../context/DashboardContext";
 
 const NewlyEnrolled = () => {
-  const { newlyEnrolledClients, getDummyData, currentTimeFilter } =
+  const { newlyEnrolledClients, currentTimeFilter } =
     useContext(DashboardContext);
 
   const options = {
     title: "Newly Enrolled Clients",
     axes: {
       bottom: {
-        title: currentTimeFilter,
+        title: "",
         mapsTo: currentTimeFilter,
         scaleType: "labels",
       },
@@ -27,12 +28,15 @@ const NewlyEnrolled = () => {
   };
 
   return (
-    <div className="">
-      {newlyEnrolledClients?.processedChartData && (
+    <div className={styles.chartContainer}>
+      {newlyEnrolledClients?.processedChartData?.length > 0 &&
+      newlyEnrolledClients?.processedChartData[0][currentTimeFilter] ? (
         <LineChart
           data={newlyEnrolledClients?.processedChartData}
           options={options}
         />
+      ) : (
+        <SkeletonPlaceholder className={styles.skeleton} />
       )}
     </div>
   );

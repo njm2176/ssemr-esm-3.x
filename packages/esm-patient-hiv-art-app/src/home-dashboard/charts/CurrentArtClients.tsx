@@ -1,14 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { currentARTClients } from "../dummy/data";
 import { AreaChart, LineChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
-import "./index.scss";
-import { useHomeDashboard } from "../hooks/useHomeDashboard";
+import styles from "./index.scss";
 import useSWR from "swr";
 import { openmrsFetch } from "@openmrs/esm-framework";
+import { DashboardContext } from "../context/DashboardContext";
+import { SkeletonPlaceholder } from "@carbon/react";
 
 const NewlyEnrolled = () => {
-  const { activeClients, getDummyData } = useHomeDashboard();
+  const { activeClients, currentTimeFilter } = useContext(DashboardContext);
 
   const { data, error } = useSWR(
     "/ws/rest/v1/ssemr/dashboard/newClients?startDate=2024/01/15&endDate=2024/02/14",
@@ -20,8 +21,8 @@ const NewlyEnrolled = () => {
     title: "Currently Enrolled Clients",
     axes: {
       bottom: {
-        title: "Months",
-        mapsTo: "month",
+        title: "",
+        mapsTo: currentTimeFilter,
         scaleType: "labels",
       },
       left: {
@@ -35,9 +36,12 @@ const NewlyEnrolled = () => {
   };
 
   return (
-    <div className="">
-      {activeClients?.summary && (
-        <LineChart data={getDummyData()} options={options} />
+    <div className={styles.chartContainer}>
+      {activeClients?.processedChartData?.length > 0 &&
+      activeClients?.processedChartData[0][currentTimeFilter] ? (
+        <LineChart data={activeClients?.processedChartData} options={options} />
+      ) : (
+        <SkeletonPlaceholder className={styles.skeleton} />
       )}
     </div>
   );

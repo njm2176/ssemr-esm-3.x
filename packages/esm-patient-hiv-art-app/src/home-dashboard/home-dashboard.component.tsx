@@ -8,7 +8,7 @@ import "@carbon/charts/styles.css";
 import NewlyEnrolled from "./charts/NewlyEnrolled";
 import SSEMRTab from "./components/tabs/SSEMRTab";
 import CurrentlyEnrolled from "./charts/CurrentArtClients";
-// import ActiveClients from "./charts/ActiveClients";
+import ActiveClients from "./charts/ActiveClients";
 import AdultARTRegimen from "./charts/AdultArtRegimen";
 import ChildArtRegimen from "./charts/ChildArtRegimen";
 import UnderCommunityCare from "./charts/UnderCommunityCare";
@@ -53,9 +53,8 @@ const HomeDashboard = () => {
           <Dropdown
             id="filter"
             titleText=""
-            initialSelectedItem={filterOptions[1]}
+            initialSelectedItem={filterOptions[0]}
             onChange={(evt) => {
-              console.log("evt", evt.selectedItem.value);
               setCurrentTimeFilter(evt.selectedItem.value);
             }}
             label=""
@@ -77,25 +76,25 @@ const HomeDashboard = () => {
         <ChartCard>
           <NewlyEnrolled />
         </ChartCard>
-        {/*<ChartCard>*/}
-        {/*  <CurrentlyEnrolled />*/}
-        {/*</ChartCard>*/}
-        {/*<ChartCard>*/}
-        {/*  <ActiveClients />*/}
-        {/*</ChartCard>*/}
+        <ChartCard>
+          <CurrentlyEnrolled />
+        </ChartCard>
+        <ChartCard>
+          <ActiveClients />
+        </ChartCard>
       </div>
 
       {/* ...............Charts....................... */}
       <div className={styles.chartWrapper}>
-        {/*<ChartCard>*/}
-        {/*  <AdultARTRegimen />*/}
-        {/*</ChartCard>*/}
-        {/*<ChartCard>*/}
-        {/*  <ChildArtRegimen />*/}
-        {/*</ChartCard>*/}
-        {/*<ChartCard>*/}
-        {/*  <UnderCommunityCare />*/}
-        {/*</ChartCard>*/}
+        <ChartCard>
+          <AdultARTRegimen />
+        </ChartCard>
+        <ChartCard>
+          <ChildArtRegimen />
+        </ChartCard>
+        <ChartCard>
+          <UnderCommunityCare />
+        </ChartCard>
       </div>
 
       {/* ...............Charts....................... */}
