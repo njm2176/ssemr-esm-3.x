@@ -1,18 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { LineChart } from "@carbon/charts-react";
 import "@carbon/charts/styles.css";
 import "./index.scss";
-import { useHomeDashboard } from "../hooks/useHomeDashboard";
+import { DashboardContext } from "../context/DashboardContext";
 
 const NewlyEnrolled = () => {
-  const { newlyEnrolledClients, getDummyData } = useHomeDashboard();
+  const { newlyEnrolledClients, getDummyData, currentTimeFilter } =
+    useContext(DashboardContext);
 
   const options = {
     title: "Newly Enrolled Clients",
     axes: {
       bottom: {
-        title: "Months",
-        mapsTo: "month",
+        title: currentTimeFilter,
+        mapsTo: currentTimeFilter,
         scaleType: "labels",
       },
       left: {
@@ -27,8 +28,11 @@ const NewlyEnrolled = () => {
 
   return (
     <div className="">
-      {newlyEnrolledClients?.summary && (
-        <LineChart data={getDummyData()} options={options} />
+      {newlyEnrolledClients?.processedChartData && (
+        <LineChart
+          data={newlyEnrolledClients?.processedChartData}
+          options={options}
+        />
       )}
     </div>
   );

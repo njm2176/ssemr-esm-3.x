@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { PieChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
-import { useHomeDashboard } from "../hooks/useHomeDashboard";
+import { DashboardContext } from "../context/DashboardContext";
 
 const ActiveClients = () => {
-  const { activeClients, allClients } = useHomeDashboard();
+  const { activeClients, allClients } = useContext(DashboardContext);
 
   const formatData = () => {
     return [
