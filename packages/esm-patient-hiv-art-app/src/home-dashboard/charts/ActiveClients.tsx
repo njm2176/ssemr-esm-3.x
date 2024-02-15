@@ -6,15 +6,20 @@ import { DashboardContext } from "../context/DashboardContext";
 const ActiveClients = () => {
   const { activeClients, allClients } = useContext(DashboardContext);
 
+  console.log("activeClients", activeClients);
+  console.log("all", activeClients);
+
   const formatData = () => {
     return [
       {
         group: "Inactive",
-        value: allClients?.results?.length - activeClients?.results?.length,
+        value:
+          allClients?.raw?.results?.length -
+          activeClients?.raw?.results?.length,
       },
       {
         group: "Active",
-        value: activeClients?.results?.length,
+        value: activeClients?.raw?.results?.length,
       },
     ];
   };
