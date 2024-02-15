@@ -10,8 +10,8 @@ export const useFetch = () => {
     try {
       setLoading(true);
       const response = await openmrsFetch(url);
-      setData(data);
-      onResult(data, null);
+      setData(response.data);
+      onResult(response.data, null);
     } catch (error) {
       setError(error);
       onResult(null, error);

@@ -99,6 +99,12 @@ export const useHomeDashboard = () => {
   const [activeClients, setActiveClients] = useState(dummy);
   const [allClients, setAllClients] = useState(dummy);
   const [newlyEnrolledClients, setNewlyEnrolledClients] = useState(dummy);
+  const [onAppointment, setOnAppointment] = useState(dummy);
+  const [missedAppointment, setMissedAppointment] = useState(dummy);
+  const [interrupted, setInterrupted] = useState(dummy);
+  const [returned, setReturned] = useState(dummy);
+  const [dueForViralLoad, setDueForViralLoad] = useState(dummy);
+  const [highViralLoad, setHighViralLoad] = useState(dummy);
 
   const { makeRequest } = useFetch();
 
@@ -111,14 +117,14 @@ export const useHomeDashboard = () => {
   };
 
   /**
-   * Reused AJAX requests defined here to avoid repeating them in individual components
+   * AJAX requests defined here to avoid repeating them in individual components
    */
   const getActiveClients = async () => {
     await getClientData({
       url: "/ws/rest/v1/ssemr/dashboard/activeClients",
       onResult(responseData, error) {
         if (responseData) {
-          // setActiveClients(responseData);
+          setActiveClients(responseData);
         }
         if (error) {
           return error;
@@ -131,8 +137,10 @@ export const useHomeDashboard = () => {
     await getClientData({
       url: "/ws/fhir2/R4/Patient",
       onResult: (responseData, error) => {
+        console.log("response data", responseData);
+        console.log("error", error);
         if (responseData) {
-          // setAllClients(responseData);
+          setAllClients(responseData);
         }
         if (error) return error;
       },
@@ -164,8 +172,56 @@ export const useHomeDashboard = () => {
       )}`,
       onResult: (responseData, error) => {
         if (responseData) {
-          console.log("response data", responseData);
+          console.log("newly enrolled client data", responseData);
           // setNewlyEnrolledClients(responseData);
+        }
+        if (error) return error;
+      },
+    });
+  };
+
+  const getClientsOnAppointment = async () => {
+    await getClientData({
+      url: "/ws/rest/v1/ssemr/dashboard/activeClients",
+      onResult: (responseData, error) => {
+        if (responseData) {
+          setOnAppointment(responseData);
+        }
+        if (error) return error;
+      },
+    });
+  };
+
+  const getMissedAppointments = async () => {
+    await getClientData({
+      url: "/ws/rest/v1/ssemr/dashboard/missedAppointment",
+      onResult: (responseData, error) => {
+        if (responseData) {
+          setMissedAppointment(responseData);
+        }
+        if (error) return error;
+      },
+    });
+  };
+
+  const getInterruptedTreatment = async () => {
+    await getClientData({
+      url: "/ws/rest/v1/ssemr/dashboard/interruptedInTreatment",
+      onResult: (responseData, error) => {
+        if (responseData) {
+          setInterrupted(responseData);
+        }
+        if (error) return error;
+      },
+    });
+  };
+
+  const getReturnedToTreatment = async () => {
+    await getClientData({
+      url: "/ws/rest/v1/ssemr/dashboard/interruptedInTreatment",
+      onResult: (responseData, error) => {
+        if (responseData) {
+          setInterrupted(responseData);
         }
         if (error) return error;
       },
@@ -221,7 +277,7 @@ export const useHomeDashboard = () => {
     {
       title: "Active clients (TX_CURR)",
       url: "/ws/rest/v1/ssemr/dashboard/activeClients",
-      stat: "0",
+      stat: activeClients?.results?.length,
       icon: (
         <div className={styles.statIconWrapper}>
           <svg
