@@ -46,7 +46,7 @@ const PatientHistoryComponent: React.FC<PatientHistoryProps> = ({
               </h4>
               <p>
                 <span className={styles.value}>
-                  {extractObservationData(data, "ART Follow up Date")}
+                  {extractObservationData(data, "Date VL Sample Collected?")}
                 </span>
               </p>
             </div>

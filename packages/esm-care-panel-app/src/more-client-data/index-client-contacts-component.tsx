@@ -52,6 +52,7 @@ const IndexClientContacts: React.FC<PatientHistoryProps> = ({
         members.push(member);
       }
       setFamilyMembers(members);
+      console.log("Family members", members);
       setIsLoading(false);
     }
   }, [data]);

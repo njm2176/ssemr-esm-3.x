@@ -61,15 +61,6 @@
       }
     },
     {
-      "name": "weight-graph",
-      "slot": "patient-chart-summary-dashboard-slot",
-      "component": "weightGraph",
-      "order": 1,
-      "meta": {
-        "columnSpan": 4
-      }
-    },
-    {
       "name": "delete-regimen-confirmation-dialog",
       "component": "deleteRegimenConfirmationDialog"
     }
