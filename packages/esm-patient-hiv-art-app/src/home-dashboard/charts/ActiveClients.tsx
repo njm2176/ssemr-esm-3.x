@@ -6,9 +6,6 @@ import { DashboardContext } from "../context/DashboardContext";
 const ActiveClients = () => {
   const { activeClients, allClients } = useContext(DashboardContext);
 
-  console.log("activeClients", activeClients);
-  console.log("all", activeClients);
-
   const formatData = () => {
     return [
       {
