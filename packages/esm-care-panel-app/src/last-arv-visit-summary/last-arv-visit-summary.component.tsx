@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./last-arv-visit-summary.scss";
 import { useTranslation } from "react-i18next";
 import { formatDate, useLayoutType } from "@openmrs/esm-framework";
@@ -53,7 +53,7 @@ const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
               <p>{t("lastArvRegimenDose", "Last ARV Regimen Dose")}</p>
               <p>
                 <span className={styles.value}>
-                  {extractObservationData(data, "Regimen Dose")}
+                  {extractObservationData(data, "Number of Days Dispensed")}
                 </span>
               </p>
             </div>

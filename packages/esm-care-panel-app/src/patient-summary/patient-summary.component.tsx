@@ -176,7 +176,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   {t("latestArvRegimen", "Latest ARV Regimen")}
                 </p>
                 <p className={styles.value}>
-                  {extractObservationData(data, "ART Regimen")}
+                  {extractObservationData(data, "ARV Regimen")}
                 </p>
               </div>
               <div className={styles.content}>
@@ -211,7 +211,10 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 </p>
                 <p>
                   <span className={styles.value}>
-                    {extractObservationData(data, "Regimen Dose")}
+                    {extractObservationData(
+                      data,
+                      "Number of Pill Dispensed(INH)"
+                    )}
                   </span>
                 </p>
               </div>
@@ -270,7 +273,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   <span className={styles.value}>
                     {extractObservationData(
                       data,
-                      "Vitals MID-UPPER ARM CIRCUMFERENCE"
+                      "MID-UPPER ARM CIRCUMFERENCE Vitals"
                     )}
                   </span>
                 </p>
