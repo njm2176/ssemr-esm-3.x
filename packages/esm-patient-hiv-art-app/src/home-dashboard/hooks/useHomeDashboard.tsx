@@ -1,16 +1,187 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "../home-dashboard.scss";
-import { openmrsFetch } from "@openmrs/esm-framework";
+import { DashboardContext } from "../context/DashboardContext";
 import { useFetch } from "../../hooks/useFetch";
 
+const dummy = {
+  results: [
+    {
+      uuid: "d2a5da7e-7962-491c-b9e5-f37ada37ef4b",
+      name: "Test User",
+      identifier: "10003E0",
+      sex: "M",
+      dateEnrolled: "2024-02-14 05:14:04",
+      childOrAdolescent: "False",
+      pregnantAndBreastfeeding: false,
+      returningFromIT: false,
+      returningToTreatment: false,
+    },
+    {
+      uuid: "2d61ad12-ac7b-42d2-9f56-c11648fa680b",
+      name: "Test Test",
+      identifier: "10003LJ",
+      sex: "M",
+      dateEnrolled: "2024-02-14 05:14:04",
+      childOrAdolescent: "True",
+      pregnantAndBreastfeeding: false,
+      returningFromIT: false,
+      returningToTreatment: false,
+    },
+    {
+      uuid: "8128f265-8b5e-4510-b0d2-2faf8f45d373",
+      name: "Catarina Ayor Zenab",
+      identifier: "10004JM",
+      sex: "F",
+      dateEnrolled: "2024-02-14 05:14:04",
+      childOrAdolescent: "True",
+      pregnantAndBreastfeeding: false,
+      returningFromIT: false,
+      returningToTreatment: false,
+    },
+    {
+      uuid: "5e8f1b7e-1233-42ca-8dfd-aea517c5abe9",
+      name: "Taban John Deng",
+      identifier: "10004ND",
+      sex: "M",
+      dateEnrolled: "2024-02-14 05:14:04",
+      childOrAdolescent: "False",
+      pregnantAndBreastfeeding: false,
+      returningFromIT: false,
+      returningToTreatment: false,
+    },
+    {
+      uuid: "7a54e192-8d13-4ac2-ad5b-8e39b2ed3c1d",
+      name: "Mathiang Yak Anek",
+      identifier: "10004KK",
+      sex: "F",
+      dateEnrolled: "2024-02-14 05:14:04",
+      childOrAdolescent: "False",
+      pregnantAndBreastfeeding: false,
+      returningFromIT: false,
+      returningToTreatment: false,
+    },
+    {
+      uuid: "340b22e9-cb1d-4ac1-a045-355cdba7b363",
+      name: "Joseph Bol Deng",
+      identifier: "10004LH",
+      sex: "M",
+      dateEnrolled: "2024-02-14 05:14:04",
+      childOrAdolescent: "True",
+      pregnantAndBreastfeeding: false,
+      returningFromIT: false,
+      returningToTreatment: false,
+    },
+  ],
+  summary: {
+    groupYear: {
+      Jan: 10,
+      Feb: 80,
+      Mar: 6,
+      Apr: 20,
+    },
+    groupMonth: {
+      Week1: 10,
+      Week2: 10,
+      Week3: 10,
+      Week4: 10,
+    },
+    groupWeek: {
+      Mon: 10,
+      Tue: 10,
+      Wed: 10,
+      Thu: 10,
+      Fri: 10,
+    },
+  },
+};
 export const useHomeDashboard = () => {
-  const [url, setUrl] = useState("/ws/fhir2/R4/Patient");
+  const { filters } = useContext(DashboardContext);
+  const [activeClients, setActiveClients] = useState(dummy);
+  const [allClients, setAllClients] = useState(dummy);
+  const [newlyEnrolledClients, setNewlyEnrolledClients] = useState(dummy);
 
-  const { loading, data, error, makeRequest } = useFetch();
+  const { makeRequest } = useFetch();
 
-  useEffect(() => {
-    makeRequest(url);
-  }, []);
+  const getClientData = async ({ url, params = "", onResult }) => {
+    try {
+      await makeRequest(url + filters + params, onResult);
+    } catch (e) {
+      return e;
+    }
+  };
+
+  /**
+   * Reused AJAX requests defined here to avoid repeating them in individual components
+   */
+  const getActiveClients = async () => {
+    await getClientData({
+      url: "/ws/rest/v1/ssemr/dashboard/activeClients",
+      onResult(responseData, error) {
+        if (responseData) {
+          // setActiveClients(responseData);
+        }
+        if (error) {
+          return error;
+        }
+      },
+    });
+  };
+
+  const getAllClients = async () => {
+    await getClientData({
+      url: "/ws/fhir2/R4/Patient",
+      onResult: (responseData, error) => {
+        if (responseData) {
+          // setAllClients(responseData);
+        }
+        if (error) return error;
+      },
+    });
+  };
+
+  const getNewlyEnrolledClients = async () => {
+    const formatDate = (date: Date) => {
+      const day = date.getDate();
+      const month =
+        date.getMonth() + 1 < 10
+          ? `0${date.getMonth() + 1}`
+          : date.getMonth() + 1;
+      const year = date.getFullYear();
+
+      return `${month}/${day}/${year}`;
+    };
+
+    const thirtyDaysAgo = () => {
+      const today = new Date();
+      const thirtyDaysAgo = new Date(today);
+      thirtyDaysAgo.setDate(today.getDate() - 30);
+      return formatDate(thirtyDaysAgo);
+    };
+
+    await getClientData({
+      url: `/ws/rest/v1/ssemr/dashboard/newClients?startDate=${thirtyDaysAgo()}&endDate=${formatDate(
+        new Date()
+      )}`,
+      onResult: (responseData, error) => {
+        if (responseData) {
+          console.log("response data", responseData);
+          // setNewlyEnrolledClients(responseData);
+        }
+        if (error) return error;
+      },
+    });
+  };
+
+  const getDummyData = () => {
+    const monthsArray = Object.keys(dummy?.summary?.groupYear);
+
+    const formattedData = monthsArray.map((month) => ({
+      month: month,
+      clients: dummy.summary.groupYear[month],
+    }));
+
+    return formattedData;
+  };
 
   const tabInfo = [
     {
@@ -34,6 +205,7 @@ export const useHomeDashboard = () => {
     {
       title: "Newly enrolled clients",
       url: "/ws/rest/v1/ssemr/dashboard/newClients",
+      stat: newlyEnrolledClients?.results?.length,
       icon: (
         <div className={styles.statIconWrapper}>
           <svg
@@ -49,6 +221,7 @@ export const useHomeDashboard = () => {
     {
       title: "Active clients (TX_CURR)",
       url: "/ws/rest/v1/ssemr/dashboard/activeClients",
+      stat: "0",
       icon: (
         <div className={styles.statIconWrapper}>
           <svg
@@ -64,6 +237,7 @@ export const useHomeDashboard = () => {
     {
       title: "On appointment",
       url: "/ws/rest/v1/ssemr/dashboard/newClients",
+      stat: "0",
       icon: (
         <div className={styles.statIconWrapper}>
           <svg
@@ -79,6 +253,7 @@ export const useHomeDashboard = () => {
     {
       title: "Missed appointments",
       url: "/ws/rest/v1/ssemr/dashboard/missedAppointment",
+      stat: "0",
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -97,6 +272,7 @@ export const useHomeDashboard = () => {
     {
       title: "Interruptions in Treatment(Iit)",
       url: "/ws/rest/v1/ssemr/dashboard/interruptedInTreatment",
+      stat: "0",
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -115,6 +291,7 @@ export const useHomeDashboard = () => {
     {
       title: "Returned to Treatment(Tx_Rtt)",
       url: "/ws/rest/v1/ssemr/dashboard/interruptedInTreatment",
+      stat: "0",
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -133,6 +310,7 @@ export const useHomeDashboard = () => {
     {
       title: "Due for viral load",
       url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
+      stat: "0",
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -151,6 +329,7 @@ export const useHomeDashboard = () => {
     {
       title: "High viral load",
       url: "/ws/rest/v1/ssemr/dashboard/highVl",
+      stat: "0",
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -168,5 +347,16 @@ export const useHomeDashboard = () => {
     },
   ];
 
-  return { tabInfo, stats };
+  return {
+    tabInfo,
+    stats,
+    getClientData,
+    activeClients,
+    getActiveClients,
+    allClients,
+    getAllClients,
+    newlyEnrolledClients,
+    getNewlyEnrolledClients,
+    getDummyData,
+  };
 };

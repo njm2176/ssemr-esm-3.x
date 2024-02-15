@@ -7,12 +7,11 @@ import {
   Select,
   SelectItem,
   TextInput,
-  Button,
+  Checkbox,
 } from "@carbon/react";
 import styles from "./patient-unique-identifier.scss";
 import { FormikProps, FormikValues } from "formik";
 import { facilities } from "./assets/identifier-assets";
-import { ResourcesContext } from "../../../offline.resources";
 import { ARTContext } from "../../ArtContext";
 
 interface PatientIdentifierProps {
@@ -80,6 +79,7 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   const [facilitiesForSelectedState, setfacilitiesForSelectedState] = useState<
     string[]
   >([""]);
+  const [transferIn, setTransferIn] = useState(false);
 
   const [combinedValue, setCombinedValue] = useState<string>("");
 
@@ -110,9 +110,10 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   const { changeART } = useContext(ARTContext);
 
   useEffect(() => {
-    setCombinedValue(`${selectedFacility}${artNumber}`);
-    changeART(`${selectedFacility}${artNumber}`);
-  }, [selectedFacility, artNumber]);
+    const value = `${transferIn ? "TI-" : ""}${selectedFacility}${artNumber}`;
+    setCombinedValue(value);
+    changeART(value);
+  }, [selectedFacility, artNumber, transferIn]);
 
   //To-Do
   useEffect(() => {
@@ -120,31 +121,6 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
       setfacilitiesForSelectedState(facilities[0][selectedState]);
     }
   }, [selectedState]);
-
-  // useEffect(() => {
-  //   const data = {
-  //     identifiers: [
-  //       {
-  //         identifier: combinedValue,
-  //         identifierType: "e6baf185-38ed-4815-9476-f98d2cc2b331",
-  //         preferred: true,
-  //       },
-  //     ],
-  //   };
-  //
-  //   // Fetch data or perform any side effect with the updated data object
-  //   // This effect will be triggered whenever combinedValue changes
-  //   fetch("/openmrs/ws/rest/v1/patient", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => response.text())
-  //     .then((result) => console.log(result))
-  //     .catch((error) => console.log("error", error));
-  // }, [combinedValue]);
 
   return (
     <div id="patientIdentifier">
@@ -155,6 +131,14 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
         {t("uniqueArtNumber", "Unique ART Number")}
       </h6>
       <div>
+        <Tile className={styles.wrapper}>
+          <Checkbox
+            value={transferIn}
+            onChange={() => setTransferIn((prev) => !prev)}
+            labelText="Transfer In"
+            id="transfer"
+          />
+        </Tile>
         <Tile className={styles.wrapper}>
           <Layer>
             <Select

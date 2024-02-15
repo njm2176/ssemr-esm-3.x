@@ -124,8 +124,6 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
 
     filteredValues["uniqueArtNumber"] = artObject;
 
-    // const appendedValues = appendArtObject(artObject, filteredValues);
-
     const updatedFormValues = {
       ...values,
       identifiers: filteredValues,
