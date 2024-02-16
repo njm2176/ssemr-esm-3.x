@@ -1,21 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { PieChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
-import { activeClientData } from "../dummy/data";
-import { useHomeDashboard } from "../hooks/useHomeDashboard";
+import { DashboardContext } from "../context/DashboardContext";
 
 const ActiveClients = () => {
-  const { activeClients, getDummyData, allClients } = useHomeDashboard();
+  const { activeClients, allClients } = useContext(DashboardContext);
 
   const formatData = () => {
     return [
       {
         group: "Inactive",
-        value: allClients?.results?.length - activeClients?.results?.length,
+        value:
+          allClients?.raw?.results?.length -
+          activeClients?.raw?.results?.length,
       },
       {
         group: "Active",
-        value: activeClients?.results?.length,
+        value: activeClients?.raw?.results?.length,
       },
     ];
   };

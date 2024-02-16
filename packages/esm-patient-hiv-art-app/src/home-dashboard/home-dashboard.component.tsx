@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Home } from "@carbon/react/icons";
 import styles from "./home-dashboard.scss";
 import { useTranslation } from "react-i18next";
-import { useHomeDashboard } from "./hooks/useHomeDashboard";
 import StatCard from "./components/cards/StatCard";
+import { Dropdown } from "@carbon/react";
 import "@carbon/charts/styles.css";
 import NewlyEnrolled from "./charts/NewlyEnrolled";
 import SSEMRTab from "./components/tabs/SSEMRTab";
@@ -18,26 +18,20 @@ import ViralLoadCoverage from "./charts/ViralLoadCoverage";
 import ViralLoadSuppression from "./charts/ViralLoadSuppression";
 import HighViralLoadCascade from "./charts/HighViralLoadCascade";
 import ChartCard from "./components/cards/ChartCard";
+import { DashboardContext, filterOptions } from "./context/DashboardContext";
+import ViralLoadResults from "./charts/ViralLoadResults";
+import Waterfall from "./charts/Waterfall";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
 
   const {
-    tabInfo,
+    setCurrentTimeFilter,
     stats,
-    getActiveClients,
-    getAllClients,
-    getNewlyEnrolledClients,
-  } = useHomeDashboard();
-
-  /**
-   * Call reusable requests ONCE in the parent component
-   */
-  useEffect(() => {
-    getActiveClients();
-    getAllClients();
-    getNewlyEnrolledClients();
-  }, []);
+    filterTabs,
+    currentTopFilterIndex,
+    setCurrentTopFilterIndex,
+  } = useContext(DashboardContext);
 
   return (
     <div className={styles.parent}>
@@ -50,14 +44,32 @@ const HomeDashboard = () => {
 
       {/* ..................Tabs................. */}
       <div className={styles.tabs}>
-        {tabInfo.map((item) => (
+        {filterTabs.map((item) => (
           <SSEMRTab
+            index={item.index}
             name={item.title}
             key={item.title}
-            handler={undefined}
-            isActive={undefined}
+            handler={item.filterFunction}
+            isActive={currentTopFilterIndex == item.index}
           />
         ))}
+        <div
+          style={{
+            width: 400,
+          }}
+        >
+          <Dropdown
+            id="filter"
+            titleText=""
+            initialSelectedItem={filterOptions[0]}
+            onChange={(evt) => {
+              setCurrentTimeFilter(evt.selectedItem.value);
+            }}
+            label=""
+            items={filterOptions}
+            itemToString={(item) => item.name}
+          />
+        </div>
       </div>
 
       {/* ...................Stats.................... */}
@@ -93,6 +105,10 @@ const HomeDashboard = () => {
         </ChartCard>
       </div>
 
+      <ChartCard>
+        <Waterfall />
+      </ChartCard>
+
       {/* ...............Charts....................... */}
       <div className={styles.twoGridChartWrapper}>
         <ChartCard>
@@ -106,7 +122,7 @@ const HomeDashboard = () => {
       {/* ...............Charts....................... */}
       <div className={styles.chartWrapper}>
         <ChartCard>
-          <DueForViralLoad />
+          <ViralLoadResults />
         </ChartCard>
         <ChartCard>
           <ViralLoadCoverage />

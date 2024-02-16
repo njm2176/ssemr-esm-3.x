@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { LineChart } from "@carbon/charts-react";
+import { Loading } from "@carbon/react";
 import "@carbon/charts/styles.css";
-import "./index.scss";
-import { useHomeDashboard } from "../hooks/useHomeDashboard";
-import useSWR from "swr";
-import { openmrsFetch } from "@openmrs/esm-framework";
+import styles from "./index.scss";
+import { DashboardContext } from "../context/DashboardContext";
 
 const NewlyEnrolled = () => {
-  const { newlyEnrolledClients, getDummyData } = useHomeDashboard();
-
-  const { data, error } = useSWR(
-    "/ws/rest/v1/ssemr/dashboard/newClients?startDate=2024/01/15&endDate=2024/02/14",
-    openmrsFetch,
-    {}
-  );
+  const { newlyEnrolledClients, currentTimeFilter } =
+    useContext(DashboardContext);
 
   const options = {
     title: "Newly Enrolled Clients",
     axes: {
       bottom: {
-        title: "Months",
-        mapsTo: "month",
+        title: "",
+        mapsTo: currentTimeFilter,
         scaleType: "labels",
       },
       left: {
@@ -34,9 +28,15 @@ const NewlyEnrolled = () => {
   };
 
   return (
-    <div className="">
-      {newlyEnrolledClients?.summary && (
-        <LineChart data={getDummyData()} options={options} />
+    <div className={styles.chartContainer}>
+      {newlyEnrolledClients?.processedChartData?.length > 0 &&
+      newlyEnrolledClients?.processedChartData[0][currentTimeFilter] ? (
+        <LineChart
+          data={newlyEnrolledClients?.processedChartData}
+          options={options}
+        />
+      ) : (
+        <Loading className={styles.spinner} withOverlay={false} />
       )}
     </div>
   );

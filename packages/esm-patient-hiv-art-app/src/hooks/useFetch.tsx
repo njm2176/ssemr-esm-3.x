@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { openmrsFetch } from "@openmrs/esm-framework";
-import useSWR from "swr";
 
 export const useFetch = () => {
   const [loading, setLoading] = useState(false);
@@ -11,9 +10,8 @@ export const useFetch = () => {
     try {
       setLoading(true);
       const response = await openmrsFetch(url);
-      const { data, error, isLoading } = useSWR(url, openmrsFetch, {});
-      setData(data);
-      onResult(data, null);
+      setData(response.data);
+      onResult(response.data, null);
     } catch (error) {
       setError(error);
       onResult(null, error);
