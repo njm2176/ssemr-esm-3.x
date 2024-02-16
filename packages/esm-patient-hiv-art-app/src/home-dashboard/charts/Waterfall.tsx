@@ -14,7 +14,7 @@ const Waterfall = () => {
       },
       bottom: {
         mapsTo: "group",
-        scaleType: "LABELS" as ScaleTypes,
+        scaleType: "labels" as ScaleTypes,
       },
     },
     height: "400px",
