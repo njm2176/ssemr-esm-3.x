@@ -25,13 +25,8 @@ import Waterfall from "./charts/Waterfall";
 const HomeDashboard = () => {
   const { t } = useTranslation();
 
-  const {
-    setCurrentTimeFilter,
-    stats,
-    filterTabs,
-    currentTopFilterIndex,
-    setCurrentTopFilterIndex,
-  } = useContext(DashboardContext);
+  const { setCurrentTimeFilter, stats, filterTabs, currentTopFilterIndex } =
+    useContext(DashboardContext);
 
   return (
     <div className={styles.parent}>
