@@ -20,6 +20,7 @@ import HighViralLoadCascade from "./charts/HighViralLoadCascade";
 import ChartCard from "./components/cards/ChartCard";
 import { DashboardContext, filterOptions } from "./context/DashboardContext";
 import ViralLoadResults from "./charts/ViralLoadResults";
+import Waterfall from "./charts/Waterfall";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
@@ -103,6 +104,10 @@ const HomeDashboard = () => {
           <UnderCommunityCare />
         </ChartCard>
       </div>
+
+      <ChartCard>
+        <Waterfall />
+      </ChartCard>
 
       {/* ...............Charts....................... */}
       <div className={styles.twoGridChartWrapper}>

@@ -301,6 +301,57 @@ export const highViralLoad = [
   },
 ];
 
+export const waterfallDummyData = [
+  {
+    group: "FY23Q3 TX_CURR",
+    value: [0, 60000],
+  },
+  {
+    group: "TX NEW,FY23Q3",
+    value: [60000, 45000],
+  },
+  {
+    group: "TX_RTT,FY23Q3",
+    value: [60000, 50000],
+  },
+  {
+    group: "Potential TX_CURR",
+    value: [60000, 40000],
+  },
+  {
+    group: "TX_ML Death, FY23Q3",
+    value: [60000, 57000],
+  },
+  {
+    group: "TX_ML Self Transfer",
+    value: [60000, 59500],
+  },
+  {
+    group: "TX_ML_REFUSAL/STOPPED",
+    value: [60000, 49000],
+  },
+  {
+    group: "TX_ML_IIT(on art <3months)",
+    value: [60000, 51000],
+  },
+  {
+    group: "TX_ML_IIT(on art 3 + months)",
+    value: [60000, 50000],
+  },
+  {
+    group: "Calculated",
+    value: [60000, 45000],
+  },
+  {
+    group: "Unattributed loss/gain",
+    value: [60000, 12000],
+  },
+  {
+    group: "Repeated TX_CURR, FY23Q3",
+    value: [60000, 43000],
+  },
+];
+
 export const dummy = {
   results: [
     {
