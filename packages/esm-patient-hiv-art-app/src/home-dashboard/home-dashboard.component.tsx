@@ -19,6 +19,7 @@ import ViralLoadSuppression from "./charts/ViralLoadSuppression";
 import HighViralLoadCascade from "./charts/HighViralLoadCascade";
 import ChartCard from "./components/cards/ChartCard";
 import { DashboardContext, filterOptions } from "./context/DashboardContext";
+import ViralLoadResults from "./charts/ViralLoadResults";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
@@ -116,7 +117,7 @@ const HomeDashboard = () => {
       {/* ...............Charts....................... */}
       <div className={styles.chartWrapper}>
         <ChartCard>
-          <DueForViralLoad />
+          <ViralLoadResults />
         </ChartCard>
         <ChartCard>
           <ViralLoadCoverage />

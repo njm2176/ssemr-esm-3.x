@@ -41,8 +41,22 @@ const DashboardProvider = ({ children }) => {
   const [missedAppointment, setMissedAppointment] = useState(dummy);
   const [interrupted, setInterrupted] = useState(dummy);
   const [returned, setReturned] = useState(dummy);
-  const [dueForViralLoad, setDueForViralLoad] = useState(dummy);
-  const [highViralLoad, setHighViralLoad] = useState(dummy);
+  const [dueForViralLoad, setDueForViralLoad] = useState({
+    raw: null,
+    processedChartData: [],
+  });
+  const [viralLoadSamples, setViralLoadSamples] = useState({
+    raw: null,
+    processedChartData: [],
+  });
+  const [viralLoadResults, setViralLoadResults] = useState({
+    raw: null,
+    processedChartData: [],
+  });
+  const [highViralLoad, setHighViralLoad] = useState({
+    raw: null,
+    processedChartData: [],
+  });
 
   const formatDataAgainstTime = (data) => {
     const bottomAxesArray = Object.keys(data?.summary[currentTimeFilter]);
@@ -133,7 +147,6 @@ const DashboardProvider = ({ children }) => {
           }));
         }
         if (error) {
-          formatDataAgainstTime(dummy);
           setNewlyEnrolledClients((prev) => ({
             raw: dummy,
             processedChartData: formatDataAgainstTime(dummy),
@@ -197,9 +210,60 @@ const DashboardProvider = ({ children }) => {
       url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
       onResult: (responseData, error) => {
         if (responseData) {
-          setDueForViralLoad(responseData);
+          setDueForViralLoad((prev) => ({
+            ...prev,
+            processedChartData: formatDataAgainstTime(responseData),
+          }));
         }
-        if (error) return error;
+        if (error) {
+          setDueForViralLoad((prev) => ({
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
+          }));
+          return error;
+        }
+      },
+    });
+  };
+
+  const getViralLoadSamples = async () => {
+    await getClientData({
+      url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
+      onResult: (responseData, error) => {
+        if (responseData) {
+          setViralLoadSamples((prev) => ({
+            ...prev,
+            processedChartData: formatDataAgainstTime(responseData),
+          }));
+        }
+        if (error) {
+          setViralLoadSamples((prev) => ({
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
+          }));
+          return error;
+        }
+      },
+    });
+  };
+
+  const getViralLoadResults = async () => {
+    await getClientData({
+      url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
+      onResult: (responseData, error) => {
+        if (responseData) {
+          setViralLoadResults((prev) => ({
+            ...prev,
+            processedChartData: formatDataAgainstTime(responseData),
+          }));
+        }
+        if (error) {
+          setViralLoadResults((prev) => ({
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
+          }));
+          return error;
+        }
       },
     });
   };
@@ -361,7 +425,7 @@ const DashboardProvider = ({ children }) => {
     {
       title: "Due for viral load",
       url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
-      stat: getStat(dueForViralLoad?.results),
+      stat: getStat(dueForViralLoad?.raw?.results),
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -380,7 +444,7 @@ const DashboardProvider = ({ children }) => {
     {
       title: "High viral load",
       url: "/ws/rest/v1/ssemr/dashboard/highVl",
-      stat: getStat(highViralLoad?.results),
+      stat: getStat(highViralLoad?.raw?.results),
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -408,28 +472,32 @@ const DashboardProvider = ({ children }) => {
     getAllClients();
     getReturnedToTreatment();
     getInterruptedTreatment();
+    getViralLoadSamples();
+    getViralLoadResults();
   }, [currentTimeFilter]);
 
   return (
     <DashboardContext.Provider
       value={{
-        setFilters,
-        filters,
-        setCurrentTimeFilter,
-        currentTimeFilter,
         activeClients,
         allClients,
+        currentTimeFilter,
+        currentTopFilterIndex,
+        dueForViralLoad,
+        filterTabs,
+        filters,
+        highViralLoad,
+        interrupted,
+        missedAppointment,
         newlyEnrolledClients,
         onAppointment,
-        missedAppointment,
-        interrupted,
         returned,
-        dueForViralLoad,
-        highViralLoad,
-        stats,
-        filterTabs,
+        setCurrentTimeFilter,
         setCurrentTopFilterIndex,
-        currentTopFilterIndex,
+        setFilters,
+        stats,
+        viralLoadResults,
+        viralLoadSamples,
       }}
     >
       {children}
