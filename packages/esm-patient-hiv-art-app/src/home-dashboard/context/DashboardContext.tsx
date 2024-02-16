@@ -273,9 +273,18 @@ const DashboardProvider = ({ children }) => {
       url: "/ws/rest/v1/ssemr/dashboard/highVl",
       onResult: (responseData, error) => {
         if (responseData) {
-          setHighViralLoad(responseData);
+          setHighViralLoad((prev) => ({
+            ...prev,
+            processedChartData: formatDataAgainstTime(responseData),
+          }));
         }
-        if (error) return error;
+        if (error) {
+          setHighViralLoad((prev) => ({
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
+          }));
+          return error;
+        }
       },
     });
   };
