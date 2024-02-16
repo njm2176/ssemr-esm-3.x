@@ -23,8 +23,13 @@ import { DashboardContext, filterOptions } from "./context/DashboardContext";
 const HomeDashboard = () => {
   const { t } = useTranslation();
 
-  const { currentTimeFilter, setCurrentTimeFilter, stats, tabInfo } =
-    useContext(DashboardContext);
+  const {
+    setCurrentTimeFilter,
+    stats,
+    filterTabs,
+    currentTopFilterIndex,
+    setCurrentTopFilterIndex,
+  } = useContext(DashboardContext);
 
   return (
     <div className={styles.parent}>
@@ -37,12 +42,13 @@ const HomeDashboard = () => {
 
       {/* ..................Tabs................. */}
       <div className={styles.tabs}>
-        {tabInfo.map((item) => (
+        {filterTabs.map((item) => (
           <SSEMRTab
+            index={item.index}
             name={item.title}
             key={item.title}
-            handler={undefined}
-            isActive={undefined}
+            handler={item.filterFunction}
+            isActive={currentTopFilterIndex == item.index}
           />
         ))}
         <div

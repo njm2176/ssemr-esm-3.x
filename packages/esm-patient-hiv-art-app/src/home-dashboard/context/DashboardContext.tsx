@@ -23,6 +23,7 @@ const DashboardProvider = ({ children }) => {
   const [currentTimeFilter, setCurrentTimeFilter] = useState(
     filterOptions[0].value
   );
+  const [currentTopFilterIndex, setCurrentTopFilterIndex] = useState(0);
   const [filters, setFilters] = useState(filterOptions[0].value);
 
   const { makeRequest } = useFetch();
@@ -215,21 +216,39 @@ const DashboardProvider = ({ children }) => {
     });
   };
 
-  const tabInfo = [
+  const getStat = (dataSet) => {
+    const filteredSet = dataSet?.filter((item) =>
+      filterTabs[currentTopFilterIndex].filterFunction(item)
+    );
+
+    return filteredSet?.length;
+  };
+
+  const filterTabs = [
     {
+      index: 0,
       title: "All clients",
+      filterFunction: (item) => item,
     },
     {
+      index: 1,
       title: "Children and adolescent",
+      filterFunction: (item) => item.childOrAdolescent,
     },
     {
+      index: 2,
       title: "pregnant and Breastfeeding Women",
+      filterFunction: (item) => item.pregnantAndBreastfeeding,
     },
     {
+      index: 3,
       title: "Clients returning from interrupted treatment",
+      filterFunction: (item) => item.returningFromIT,
     },
     {
+      index: 4,
       title: "Return to treatment",
+      filterFunction: (item) => item.returningToTreatment,
     },
   ];
 
@@ -237,7 +256,7 @@ const DashboardProvider = ({ children }) => {
     {
       title: "Newly enrolled clients",
       url: "/ws/rest/v1/ssemr/dashboard/newClients",
-      stat: newlyEnrolledClients?.raw?.results?.length,
+      stat: getStat(newlyEnrolledClients?.raw?.results),
       icon: (
         <div className={styles.statIconWrapper}>
           <svg
@@ -253,7 +272,7 @@ const DashboardProvider = ({ children }) => {
     {
       title: "Active clients (TX_CURR)",
       url: "/ws/rest/v1/ssemr/dashboard/activeClients",
-      stat: activeClients?.raw?.results?.length,
+      stat: getStat(activeClients?.raw?.results),
       icon: (
         <div className={styles.statIconWrapper}>
           <svg
@@ -269,7 +288,7 @@ const DashboardProvider = ({ children }) => {
     {
       title: "On appointment",
       url: "/ws/rest/v1/ssemr/dashboard/newClients",
-      stat: onAppointment?.results?.length,
+      stat: getStat(onAppointment?.results),
       icon: (
         <div className={styles.statIconWrapper}>
           <svg
@@ -285,7 +304,7 @@ const DashboardProvider = ({ children }) => {
     {
       title: "Missed appointments",
       url: "/ws/rest/v1/ssemr/dashboard/missedAppointment",
-      stat: missedAppointment?.results?.length,
+      stat: getStat(missedAppointment?.results),
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -304,7 +323,7 @@ const DashboardProvider = ({ children }) => {
     {
       title: "Interruptions in Treatment(Iit)",
       url: "/ws/rest/v1/ssemr/dashboard/interruptedInTreatment",
-      stat: interrupted?.results?.length,
+      stat: getStat(interrupted?.results),
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -323,7 +342,7 @@ const DashboardProvider = ({ children }) => {
     {
       title: "Returned to Treatment(Tx_Rtt)",
       url: "/ws/rest/v1/ssemr/dashboard/interruptedInTreatment",
-      stat: returned?.results?.length,
+      stat: getStat(returned?.results),
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -342,7 +361,7 @@ const DashboardProvider = ({ children }) => {
     {
       title: "Due for viral load",
       url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
-      stat: dueForViralLoad?.results?.length,
+      stat: getStat(dueForViralLoad?.results),
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -361,7 +380,7 @@ const DashboardProvider = ({ children }) => {
     {
       title: "High viral load",
       url: "/ws/rest/v1/ssemr/dashboard/highVl",
-      stat: highViralLoad?.results?.length,
+      stat: getStat(highViralLoad?.results),
       icon: (
         <div
           className={styles.statIconWrapper}
@@ -408,7 +427,9 @@ const DashboardProvider = ({ children }) => {
         dueForViralLoad,
         highViralLoad,
         stats,
-        tabInfo,
+        filterTabs,
+        setCurrentTopFilterIndex,
+        currentTopFilterIndex,
       }}
     >
       {children}

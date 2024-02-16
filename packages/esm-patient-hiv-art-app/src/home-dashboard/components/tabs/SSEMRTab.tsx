@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./index.scss";
+import { DashboardContext } from "../../context/DashboardContext";
 
-const SSEMRTab = ({ name, handler, isActive }) => {
+const SSEMRTab = ({ name, handler, isActive, index }) => {
+  const { setCurrentTopFilterIndex } = useContext(DashboardContext);
+  const handleClick = () => {
+    // handler();
+    setCurrentTopFilterIndex(index);
+  };
+
   return (
-    <button onClick={handler} className={styles.tab}>
+    <button
+      onClick={handleClick}
+      className={isActive ? styles.activeTab : styles.tab}
+    >
       {name}
     </button>
   );

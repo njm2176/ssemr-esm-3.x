@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { LineChart } from "@carbon/charts-react";
-import { SkeletonPlaceholder } from "@carbon/react";
+import { Loading } from "@carbon/react";
 import "@carbon/charts/styles.css";
 import styles from "./index.scss";
 import { DashboardContext } from "../context/DashboardContext";
@@ -36,7 +36,7 @@ const NewlyEnrolled = () => {
           options={options}
         />
       ) : (
-        <SkeletonPlaceholder className={styles.skeleton} />
+        <Loading className={styles.spinner} withOverlay={false} />
       )}
     </div>
   );

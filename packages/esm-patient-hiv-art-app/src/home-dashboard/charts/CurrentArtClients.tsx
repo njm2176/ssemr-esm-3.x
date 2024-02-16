@@ -6,7 +6,7 @@ import styles from "./index.scss";
 import useSWR from "swr";
 import { openmrsFetch } from "@openmrs/esm-framework";
 import { DashboardContext } from "../context/DashboardContext";
-import { SkeletonPlaceholder } from "@carbon/react";
+import { Loading, SkeletonPlaceholder } from "@carbon/react";
 
 const NewlyEnrolled = () => {
   const { activeClients, currentTimeFilter } = useContext(DashboardContext);
@@ -41,7 +41,7 @@ const NewlyEnrolled = () => {
       activeClients?.processedChartData[0][currentTimeFilter] ? (
         <LineChart data={activeClients?.processedChartData} options={options} />
       ) : (
-        <SkeletonPlaceholder className={styles.skeleton} />
+        <Loading className={styles.spinner} withOverlay={false} />
       )}
     </div>
   );
