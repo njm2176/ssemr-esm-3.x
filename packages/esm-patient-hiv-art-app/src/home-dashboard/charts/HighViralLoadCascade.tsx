@@ -2,6 +2,7 @@ import React from "react";
 import { highViralLoad } from "../dummy/data";
 import { SimpleBarChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
+import { ScaleTypes } from "../types";
 
 const HighViralLoadCascade = () => {
   const options = {
@@ -12,7 +13,7 @@ const HighViralLoadCascade = () => {
       },
       bottom: {
         mapsTo: "group",
-        scaleType: "labels",
+        scaleType: "labels" as ScaleTypes,
       },
     },
     height: "400px",

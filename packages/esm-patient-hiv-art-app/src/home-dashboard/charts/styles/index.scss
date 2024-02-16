@@ -1,0 +1,19 @@
+@import "https://fonts.googleapis.com/css?family=IBM+Plex+Sans+Condensed|IBM+Plex+Sans:400,600&display=swap";
+@import "https://unpkg.com/carbon-components/css/carbon-components.min.css";
+
+.chartContainer {
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  width: 2rem;
+  height: 2rem;
+}
+
+.skeleton {
+  width: 100%;
+  height: 100%;
+}
