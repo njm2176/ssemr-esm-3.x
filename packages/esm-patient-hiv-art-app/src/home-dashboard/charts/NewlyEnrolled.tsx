@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { LineChart } from "@carbon/charts-react";
 import { Loading } from "@carbon/react";
 import "@carbon/charts/styles.css";
-import styles from "./index.scss";
+import styles from "./styles/index.scss";
 import { DashboardContext } from "../context/DashboardContext";
 import { ScaleTypes } from "../types";
 

@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { currentARTClients } from "../dummy/data";
 import { AreaChart, LineChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
-import styles from "./index.scss";
+import styles from "./styles/index.scss";
 import useSWR from "swr";
 import { openmrsFetch } from "@openmrs/esm-framework";
 import { DashboardContext } from "../context/DashboardContext";
