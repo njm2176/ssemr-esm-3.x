@@ -2,6 +2,7 @@ import React from "react";
 import { SimpleBarChart } from "@carbon/charts-react";
 import "@carbon/charts/styles.css";
 import { waterfallDummyData } from "../dummy/data";
+import { ScaleTypes } from "../types";
 
 const Waterfall = () => {
   const barOptions = {
@@ -13,7 +14,7 @@ const Waterfall = () => {
       },
       bottom: {
         mapsTo: "group",
-        scaleType: "labels",
+        scaleType: "LABELS" as ScaleTypes,
       },
     },
     height: "400px",

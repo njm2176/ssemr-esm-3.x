@@ -4,6 +4,7 @@ import "@carbon/charts-react/styles.css";
 import styles from "./index.scss";
 import { Loading } from "@carbon/react";
 import { DashboardContext } from "../context/DashboardContext";
+import { ScaleTypes } from "../types";
 
 const ViralLoadResults = () => {
   const { viralLoadResults, currentTimeFilter } = useContext(DashboardContext);
@@ -14,12 +15,12 @@ const ViralLoadResults = () => {
       bottom: {
         title: "",
         mapsTo: currentTimeFilter,
-        scaleType: "labels",
+        scaleType: "labels" as ScaleTypes,
       },
       left: {
         title: " Number of clients",
         mapsTo: "clients",
-        scaleType: "linear",
+        scaleType: "linear" as ScaleTypes,
       },
     },
     curve: "curveMonotoneX",

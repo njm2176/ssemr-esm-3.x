@@ -4,6 +4,7 @@ import { Loading } from "@carbon/react";
 import "@carbon/charts/styles.css";
 import styles from "./index.scss";
 import { DashboardContext } from "../context/DashboardContext";
+import { ScaleTypes } from "../types";
 
 const NewlyEnrolled = () => {
   const { newlyEnrolledClients, currentTimeFilter } =
@@ -15,12 +16,12 @@ const NewlyEnrolled = () => {
       bottom: {
         title: "",
         mapsTo: currentTimeFilter,
-        scaleType: "labels",
+        scaleType: "labels" as ScaleTypes,
       },
       left: {
         title: " Number of clients",
         mapsTo: "clients",
-        scaleType: "linear",
+        scaleType: "linear" as ScaleTypes,
       },
     },
     curve: "curveMonotoneX",

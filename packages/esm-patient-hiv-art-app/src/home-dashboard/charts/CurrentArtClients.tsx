@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { openmrsFetch } from "@openmrs/esm-framework";
 import { DashboardContext } from "../context/DashboardContext";
 import { Loading, SkeletonPlaceholder } from "@carbon/react";
+import { ScaleTypes } from "../types";
 
 const NewlyEnrolled = () => {
   const { activeClients, currentTimeFilter } = useContext(DashboardContext);
@@ -23,12 +24,12 @@ const NewlyEnrolled = () => {
       bottom: {
         title: "",
         mapsTo: currentTimeFilter,
-        scaleType: "labels",
+        scaleType: "labels" as ScaleTypes,
       },
       left: {
         title: " Number of clients",
         mapsTo: "clients",
-        scaleType: "linear",
+        scaleType: "linear" as ScaleTypes,
       },
     },
     curve: "curveMonotoneX",
