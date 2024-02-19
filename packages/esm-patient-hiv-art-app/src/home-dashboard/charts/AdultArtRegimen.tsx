@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { adultART } from "../dummy/data";
 import { SimpleBarChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
 import { ScaleTypes } from "../types";
