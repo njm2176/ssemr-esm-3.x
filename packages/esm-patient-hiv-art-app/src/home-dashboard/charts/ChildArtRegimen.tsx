@@ -1,25 +1,42 @@
-import React from "react";
-import { childART } from "../dummy/data";
+import React, { useContext } from "react";
 import { SimpleBarChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
 import { ScaleTypes } from "../types";
+import { DashboardContext } from "../context/DashboardContext";
+import styles from "./styles/index.scss";
+import { Loading } from "@carbon/react";
 
 const ChildArtRegimen = () => {
+  const { childART, currentTimeFilter } = useContext(DashboardContext);
+
   const options = {
-    title: "CHild ART Regiment Treatment",
+    title: "Child ART Regimen",
     axes: {
-      left: {
-        mapsTo: "value",
-      },
       bottom: {
-        mapsTo: "group",
+        title: "",
+        mapsTo: currentTimeFilter,
         scaleType: "labels" as ScaleTypes,
       },
+      left: {
+        title: " Number of clients",
+        mapsTo: "clients",
+        scaleType: "linear" as ScaleTypes,
+      },
     },
+    curve: "curveMonotoneX",
     height: "400px",
   };
 
-  return <SimpleBarChart data={childART} options={options}></SimpleBarChart>;
+  return (
+    <div className={styles.chartContainer}>
+      {childART?.processedChartData?.length > 0 &&
+      childART?.processedChartData[0][currentTimeFilter] ? (
+        <SimpleBarChart data={childART?.processedChartData} options={options} />
+      ) : (
+        <Loading className={styles.spinner} withOverlay={false} />
+      )}
+    </div>
+  );
 };
 
 export default ChildArtRegimen;
