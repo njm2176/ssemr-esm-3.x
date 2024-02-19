@@ -45,12 +45,17 @@ const ProgramSummary: React.FC<ProgramSummaryProps> = ({
           <div className={styles.container}>
             <div className={styles.content}>
               <p>{t("dateOfEnrollment", "Date of Enrollment")}</p>
-              <p>{extractObservationData(data, "Date of enrollment")}</p>
+              <p>
+                {extractObservationData(
+                  data,
+                  "ART Start Date (Date of Enrolment)"
+                )}
+              </p>
             </div>
             <div className={styles.content}>
               <p>{t("latestArvRegimen", "Latest ARV Regimen")}</p>
               <p className={styles.value}>
-                {extractObservationData(data, "ART Regimen")}
+                {extractObservationData(data, "ARV Regimen")}
               </p>
             </div>
             <div className={styles.content}>

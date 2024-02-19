@@ -14,7 +14,6 @@ import patientHistoryComponent from "./patient-history-widget/patient-history-pa
 import carePanelPatientSummaryComponent from "./patient-summary/patient-summary.component";
 import PatientDataComponent from "./more-patient-data-widget/more-patient-data-panel.component";
 import LinkageToCommunityHealthWorkerComponent from "./linkage-to-chw-widget/linkage-to-chw-panel.component";
-import WeightGraphComponent from "./weight-graph-widget/weight-panel.component";
 
 const moduleName = "@ssemr/esm-patient-panel-app";
 
@@ -56,8 +55,6 @@ export const linkageToCHW = getSyncLifecycle(
   LinkageToCommunityHealthWorkerComponent,
   options
 );
-
-export const weightGraph = getSyncLifecycle(WeightGraphComponent, options);
 
 // t('carePanel', 'Care panel')
 export const carePanelSummaryDashboardLink = getSyncLifecycle(

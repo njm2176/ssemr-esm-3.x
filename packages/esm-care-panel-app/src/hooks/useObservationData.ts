@@ -16,23 +16,27 @@ const useObservationData = (patientUuid, code) => {
           throw new Error("Failed to fetch data");
         }
         const jsonData = await response.json();
+        console.log("JsonData:", jsonData);
         setData(jsonData);
       } catch (error) {
+        console.error("Error fetching observation data:", error);
         setError(error.message);
       }
       setIsLoading(false);
     };
 
     fetchData();
-
-    return () => {};
   }, [patientUuid]);
 
   const extractObservationData = (data, keyword) => {
-    const observation = data?.results.find((entry) =>
-      entry.display.startsWith(keyword)
-    );
-    return observation ? observation.display.split(": ")[1] : "---";
+    if (data && data.results) {
+      const observation = data.results.find((entry) =>
+        entry.display.startsWith(keyword)
+      );
+      return observation ? observation.display.split(": ")[1] : "---";
+    } else {
+      return "No observation Found";
+    }
   };
 
   return { data, isLoading, error, extractObservationData };
