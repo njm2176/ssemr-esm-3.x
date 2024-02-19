@@ -528,3 +528,119 @@ export const dummy = {
     },
   },
 };
+
+export const viralCascade = {
+  results: {
+    highVl: [{}, {}],
+    eac1Attended: [{}, {}],
+    eac2Attended: [{}, {}],
+    eac3Attended: [{}, {}],
+    repeatVlSampleCollected: [{}, {}],
+    persistentHighVl: [{}, {}],
+    artSwitch: [{}, {}],
+  },
+  summary: {
+    groupYear: [
+      {
+        highVl: 20,
+      },
+      {
+        eac1Attended: 2,
+      },
+      {
+        eac2Attended: 0,
+      },
+      {
+        eac3Attended: 0,
+      },
+      {
+        repeatVlSampleCollected: 0,
+      },
+      {
+        persistentHighVl: 0,
+      },
+      {
+        artSwitch: 0,
+      },
+    ],
+  },
+};
+
+export const adultArtDummy = {
+  results: [
+    {
+      "1A": [{}, {}],
+    },
+    {
+      "1B": [{}, {}],
+    },
+    {
+      "2A": [{}, {}],
+    },
+    {
+      "2C": [{}, {}],
+    },
+  ],
+  summary: {
+    groupYear: {
+      "1A": 20,
+      "1B": 2,
+      "2A": 8,
+    },
+    groupMonth: {
+      "1A": 5,
+      "1B": 35,
+      "2A": 50,
+      "2B": 27,
+    },
+    groupWeek: {
+      "1A": 9,
+      "1B": 27,
+      "2A": 45,
+      "2C": 1,
+    },
+  },
+};
+
+export const childArtDummy = {
+  results: [
+    {
+      "1A": [{}, {}],
+    },
+    {
+      "1B": [{}, {}],
+    },
+    {
+      "2A": [{}, {}],
+    },
+    {
+      "2C": [{}, {}],
+    },
+  ],
+  summary: {
+    groupYear: {
+      "4A": 12,
+      "4B": 7,
+      "4C": 16,
+      "4E": 34,
+      "4D": 28,
+      "4F": 6,
+    },
+    groupMonth: {
+      "4A": 65,
+      "4B": 40,
+      "4C": 50,
+      "4E": 20,
+      "4D": 13,
+      "4F": 12,
+    },
+    groupWeek: {
+      "4A": 65,
+      "4B": 14,
+      "4C": 2,
+      "4E": 9,
+      "4D": 4,
+      "4F": 2,
+    },
+  },
+};

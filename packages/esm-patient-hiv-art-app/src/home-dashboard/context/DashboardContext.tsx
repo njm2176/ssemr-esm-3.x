@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import { dummy } from "../dummy/data";
+import { adultArtDummy, childArtDummy, dummy } from "../dummy/data";
 import { useFetch } from "../../hooks/useFetch";
 import styles from "../home-dashboard.scss";
 
@@ -42,6 +42,14 @@ const DashboardProvider = ({ children }) => {
   const [interrupted, setInterrupted] = useState(dummy);
   const [returned, setReturned] = useState(dummy);
   const [dueForViralLoad, setDueForViralLoad] = useState({
+    raw: null,
+    processedChartData: [],
+  });
+  const [adultART, setAdultART] = useState({
+    raw: null,
+    processedChartData: [],
+  });
+  const [childART, setChildART] = useState({
     raw: null,
     processedChartData: [],
   });
@@ -289,6 +297,48 @@ const DashboardProvider = ({ children }) => {
     });
   };
 
+  const getAdultART = async () => {
+    await getClientData({
+      url: "/ws/rest/v1/ssemr/dashboard/adultART",
+      onResult: (responseData, error) => {
+        if (responseData) {
+          setAdultART((prev) => ({
+            ...prev,
+            processedChartData: formatDataAgainstTime(responseData),
+          }));
+        }
+        if (error) {
+          setAdultART((prev) => ({
+            raw: adultArtDummy,
+            processedChartData: formatDataAgainstTime(adultArtDummy),
+          }));
+          return error;
+        }
+      },
+    });
+  };
+
+  const getChildART = async () => {
+    await getClientData({
+      url: "/ws/rest/v1/ssemr/dashboard/childART",
+      onResult: (responseData, error) => {
+        if (responseData) {
+          setChildART((prev) => ({
+            ...prev,
+            processedChartData: formatDataAgainstTime(responseData),
+          }));
+        }
+        if (error) {
+          setChildART((prev) => ({
+            raw: childArtDummy,
+            processedChartData: formatDataAgainstTime(childArtDummy),
+          }));
+          return error;
+        }
+      },
+    });
+  };
+
   const getStat = (dataSet) => {
     const filteredSet = dataSet?.filter((item) =>
       filterTabs[currentTopFilterIndex].filterFunction(item)
@@ -483,6 +533,8 @@ const DashboardProvider = ({ children }) => {
     getInterruptedTreatment();
     getViralLoadSamples();
     getViralLoadResults();
+    getChildART();
+    getAdultART();
   }, [currentTimeFilter]);
 
   return (
@@ -507,6 +559,8 @@ const DashboardProvider = ({ children }) => {
         stats,
         viralLoadResults,
         viralLoadSamples,
+        childART,
+        adultART,
       }}
     >
       {children}
