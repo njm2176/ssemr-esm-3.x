@@ -11,7 +11,7 @@ const AdultARTRegimen = () => {
   const { adultART, currentTimeFilter } = useContext(DashboardContext);
 
   const options = {
-    title: "Child ART Regimen",
+    title: "Adult ART Regimen",
     axes: {
       bottom: {
         title: "",
