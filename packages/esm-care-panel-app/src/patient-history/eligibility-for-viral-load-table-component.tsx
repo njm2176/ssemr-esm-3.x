@@ -57,71 +57,26 @@ const EligibilityForVL: React.FC<PatientHistoryProps> = ({
   const monthsDifference = timeDifference / sixMonthsInMs;
   const eligibilityforvl = monthsDifference >= 6 ? "Eligible" : "Not Eligible";
 
-  // const headers = [
-  //   {
-  //     key: "eligibilityforvl",
-  //     header: "Eligibility For Viral Load Sample Collection",
-  //   },
-  //   {
-  //     key: "date",
-  //     header: "Date",
-  //   },
-  // ];
-
-  // const rows = [
-  //   {
-  //     id: "a",
-  //     eligibilityforvl: eligibilityforvl,
-  //     date: dateVlSampleCollected,
-  //   },
-  // ];
-
   return (
     <>
-      <Tile>
-        <div className={styles.card}>
-          <div className={styles.container}>
-            <div className={styles.content}>
-              <p>
-                {t(
-                  "eligibilityForVL",
-                  "Eligibility For Viral Load Sample Collection"
-                )}
-              </p>
-              <p>{eligibilityforvl}</p>
-            </div>
-            <div className={styles.content}></div>
-            <div className={styles.content}>
-              <p>{t("date", "Date")}</p>
-              <p className={styles.value}>{dateVlSampleCollected}</p>
-            </div>
+      <div className={styles.card}>
+        <div className={styles.container}>
+          <div className={styles.content}>
+            <p>
+              {t(
+                "eligibilityForVL",
+                "Eligibility For Viral Load Sample Collection"
+              )}
+            </p>
+            <p>{eligibilityforvl}</p>
+          </div>
+          <div className={styles.content}></div>
+          <div className={styles.content}>
+            <p>{t("date", "Date")}</p>
+            <p className={styles.value}>{dateVlSampleCollected}</p>
           </div>
         </div>
-      </Tile>
-      {/* <DataTable rows={rows} headers={headers}>
-        {({ rows, headers, getTableProps, getHeaderProps, getRowProps }) => (
-          <Table {...getTableProps()}>
-            <TableHead>
-              <TableRow>
-                {headers.map((header) => (
-                  <TableHeader {...getHeaderProps({ header })}>
-                    {header.header}
-                  </TableHeader>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow {...getRowProps({ row })}>
-                  {row.cells.map((cell) => (
-                    <TableCell key={cell.id}>{cell.value}</TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </DataTable> */}
+      </div>
     </>
   );
 };

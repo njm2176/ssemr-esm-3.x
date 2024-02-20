@@ -50,12 +50,12 @@ const PatientHistoryComponent: React.FC<PatientHistoryProps> = ({
                 </span>
               </p>
             </div>
-            <div className={styles.content}>
+            {/* <div className={styles.content}>
               <h4 className={styles.title}>
                 {t("recentVisits", "Recent Visits")}
               </h4>
               <EncounterListDataTable encounters={[]} visitUuid={""} />
-            </div>
+            </div> */}
           </div>
           <div className={styles.container}>
             <h4 className={styles.title}>
