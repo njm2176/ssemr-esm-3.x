@@ -47,41 +47,14 @@ const LinkageToCHWTable: React.FC<PatientHistoryProps> = ({
     return;
   }
 
-  // // Define headers
-  // const headers = [
-  //   {
-  //     key: "name",
-  //     header: "Name of the Community Health Worker (CHW)",
-  //   },
-  //   {
-  //     key: "phone",
-  //     header: "Telephone Number",
-  //   },
-  //   {
-  //     key: "landmark",
-  //     header: "LandMark/Address Of Community Health Worker (CHW)",
-  //   },
-  // ];
-
-  // const chwPhoneNumber = extractObservationData(data, "CHW Phone number");
-  // const chwName = extractObservationData(data, "Name of the COV assigned");
-  // const chwAddress = extractObservationData(data, "CHW Address");
-
-  // const rows = [
-  //   {
-  //     id: "a",
-  //     name: chwName,
-  //     phone: chwPhoneNumber,
-  //     landmark: chwAddress,
-  //   },
-  // ];
-
   return (
     <>
       <div className={styles.card}>
         <div className={styles.container}>
           <div className={styles.content}>
-            <p>{t("nameOfCHW", "Name of the Community Health Worker (CHW)")}</p>
+            <p style={{ marginRight: "15px" }}>
+              {t("nameOfCHW", "Name of the Community Health Worker (CHW)")}
+            </p>
             <p>{extractObservationData(data, "Name of the COV assigned")}</p>
           </div>
           <div className={styles.content}>

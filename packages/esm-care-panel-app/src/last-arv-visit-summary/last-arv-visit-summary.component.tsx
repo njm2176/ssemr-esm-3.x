@@ -35,9 +35,9 @@ const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
       <Tile>
         <div className={styles.card}>
           <div className={styles.desktopHeading}>
-            <h4 className={styles.title}>
+            <h6 className={styles.title}>
               {t("lastArtVisitSummary", "LAST ART VISIT SUMMARY")}
-            </h4>
+            </h6>
           </div>
           <div className={styles.container}>
             <div className={styles.content}>
