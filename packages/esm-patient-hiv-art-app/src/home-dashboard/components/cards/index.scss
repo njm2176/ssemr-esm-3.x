@@ -15,12 +15,24 @@
   gap: 2.5rem;
   width: 100%;
   overflow: hidden;
+  position: relative;
+}
+
+.download{
+  position: absolute;
+  right: 10px;
+  bottom: 15px;
+  width: 20px;
+  height: 20px;
+  color: $primary-color;
+  fill: $primary-color;
 }
 
 .title{
   color: $primary-color;
-  font-size: smaller;
+  font-size: small;
   white-space: break-spaces;
+  font-weight: 500;
 }
 
 .stat{
