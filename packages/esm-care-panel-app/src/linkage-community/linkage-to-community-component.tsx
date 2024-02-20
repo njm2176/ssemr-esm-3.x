@@ -18,13 +18,11 @@ const LinkageToCHW: React.FC<PatientHistoryProps> = ({
 
   return (
     <>
-      <Tile>
-        <div className={styles.card}>
-          <div className={styles.container}>
-            <LinkageToCHWTable patientUuid={""} code={""} />
-          </div>
+      <div className={styles.card}>
+        <div className={styles.container}>
+          <LinkageToCHWTable patientUuid={""} code={""} />
         </div>
-      </Tile>
+      </div>
     </>
   );
 };

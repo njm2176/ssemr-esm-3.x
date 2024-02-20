@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../program-summary/program-summary.scss";
+import styles from "./patient-history-component.scss";
 import { useTranslation } from "react-i18next";
 import { formatDate, useLayoutType } from "@openmrs/esm-framework";
 import {

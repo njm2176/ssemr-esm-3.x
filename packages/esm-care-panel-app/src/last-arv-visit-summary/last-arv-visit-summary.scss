@@ -39,12 +39,18 @@
 }
 
 .title {
-  @include type.type-style('productive-heading-03');
   color: colors.$gray-100;
   margin-left: spacing.$spacing-05;
-  border-bottom: 1px solid #0070E7;
   padding-bottom: 2px;
   margin-bottom: 1rem;
+  margin-top: 1rem;
+  display: inline-block;
+}
+
+.title::after {
+  content: "";
+  display: block;
+  border-bottom: 1px solid #0070E7;
 }
 
 .label {
