@@ -31,17 +31,13 @@ const MorePatientData: React.FC<PatientHistoryProps> = ({
 
   return (
     <>
-      <Tile>
-        <div className={styles.card}>
-          <div className={styles.container}>
-            <IndexClientContacts patientUuid={""} programName={""} />
-          </div>
-          <div className={styles.container}>
-            <Allergies patientUuid={""} programName={""} />
-            <RedFlags patientUuid={""} programName={""} />
-          </div>
+      <div className={styles.card}>
+        <div className={styles.container}>
+          <IndexClientContacts patientUuid={""} programName={""} />
+          <Allergies patientUuid={""} programName={""} />
+          <RedFlags patientUuid={""} programName={""} />
         </div>
-      </Tile>
+      </div>
     </>
   );
 };
