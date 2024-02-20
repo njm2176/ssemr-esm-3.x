@@ -1,5 +1,10 @@
 import React, { createContext, useEffect, useState } from "react";
-import { adultArtDummy, childArtDummy, dummy } from "../dummy/data";
+import {
+  adultArtDummy,
+  childArtDummy,
+  dummy,
+  highViralLoadDummy,
+} from "../dummy/data";
 import { useFetch } from "../../hooks/useFetch";
 
 export const filterOptions = [
@@ -93,6 +98,17 @@ const DashboardProvider = ({ children }) => {
     });
 
     return formattedData;
+  };
+
+  const formatViralLoadData = (data) => {
+    const processedData = data?.summary?.groupYear?.map((item) => {
+      const keys = Object.keys(item);
+      return {
+        value: item[keys[0]],
+        group: keys[0],
+      };
+    });
+    return processedData;
   };
 
   const getClientData = async ({ url, params = "", onResult }) => {
@@ -334,13 +350,13 @@ const DashboardProvider = ({ children }) => {
         if (responseData) {
           setHighViralLoad((prev) => ({
             raw: responseData,
-            processedChartData: formatDataAgainstTime(responseData),
+            processedChartData: formatViralLoadData(responseData),
           }));
         }
         if (error) {
           setHighViralLoad((prev) => ({
             raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
+            processedChartData: formatViralLoadData(highViralLoadDummy),
           }));
           return error;
         }

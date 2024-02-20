@@ -206,52 +206,6 @@ export const activeClientData = [
   },
 ];
 
-export const adultART = [
-  {
-    group: "1A",
-    value: 65000,
-  },
-  {
-    group: "1B",
-    value: 29123,
-  },
-  {
-    group: "1C",
-    value: 35213,
-  },
-  {
-    group: "2A",
-    value: 51213,
-  },
-  {
-    group: "2B",
-    value: 16932,
-  },
-];
-
-export const childART = [
-  {
-    group: "4A",
-    value: 65000,
-  },
-  {
-    group: "4B",
-    value: 29123,
-  },
-  {
-    group: "4C",
-    value: 35213,
-  },
-  {
-    group: "4E",
-    value: 51213,
-  },
-  {
-    group: "4F",
-    value: 16932,
-  },
-];
-
 export const viralLoadCoverage = [
   {
     group: "Inactive",
@@ -529,7 +483,7 @@ export const dummy = {
   },
 };
 
-export const viralCascade = {
+export const highViralLoadDummy = {
   results: {
     highVl: [{}, {}],
     eac1Attended: [{}, {}],
@@ -545,22 +499,22 @@ export const viralCascade = {
         highVl: 20,
       },
       {
-        eac1Attended: 2,
+        eac1Attended: 55,
       },
       {
-        eac2Attended: 0,
+        eac2Attended: 89,
       },
       {
-        eac3Attended: 0,
+        eac3Attended: 225,
       },
       {
-        repeatVlSampleCollected: 0,
+        repeatVlSampleCollected: 43,
       },
       {
-        persistentHighVl: 0,
+        persistentHighVl: 192,
       },
       {
-        artSwitch: 0,
+        artSwitch: 70,
       },
     ],
   },
