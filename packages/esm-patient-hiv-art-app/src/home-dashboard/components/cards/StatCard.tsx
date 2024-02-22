@@ -101,13 +101,7 @@ const StatCard = ({ item }) => {
         </Table>
       </Modal>
       <div className={styles.title}>{item.title}</div>
-      {!item.stat ? (
-        <div className={styles.spinner}>
-          <Loading withOverlay={false} small={true} />
-        </div>
-      ) : (
-        <p className={styles.stat}>{item.stat}</p>
-      )}
+      <p className={styles.stat}>{item.stat}</p>
     </div>
   );
 };

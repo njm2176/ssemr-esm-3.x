@@ -113,7 +113,7 @@ const DashboardProvider = ({ children }) => {
 
   const getClientData = async ({ url, params = "", onResult }) => {
     try {
-      await makeRequest(url + filters + params, onResult);
+      await makeRequest(url + params, onResult);
     } catch (e) {
       return e;
     }
@@ -442,54 +442,50 @@ const DashboardProvider = ({ children }) => {
     },
   ];
 
+  const filterStatData = (stat) => {
+    return stat?.filter(filterTabs[currentTopFilterIndex].filterFunction);
+  };
+
   const stats = [
     {
       title: "Newly enrolled clients",
-      url: "/ws/rest/v1/ssemr/dashboard/newClients",
       stat: getStat(newlyEnrolledClients?.raw?.results),
-      results: newlyEnrolledClients?.raw?.results,
+      results: filterStatData(newlyEnrolledClients?.raw?.results),
     },
     {
       title: "Active clients (TX_CURR)",
-      url: "/ws/rest/v1/ssemr/dashboard/activeClients",
       stat: getStat(activeClients?.raw?.results),
-      results: activeClients?.raw?.results,
+      results: filterStatData(activeClients?.raw?.results),
     },
     {
       title: "On appointment",
-      url: "/ws/rest/v1/ssemr/dashboard/newClients",
       stat: getStat(onAppointment?.raw?.results),
-      results: onAppointment?.raw?.results,
+      results: filterStatData(onAppointment?.raw?.results),
     },
     {
       title: "Missed appointments",
-      url: "/ws/rest/v1/ssemr/dashboard/missedAppointment",
       stat: getStat(missedAppointment?.raw?.results),
-      results: missedAppointment?.raw?.results,
+      results: filterStatData(missedAppointment?.raw?.results),
     },
     {
       title: "Interruptions in Treatment(Iit)",
-      url: "/ws/rest/v1/ssemr/dashboard/interruptedInTreatment",
       stat: getStat(interrupted?.raw?.results),
-      results: interrupted?.raw?.results,
+      results: filterStatData(interrupted?.raw?.results),
     },
     {
       title: "Returned to Treatment(Tx_Rtt)",
-      url: "/ws/rest/v1/ssemr/dashboard/interruptedInTreatment",
       stat: getStat(returned?.raw?.results),
-      results: returned?.raw?.results,
+      results: filterStatData(returned?.raw?.results),
     },
     {
       title: "Due for viral load",
-      url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
       stat: getStat(dueForViralLoad?.raw?.results),
-      results: dueForViralLoad?.raw?.results,
+      results: filterStatData(dueForViralLoad?.raw?.results),
     },
     {
       title: "High viral load",
-      url: "/ws/rest/v1/ssemr/dashboard/highVl",
       stat: getStat(highViralLoad?.raw?.results),
-      results: highViralLoad?.raw?.results,
+      results: filterStatData(highViralLoad?.raw?.results),
     },
   ];
 
