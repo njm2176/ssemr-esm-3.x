@@ -285,9 +285,13 @@ const DashboardProvider = ({ children }) => {
       url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
       onResult: (responseData, error) => {
         if (responseData) {
+          // setDueForViralLoad((prev) => ({
+          //   raw: responseData,
+          //   processedChartData: formatDataAgainstTime(responseData),
+          // }));
           setDueForViralLoad((prev) => ({
-            raw: responseData,
-            processedChartData: formatDataAgainstTime(responseData),
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
           }));
         }
         if (error) {
