@@ -1,13 +1,10 @@
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { StructuredListSkeleton, ContentSwitcher, Switch } from "@carbon/react";
 import styles from "./care-panel.scss";
 import ProgramSummary from "../program-summary/program-summary.component";
-import { CardHeader, EmptyState } from "@openmrs/esm-patient-common-lib";
+import { CardHeader } from "@openmrs/esm-patient-common-lib";
 import LastArtVisitSummary from "../last-arv-visit-summary/last-arv-visit-summary.component";
-import first from "lodash/first";
-import sortBy from "lodash/sortBy";
-import { ErrorState } from "@openmrs/esm-framework";
+import LastArvRefillDate from "../patient-history/last-arv-refill-date.component";
 
 interface CarePanelProps {
   patientUuid: string;
@@ -15,17 +12,7 @@ interface CarePanelProps {
   launchPatientWorkspace: Function;
 }
 
-type SwitcherItem = {
-  index: number;
-  name?: string;
-  text?: string;
-};
-
-const CarePanel: React.FC<CarePanelProps> = ({
-  patientUuid,
-  formEntrySub,
-  launchPatientWorkspace,
-}) => {
+const CarePanel: React.FC<CarePanelProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
 
   return (
@@ -38,6 +25,7 @@ const CarePanel: React.FC<CarePanelProps> = ({
         <div style={{ width: "100%", minHeight: "20rem" }}>
           <ProgramSummary patientUuid={patientUuid} code={""} />
           <LastArtVisitSummary patientUuid={patientUuid} code={""} />
+          <LastArvRefillDate patientUuid={""} code={""} />
         </div>
       </div>
     </>

@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./patient-history-component.scss";
+import styles from "./patient-history.component.scss";
 import { useTranslation } from "react-i18next";
 import { formatDate, useLayoutType } from "@openmrs/esm-framework";
 import {
@@ -59,24 +59,26 @@ const EligibilityForVL: React.FC<PatientHistoryProps> = ({
 
   return (
     <>
-      <div className={styles.card}>
-        <div className={styles.container}>
-          <div className={styles.content}>
-            <p>
-              {t(
-                "eligibilityForVL",
-                "Eligibility For Viral Load Sample Collection"
-              )}
-            </p>
-            <p>{eligibilityforvl}</p>
-          </div>
-          <div className={styles.content}></div>
-          <div className={styles.content}>
-            <p>{t("date", "Date")}</p>
-            <p className={styles.value}>{dateVlSampleCollected}</p>
+      <Tile>
+        <div className={styles.card}>
+          <div className={styles.container}>
+            <div className={styles.content}>
+              <p>
+                {t(
+                  "eligibilityForVL",
+                  "Eligibility For Viral Load Sample Collection"
+                )}
+              </p>
+              <p>{eligibilityforvl}</p>
+            </div>
+            <div className={styles.content}></div>
+            <div className={styles.content}>
+              <p>{t("date", "Date")}</p>
+              <p className={styles.value}>{dateVlSampleCollected}</p>
+            </div>
           </div>
         </div>
-      </div>
+      </Tile>
     </>
   );
 };

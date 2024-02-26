@@ -1,22 +1,20 @@
 import React from "react";
-import styles from "./patient-history-component.scss";
+import styles from "./patient-history.component.scss";
 import { useTranslation } from "react-i18next";
 import { formatDate, useLayoutType } from "@openmrs/esm-framework";
 import { Tile, StructuredListSkeleton } from "@carbon/react";
-import VLStatus from "./vl-status-component";
-import EligibilityForVL from "./eligibility-for-viral-load-table-component";
-import useObservationData from "../hooks/useObservationData";
+import usePatientHistory from "../hooks/usePatientHistory";
 
-export interface PatientHistoryProps {
+export interface lastArvRefillProps {
   patientUuid: string;
   code: string;
 }
-const PatientHistoryComponent: React.FC<PatientHistoryProps> = ({
+const LastArvRefillDate: React.FC<lastArvRefillProps> = ({
   patientUuid,
   code,
 }) => {
   const { t } = useTranslation();
-  const { data, isLoading, error, extractObservationData } = useObservationData(
+  const { data, isLoading, error, extractObservationData } = usePatientHistory(
     patientUuid,
     code
   );
@@ -51,22 +49,7 @@ const PatientHistoryComponent: React.FC<PatientHistoryProps> = ({
           </div>
         </div>
       </Tile>
-      <Tile>
-        <div className={styles.card}>
-          <div className={styles.desktopHeading}>
-            <h5 className={styles.title}>
-              {t("viralLoadHistory", "Viral Load History")}
-            </h5>
-          </div>
-          <VLStatus patientUuid={""} code={""} />
-        </div>
-      </Tile>
-      <Tile>
-        <div className={styles.card}>
-          <EligibilityForVL patientUuid={""} code={""} />
-        </div>
-      </Tile>
     </>
   );
 };
-export default PatientHistoryComponent;
+export default LastArvRefillDate;

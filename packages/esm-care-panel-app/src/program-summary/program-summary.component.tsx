@@ -38,6 +38,31 @@ const ProgramSummary: React.FC<ProgramSummaryProps> = ({
     return null;
   }
 
+  const vlDate = extractObservationData(
+    data,
+    "Date Viral Load Results Received"
+  );
+  const vlResult = extractObservationData(data, "Viral Load");
+  let vlStatus;
+
+  if (typeof vlResult !== "undefined") {
+    vlStatus = vlResult >= 1000 ? "Unsuppressed" : "Suppressed";
+  } else {
+    vlStatus = "---";
+  }
+
+  const dateVlSampleCollected = extractObservationData(
+    data,
+    "Date Viral Load Results Received"
+  );
+
+  const sixMonthsInMs = 6 * 30 * 24 * 60 * 60 * 1000;
+  const currentDate = new Date();
+  const sampleCollectionDate = new Date(dateVlSampleCollected);
+  const timeDifference = currentDate.getTime() - sampleCollectionDate.getTime();
+  const monthsDifference = timeDifference / sixMonthsInMs;
+  const eligibilityforvl = monthsDifference >= 6 ? "Eligible" : "Not Eligible";
+
   return (
     <>
       <Tile>
@@ -73,6 +98,55 @@ const ProgramSummary: React.FC<ProgramSummaryProps> = ({
                   {extractObservationData(data, "Body mass index")}
                 </span>
               </p>
+            </div>
+          </div>
+        </div>
+        <div className={styles.card}>
+          <div className={styles.container}>
+            <div className={styles.content}>
+              <p>{t("lastArvRefillDate", "Last ARV Refill Date")}</p>
+              <p>
+                {" "}
+                <span className={styles.value}>
+                  {extractObservationData(data, "Date VL Sample Collected?")}
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className={styles.card}>
+          <div className={styles.container}>
+            <div className={styles.content}>
+              <p>{t("date", "Date")}</p>
+              <p>{vlDate}</p>
+            </div>
+            <div className={styles.content}>
+              <p>{t("lastVLResult", "Last VL Result")}</p>
+              <p className={styles.value}>{vlResult}</p>
+            </div>
+            <div className={styles.content}>
+              <p>{t("vlStatus", "VL Status")}</p>
+              <p>
+                <span className={styles.value}>{vlStatus}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className={styles.card}>
+          <div className={styles.container}>
+            <div className={styles.content}>
+              <p>
+                {t(
+                  "eligibilityForVL",
+                  "Eligibility For Viral Load Sample Collection"
+                )}
+              </p>
+              <p>{eligibilityforvl}</p>
+            </div>
+            <div className={styles.content}></div>
+            <div className={styles.content}>
+              <p>{t("date", "Date")}</p>
+              <p className={styles.value}>{dateVlSampleCollected}</p>
             </div>
           </div>
         </div>
