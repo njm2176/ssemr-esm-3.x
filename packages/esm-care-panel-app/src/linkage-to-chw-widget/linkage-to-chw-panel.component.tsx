@@ -14,19 +14,12 @@ interface PatientHistoryProps {
   launchPatientWorkspace: Function;
 }
 
-type SwitcherItem = {
-  index: number;
-  name?: string;
-  text?: string;
-};
-
 const LinkageToCommunityHealthWorker: React.FC<PatientHistoryProps> = ({
   patientUuid,
   formEntrySub,
   launchPatientWorkspace,
 }) => {
   const { t } = useTranslation();
-  const [switchItem, setSwitcherItem] = useState<SwitcherItem>({ index: 0 });
 
   return (
     <>
@@ -38,7 +31,7 @@ const LinkageToCommunityHealthWorker: React.FC<PatientHistoryProps> = ({
           )}
           children={""}
         />
-        <div style={{ width: "100%", minHeight: "20rem" }}>
+        <div style={{ width: "100%", minHeight: "5rem" }}>
           <LinkageToCHW patientUuid={""} programName={""} />
         </div>
       </div>

@@ -34,9 +34,9 @@
       }
     },
     {
-      "name": "patient-history-summary",
+      "name": "patient-viral-load-history",
       "slot": "patient-chart-summary-dashboard-slot",
-      "component": "patientHistory",
+      "component": "patientVlhistory",
       "order": 1,
       "meta": {
         "columnSpan": 4

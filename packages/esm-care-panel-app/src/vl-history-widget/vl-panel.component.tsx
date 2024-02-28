@@ -1,33 +1,32 @@
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import styles from "./care-panel.scss";
+import styles from "./vl-panel.scss";
 import ProgramSummary from "../program-summary/program-summary.component";
 import { CardHeader } from "@openmrs/esm-patient-common-lib";
-import LastArtVisitSummary from "../last-arv-visit-summary/last-arv-visit-summary.component";
+import ViralLoadlHistory from "../viral-load-history/viral-load-history.component";
 
-interface CarePanelProps {
+interface VlPanelProps {
   patientUuid: string;
   formEntrySub: any;
   launchPatientWorkspace: Function;
 }
 
-const CarePanel: React.FC<CarePanelProps> = ({ patientUuid }) => {
+const VlPanel: React.FC<VlPanelProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
 
   return (
     <>
       <div className={styles.widgetCard}>
         <CardHeader
-          title={t("patientSummary", "Patient Summary")}
+          title={t("clientViralLoadHistory", "Client's Viral Load History")}
           children={""}
         ></CardHeader>
         <div style={{ width: "100%", minHeight: "20rem" }}>
-          <ProgramSummary patientUuid={patientUuid} code={""} />
-          <LastArtVisitSummary patientUuid={patientUuid} code={""} />
+          <ViralLoadlHistory patientUuid={patientUuid} code={""} />
         </div>
       </div>
     </>
   );
 };
 
-export default CarePanel;
+export default VlPanel;

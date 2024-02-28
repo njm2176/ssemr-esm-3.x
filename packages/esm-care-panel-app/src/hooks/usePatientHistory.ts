@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const useObservationData = (patientUuid, code) => {
+const usePatientHistory = (patientUuid, code) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -42,4 +42,4 @@ const useObservationData = (patientUuid, code) => {
   return { data, isLoading, error, extractObservationData };
 };
 
-export default useObservationData;
+export default usePatientHistory;

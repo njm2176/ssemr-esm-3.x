@@ -40,43 +40,41 @@ const ProgramSummary: React.FC<ProgramSummaryProps> = ({
 
   return (
     <>
-      <Tile>
-        <div className={styles.card}>
-          <div className={styles.container}>
-            <div className={styles.content}>
-              <p>{t("dateOfEnrollment", "Date of Enrollment")}</p>
-              <p>
-                {extractObservationData(
-                  data,
-                  "ART Start Date (Date of Enrolment)"
-                )}
-              </p>
-            </div>
-            <div className={styles.content}>
-              <p>{t("latestArvRegimen", "Latest ARV Regimen")}</p>
-              <p className={styles.value}>
-                {extractObservationData(data, "ARV Regimen")}
-              </p>
-            </div>
-            <div className={styles.content}>
-              <p>{t("lastCD4Count", "Last CD4 count")}</p>
-              <p>
-                <span className={styles.value}>
-                  {extractObservationData(data, "CD4")}
-                </span>
-              </p>
-            </div>
-            <div className={styles.content}>
-              <p>{t("bmiMuac", "BMI/MUAC")}</p>
-              <p>
-                <span className={styles.value}>
-                  {extractObservationData(data, "Body mass index")}
-                </span>
-              </p>
-            </div>
+      <div className={styles.card}>
+        <div className={styles.container}>
+          <div className={styles.content}>
+            <p>{t("dateOfEnrollment", "Date of Enrollment")}</p>
+            <p>
+              {extractObservationData(
+                data,
+                "ART Start Date (Date of Enrolment)"
+              )}
+            </p>
+          </div>
+          <div className={styles.content}>
+            <p>{t("latestArvRegimen", "Latest ARV Regimen")}</p>
+            <p className={styles.value}>
+              {extractObservationData(data, "ARV Regimen")}
+            </p>
+          </div>
+          <div className={styles.content}>
+            <p>{t("lastCD4Count", "Last CD4 count")}</p>
+            <p>
+              <span className={styles.value}>
+                {extractObservationData(data, "CD4")}
+              </span>
+            </p>
+          </div>
+          <div className={styles.content}>
+            <p>{t("bmiMuac", "BMI/MUAC")}</p>
+            <p>
+              <span className={styles.value}>
+                {extractObservationData(data, "Body mass index")}
+              </span>
+            </p>
           </div>
         </div>
-      </Tile>
+      </div>
     </>
   );
 };
