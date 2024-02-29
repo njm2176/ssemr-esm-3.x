@@ -16,7 +16,6 @@ const useObservationData = (patientUuid, code) => {
           throw new Error("Failed to fetch data");
         }
         const jsonData = await response.json();
-        console.log("JsonData:", jsonData);
         setData(jsonData);
       } catch (error) {
         console.error("Error fetching observation data:", error);
@@ -39,7 +38,7 @@ const useObservationData = (patientUuid, code) => {
     }
   };
 
-  return { data, isLoading, error, extractObservationData };
+  return { data, isLoading, setIsLoading, error, extractObservationData };
 };
 
 export default useObservationData;

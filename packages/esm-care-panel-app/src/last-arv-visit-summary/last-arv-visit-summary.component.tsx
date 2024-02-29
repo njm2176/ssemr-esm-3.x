@@ -77,4 +77,5 @@ const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
     </>
   );
 };
+
 export default lastArtVisitSummary;

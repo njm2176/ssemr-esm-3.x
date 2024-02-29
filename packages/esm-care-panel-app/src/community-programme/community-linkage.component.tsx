@@ -1,50 +1,41 @@
 import React from "react";
+import styles from "./community-linkage.scss";
 import { useTranslation } from "react-i18next";
 import { formatDate, useLayoutType } from "@openmrs/esm-framework";
-import {
-  StructuredListSkeleton,
-  Tile,
-  DataTable,
-  Table,
-  TableHead,
-  TableRow,
-  TableHeader,
-  TableBody,
-  TableCell,
-} from "@carbon/react";
+import { StructuredListSkeleton, Tile } from "@carbon/react";
 import useObservationData from "../hooks/useObservationData";
-import styles from "../program-summary/program-summary.scss";
 
-export interface PatientHistoryProps {
+export interface CommunityLinkageProps {
   patientUuid: string;
   code: string;
 }
-const LinkageToCHWTable: React.FC<PatientHistoryProps> = ({
+const CommunityLinkage: React.FC<CommunityLinkageProps> = ({
   patientUuid,
   code,
 }) => {
-  const { t } = useTranslation();
   const { data, isLoading, error, extractObservationData } = useObservationData(
     patientUuid,
     code
   );
+  const { t } = useTranslation();
 
   const isTablet = useLayoutType() == "tablet";
   if (isLoading) {
-    return <StructuredListSkeleton role="progressbar" />;
-  }
-  if (error) {
     return (
-      <span>
-        {t(
-          "errorCommunityHealthWorker",
-          "Error loading Community Health Worker"
-        )}
-      </span>
+      <Tile>
+        <StructuredListSkeleton role="progressbar" />
+      </Tile>
     );
   }
-  if (Object.keys(data ?? {})?.length === 0) {
-    return;
+
+  if (error) {
+    return (
+      <span>{t("errorPatientSummary", "Error loading Patient summary")}</span>
+    );
+  }
+
+  if (!data || Object.keys(data).length === 0) {
+    return null;
   }
 
   return (
@@ -81,5 +72,4 @@ const LinkageToCHWTable: React.FC<PatientHistoryProps> = ({
     </>
   );
 };
-
-export default LinkageToCHWTable;
+export default CommunityLinkage;
