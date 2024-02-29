@@ -101,6 +101,7 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
           </div>
         </div>
       </div>
+      <hr />
       <div className={styles.card}>
         <div className={styles.container}>
           <div className={styles.content}>

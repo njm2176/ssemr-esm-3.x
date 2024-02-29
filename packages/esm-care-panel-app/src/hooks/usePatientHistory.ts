@@ -16,7 +16,6 @@ const usePatientHistory = (patientUuid, code) => {
           throw new Error("Failed to fetch data");
         }
         const jsonData = await response.json();
-        console.log("JsonData:", jsonData);
         setData(jsonData);
       } catch (error) {
         console.error("Error fetching observation data:", error);
