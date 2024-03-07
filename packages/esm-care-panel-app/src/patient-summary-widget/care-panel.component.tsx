@@ -18,11 +18,12 @@ const CarePanel: React.FC<CarePanelProps> = ({ patientUuid }) => {
     <>
       <div className={styles.widgetCard}>
         <CardHeader
-          title={t("patientSummary", "Patient Summary")}
+          title={t("lastArtVisitSummary", "Last ART Visit Summary")}
           children={""}
         ></CardHeader>
-        <div style={{ width: "100%", minHeight: "20rem" }}>
+        <div style={{ width: "100%", minHeight: "10rem" }}>
           <ProgramSummary patientUuid={patientUuid} code={""} />
+          {/* <hr style={{margin: "20px"}}/> */}
           <LastArtVisitSummary patientUuid={patientUuid} code={""} />
         </div>
       </div>

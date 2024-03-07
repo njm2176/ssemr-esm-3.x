@@ -33,11 +33,6 @@ const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
   return (
     <>
       <div className={styles.card}>
-        <div className={styles.desktopHeading}>
-          <h6 className={styles.title}>
-            {t("lastArtVisitSummary", "LAST ART VISIT SUMMARY")}
-          </h6>
-        </div>
         <div className={styles.container}>
           <div className={styles.content}>
             <p>{t("lastTBStatus", "Last TB status")}</p>

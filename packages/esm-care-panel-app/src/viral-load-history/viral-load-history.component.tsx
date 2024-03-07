@@ -86,14 +86,9 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
         </div>
       </div>
       <div className={styles.card}>
-        <div className={styles.desktopHeading}>
-          <h6 className={styles.title}>
-            {t("vlHistory", "Viral Load History")}
-          </h6>
-        </div>
         <div className={styles.container}>
           <div className={styles.content}>
-            <p>{t("date", "Date")}</p>
+            <p>{t("dateVLRecieved", "Date Viral Load Results Received")}</p>
             <p>{vlDate}</p>
           </div>
           <div className={styles.content}>
@@ -108,7 +103,7 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
           </div>
         </div>
       </div>
-      <hr />
+      <hr style={{ margin: "20px" }} />
       <div className={styles.card}>
         <div className={styles.container}>
           <div className={styles.content}>

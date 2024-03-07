@@ -43,18 +43,18 @@
       }
     },
     {
-      "name": "more-patient-summary",
+      "name": "linkage-to-chw-summary",
       "slot": "patient-chart-summary-dashboard-slot",
-      "component": "patientData",
+      "component": "linkageToCHW",
       "order": 1,
       "meta": {
         "columnSpan": 4
       }
     },
     {
-      "name": "linkage-to-chw-summary",
+      "name": "more-patient-summary",
       "slot": "patient-chart-summary-dashboard-slot",
-      "component": "linkageToCHW",
+      "component": "patientData",
       "order": 1,
       "meta": {
         "columnSpan": 4
