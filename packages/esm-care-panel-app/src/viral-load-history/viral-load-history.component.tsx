@@ -42,10 +42,10 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
     data,
     "Date Viral Load Results Received"
   );
-  const vlResult = extractObservationData(data, "Viral Load");
+  const vlResult = extractObservationData(data, "HIVTC, Viral Load");
   let vlStatus;
 
-  if (typeof vlResult !== "undefined") {
+  if (!isNaN(vlResult)) {
     vlStatus = vlResult >= 1000 ? "Unsuppressed" : "Suppressed";
   } else {
     vlStatus = "---";
@@ -56,12 +56,19 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
     "Date Viral Load Results Received"
   );
 
-  const sixMonthsInMs = 6 * 30 * 24 * 60 * 60 * 1000;
-  const currentDate = new Date();
-  const sampleCollectionDate = new Date(dateVlSampleCollected);
-  const timeDifference = currentDate.getTime() - sampleCollectionDate.getTime();
-  const monthsDifference = timeDifference / sixMonthsInMs;
-  const eligibilityforvl = monthsDifference >= 6 ? "Eligible" : "Not Eligible";
+  let eligibilityforvl;
+
+  if (dateVlSampleCollected) {
+    const sixMonthsInMs = 6 * 30 * 24 * 60 * 60 * 1000;
+    const currentDate = new Date();
+    const sampleCollectionDate = new Date(dateVlSampleCollected);
+    const timeDifference =
+      currentDate.getTime() - sampleCollectionDate.getTime();
+    const monthsDifference = timeDifference / sixMonthsInMs;
+    eligibilityforvl = monthsDifference >= 6 ? "Eligible" : "Not Eligible";
+  } else {
+    eligibilityforvl = "---";
+  }
 
   return (
     <>
