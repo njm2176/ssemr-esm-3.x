@@ -16,10 +16,18 @@ const StatCard = ({ item }) => {
   const [rows, setRows] = useState([]);
   const [csvData, setCsvData] = useState(null);
 
-  const headers = ["Name", "Sex", "Date enrolled", "Clinical status"];
+  const headers = [
+    "Name",
+    "Sex",
+    "Date enrolled",
+    "Last Refill Date",
+    "Contact",
+  ];
 
   const generateCSV = () => {
-    const data = [["Name", "Sex", "Date enrolled", "Clinical status"]];
+    const data = [
+      ["Name", "Sex", "Date enrolled", "Last Refill Date", "Contact"],
+    ];
     rows.forEach((row) => {
       const values = Object.values(row);
       // @ts-ignore
@@ -48,7 +56,8 @@ const StatCard = ({ item }) => {
         name: client.name,
         sex: client.sex,
         dateEnrolled: client.dateEnrolled,
-        clinicalStatus: item.title,
+        lastRefillDate: client.lastRefillDate,
+        contact: client.contact,
       }));
 
       setRows(formattedResults);
