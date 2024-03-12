@@ -11,7 +11,6 @@ import MorePatientData from "../more-client-data/more-client-data-component";
 interface PatientHistoryProps {
   patientUuid: string;
   formEntrySub: any;
-  launchPatientWorkspace: Function;
 }
 
 type SwitcherItem = {
@@ -23,7 +22,6 @@ type SwitcherItem = {
 const PatientData: React.FC<PatientHistoryProps> = ({
   patientUuid,
   formEntrySub,
-  launchPatientWorkspace,
 }) => {
   const { t } = useTranslation();
 

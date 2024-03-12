@@ -41,10 +41,16 @@
 .title {
   color: colors.$gray-100;
   margin-left: spacing.$spacing-05;
-  border-bottom: 1px solid #0070E7;
+  padding-bottom: 2px;
   margin-bottom: 1rem;
   margin-top: 1rem;
-  width: 20%;
+  display: inline-block;
+}
+
+.title::after {
+  content: "";
+  display: block;
+  border-bottom: 1px solid #0070E7;
 }
 
 .label {
@@ -58,7 +64,6 @@
   flex-direction: row;
   padding-left: 1rem;
   flex-wrap: wrap;
-  width: 100%;
 }
 
 .value {
@@ -67,7 +72,7 @@
 }
 
 .content {
-  width: 30%;
+  width: 25%;
   margin: spacing.$spacing-03 0;
 
   & > p:first-child {

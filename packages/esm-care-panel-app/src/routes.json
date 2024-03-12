@@ -34,18 +34,9 @@
       }
     },
     {
-      "name": "patient-history-summary",
+      "name": "patient-viral-load-history",
       "slot": "patient-chart-summary-dashboard-slot",
-      "component": "patientHistory",
-      "order": 1,
-      "meta": {
-        "columnSpan": 4
-      }
-    },
-    {
-      "name": "more-patient-summary",
-      "slot": "patient-chart-summary-dashboard-slot",
-      "component": "patientData",
+      "component": "patientVlhistory",
       "order": 1,
       "meta": {
         "columnSpan": 4
@@ -55,6 +46,15 @@
       "name": "linkage-to-chw-summary",
       "slot": "patient-chart-summary-dashboard-slot",
       "component": "linkageToCHW",
+      "order": 1,
+      "meta": {
+        "columnSpan": 4
+      }
+    },
+    {
+      "name": "more-patient-summary",
+      "slot": "patient-chart-summary-dashboard-slot",
+      "component": "patientData",
       "order": 1,
       "meta": {
         "columnSpan": 4

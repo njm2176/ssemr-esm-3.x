@@ -32,51 +32,45 @@ const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
 
   return (
     <>
-      <Tile>
-        <div className={styles.card}>
-          <div className={styles.desktopHeading}>
-            <h6 className={styles.title}>
-              {t("lastArtVisitSummary", "LAST ART VISIT SUMMARY")}
-            </h6>
+      <div className={styles.card}>
+        <div className={styles.container}>
+          <div className={styles.content}>
+            <p>{t("lastTBStatus", "Last TB status")}</p>
+            <p>
+              {" "}
+              <span className={styles.value}>
+                {extractObservationData(data, "TB Status")}
+              </span>
+            </p>
           </div>
-          <div className={styles.container}>
-            <div className={styles.content}>
-              <p>{t("lastTBStatus", "Last TB status")}</p>
-              <p>
-                {" "}
-                <span className={styles.value}>
-                  {extractObservationData(data, "TB Status")}
-                </span>
-              </p>
-            </div>
-            <div className={styles.content}>
-              <p>{t("lastArvRegimenDose", "Last ARV Regimen Dose")}</p>
-              <p>
-                <span className={styles.value}>
-                  {extractObservationData(data, "Number of Days Dispensed")}
-                </span>
-              </p>
-            </div>
-            <div className={styles.content}>
-              <p>{t("nextVisitDate", "Next Visit Date")}</p>
-              <p>
-                <span className={styles.value}>
-                  {extractObservationData(data, "ART Follow up Date")}
-                </span>
-              </p>
-            </div>
-            <div className={styles.content}>
-              <p>{t("whoHivClinicalStage", "WHO HIV Clinical Stage")}</p>
-              <p>
-                <span className={styles.value}>
-                  {extractObservationData(data, "WHO Stage")}
-                </span>
-              </p>
-            </div>
+          <div className={styles.content}>
+            <p>{t("lastArvRegimenDose", "Last ARV Regimen Dose")}</p>
+            <p>
+              <span className={styles.value}>
+                {extractObservationData(data, "Number of Days Dispensed")}
+              </span>
+            </p>
+          </div>
+          <div className={styles.content}>
+            <p>{t("nextVisitDate", "Next Visit Date")}</p>
+            <p>
+              <span className={styles.value}>
+                {extractObservationData(data, "ART Follow up Date")}
+              </span>
+            </p>
+          </div>
+          <div className={styles.content}>
+            <p>{t("whoHivClinicalStage", "WHO HIV Clinical Stage")}</p>
+            <p>
+              <span className={styles.value}>
+                {extractObservationData(data, "WHO Stage")}
+              </span>
+            </p>
           </div>
         </div>
-      </Tile>
+      </div>
     </>
   );
 };
+
 export default lastArtVisitSummary;

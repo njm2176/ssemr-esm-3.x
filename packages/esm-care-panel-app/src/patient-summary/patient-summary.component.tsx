@@ -211,10 +211,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 </p>
                 <p>
                   <span className={styles.value}>
-                    {extractObservationData(
-                      data,
-                      "Number of Pill Dispensed(INH)"
-                    )}
+                    {extractObservationData(data, "Number of Days Dispensed")}
                   </span>
                 </p>
               </div>
