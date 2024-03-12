@@ -168,7 +168,6 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
 
       setTarget(redirectUrl);
     } catch (error) {
-      console.log("error", error);
       if (error.responseBody?.error?.globalErrors) {
         error.responseBody.error.globalErrors.forEach((error) => {
           showSnackbar({
