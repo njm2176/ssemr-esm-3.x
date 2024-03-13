@@ -17,7 +17,7 @@ import {
 import { FormManager } from "./patient-registration/form-manager";
 import { PatientRegistration } from "./patient-registration/patient-registration.component";
 import styles from "./root.scss";
-import ArtProvider from "./patient-registration/ArtContext";
+import CustomFieldsProvider from "./patient-registration/CustomFieldsContext";
 
 export default function Root() {
   const isOnline = useConnectivity();
@@ -56,7 +56,7 @@ export default function Root() {
             currentSession,
           }}
         >
-          <ArtProvider>
+          <CustomFieldsProvider>
             <BrowserRouter basename={window.getOpenmrsSpaBase()}>
               <Routes>
                 <Route
@@ -79,7 +79,7 @@ export default function Root() {
                 />
               </Routes>
             </BrowserRouter>
-          </ArtProvider>
+          </CustomFieldsProvider>
         </ResourcesContext.Provider>
       </Grid>
     </main>
