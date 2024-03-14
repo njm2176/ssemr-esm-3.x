@@ -38,7 +38,7 @@ import {
 import { SectionWrapper } from "./section/section-wrapper.component";
 import BeforeSavePrompt from "./before-save-prompt";
 import styles from "./patient-registration.scss";
-import { ARTContext } from "./ArtContext";
+import { CustomFieldsContext } from "./CustomFieldsContext";
 
 let exportedInitialFormValuesForTesting = {} as FormValues;
 
@@ -53,7 +53,7 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
 }) => {
   const { currentSession, addressTemplate, identifierTypes } =
     useContext(ResourcesContext);
-  const { artNumber } = useContext(ARTContext);
+  const { artNumber, phones } = useContext(CustomFieldsContext);
   const { search } = useLocation();
   const config = useConfig() as RegistrationConfig;
   const [target, setTarget] = useState<undefined | string>();
@@ -122,7 +122,43 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
       },
     };
 
+    const primaryPhoneObject = {
+      attributeTypeUuid: "8f0a2a16-c073-4622-88ad-a11f2d6966ad",
+      attributeName: "MobileNumber",
+      preferred: false,
+      initialValue: "",
+      required: false,
+      attributeValue: phones.primary.code + phones.primary.number,
+      selectedSource: {
+        name: "",
+        autoGeneration: "",
+        uuid: "",
+      },
+    };
+
+    const secondaryPhoneObject = {
+      attributeTypeUuid: "be6d2471-4152-42f5-904d-3f2274f35fe4",
+      attributeName: "AltTelephoneNo",
+      preferred: false,
+      initialValue: "",
+      required: false,
+      attributeValue: phones.secondary.code + phones.secondary.number,
+      selectedSource: {
+        name: "",
+        autoGeneration: "",
+        uuid: "",
+      },
+    };
+
     filteredValues["uniqueArtNumber"] = artObject;
+
+    // phones.primary.number && phones.primary.code
+    //   ? (filteredValues["AltTelephoneNo"] = primaryPhoneObject)
+    //   : null;
+    //
+    // phones.secondary.number && phones.secondary.code
+    //   ? (filteredValues["AltTelephoneNo"] = secondaryPhoneObject)
+    //   : null;
 
     const updatedFormValues = {
       ...values,
@@ -168,7 +204,6 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
 
       setTarget(redirectUrl);
     } catch (error) {
-      console.log("error", error);
       if (error.responseBody?.error?.globalErrors) {
         error.responseBody.error.globalErrors.forEach((error) => {
           showSnackbar({

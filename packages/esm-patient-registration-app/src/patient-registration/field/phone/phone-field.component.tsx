@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 import { countryCodes } from "./country-codes";
 import { FormValues } from "../../patient-registration.types";
 import { PatientRegistrationContext } from "../../patient-registration-context";
+import { CustomFieldsContext } from "../../CustomFieldsContext";
+import { Select, SelectItem, TextInput } from "@carbon/react";
 
 interface InputProps {
   id: string;
@@ -18,6 +20,7 @@ interface InputProps {
 
 export const PhoneField: React.FC<InputProps> = () => {
   const { values } = React.useContext(PatientRegistrationContext);
+  const { phones, setPhones } = React.useContext(CustomFieldsContext);
   const { t } = useTranslation();
 
   const [countryCode, setCountryCode] = useState("");
@@ -64,26 +67,79 @@ export const PhoneField: React.FC<InputProps> = () => {
     }
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(phoneValue);
-    console.log(altPhoneValue);
+  const handlePrimaryCountryCode = (evt) => {
+    // regex to extract text within parentheses
+    const regex = /\((.*?)\)/g;
+    const inputValue = evt.target.value;
+    setPhones((prev) => ({
+      ...prev,
+      primary: {
+        ...prev.primary,
+        dial_code: inputValue,
+        code: regex.exec(inputValue)[1],
+      },
+    }));
+  };
+
+  const handlePrimaryNumber = (evt) => {
+    const inputValue = evt.target.value;
+    const regex = /^[0-9\b]+$/;
+    if (inputValue === "" || regex.test(inputValue))
+      setPhones((prev) => ({
+        ...prev,
+        primary: {
+          ...prev.primary,
+          number: evt.target.value,
+        },
+      }));
+  };
+
+  const handleSecondaryCountryCode = (evt) => {
+    // regex to extract text within parentheses
+    const regex = /\((.*?)\)/g;
+    const inputValue = evt.target.value;
+    setPhones((prev) => ({
+      ...prev,
+      secondary: {
+        ...prev.secondary,
+        dial_code: inputValue,
+        code: regex.exec(inputValue)[1],
+      },
+    }));
+  };
+
+  const handleSecondaryNumber = (evt) => {
+    const inputValue = evt.target.value;
+    const regex = /^[0-9\b]+$/;
+    if (inputValue === "" || regex.test(inputValue))
+      setPhones((prev) => ({
+        ...prev,
+        secondary: {
+          ...prev.secondary,
+          number: evt.target.value,
+        },
+      }));
   };
 
   return (
     <div className={styles.phoneFieldContainer}>
       <div className={styles.fieldRow}>
         <div className={styles.countryCode}>
-          <SelectInput
-            name="mobileCountryCode"
-            options={countryCodes.map((code) => code.dial_code)}
-            label={t("countryCode", "Country Code")}
-            onChange={handleCountryCodeChange}
-            value={""}
-          />
+          <Select
+            onChange={handlePrimaryCountryCode}
+            value={phones.primary.dial_code}
+          >
+            {countryCodes.map((country) => (
+              <SelectItem
+                key={country.code}
+                value={country.dial_code}
+                text={country.dial_code}
+              />
+            ))}
+          </Select>
         </div>
         <div className={styles.fieldColumn}>
-          <Input
+          <TextInput
             id="phone"
             name="TelephoneNumber"
             labelText={t(
@@ -91,35 +147,40 @@ export const PhoneField: React.FC<InputProps> = () => {
               "Clients Telephone Number"
             )}
             light={true}
-            value={phoneValue}
-            onChange={handlePhoneChange}
+            value={phones.primary.number}
+            onChange={handlePrimaryNumber}
           />
           {phoneError && <div className={styles.error}>{phoneError}</div>}
         </div>
       </div>
       <div className={styles.fieldRow}>
         <div className={styles.countryCode}>
-          <SelectInput
-            name="alternativeMobileCountryCode"
-            options={countryCodes.map((code) => code.dial_code)}
-            label={t("countryCode", "Country Code")}
-            onChange={handleAltCountryCodeChange}
-            value={""}
-          />
+          <Select
+            onChange={handleSecondaryCountryCode}
+            value={phones.secondary.dial_code}
+          >
+            {countryCodes.map((country) => (
+              <SelectItem
+                key={country.code}
+                value={country.dial_code}
+                text={country.dial_code}
+              />
+            ))}
+          </Select>
         </div>
         <div className={styles.fieldColumn}>
-          <Input
-            id="altPhone"
-            name="alternativeTelephonePhone"
+          <TextInput
+            id="phone"
+            name="TelephoneNumber"
             labelText={t(
               "phoneNumberInputLabelText",
-              "Alternative Telephone Number"
+              "Clients Telephone Number"
             )}
             light={true}
-            value={altPhoneValue}
-            onChange={handleAltPhoneChange}
+            value={phones.secondary.number}
+            onChange={handleSecondaryNumber}
           />
-          {altPhoneError && <div className={styles.error}>{altPhoneError}</div>}
+          {phoneError && <div className={styles.error}>{phoneError}</div>}
         </div>
       </div>
     </div>

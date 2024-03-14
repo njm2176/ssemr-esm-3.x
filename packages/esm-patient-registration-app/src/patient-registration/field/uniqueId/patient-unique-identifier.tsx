@@ -12,7 +12,7 @@ import {
 import styles from "./patient-unique-identifier.scss";
 import { FormikProps, FormikValues } from "formik";
 import { facilities } from "./assets/identifier-assets";
-import { ARTContext } from "../../ArtContext";
+import { CustomFieldsContext } from "../../CustomFieldsContext";
 
 interface PatientIdentifierProps {
   props: FormikProps<FormikValues>;
@@ -107,7 +107,7 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
     console.log("Input blurred");
   };
 
-  const { changeART } = useContext(ARTContext);
+  const { changeART } = useContext(CustomFieldsContext);
 
   useEffect(() => {
     const value = `${transferIn ? "TI-" : ""}${selectedFacility}${artNumber}`;
