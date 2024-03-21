@@ -1,0 +1,17 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/colors';
+@use '@carbon/styles/scss/type';
+@import "../../../root.scss";
+
+.parent{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+
+.inputWrapper{
+  width: 100%;
+  display: flex;
+}
