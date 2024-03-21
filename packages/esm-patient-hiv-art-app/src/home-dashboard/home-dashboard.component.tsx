@@ -29,17 +29,24 @@ const HomeDashboard = () => {
     useContext(DashboardContext);
 
   return (
-    <>
+    <div style={{ position: "relative" }}>
       {/* ................Title......................... */}
       <div className={styles.header}>
         <div className={styles["left-justified-items"]}>
           <Home color="green" size="34" className={styles.homeIcon} />
           <div className={styles["page-labels"]}>
             <p className={styles.title}>
-              {t("hivCareAndART", "HIV Care and ART")}
+              {t("hivCareAndARTDashboard", "HIV Care and ART Dashboard")}
             </p>
-            <p className={styles.subTitle}>{t("dashboard", "Dashboard")}</p>
           </div>
+        </div>
+        <div
+          style={{
+            width: "fit-content",
+            maxWidth: "500px",
+          }}
+        >
+          <TimeFilter />
         </div>
       </div>
       <div className={styles.parent}>
@@ -54,24 +61,6 @@ const HomeDashboard = () => {
               isActive={currentTopFilterIndex == item.index}
             />
           ))}
-          <div
-            style={{
-              width: "100%",
-            }}
-          >
-            <TimeFilter />
-            {/*<Dropdown*/}
-            {/*  id="filter"*/}
-            {/*  titleText=""*/}
-            {/*  initialSelectedItem={filterOptions[0]}*/}
-            {/*  onChange={(evt) => {*/}
-            {/*    setCurrentTimeFilter(evt.selectedItem.value);*/}
-            {/*  }}*/}
-            {/*  label=""*/}
-            {/*  items={filterOptions}*/}
-            {/*  itemToString={(item) => item.name}*/}
-            {/*/>*/}
-          </div>
         </div>
 
         {/* ...................Stats.................... */}
@@ -138,7 +127,7 @@ const HomeDashboard = () => {
           <HighViralLoadCascade />
         </ChartCard>
       </div>
-    </>
+    </div>
   );
 };
 
