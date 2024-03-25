@@ -10,7 +10,7 @@ const useObservationData = (patientUuid, code) => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `/openmrs/ws/rest/v1/obs?patient=${patientUuid}&_sort=-date&limit=1000`
+          `/openmrs/ws/rest/v1/obs?patient=${patientUuid}&_sort=-date&limit=100`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");

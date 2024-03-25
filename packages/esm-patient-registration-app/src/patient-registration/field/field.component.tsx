@@ -50,7 +50,7 @@ export function Field({ name }: FieldProps) {
     case "address":
       return <AddressComponent />;
     case "phone":
-      return <PhoneField name={name} id={""} labelText={""} light={false} />;
+      return <PhoneField />;
     case "id":
       return <Identifiers />;
     default:

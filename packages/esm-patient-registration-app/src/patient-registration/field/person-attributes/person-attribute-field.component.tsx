@@ -57,7 +57,7 @@ export function PersonAttributeField({
               "Patient attribute type has unknown format {{personAttributeTypeFormat}}",
               {
                 personAttributeTypeFormat: personAttributeType.format,
-              },
+              }
             )}
           </InlineNotification>
         );
@@ -92,7 +92,7 @@ export function PersonAttributeField({
             {
               personattributetype:
                 fieldDefinition?.label ?? fieldDefinition?.id,
-            },
+            }
           )}
         </InlineNotification>
       </div>
