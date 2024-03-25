@@ -3,7 +3,6 @@ import { Home } from "@carbon/react/icons";
 import styles from "./home-dashboard.scss";
 import { useTranslation } from "react-i18next";
 import StatCard from "./components/cards/StatCard";
-import { Dropdown } from "@carbon/react";
 import "@carbon/charts/styles.css";
 import NewlyEnrolled from "./charts/NewlyEnrolled";
 import SSEMRTab from "./components/tabs/SSEMRTab";
@@ -21,6 +20,7 @@ import ChartCard from "./components/cards/ChartCard";
 import { DashboardContext, filterOptions } from "./context/DashboardContext";
 import ViralLoadResults from "./charts/ViralLoadResults";
 import Waterfall from "./charts/Waterfall";
+import { TimeFilter } from "./components/filter/TimeFilter";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
@@ -29,17 +29,24 @@ const HomeDashboard = () => {
     useContext(DashboardContext);
 
   return (
-    <>
+    <div style={{ position: "relative" }}>
       {/* ................Title......................... */}
       <div className={styles.header}>
         <div className={styles["left-justified-items"]}>
           <Home color="green" size="34" className={styles.homeIcon} />
           <div className={styles["page-labels"]}>
             <p className={styles.title}>
-              {t("hivCareAndART", "HIV Care and ART")}
+              {t("hivCareAndARTDashboard", "HIV Care and ART Dashboard")}
             </p>
-            <p className={styles.subTitle}>{t("dashboard", "Dashboard")}</p>
           </div>
+        </div>
+        <div
+          style={{
+            width: "fit-content",
+            maxWidth: "500px",
+          }}
+        >
+          <TimeFilter />
         </div>
       </div>
       <div className={styles.parent}>
@@ -54,23 +61,6 @@ const HomeDashboard = () => {
               isActive={currentTopFilterIndex == item.index}
             />
           ))}
-          <div
-            style={{
-              width: 400,
-            }}
-          >
-            <Dropdown
-              id="filter"
-              titleText=""
-              initialSelectedItem={filterOptions[0]}
-              onChange={(evt) => {
-                setCurrentTimeFilter(evt.selectedItem.value);
-              }}
-              label=""
-              items={filterOptions}
-              itemToString={(item) => item.name}
-            />
-          </div>
         </div>
 
         {/* ...................Stats.................... */}
@@ -137,7 +127,7 @@ const HomeDashboard = () => {
           <HighViralLoadCascade />
         </ChartCard>
       </div>
-    </>
+    </div>
   );
 };
 

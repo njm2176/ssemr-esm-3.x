@@ -3733,8 +3733,11 @@ __metadata:
     "@react-spectrum/datepicker": ^3.8.0
     "@react-spectrum/provider": ^3.9.0
     "@react-spectrum/theme-default": ^3.5.6
+    core-js-pure: ^3.36.0
     d3: ^7.8.0
+    geopattern: ^1.2.3
     lodash-es: ^4.17.21
+    react-avatar: ^5.0.3
   peerDependencies:
     "@openmrs/esm-extensions": 5.x
     "@openmrs/esm-framework": 5.x
@@ -7922,6 +7925,13 @@ __metadata:
   version: 3.36.0
   resolution: "core-js-pure@npm:3.36.0"
   checksum: 12a0588981efdc710426c688f6d5f6abaee76858ff32d21c6d7b81bc81c39b7cebb2733f8e822862b2a7f329f8fe37065a33ff6c4fd9253b3a1ad3cf636e483e
+  languageName: node
+  linkType: hard
+
+"core-js-pure@npm:^3.36.0":
+  version: 3.36.1
+  resolution: "core-js-pure@npm:3.36.1"
+  checksum: 5318607e4bca7cc25f4de0a1bbb9f25a0f4d2e6c14963ccc1c7b4fe8a245bdf7ff1453b61e2b36b1eb486c9259399862b9a1f2d6bda2b0dcbc74a7e334628e20
   languageName: node
   linkType: hard
 
