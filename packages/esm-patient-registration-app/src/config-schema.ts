@@ -11,14 +11,14 @@ export interface FieldDefinition {
   type: string;
   label?: string;
   uuid: string;
-  placeholder: string;
+  placeholder?: string;
   showHeading: boolean;
-  validation: {
+  validation?: {
     required: boolean;
     matches?: string;
   };
   answerConceptSetUuid?: string;
-  customConceptAnswers: Array<CustomConceptAnswer>;
+  customConceptAnswers?: Array<CustomConceptAnswer>;
 }
 export interface CustomConceptAnswer {
   uuid: string;
@@ -57,6 +57,13 @@ export interface RegistrationConfig {
         enabled: boolean;
         dayOfMonth: number;
         month: number;
+      };
+    };
+    phone: {
+      personAttributeUuid: string;
+      validation?: {
+        required: boolean;
+        matches?: string;
       };
     };
   };
@@ -123,7 +130,7 @@ export const esmPatientRegistrationSchema = {
         _type: Type.Array,
         _default: [],
         _description: `The parts to include in the section. Can be any of the following built-in fields: ${builtInFields.join(
-          ", ",
+          ", "
         )}. Can also be an id from an object in the \`fieldDefinitions\` array, which you can use to define custom fields.`,
         _elements: { _type: Type.String },
       },
@@ -205,7 +212,7 @@ export const esmPatientRegistrationSchema = {
         uuid: "14d4f066-15f5-102d-96e4-000c29c2a5d7",
         showHeading: false,
         validation: {
-          matches: "^0([0-9](?:(?:[0-9][0-9])|(?:0[0-8])|(4[0-1]))[0-9]{6})$",
+          matches: "^\\+[0-9]{1,3}[0-9]{9}$",
         },
       },
       {
@@ -214,7 +221,7 @@ export const esmPatientRegistrationSchema = {
         uuid: "be6d2471-4152-42f5-904d-3f2274f35fe4",
         showHeading: false,
         validation: {
-          matches: "^0([0-9](?:(?:[0-9][0-9])|(?:0[0-8])|(4[0-1]))[0-9]{6})$",
+          matches: "^\\+[0-9]{1,3}[0-9]{9}$",
         },
       },
     ],
@@ -351,6 +358,21 @@ export const esmPatientRegistrationSchema = {
         },
       },
     },
+    phone: {
+      personAttributeUuid: {
+        _type: Type.UUID,
+        _default: "14d4f066-15f5-102d-96e4-000c29c2a5d7",
+        _description: "The UUID of the phone number person attribute type",
+      },
+      validation: {
+        required: { _type: Type.Boolean, _default: false },
+        matches: {
+          _type: Type.String,
+          _default: null,
+          _description: "Optional RegEx for testing the validity of the input.",
+        },
+      },
+    },
   },
   links: {
     submitButton: {
@@ -397,14 +419,14 @@ export const esmPatientRegistrationSchema = {
       (config: RegistrationConfig) =>
         !config.fieldDefinitions.some((d) => d.type == "obs") ||
         config.registrationObs.encounterTypeUuid != null,
-      "If fieldDefinitions contains any fields of type 'obs', `registrationObs.encounterTypeUuid` must be specified.",
+      "If fieldDefinitions contains any fields of type 'obs', `registrationObs.encounterTypeUuid` must be specified."
     ),
     validator(
       (config: RegistrationConfig) =>
         config.sections.every((s) =>
           [...builtInSections, ...config.sectionDefinitions]
             .map((sDef) => sDef.id)
-            .includes(s),
+            .includes(s)
         ),
       (config: RegistrationConfig) => {
         const allowedSections = [
@@ -412,17 +434,19 @@ export const esmPatientRegistrationSchema = {
           ...config.sectionDefinitions,
         ].map((sDef) => sDef.id);
         const badSection = config.sections.find(
-          (s) => !allowedSections.includes(s),
+          (s) => !allowedSections.includes(s)
         );
         return (
           `'${badSection}' is not a valid section ID. Valid section IDs include the built-in sections ${stringifyDefinitions(
-            builtInSections,
+            builtInSections
           )}` +
           (config.sectionDefinitions.length
-            ? `; and the defined sections ${stringifyDefinitions(config.sectionDefinitions)}.`
+            ? `; and the defined sections ${stringifyDefinitions(
+                config.sectionDefinitions
+              )}.`
             : ".")
         );
-      },
+      }
     ),
     validator(
       (config: RegistrationConfig) =>
@@ -431,8 +455,8 @@ export const esmPatientRegistrationSchema = {
             [
               ...builtInFields,
               ...config.fieldDefinitions.map((fDef) => fDef.id),
-            ].includes(f),
-          ),
+            ].includes(f)
+          )
         ),
       (config: RegistrationConfig) => {
         const allowedFields = [
@@ -440,28 +464,30 @@ export const esmPatientRegistrationSchema = {
           ...config.fieldDefinitions.map((fDef) => fDef.id),
         ];
         const badSection = config.sectionDefinitions.find((sectionDefinition) =>
-          sectionDefinition.fields.some((f) => !allowedFields.includes(f)),
+          sectionDefinition.fields.some((f) => !allowedFields.includes(f))
         );
         const badField = badSection.fields.find(
-          (f) => !allowedFields.includes(f),
+          (f) => !allowedFields.includes(f)
         );
         return (
           `The section definition '${
             badSection.id
           }' contains an invalid field '${badField}'. 'fields' can only contain the built-in fields '${builtInFields.join(
-            "', '",
+            "', '"
           )}'` +
           (config.fieldDefinitions.length
-            ? `; or the defined fields ${stringifyDefinitions(config.fieldDefinitions)}.`
+            ? `; or the defined fields ${stringifyDefinitions(
+                config.fieldDefinitions
+              )}.`
             : ".")
         );
-      },
+      }
     ),
   ],
 };
 
 function stringifyDefinitions(
-  sectionDefinitions: Array<SectionDefinition | FieldDefinition>,
+  sectionDefinitions: Array<SectionDefinition | FieldDefinition>
 ) {
   return `'${sectionDefinitions.map((s) => s.id).join("', '")}'`;
 }
