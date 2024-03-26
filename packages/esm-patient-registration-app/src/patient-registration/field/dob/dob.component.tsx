@@ -118,7 +118,6 @@ export const DobField: React.FC = () => {
     setFieldValue("birthdate", calcBirthdate(years, months, dateOfBirth));
   }, [setFieldValue, monthsEstimateMeta, yearsEstimateMeta, dateOfBirth]);
 
-  // Assuming you have a function to calculate age based on the date of birth
   const calculateAge = (dob) => {
     const today = new Date();
     const dobYear = dob.getFullYear();
@@ -133,13 +132,11 @@ export const DobField: React.FC = () => {
     let months = todayMonth - dobMonth;
     let days = todayDay - dobDay;
 
-    // Adjust negative months
     if (months < 0) {
       years--;
       months += 12;
     }
 
-    // Adjust negative days
     if (days < 0) {
       const prevMonth = new Date(todayYear, todayMonth - 1, 1);
       const daysInPrevMonth = new Date(
@@ -154,7 +151,6 @@ export const DobField: React.FC = () => {
     return { years, months, days };
   };
 
-  // Inside your component
   const [age, setAge] = useState(null);
 
   return (
@@ -199,7 +195,7 @@ export const DobField: React.FC = () => {
                 />
               </DatePicker>
             </div>
-            {/* Display the calculated age */}
+            {/* TODO --- Display the calculated age */}
             {age !== null && (
               <div>
                 {age.years > 120 ? (
@@ -242,7 +238,7 @@ export const DobField: React.FC = () => {
                   onBlur={updateBirthdate}
                 />
               </Layer>
-              {/* Display the error message for estimated age */}
+              {/* TODO --- Display the error message for estimated age */}
               {yearsEstimated.value > 120 && (
                 <div className={styles.errorMessage}>
                   Estimated age cannot exceed 120 years
