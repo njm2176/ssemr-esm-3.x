@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useState, useEffect, ChangeEvent, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -115,76 +114,85 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
     changeART(value);
   }, [selectedFacility, artNumber, transferIn]);
 
-  //To-Do
   useEffect(() => {
     if (selectedState) {
       setfacilitiesForSelectedState(facilities[0][selectedState]);
     }
   }, [selectedState]);
 
+  // TO-DO - Extract patientUuid from the URL
+  const segments = window.location.pathname.split("/");
+
+  // TO-DO - Check if the URL pattern has edit
+  const shouldRenderSection = segments.includes("edit");
+
   return (
-    <div id="patientIdentifier">
-      <h6
-        className={styles.productiveHeading01}
-        style={{ color: "#161616", marginTop: "1rem" }}
-      >
-        {t("uniqueArtNumber", "Unique ART Number")}
-      </h6>
-      <div>
-        <Tile className={styles.wrapper}>
-          <Checkbox
-            value={transferIn}
-            onChange={() => setTransferIn((prev) => !prev)}
-            labelText="Transfer In"
-            id="transfer"
-          />
-        </Tile>
-        <Tile className={styles.wrapper}>
-          <Layer>
-            <Select
-              value={selectedState}
-              onChange={handleStateChange}
-              id="states"
-              labelText={t("states", "State")}
-            >
-              <SelectItem value="" text="" />
-              {states.map((state) => (
-                <SelectItem value={state} text={state} key={state} />
-              ))}
-            </Select>
-          </Layer>
-          <Layer>
-            <Select
-              value={selectedFacility}
-              onChange={handleFacilityChange}
-              id="facility"
-              labelText={t("facilities", "Facilities")}
-            >
-              <SelectItem value="" text="" />
-              {facilitiesForSelectedState?.map((facility: any) => (
-                <SelectItem
-                  value={facility?.code}
-                  text={facility?.name}
-                  key={facility?.code}
+    <div>
+      {!shouldRenderSection && (
+        <div id="patientIdentifier">
+          <h6
+            className={styles.productiveHeading01}
+            style={{ color: "#161616", marginTop: "1rem" }}
+          >
+            {t("uniqueArtNumber", "Unique ART Number")}
+          </h6>
+          <div>
+            <Tile className={styles.wrapper}>
+              <Checkbox
+                value={transferIn}
+                onChange={() => setTransferIn((prev) => !prev)}
+                labelText="Transfer In"
+                id="transfer"
+              />
+            </Tile>
+            <Tile className={styles.wrapper}>
+              <Layer>
+                <Select
+                  value={selectedState}
+                  onChange={handleStateChange}
+                  id="states"
+                  labelText={t("states", "State")}
+                >
+                  <SelectItem value="" text="" />
+                  {states.map((state) => (
+                    <SelectItem value={state} text={state} key={state} />
+                  ))}
+                </Select>
+              </Layer>
+              <Layer>
+                <Select
+                  value={selectedFacility}
+                  onChange={handleFacilityChange}
+                  id="facility"
+                  labelText={t("facilities", "Facilities")}
+                >
+                  <SelectItem value="" text="" />
+                  {facilitiesForSelectedState?.map((facility: any) => (
+                    <SelectItem
+                      value={facility?.code}
+                      text={facility?.name}
+                      key={facility?.code}
+                    />
+                  ))}
+                </Select>
+              </Layer>
+              <Layer>
+                <CustomInput
+                  value={artNumber}
+                  onChange={handleArtNumberChange}
+                  onBlur={handleBlur}
+                  id="artNumber"
+                  name="artNumber"
+                  labelText={t("number", "Number")}
+                  light={true}
+                  required={true}
                 />
-              ))}
-            </Select>
-          </Layer>
-          <Layer>
-            <CustomInput
-              value={artNumber}
-              onChange={handleArtNumberChange}
-              onBlur={handleBlur}
-              id="artNumber"
-              name="artNumber"
-              labelText={t("number", "Number")}
-              light={true}
-              required={false}
-            />
-          </Layer>
-        </Tile>
-      </div>
-      <div>ART Number: {combinedValue}</div>
+              </Layer>
+            </Tile>
+          </div>
+          <div>ART Number: {combinedValue}</div>
+        </div>
+      )}
     </div>
   );
 };

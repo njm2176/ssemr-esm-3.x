@@ -19,7 +19,7 @@ const AddressSearchComponent: React.FC<AddressSearchComponentProps> = ({
   const [searchString, setSearchString] = useState<string>("");
   const { addresses, isLoading, error } = useAddressHierarchy(
     searchString,
-    separator,
+    separator
   );
   const addressOptions: Array<string> = useMemo(() => {
     const options: Set<string> = new Set();
@@ -72,18 +72,18 @@ const AddressSearchComponent: React.FC<AddressSearchComponentProps> = ({
     >
       <Search
         onChange={handleInputChange}
-        labelText={t("searchAddress", "Search address")}
-        placeholder={t("searchAddress", "Search address")}
+        labelText={t("customSearchAddress", "Search address by Payam")}
+        placeholder={t("customSearchAddress", "Search address by Payam")}
         ref={searchBox}
         helperText={
           searchString
             ? isLoading
               ? t("loadingResults", "Loading results")
               : error
-                ? error.message
-                : addresses?.length === 0
-                  ? t("noResultsFound", "No results found")
-                  : null
+              ? error.message
+              : addresses?.length === 0
+              ? t("noResultsFound", "No results found")
+              : null
             : null
         }
         value={searchString}

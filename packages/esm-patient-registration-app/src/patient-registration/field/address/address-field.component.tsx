@@ -25,10 +25,10 @@ export const AddressComponent: React.FC = () => {
 
     const allFields = addressTemplate?.lines?.flat();
     const fields = allFields?.filter(
-      ({ isToken }) => isToken === "IS_ADDR_TOKEN",
+      ({ isToken }) => isToken === "IS_ADDR_TOKEN"
     );
     const allRequiredFields = Object.fromEntries(
-      addressTemplate?.requiredElements?.map((curr) => [curr, curr]) || [],
+      addressTemplate?.requiredElements?.map((curr) => [curr, curr]) || []
     );
     return fields.map(({ displayText, codeName }) => {
       return {
@@ -63,7 +63,7 @@ export const AddressComponent: React.FC = () => {
       Object.entries(addressTemplate.elementDefaults).forEach(
         ([name, defaultValue]) => {
           setFieldValue(`address.${name}`, defaultValue);
-        },
+        }
       );
     }
   }, [addressTemplate, setFieldValue]);
@@ -74,12 +74,12 @@ export const AddressComponent: React.FC = () => {
     }
 
     const orderMap = Object.fromEntries(
-      orderedFields.map((field, indx) => [field, indx]),
+      orderedFields.map((field, indx) => [field, indx])
     );
 
     return [...addressLayout].sort(
       (existingField1, existingField2) =>
-        orderMap[existingField1.name] - orderMap[existingField2.name],
+        orderMap[existingField1.name] - orderMap[existingField2.name]
     );
   }, [
     isLoadingFieldOrder,
@@ -130,7 +130,7 @@ export const AddressComponent: React.FC = () => {
           lowContrast={true}
           title={t(
             "errorFetchingOrderedFields",
-            "Error occured fetching ordered fields for address hierarchy",
+            "Error occured fetching ordered fields for address hierarchy"
           )}
         />
       </AddressComponentContainer>
@@ -165,7 +165,7 @@ const AddressComponentContainer = ({ children }) => {
   return (
     <div>
       <h4 className={styles.productiveHeading02Light}>
-        {t("addressHeader", "Address")}
+        {t("ddressHeader", "Address")}
       </h4>
       <div
         style={{
