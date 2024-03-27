@@ -1,6 +1,6 @@
 {
   "name": "@ssemr/esm-patient-hiv-art-app",
-  "version": "5.5.0",
+  "version": "5.5.1",
   "license": "MPL-2.0",
   "description": "Patient dashboard microfrontend for the OpenMRS SPA",
   "browser": "dist/ssemr-esm-patient-hiv-art-app.js",
@@ -25,16 +25,16 @@
   "keywords": [
     "openmrs"
   ],
-  "homepage": "https://github.com/donaldkibet/ssemr-esm-patient-dashboard#readme",
+  "homepage": "https://github.com/IntelliSOFT-Consulting/ssemr-esm-3.x/packages/esm-patient-hiv-art-app#readme",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/donaldkibet/ssemr-esm-patient-dashboard.git"
+    "url": "git+https://github.com/IntelliSOFT-Consulting/ssemr-esm-3.x/packages/esm-patient-hiv-art-app.git"
   },
   "bugs": {
-    "url": "https://github.com/donaldkibet/ssemr-esm-patient-dashboard/issues"
+    "url": "https://github.com/IntelliSOFT-Consulting/ssemr-esm-3.x/packages/esm-patient-hiv-art-app/issues"
   },
   "dependencies": {
     "@carbon/charts-react": "^1.5.2",

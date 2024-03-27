@@ -179,7 +179,7 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
               name="artNumber"
               labelText={t("number", "Number")}
               light={true}
-              required
+              required={false}
             />
           </Layer>
         </Tile>

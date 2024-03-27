@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useContext } from "react";
+import React, { ChangeEvent, useCallback, useContext, useState } from "react";
 import {
   ContentSwitcher,
   DatePicker,
@@ -21,17 +21,17 @@ const calcBirthdate = (yearDelta, monthDelta, dateOfBirth) => {
   const resultMonth = new Date(
     startDate.getFullYear() - yearDelta,
     startDate.getMonth() - monthDelta,
-    1,
+    1
   );
   const daysInResultMonth = new Date(
     resultMonth.getFullYear(),
     resultMonth.getMonth() + 1,
-    0,
+    0
   ).getDate();
   const resultDate = new Date(
     resultMonth.getFullYear(),
     resultMonth.getMonth(),
-    Math.min(startDate.getDate(), daysInResultMonth),
+    Math.min(startDate.getDate(), daysInResultMonth)
   );
   return enabled
     ? new Date(resultDate.getFullYear(), month, dayOfMonth)
@@ -51,7 +51,7 @@ export const DobField: React.FC = () => {
   const { setFieldValue } = useContext(PatientRegistrationContext);
   const { format, placeHolder, dateFormat } = generateFormatting(
     ["d", "m", "Y"],
-    "/",
+    "/"
   );
   const today = new Date();
 
@@ -62,14 +62,21 @@ export const DobField: React.FC = () => {
       setFieldValue("yearsEstimated", 0);
       setFieldValue("monthsEstimated", "");
     },
-    [setFieldValue],
+    [setFieldValue]
   );
 
   const onDateChange = useCallback(
     (birthdate: Date[]) => {
-      setFieldValue("birthdate", birthdate[0]);
+      const selectedDate = birthdate[0];
+      // Set the birthdate value
+      setFieldValue("birthdate", selectedDate);
+
+      // Calculate age
+      const dob = new Date(selectedDate);
+      const calculatedAge = calculateAge(dob);
+      setAge(calculatedAge);
     },
-    [setFieldValue],
+    [setFieldValue]
   );
 
   const onEstimatedYearsChange = useCallback(
@@ -80,11 +87,11 @@ export const DobField: React.FC = () => {
         setFieldValue("yearsEstimated", years);
         setFieldValue(
           "birthdate",
-          calcBirthdate(years, monthsEstimateMeta.value, dateOfBirth),
+          calcBirthdate(years, monthsEstimateMeta.value, dateOfBirth)
         );
       }
     },
-    [setFieldValue, dateOfBirth, monthsEstimateMeta.value],
+    [setFieldValue, dateOfBirth, monthsEstimateMeta.value]
   );
 
   const onEstimatedMonthsChange = useCallback(
@@ -95,11 +102,11 @@ export const DobField: React.FC = () => {
         setFieldValue("monthsEstimated", months);
         setFieldValue(
           "birthdate",
-          calcBirthdate(yearsEstimateMeta.value, months, dateOfBirth),
+          calcBirthdate(yearsEstimateMeta.value, months, dateOfBirth)
         );
       }
     },
-    [setFieldValue, dateOfBirth, yearsEstimateMeta.value],
+    [setFieldValue, dateOfBirth, yearsEstimateMeta.value]
   );
 
   const updateBirthdate = useCallback(() => {
@@ -110,6 +117,41 @@ export const DobField: React.FC = () => {
     setFieldValue("monthsEstimated", months > 0 ? months : "");
     setFieldValue("birthdate", calcBirthdate(years, months, dateOfBirth));
   }, [setFieldValue, monthsEstimateMeta, yearsEstimateMeta, dateOfBirth]);
+
+  const calculateAge = (dob) => {
+    const today = new Date();
+    const dobYear = dob.getFullYear();
+    const dobMonth = dob.getMonth();
+    const dobDay = dob.getDate();
+
+    const todayYear = today.getFullYear();
+    const todayMonth = today.getMonth();
+    const todayDay = today.getDate();
+
+    let years = todayYear - dobYear;
+    let months = todayMonth - dobMonth;
+    let days = todayDay - dobDay;
+
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    if (days < 0) {
+      const prevMonth = new Date(todayYear, todayMonth - 1, 1);
+      const daysInPrevMonth = new Date(
+        prevMonth.getFullYear(),
+        prevMonth.getMonth() + 1,
+        0
+      ).getDate();
+      months--;
+      days += daysInPrevMonth;
+    }
+
+    return { years, months, days };
+  };
+
+  const [age, setAge] = useState(null);
 
   return (
     <div className={styles.halfWidthInDesktopView}>
@@ -134,23 +176,41 @@ export const DobField: React.FC = () => {
       )}
       <Layer>
         {!dobUnknown ? (
-          <div className={styles.dobField}>
-            <DatePicker
-              dateFormat={dateFormat}
-              datePickerType="single"
-              onChange={onDateChange}
-              maxDate={format(today)}
-            >
-              <DatePickerInput
-                id="birthdate"
-                {...birthdate}
-                placeholder={placeHolder}
-                labelText={t("dateOfBirthLabelText", "Date of Birth")}
-                invalid={!!(birthdateMeta.touched && birthdateMeta.error)}
-                invalidText={birthdateMeta.error && t(birthdateMeta.error)}
-                value={format(birthdate.value)}
-              />
-            </DatePicker>
+          <div>
+            <div className={styles.dobField}>
+              <DatePicker
+                dateFormat={dateFormat}
+                datePickerType="single"
+                onChange={onDateChange}
+                maxDate={format(today)}
+              >
+                <DatePickerInput
+                  id="birthdate"
+                  {...birthdate}
+                  placeholder={placeHolder}
+                  labelText={t("dateOfBirthLabelText", "Date of Birth")}
+                  invalid={!!(birthdateMeta.touched && birthdateMeta.error)}
+                  invalidText={birthdateMeta.error && t(birthdateMeta.error)}
+                  value={format(birthdate.value)}
+                />
+              </DatePicker>
+            </div>
+            {/* TODO --- Display the calculated age */}
+            {age !== null && (
+              <div>
+                {age.years > 120 ? (
+                  <div className={styles.errorMessage}>
+                    Age cannot exceed 120 years
+                  </div>
+                ) : (
+                  <div>
+                    Age: {age.years > 0 && `${age.years} years `}
+                    {age.months > 0 && `${age.months} months `}
+                    {age.days > 0 && `${age.days} days`}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         ) : (
           <div className={styles.grid}>
@@ -163,7 +223,7 @@ export const DobField: React.FC = () => {
                   onChange={onEstimatedYearsChange}
                   labelText={t(
                     "estimatedAgeInYearsLabelText",
-                    "Estimated age in years",
+                    "Estimated age in years"
                   )}
                   invalid={
                     !!(yearsEstimateMeta.touched && yearsEstimateMeta.error)
@@ -178,6 +238,12 @@ export const DobField: React.FC = () => {
                   onBlur={updateBirthdate}
                 />
               </Layer>
+              {/* TODO --- Display the error message for estimated age */}
+              {yearsEstimated.value > 120 && (
+                <div className={styles.errorMessage}>
+                  Estimated age cannot exceed 120 years
+                </div>
+              )}
             </div>
             <div className={styles.dobField}>
               <Layer>
@@ -188,7 +254,7 @@ export const DobField: React.FC = () => {
                   onChange={onEstimatedMonthsChange}
                   labelText={t(
                     "estimatedAgeInMonthsLabelText",
-                    "Estimated age in months",
+                    "Estimated age in months"
                   )}
                   invalid={
                     !!(monthsEstimateMeta.touched && monthsEstimateMeta.error)

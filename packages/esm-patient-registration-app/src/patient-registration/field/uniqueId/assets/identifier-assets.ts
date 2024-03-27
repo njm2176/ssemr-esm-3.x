@@ -15,7 +15,7 @@ export const facilities = [
       },
       {
         name: "Yambio PHCC",
-        code: "WES/YPHCC",
+        code: "WES/YPHCC/",
       },
       {
         name: "Yambio State Hospital",
@@ -276,8 +276,12 @@ export const facilities = [
         code: "CES/JMH/",
       },
       {
-        name: "Juba POC",
-        code: "CES/JUBAPOC1/ & CES/JUBAPOC3",
+        name: "Juba POC1",
+        code: "CES/JUBAPOC1/",
+      },
+      {
+        name: "Juba POC3",
+        code: "CES/JUBAPOC3/",
       },
       {
         name: "Juba Police PHCC",
