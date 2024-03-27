@@ -45,7 +45,7 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
   const layout = useLayoutType();
   const { identifierTypes } = useContext(ResourcesContext);
   const { isOffline, values, initialFormValues } = useContext(
-    PatientRegistrationContext,
+    PatientRegistrationContext
   );
   const [unsavedIdentifierTypes, setUnsavedIdentifierTypes] = useState<
     FormValues["identifiers"]
@@ -67,15 +67,15 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
 
   const handleSearch = useCallback(
     (event) => setSearchString(event?.target?.value ?? ""),
-    [],
+    []
   );
 
   const filteredIdentifiers = useMemo(
     () =>
       identifierTypes?.filter((identifier) =>
-        identifier?.name?.toLowerCase().includes(searchString.toLowerCase()),
+        identifier?.name?.toLowerCase().includes(searchString.toLowerCase())
       ),
-    [searchString, identifierTypes],
+    [searchString, identifierTypes]
   );
 
   const handleCheckingIdentifier = useCallback(
@@ -88,25 +88,25 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
               identifierType,
               values.identifiers[identifierType.fieldName] ??
                 initialFormValues.identifiers[identifierType.fieldName] ??
-                {},
+                {}
             ),
           };
         }
         if (unsavedIdentifierTypes[identifierType.fieldName]) {
           return Object.fromEntries(
             Object.entries(unsavedIdentifierTypes).filter(
-              ([fieldName]) => fieldName !== identifierType.fieldName,
-            ),
+              ([fieldName]) => fieldName !== identifierType.fieldName
+            )
           );
         }
         return unsavedIdentifierTypes;
       }),
-    [initialFormValues.identifiers, values.identifiers],
+    [initialFormValues.identifiers, values.identifiers]
   );
 
   const handleSelectingIdentifierSource = (
     identifierType: PatientIdentifierType,
-    sourceUuid,
+    sourceUuid
   ) =>
     setUnsavedIdentifierTypes((unsavedIdentifierTypes) => ({
       ...unsavedIdentifierTypes,
@@ -114,10 +114,10 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
         ...unsavedIdentifierTypes[identifierType.fieldName],
         ...setIdentifierSource(
           identifierType.identifierSources.find(
-            (source) => source.uuid === sourceUuid,
+            (source) => source.uuid === sourceUuid
           ),
           unsavedIdentifierTypes[identifierType.fieldName].identifierValue,
-          unsavedIdentifierTypes[identifierType.fieldName].initialValue,
+          unsavedIdentifierTypes[identifierType.fieldName].initialValue
         ),
       },
     }));
@@ -152,11 +152,11 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
             />
             {patientIdentifier &&
               identifierType?.identifierSources?.length > 0 &&
-              /* 
+              /*
                 This check are for the cases when there's an initialValue identifier is assigned
                 to the patient
                 The corresponding flow is like:
-                1. If there's no change to the actual initial identifier, then the source remains null, 
+                1. If there's no change to the actual initial identifier, then the source remains null,
                 hence the list of the identifier sources shouldn't be displayed.
                 2. If user wants to edit the patient identifier's value, hence there will be an initialValue,
                 along with a source assigned to itself(only if the identifierType has sources, else there's nothing to worry about), which by
@@ -172,7 +172,7 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
                     onChange={(sourceUuid: string) =>
                       handleSelectingIdentifierSource(
                         identifierType,
-                        sourceUuid,
+                        sourceUuid
                       )
                     }
                     orientation="vertical"
@@ -205,7 +205,7 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
       isOffline,
       handleCheckingIdentifier,
       t,
-    ],
+    ]
   );
 
   const handleConfiguringIdentifiers = useCallback(() => {
@@ -242,7 +242,7 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
         <p className={styles.bodyLong02}>
           {t(
             "IDInstructions",
-            "Select the identifiers you'd like to add for this patient:",
+            "Select the identifiers you'd like to add for this patient:"
           )}
         </p>
         {identifierTypes.length > 7 && (
@@ -251,7 +251,7 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
               labelText={t("searchIdentifierPlaceholder", "Search identifier")}
               placeholder={t(
                 "searchIdentifierPlaceholder",
-                "Search identifier",
+                "Search identifier"
               )}
               onChange={handleSearch}
               value={searchString}
