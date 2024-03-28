@@ -46,7 +46,7 @@ const CommunityLinkage: React.FC<CommunityLinkageProps> = ({
             <p style={{ marginRight: "15px" }}>
               {t("nameOfCHW", "Name of the Community Health Worker (CHW)")}
             </p>
-            <p>{extractObservationData(data, "Name of the COV assigned")}</p>
+            <p>{extractObservationData(data, "Name of CHW")}</p>
           </div>
           <div className={styles.content}>
             <p>{t("telephoneNumber", "Telephone Number")}</p>
