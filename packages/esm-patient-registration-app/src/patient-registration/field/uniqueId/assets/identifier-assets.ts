@@ -128,8 +128,16 @@ export const facilities = [
         code: "LS/ABA/",
       },
       {
+        name: "Agang-rial PHCC",
+        code: "LS/AGR/",
+      },
+      {
         name: "Aluak Luak PHCC",
         code: "LS/ALK/",
+      },
+      {
+        name: "Amongpiny PHCC",
+        code: "LS/AMO/",
       },
       {
         name: "Anuol PHCC",
@@ -148,6 +156,10 @@ export const facilities = [
         code: "LS/KUK/",
       },
       {
+        name: "Makor PHCU",
+        code: "LS/MAK/",
+      },
+      {
         name: "Malou PHCU",
         code: "LS/MAB/",
       },
@@ -160,6 +172,14 @@ export const facilities = [
         code: "JS/MCH/",
       },
       {
+        name: "Malueth PHCU",
+        code: "LS/MAU/",
+      },
+      {
+        name: "Nuktamanga PHCU",
+        code: "LS/NTM/",
+      },
+      {
         name: "Nyang PHCC",
         code: "LS/NYA/",
       },
@@ -168,8 +188,20 @@ export const facilities = [
         code: "LS/PAC/",
       },
       {
+        name: "Paloc PHCC",
+        code: "LS/PAL/",
+      },
+      {
+        name: "Shambe PHCU",
+        code: "LS/SMB/",
+      },
+      {
         name: "St. Joseph TB PHCC",
         code: "LS/STJ/",
+      },
+      {
+        name: "Thonabutkok PHCU",
+        code: "LS/TBK/",
       },
       {
         name: "Yirol County Hospital",
