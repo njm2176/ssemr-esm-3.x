@@ -42,7 +42,7 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
     data,
     "Date Viral Load Results Received"
   );
-  const vlResult = extractObservationData(data, "HIVTC, Viral Load");
+  const vlResult = extractObservationData(data, "VL Results, Follow Up");
   let vlStatus;
 
   if (!isNaN(vlResult)) {
