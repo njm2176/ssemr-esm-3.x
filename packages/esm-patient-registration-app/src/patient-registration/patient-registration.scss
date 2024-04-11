@@ -25,12 +25,20 @@
 }
 
 .infoGrid {
+  display: grid;
+  gap: spacing.$spacing-04;
   width: 100%;
   padding-left: spacing.$spacing-07;
   margin-bottom: 40vh;
   margin-top: spacing.$spacing-05;
-  max-width: 50rem;
 }
+
+@media (min-width: 1024px) {
+  .infoGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 
 .label01 {
   @include type.type-style('label-01');
