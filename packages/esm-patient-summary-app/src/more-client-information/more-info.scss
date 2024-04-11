@@ -61,15 +61,16 @@
   width: 100%;
 }
 
-.visitWrapper{
+.visitWrapper {
   display: flex;
   flex-direction: row;
 }
 
-.visitContent{
+.visitContent {
   font-size: small;
   padding-right: 2px;
 }
+
 .value {
   @include type.type-style('body-short-02');
   color: colors.$gray-100;
@@ -89,4 +90,10 @@
     @include type.type-style('body-short-02');
     color: colors.$gray-100;
   }
+}
+
+.datatable {
+  position: relative;
+  width: 100%;
+  border: 1px solid $ui-03;
 }

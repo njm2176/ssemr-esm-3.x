@@ -19,7 +19,7 @@ import MoreClientInfoPanelComponent from "./more-client-information-widget/more-
 const moduleName = "@ssemr/esm-patient-panel-app";
 
 const options = {
-  featureName: "patient-care-panels",
+  featureName: "patient-summary",
   moduleName,
 };
 
