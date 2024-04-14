@@ -1,10 +1,9 @@
 import React from "react";
 import styles from "./more-info.scss";
 import { useTranslation } from "react-i18next";
-import { formatDate, useLayoutType } from "@openmrs/esm-framework";
-import { StructuredListSkeleton, Tile } from "@carbon/react";
 import useObservationData from "../hooks/useObservationData";
 import FamilyHistory from "./family-members.component";
+import { CardHeader } from "@openmrs/esm-patient-common-lib";
 
 export interface ClientInfoProps {
   patientUuid: string;
@@ -16,15 +15,6 @@ const ClientInfo: React.FC<ClientInfoProps> = ({ patientUuid, code }) => {
     code
   );
   const { t } = useTranslation();
-
-  const isTablet = useLayoutType() == "tablet";
-  if (isLoading) {
-    return (
-      <Tile>
-        <StructuredListSkeleton role="progressbar" />
-      </Tile>
-    );
-  }
 
   if (error) {
     return (
@@ -39,6 +29,10 @@ const ClientInfo: React.FC<ClientInfoProps> = ({ patientUuid, code }) => {
   return (
     <>
       <div className={styles.card}>
+        <CardHeader
+          title={t("familyMembers", "Family Members")}
+          children={""}
+        ></CardHeader>
         <div className={styles.container}>
           <FamilyHistory patientUuid={""} code={""} />
         </div>

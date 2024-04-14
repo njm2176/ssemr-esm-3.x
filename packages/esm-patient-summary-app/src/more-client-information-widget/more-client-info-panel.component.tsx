@@ -18,7 +18,6 @@ const MoreClientInfoPanel: React.FC<MoreClientInfoPanelProps> = ({
   return (
     <>
       <div className={styles.widgetCard}>
-        <CardHeader title={t("", "")} children={""}></CardHeader>
         <div style={{ width: "100%", minHeight: "10rem" }}>
           <ClientInfo patientUuid={patientUuid} code={""} />
         </div>
