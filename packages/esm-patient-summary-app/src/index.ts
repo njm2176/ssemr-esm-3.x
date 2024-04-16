@@ -11,10 +11,9 @@ import {
 } from "@openmrs/esm-patient-common-lib";
 import carePanelComponent from "./patient-summary-widget/care-panel.component";
 import carePanelPatientSummaryComponent from "./patient-summary/patient-summary.component";
-import PatientDataComponent from "./more-patient-data-widget/more-patient-data-panel.component";
 import VlPanelComponent from "./vl-history-widget/vl-panel.component";
 import CommunityLinkagePanelComponent from "./community-linkage-widget/community-linkage-panel.component";
-import MoreClientInfoPanelComponent from "./more-client-information-widget/more-client-info-panel.component";
+import ClientFamilyInfoPanelComponent from "./family-history-information-widget/more-client-info-panel.component";
 
 const moduleName = "@ssemr/esm-patient-panel-app";
 
@@ -48,7 +47,7 @@ export const patientProgramSummary = getSyncLifecycle(
 export const patientVlhistory = getSyncLifecycle(VlPanelComponent, options);
 
 export const patientData = getSyncLifecycle(
-  MoreClientInfoPanelComponent,
+  ClientFamilyInfoPanelComponent,
   options
 );
 
