@@ -1,5 +1,4 @@
-![Node.js CI](https://github.com/palladiumkenya/kenyaemr-esm-3.x/workflows/Node.js%20CI/badge.svg)
+![Node.js CI](https://github.com/openmrs/openmrs-esm-template-app/workflows/Node.js%20CI/badge.svg)
 
-# ESM Care Panel App
+# ESM Patient Summary App
 
-This repository provides a starting point for creating Kenyaemr patient care panels

@@ -25,16 +25,16 @@
   "keywords": [
     "openmrs"
   ],
-  "homepage": "https://github.com/IntelliSOFT-Consulting/ssemr-esm-3.x/packages/esm-patient-hiv-art-app#readme",
+  "homepage": "https://github.com/IntelliSOFT-Consulting/ssemr-esm-3.x/tree/main/packages/esm-patient-hiv-art-app",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/IntelliSOFT-Consulting/ssemr-esm-3.x/packages/esm-patient-hiv-art-app.git"
+    "url": "git+https://github.com/IntelliSOFT-Consulting/ssemr-esm-3.x/tree/main/packages/esm-patient-hiv-art-app"
   },
   "bugs": {
-    "url": "https://github.com/IntelliSOFT-Consulting/ssemr-esm-3.x/packages/esm-patient-hiv-art-app/issues"
+    "url": "https://github.com/IntelliSOFT-Consulting/ssemr-esm-3.x/tree/main/packages/esm-patient-hiv-art-app/issues"
   },
   "dependencies": {
     "@carbon/charts-react": "^1.5.2",

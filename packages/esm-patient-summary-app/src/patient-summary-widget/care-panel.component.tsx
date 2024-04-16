@@ -8,6 +8,7 @@ import LastArtVisitSummary from "../last-arv-visit-summary/last-arv-visit-summar
 interface CarePanelProps {
   patientUuid: string;
   formEntrySub: any;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   launchPatientWorkspace: Function;
 }
 
@@ -23,7 +24,6 @@ const CarePanel: React.FC<CarePanelProps> = ({ patientUuid }) => {
         ></CardHeader>
         <div style={{ width: "100%", minHeight: "10rem" }}>
           <ProgramSummary patientUuid={patientUuid} code={""} />
-          {/* <hr style={{margin: "20px"}}/> */}
           <LastArtVisitSummary patientUuid={patientUuid} code={""} />
         </div>
       </div>
