@@ -6,6 +6,7 @@ import {
   highViralLoadDummy,
 } from "../dummy/data";
 import { useFetch } from "../../hooks/useFetch";
+import { getThisYearsFirstAndLastDate } from "../helpers/dateOps";
 
 export const filterOptions = [
   {
@@ -28,6 +29,10 @@ const DashboardProvider = ({ children }) => {
   const [currentTimeFilter, setCurrentTimeFilter] = useState(
     filterOptions[0].value
   );
+  const [time, setTime] = useState({
+    startDate: getThisYearsFirstAndLastDate(new Date().getFullYear()).startDate,
+    endDate: getThisYearsFirstAndLastDate(new Date().getFullYear()).endDate,
+  });
   const [currentTopFilterIndex, setCurrentTopFilterIndex] = useState(0);
   const [filters, setFilters] = useState(filterOptions[0].value);
 
@@ -175,9 +180,7 @@ const DashboardProvider = ({ children }) => {
 
   const getNewlyEnrolledClients = async () => {
     await getClientData({
-      url: `/ws/rest/v1/ssemr/dashboard/newClients?startDate=${thirtyDaysAgo()}&endDate=${formatDate(
-        new Date()
-      )}`,
+      url: `/ws/rest/v1/ssemr/dashboard/newClients?startDate=${time.startDate}&endDate=${time.endDate}`,
       onResult: (responseData, error) => {
         if (responseData) {
           setNewlyEnrolledClients((prev) => ({
@@ -240,7 +243,7 @@ const DashboardProvider = ({ children }) => {
 
   const getInterruptedTreatment = async () => {
     await getClientData({
-      url: "/ws/rest/v1/ssemr/dashboard/interruptedInTreatment",
+      url: `/ws/rest/v1/ssemr/dashboard/interruptedInTreatment?startDate=${time.startDate}&endDate=${time.endDate}`,
       onResult: (responseData, error) => {
         if (responseData) {
           setInterrupted({
@@ -261,7 +264,7 @@ const DashboardProvider = ({ children }) => {
 
   const getReturnedToTreatment = async () => {
     await getClientData({
-      url: "/ws/rest/v1/ssemr/dashboard/returnToTreatment",
+      url: `/ws/rest/v1/ssemr/dashboard/returnedToTreatment?startDate=${time.startDate}&endDate=${time.endDate}`,
       onResult: (responseData, error) => {
         if (responseData) {
           setReturned({
@@ -285,10 +288,6 @@ const DashboardProvider = ({ children }) => {
       url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
       onResult: (responseData, error) => {
         if (responseData) {
-          // setDueForViralLoad((prev) => ({
-          //   raw: responseData,
-          //   processedChartData: formatDataAgainstTime(responseData),
-          // }));
           setDueForViralLoad((prev) => ({
             raw: dummy,
             processedChartData: formatDataAgainstTime(dummy),
@@ -349,12 +348,15 @@ const DashboardProvider = ({ children }) => {
 
   const getHighViralLoad = async () => {
     await getClientData({
-      url: "/ws/rest/v1/ssemr/dashboard/highVl",
+      url: `/ws/rest/v1/ssemr/dashboard/highVl?startDate=${time.startDate}&endDate=${time.endDate}`,
       onResult: (responseData, error) => {
         if (responseData) {
+          console.log("responseData", responseData);
           setHighViralLoad((prev) => ({
             raw: responseData,
-            processedChartData: formatViralLoadData(responseData),
+            // processedChartData: formatDataAgainstTime(responseData),
+            // processedChartData: formatViralLoadData(responseData),
+            processedChartData: formatViralLoadData(highViralLoadDummy),
           }));
         }
         if (error) {
@@ -436,11 +438,6 @@ const DashboardProvider = ({ children }) => {
     },
     {
       index: 3,
-      title: "Clients returning from interrupted treatment",
-      filterFunction: (item) => item.returningFromIT,
-    },
-    {
-      index: 4,
       title: "Return to treatment",
       filterFunction: (item) => item.returningToTreatment,
     },
@@ -507,7 +504,7 @@ const DashboardProvider = ({ children }) => {
     getViralLoadResults();
     getChildART();
     getAdultART();
-  }, [currentTimeFilter]);
+  }, [currentTimeFilter, time]);
 
   return (
     <DashboardContext.Provider
@@ -533,6 +530,8 @@ const DashboardProvider = ({ children }) => {
         viralLoadSamples,
         childART,
         adultART,
+        time,
+        setTime,
       }}
     >
       {children}
