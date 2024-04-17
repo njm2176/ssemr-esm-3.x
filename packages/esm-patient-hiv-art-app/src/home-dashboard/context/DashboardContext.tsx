@@ -8,6 +8,7 @@ import {
 import { useFetch } from "../../hooks/useFetch";
 import { getThisYearsFirstAndLastDate } from "../helpers/dateOps";
 import activeClients from "../charts/ActiveClients";
+import { useChartData } from "../hooks/useChartData";
 
 export const filterOptions = [
   {
@@ -27,6 +28,8 @@ export const filterOptions = [
 export const DashboardContext = createContext(null);
 
 const DashboardProvider = ({ children }) => {
+  const { getChartData, formatViralLoadData } = useChartData();
+
   const [currentTimeFilter, setCurrentTimeFilter] = useState(
     filterOptions[0].value
   );
@@ -109,17 +112,6 @@ const DashboardProvider = ({ children }) => {
     return formattedData;
   };
 
-  const formatViralLoadData = (data) => {
-    const processedData = data?.summary?.groupYear?.map((item) => {
-      const keys = Object.keys(item);
-      return {
-        value: item[keys[0]],
-        group: keys[0],
-      };
-    });
-    return processedData;
-  };
-
   const getClientData = async ({ url, params = "", onResult }) => {
     try {
       await makeRequest(url + params, onResult);
@@ -128,372 +120,274 @@ const DashboardProvider = ({ children }) => {
     }
   };
 
-  const formatDate = (date: Date) => {
-    const day = date.getDate();
-    const month =
-      date.getMonth() + 1 < 10
-        ? `0${date.getMonth() + 1}`
-        : date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    return `${month}/${day}/${year}`;
-  };
-
-  const thirtyDaysAgo = () => {
-    const today = new Date();
-    const thirtyDaysAgo = new Date(today);
-    thirtyDaysAgo.setDate(today.getDate() - 30);
-    return formatDate(thirtyDaysAgo);
-  };
-
   /**
    * AJAX requests defined here to avoid repeating them in individual components
    */
-  const getActiveClients = async () => {
-    await getClientData({
-      url: "/ws/rest/v1/ssemr/dashboard/activeClients",
-      onResult(responseData, error) {
-        if (responseData)
-          setChartData((prev) => ({
-            ...prev,
-            activeClients: {
-              raw: responseData,
-              processedChartData: formatDataAgainstTime(responseData),
-            },
-          }));
-
-        if (error) {
-          setChartData((prev) => ({
-            ...prev,
-            activeClients: {
-              raw: dummy,
-              processedChartData: formatDataAgainstTime(dummy),
-            },
-          }));
-          return error;
-        }
-      },
+  const getActiveClients = () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/activeClients?startDate=${time.startDate}&endDate=${time.endDate}`,
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          activeClients: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
+          },
+        })),
+      errorCallBack: (error) =>
+        setChartData((prev) => ({
+          ...prev,
+          activeClients: {
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
+          },
+        })),
     });
-  };
 
-  const getAllClients = async () => {
-    await getClientData({
+  const getAllClients = async () =>
+    getChartData({
       url: `/ws/rest/v1/ssemr/dashboard/allClients?startDate=${time.startDate}&endDate=${time.endDate}`,
-      onResult: (responseData, error) => {
-        if (responseData)
-          setChartData((prev) => ({
-            ...prev,
-            allClients: {
-              raw: responseData,
-              processedChartData: formatDataAgainstTime(responseData),
-            },
-          }));
-        if (error) return error;
-      },
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          allClients: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
+          },
+        })),
+      errorCallBack: (error) => console.error(error),
     });
-  };
 
-  const getNewlyEnrolledClients = async () => {
-    await getClientData({
+  const getNewlyEnrolledClients = async () =>
+    getChartData({
       url: `/ws/rest/v1/ssemr/dashboard/newClients?startDate=${time.startDate}&endDate=${time.endDate}`,
-      onResult: (responseData, error) => {
-        if (responseData)
-          setChartData((prev) => ({
-            ...prev,
-            newlyEnrolledClients: {
-              raw: responseData,
-              processedChartData: formatDataAgainstTime(responseData),
-            },
-          }));
-
-        if (error) {
-          setChartData((prev) => ({
-            ...prev,
-            newlyEnrolledClients: {
-              raw: dummy,
-              processedChartData: formatDataAgainstTime(dummy),
-            },
-          }));
-
-          return error;
-        }
-      },
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          newlyEnrolledClients: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
+          },
+        })),
+      errorCallBack: (error) =>
+        setChartData((prev) => ({
+          ...prev,
+          newlyEnrolledClients: {
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
+          },
+        })),
     });
-  };
 
-  const getClientsOnAppointment = async () => {
-    await getClientData({
-      url: "/ws/rest/v1/ssemr/dashboard/activeClients",
-      onResult: (responseData, error) => {
-        if (responseData)
-          setChartData((prev) => ({
-            ...prev,
-            onAppointment: {
-              raw: responseData,
-              processedChartData: formatDataAgainstTime(responseData),
-            },
-          }));
-
-        if (error) {
-          setChartData((prev) => ({
-            ...prev,
-            onAppointment: {
-              raw: dummy,
-              processedChartData: formatDataAgainstTime(dummy),
-            },
-          }));
-          return error;
-        }
-      },
+  const getClientsOnAppointment = async () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/onAppointment?startDate=${time.startDate}&endDate=${time.endDate}`,
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          onAppointment: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
+          },
+        })),
+      errorCallBack: (error) =>
+        setChartData((prev) => ({
+          ...prev,
+          onAppointment: {
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
+          },
+        })),
     });
-  };
 
-  const getMissedAppointments = async () => {
-    await getClientData({
-      url: "/ws/rest/v1/ssemr/dashboard/missedAppointment",
-      onResult: (responseData, error) => {
-        if (responseData)
-          setChartData((prev) => ({
-            ...prev,
-            missedAppointment: {
-              raw: responseData,
-              processedChartData: formatDataAgainstTime(responseData),
-            },
-          }));
-
-        if (error) {
-          setChartData((prev) => ({
-            ...prev,
-            missedAppointment: {
-              raw: dummy,
-              processedChartData: formatDataAgainstTime(dummy),
-            },
-          }));
-          return error;
-        }
-      },
+  const getMissedAppointments = async () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/missedAppointment?startDate=${time.startDate}&endDate=${time.endDate}`,
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          missedAppointment: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
+          },
+        })),
+      errorCallBack: (error) =>
+        setChartData((prev) => ({
+          ...prev,
+          missedAppointment: {
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
+          },
+        })),
     });
-  };
 
-  const getInterruptedTreatment = async () => {
-    await getClientData({
+  const getInterruptedTreatment = async () =>
+    getChartData({
       url: `/ws/rest/v1/ssemr/dashboard/interruptedInTreatment?startDate=${time.startDate}&endDate=${time.endDate}`,
-      onResult: (responseData, error) => {
-        if (responseData)
-          setChartData((prev) => ({
-            ...prev,
-            interrupted: {
-              raw: responseData,
-              processedChartData: formatDataAgainstTime(responseData),
-            },
-          }));
-
-        if (error) {
-          setChartData((prev) => ({
-            ...prev,
-            interrupted: {
-              raw: dummy,
-              processedChartData: formatDataAgainstTime(dummy),
-            },
-          }));
-
-          return error;
-        }
-      },
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          interrupted: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
+          },
+        })),
+      errorCallBack: (error) =>
+        setChartData((prev) => ({
+          ...prev,
+          interrupted: {
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
+          },
+        })),
     });
-  };
 
-  const getReturnedToTreatment = async () => {
-    await getClientData({
+  const getReturnedToTreatment = async () =>
+    getChartData({
       url: `/ws/rest/v1/ssemr/dashboard/returnedToTreatment?startDate=${time.startDate}&endDate=${time.endDate}`,
-      onResult: (responseData, error) => {
-        if (responseData)
-          setChartData((prev) => ({
-            ...prev,
-            returned: {
-              raw: responseData,
-              processedChartData: formatDataAgainstTime(responseData),
-            },
-          }));
-
-        if (error) {
-          setChartData((prev) => ({
-            ...prev,
-            returned: {
-              raw: dummy,
-              processedChartData: formatDataAgainstTime(dummy),
-            },
-          }));
-
-          return error;
-        }
-      },
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          returned: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
+          },
+        })),
+      errorCallBack: (error) =>
+        setChartData((prev) => ({
+          ...prev,
+          returned: {
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
+          },
+        })),
     });
-  };
 
-  const getDueForViralLoad = async () => {
-    await getClientData({
-      url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
-      onResult: (responseData, error) => {
-        if (responseData)
-          setChartData((prev) => ({
-            ...prev,
-            dueForViralLoad: {
-              raw: responseData,
-              processedChartData: formatDataAgainstTime(responseData),
-            },
-          }));
-
-        if (error) {
-          setChartData((prev) => ({
-            ...prev,
-            dueForViralLoad: {
-              raw: dummy,
-              processedChartData: formatDataAgainstTime(dummy),
-            },
-          }));
-
-          return error;
-        }
-      },
+  const getDueForViralLoad = async () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/dueForVl?startDate=${time.startDate}&endDate=${time.endDate}`,
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          dueForViralLoad: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
+          },
+        })),
+      errorCallBack: (error) =>
+        setChartData((prev) => ({
+          ...prev,
+          dueForViralLoad: {
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
+          },
+        })),
     });
-  };
 
-  const getViralLoadSamples = async () => {
-    await getClientData({
-      url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
-      onResult: (responseData, error) => {
-        if (responseData)
-          setChartData((prev) => ({
-            ...prev,
-            viralLoadSamples: {
-              raw: responseData,
-              processedChartData: formatDataAgainstTime(responseData),
-            },
-          }));
-
-        if (error) {
-          setChartData((prev) => ({
-            ...prev,
-            viralLoadSamples: {
-              raw: dummy,
-              processedChartData: formatDataAgainstTime(dummy),
-            },
-          }));
-
-          return error;
-        }
-      },
+  const getViralLoadSamples = async () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/dueForVl?startDate=${time.startDate}&endDate=${time.endDate}`,
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          viralLoadSamples: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
+          },
+        })),
+      errorCallBack: (error) =>
+        setChartData((prev) => ({
+          ...prev,
+          viralLoadSamples: {
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
+          },
+        })),
     });
-  };
 
-  const getViralLoadResults = async () => {
-    await getClientData({
-      url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
-      onResult: (responseData, error) => {
-        if (responseData)
-          setChartData((prev) => ({
-            ...prev,
-            viralLoadResults: {
-              raw: responseData,
-              processedChartData: formatDataAgainstTime(responseData),
-            },
-          }));
-
-        if (error) {
-          setChartData((prev) => ({
-            ...prev,
-            viralLoadResults: {
-              raw: dummy,
-              processedChartData: formatDataAgainstTime(dummy),
-            },
-          }));
-          return error;
-        }
-      },
+  const getViralLoadResults = async () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/dueForVl?startDate=${time.startDate}&endDate=${time.endDate}`,
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          viralLoadResults: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
+          },
+        })),
+      errorCallBack: (error) =>
+        setChartData((prev) => ({
+          ...prev,
+          viralLoadResults: {
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(dummy),
+          },
+        })),
     });
-  };
 
-  const getHighViralLoad = async () => {
-    await getClientData({
+  const getHighViralLoad = async () =>
+    getChartData({
       url: `/ws/rest/v1/ssemr/dashboard/highVl?startDate=${time.startDate}&endDate=${time.endDate}`,
-      onResult: (responseData, error) => {
-        if (responseData)
-          setChartData((prev) => ({
-            ...prev,
-            highViralLoad: {
-              raw: responseData,
-              processedChartData: formatViralLoadData(highViralLoadDummy),
-            },
-          }));
-        if (error) {
-          setChartData((prev) => ({
-            ...prev,
-            highViralLoad: {
-              raw: highViralLoadDummy,
-              processedChartData: formatViralLoadData(highViralLoadDummy),
-            },
-          }));
-          return error;
-        }
-      },
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          highViralLoad: {
+            raw: data,
+            processedChartData: formatViralLoadData(highViralLoadDummy),
+          },
+        })),
+      errorCallBack: (error) =>
+        setChartData((prev) => ({
+          ...prev,
+          highViralLoad: {
+            raw: dummy,
+            processedChartData: formatViralLoadData(highViralLoadDummy),
+          },
+        })),
     });
-  };
 
-  const getAdultART = async () => {
-    await getClientData({
-      url: "/ws/rest/v1/ssemr/dashboard/adultART",
-      onResult: (responseData, error) => {
-        if (responseData)
-          setChartData((prev) => ({
-            ...prev,
-            adultART: {
-              raw: responseData,
-              processedChartData: formatDataAgainstTime(responseData),
-            },
-          }));
-
-        if (error) {
-          setChartData((prev) => ({
-            ...prev,
-            adultART: {
-              raw: adultArtDummy,
-              processedChartData: formatDataAgainstTime(adultArtDummy),
-            },
-          }));
-
-          return error;
-        }
-      },
+  const getAdultART = async () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/adultART?startDate=${time.startDate}&endDate=${time.endDate}`,
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          adultART: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
+          },
+        })),
+      errorCallBack: (error) =>
+        setChartData((prev) => ({
+          ...prev,
+          adultART: {
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(adultArtDummy),
+          },
+        })),
     });
-  };
 
-  const getChildART = async () => {
-    await getClientData({
-      url: "/ws/rest/v1/ssemr/dashboard/childART",
-      onResult: (responseData, error) => {
-        if (responseData)
-          setChartData((prev) => ({
-            ...prev,
-            childART: {
-              raw: responseData,
-              processedChartData: formatDataAgainstTime(responseData),
-            },
-          }));
-
-        if (error) {
-          setChartData((prev) => ({
-            ...prev,
-            childART: {
-              raw: childArtDummy,
-              processedChartData: formatDataAgainstTime(childArtDummy),
-            },
-          }));
-          return error;
-        }
-      },
+  const getChildART = async () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/childART?startDate=${time.startDate}&endDate=${time.endDate}`,
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          childART: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
+          },
+        })),
+      errorCallBack: (error) =>
+        setChartData((prev) => ({
+          ...prev,
+          childART: {
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(childArtDummy),
+          },
+        })),
     });
-  };
 
   const getStat = (dataSet) => {
     const filteredSet = dataSet?.filter((item) =>
