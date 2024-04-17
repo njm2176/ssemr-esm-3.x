@@ -11,14 +11,8 @@ import ActiveClients from "./charts/ActiveClients";
 import AdultARTRegimen from "./charts/AdultArtRegimen";
 import ChildArtRegimen from "./charts/ChildArtRegimen";
 import UnderCommunityCare from "./charts/UnderCommunityCare";
-import DueForViralLoad from "./charts/DueForViralLoad";
-import ViralLoadSamples from "./charts/ViralLoadSamples";
-import ViralLoadCoverage from "./charts/ViralLoadCoverage";
-import ViralLoadSuppression from "./charts/ViralLoadSuppression";
-import HighViralLoadCascade from "./charts/HighViralLoadCascade";
 import ChartCard from "./components/cards/ChartCard";
-import { DashboardContext, filterOptions } from "./context/DashboardContext";
-import ViralLoadResults from "./charts/ViralLoadResults";
+import { DashboardContext } from "./context/DashboardContext";
 import Waterfall from "./charts/Waterfall";
 import { TimeFilter } from "./components/filter/TimeFilter";
 
@@ -96,9 +90,9 @@ const HomeDashboard = () => {
           </ChartCard>
         </div>
 
-        {/*<ChartCard>*/}
-        {/*  <Waterfall />*/}
-        {/*</ChartCard>*/}
+        <ChartCard>
+          <Waterfall />
+        </ChartCard>
 
         {/* ...............Charts....................... */}
         {/*<div className={styles.twoGridChartWrapper}>*/}
