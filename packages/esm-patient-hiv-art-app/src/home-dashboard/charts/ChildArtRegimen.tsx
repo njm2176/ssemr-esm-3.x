@@ -7,7 +7,10 @@ import styles from "./styles/index.scss";
 import { Loading } from "@carbon/react";
 
 const ChildArtRegimen = () => {
-  const { childART, currentTimeFilter } = useContext(DashboardContext);
+  const {
+    chartData: { childART },
+    currentTimeFilter,
+  } = useContext(DashboardContext);
 
   const options = {
     title: "Child ART Regimen",

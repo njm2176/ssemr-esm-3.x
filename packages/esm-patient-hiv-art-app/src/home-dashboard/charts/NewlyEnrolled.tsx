@@ -7,8 +7,10 @@ import { DashboardContext } from "../context/DashboardContext";
 import { ScaleTypes } from "../types";
 
 const NewlyEnrolled = () => {
-  const { newlyEnrolledClients, currentTimeFilter } =
-    useContext(DashboardContext);
+  const {
+    chartData: { newlyEnrolledClients },
+    currentTimeFilter,
+  } = useContext(DashboardContext);
 
   const options = {
     title: "Newly Enrolled Clients",

@@ -10,13 +10,12 @@ import { Loading, SkeletonPlaceholder } from "@carbon/react";
 import { ScaleTypes } from "../types";
 
 const NewlyEnrolled = () => {
-  const { activeClients, currentTimeFilter } = useContext(DashboardContext);
+  // const { activeClients, currentTimeFilter } = useContext(DashboardContext);
 
-  const { data, error } = useSWR(
-    "/ws/rest/v1/ssemr/dashboard/newClients?startDate=2024/01/15&endDate=2024/02/14",
-    openmrsFetch,
-    {}
-  );
+  const {
+    chartData: { activeClients },
+    currentTimeFilter,
+  } = useContext(DashboardContext);
 
   const options = {
     title: "Currently Enrolled Clients",

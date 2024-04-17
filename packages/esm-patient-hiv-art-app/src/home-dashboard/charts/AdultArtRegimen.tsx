@@ -7,7 +7,10 @@ import { Loading } from "@carbon/react";
 import { DashboardContext } from "../context/DashboardContext";
 
 const AdultARTRegimen = () => {
-  const { adultART, currentTimeFilter } = useContext(DashboardContext);
+  const {
+    chartData: { adultART },
+    currentTimeFilter,
+  } = useContext(DashboardContext);
 
   const options = {
     title: "Adult ART Regimen",

@@ -7,6 +7,7 @@ import {
 } from "../dummy/data";
 import { useFetch } from "../../hooks/useFetch";
 import { getThisYearsFirstAndLastDate } from "../helpers/dateOps";
+import activeClients from "../charts/ActiveClients";
 
 export const filterOptions = [
   {
@@ -34,62 +35,65 @@ const DashboardProvider = ({ children }) => {
     endDate: getThisYearsFirstAndLastDate(new Date().getFullYear()).endDate,
   });
   const [currentTopFilterIndex, setCurrentTopFilterIndex] = useState(0);
+
+  const [chartData, setChartData] = useState({
+    activeClients: {
+      raw: null,
+      processedChartData: [],
+    },
+    allClients: {
+      raw: null,
+      processedChartData: [],
+    },
+    newlyEnrolledClients: {
+      raw: null,
+      processedChartData: [],
+    },
+    onAppointment: {
+      raw: null,
+      processedChartData: [],
+    },
+    missedAppointment: {
+      raw: null,
+      processedChartData: [],
+    },
+    interrupted: {
+      raw: null,
+      processedChartData: [],
+    },
+    returned: {
+      raw: null,
+      processedChartData: [],
+    },
+    dueForViralLoad: {
+      raw: null,
+      processedChartData: [],
+    },
+    adultART: {
+      raw: null,
+      processedChartData: [],
+    },
+    childART: {
+      raw: null,
+      processedChartData: [],
+    },
+    viralLoadSamples: {
+      raw: null,
+      processedChartData: [],
+    },
+    viralLoadResults: {
+      raw: null,
+      processedChartData: [],
+    },
+    highViralLoad: {
+      raw: null,
+      processedChartData: [],
+    },
+  });
+
   const [filters, setFilters] = useState(filterOptions[0].value);
 
   const { makeRequest } = useFetch();
-
-  const [activeClients, setActiveClients] = useState({
-    raw: null,
-    processedChartData: [],
-  });
-  const [allClients, setAllClients] = useState({
-    raw: null,
-    processedChartData: [],
-  });
-  const [newlyEnrolledClients, setNewlyEnrolledClients] = useState({
-    raw: null,
-    processedChartData: [],
-  });
-  const [onAppointment, setOnAppointment] = useState({
-    raw: null,
-    processedChartData: [],
-  });
-  const [missedAppointment, setMissedAppointment] = useState({
-    raw: null,
-    processedChartData: [],
-  });
-  const [interrupted, setInterrupted] = useState({
-    raw: null,
-    processedChartData: [],
-  });
-  const [returned, setReturned] = useState({
-    raw: null,
-    processedChartData: [],
-  });
-  const [dueForViralLoad, setDueForViralLoad] = useState({
-    raw: null,
-    processedChartData: [],
-  });
-  const [adultART, setAdultART] = useState({
-    raw: null,
-    processedChartData: [],
-  });
-  const [childART, setChildART] = useState({
-    raw: null,
-    processedChartData: [],
-  });
-  const [viralLoadSamples, setViralLoadSamples] = useState({
-    raw: null,
-    processedChartData: [],
-  });
-  const [viralLoadResults, setViralLoadResults] = useState({
-    raw: null,
-    processedChartData: [],
-  });
-  const [highViralLoad, setHighViralLoad] = useState({
-    raw: null,
-    processedChartData: [],
-  });
 
   const formatDataAgainstTime = (data) => {
     const bottomAxesArray = Object.keys(data?.summary[currentTimeFilter]);
@@ -149,16 +153,22 @@ const DashboardProvider = ({ children }) => {
     await getClientData({
       url: "/ws/rest/v1/ssemr/dashboard/activeClients",
       onResult(responseData, error) {
-        if (responseData) {
-          setActiveClients((prev) => ({
-            raw: responseData,
-            processedChartData: formatDataAgainstTime(responseData),
+        if (responseData)
+          setChartData((prev) => ({
+            ...prev,
+            activeClients: {
+              raw: responseData,
+              processedChartData: formatDataAgainstTime(responseData),
+            },
           }));
-        }
+
         if (error) {
-          setActiveClients((prev) => ({
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
+          setChartData((prev) => ({
+            ...prev,
+            activeClients: {
+              raw: dummy,
+              processedChartData: formatDataAgainstTime(dummy),
+            },
           }));
           return error;
         }
@@ -168,11 +178,16 @@ const DashboardProvider = ({ children }) => {
 
   const getAllClients = async () => {
     await getClientData({
-      url: "/ws/fhir2/R4/Patient",
+      url: `/ws/rest/v1/ssemr/dashboard/allClients?startDate=${time.startDate}&endDate=${time.endDate}`,
       onResult: (responseData, error) => {
-        if (responseData) {
-          setAllClients(responseData);
-        }
+        if (responseData)
+          setChartData((prev) => ({
+            ...prev,
+            allClients: {
+              raw: responseData,
+              processedChartData: formatDataAgainstTime(responseData),
+            },
+          }));
         if (error) return error;
       },
     });
@@ -182,17 +197,24 @@ const DashboardProvider = ({ children }) => {
     await getClientData({
       url: `/ws/rest/v1/ssemr/dashboard/newClients?startDate=${time.startDate}&endDate=${time.endDate}`,
       onResult: (responseData, error) => {
-        if (responseData) {
-          setNewlyEnrolledClients((prev) => ({
-            raw: responseData,
-            processedChartData: formatDataAgainstTime(responseData),
+        if (responseData)
+          setChartData((prev) => ({
+            ...prev,
+            newlyEnrolledClients: {
+              raw: responseData,
+              processedChartData: formatDataAgainstTime(responseData),
+            },
           }));
-        }
+
         if (error) {
-          setNewlyEnrolledClients((prev) => ({
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
+          setChartData((prev) => ({
+            ...prev,
+            newlyEnrolledClients: {
+              raw: dummy,
+              processedChartData: formatDataAgainstTime(dummy),
+            },
           }));
+
           return error;
         }
       },
@@ -203,17 +225,23 @@ const DashboardProvider = ({ children }) => {
     await getClientData({
       url: "/ws/rest/v1/ssemr/dashboard/activeClients",
       onResult: (responseData, error) => {
-        if (responseData) {
-          setOnAppointment({
-            raw: responseData,
-            processedChartData: formatDataAgainstTime(responseData),
-          });
-        }
+        if (responseData)
+          setChartData((prev) => ({
+            ...prev,
+            onAppointment: {
+              raw: responseData,
+              processedChartData: formatDataAgainstTime(responseData),
+            },
+          }));
+
         if (error) {
-          setOnAppointment({
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
-          });
+          setChartData((prev) => ({
+            ...prev,
+            onAppointment: {
+              raw: dummy,
+              processedChartData: formatDataAgainstTime(dummy),
+            },
+          }));
           return error;
         }
       },
@@ -224,17 +252,23 @@ const DashboardProvider = ({ children }) => {
     await getClientData({
       url: "/ws/rest/v1/ssemr/dashboard/missedAppointment",
       onResult: (responseData, error) => {
-        if (responseData) {
-          setMissedAppointment({
-            raw: responseData,
-            processedChartData: formatDataAgainstTime(responseData),
-          });
-        }
+        if (responseData)
+          setChartData((prev) => ({
+            ...prev,
+            missedAppointment: {
+              raw: responseData,
+              processedChartData: formatDataAgainstTime(responseData),
+            },
+          }));
+
         if (error) {
-          setMissedAppointment({
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
-          });
+          setChartData((prev) => ({
+            ...prev,
+            missedAppointment: {
+              raw: dummy,
+              processedChartData: formatDataAgainstTime(dummy),
+            },
+          }));
           return error;
         }
       },
@@ -245,17 +279,24 @@ const DashboardProvider = ({ children }) => {
     await getClientData({
       url: `/ws/rest/v1/ssemr/dashboard/interruptedInTreatment?startDate=${time.startDate}&endDate=${time.endDate}`,
       onResult: (responseData, error) => {
-        if (responseData) {
-          setInterrupted({
-            raw: responseData,
-            processedChartData: formatDataAgainstTime(responseData),
-          });
-        }
+        if (responseData)
+          setChartData((prev) => ({
+            ...prev,
+            interrupted: {
+              raw: responseData,
+              processedChartData: formatDataAgainstTime(responseData),
+            },
+          }));
+
         if (error) {
-          setInterrupted({
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
-          });
+          setChartData((prev) => ({
+            ...prev,
+            interrupted: {
+              raw: dummy,
+              processedChartData: formatDataAgainstTime(dummy),
+            },
+          }));
+
           return error;
         }
       },
@@ -266,17 +307,24 @@ const DashboardProvider = ({ children }) => {
     await getClientData({
       url: `/ws/rest/v1/ssemr/dashboard/returnedToTreatment?startDate=${time.startDate}&endDate=${time.endDate}`,
       onResult: (responseData, error) => {
-        if (responseData) {
-          setReturned({
-            raw: responseData,
-            processedChartData: formatDataAgainstTime(responseData),
-          });
-        }
+        if (responseData)
+          setChartData((prev) => ({
+            ...prev,
+            returned: {
+              raw: responseData,
+              processedChartData: formatDataAgainstTime(responseData),
+            },
+          }));
+
         if (error) {
-          setReturned({
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
-          });
+          setChartData((prev) => ({
+            ...prev,
+            returned: {
+              raw: dummy,
+              processedChartData: formatDataAgainstTime(dummy),
+            },
+          }));
+
           return error;
         }
       },
@@ -287,17 +335,24 @@ const DashboardProvider = ({ children }) => {
     await getClientData({
       url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
       onResult: (responseData, error) => {
-        if (responseData) {
-          setDueForViralLoad((prev) => ({
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
+        if (responseData)
+          setChartData((prev) => ({
+            ...prev,
+            dueForViralLoad: {
+              raw: responseData,
+              processedChartData: formatDataAgainstTime(responseData),
+            },
           }));
-        }
+
         if (error) {
-          setDueForViralLoad((prev) => ({
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
+          setChartData((prev) => ({
+            ...prev,
+            dueForViralLoad: {
+              raw: dummy,
+              processedChartData: formatDataAgainstTime(dummy),
+            },
           }));
+
           return error;
         }
       },
@@ -308,17 +363,24 @@ const DashboardProvider = ({ children }) => {
     await getClientData({
       url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
       onResult: (responseData, error) => {
-        if (responseData) {
-          setViralLoadSamples((prev) => ({
-            raw: responseData,
-            processedChartData: formatDataAgainstTime(responseData),
+        if (responseData)
+          setChartData((prev) => ({
+            ...prev,
+            viralLoadSamples: {
+              raw: responseData,
+              processedChartData: formatDataAgainstTime(responseData),
+            },
           }));
-        }
+
         if (error) {
-          setViralLoadSamples((prev) => ({
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
+          setChartData((prev) => ({
+            ...prev,
+            viralLoadSamples: {
+              raw: dummy,
+              processedChartData: formatDataAgainstTime(dummy),
+            },
           }));
+
           return error;
         }
       },
@@ -329,16 +391,22 @@ const DashboardProvider = ({ children }) => {
     await getClientData({
       url: "/ws/rest/v1/ssemr/dashboard/dueForVl",
       onResult: (responseData, error) => {
-        if (responseData) {
-          setViralLoadResults((prev) => ({
-            raw: responseData,
-            processedChartData: formatDataAgainstTime(responseData),
+        if (responseData)
+          setChartData((prev) => ({
+            ...prev,
+            viralLoadResults: {
+              raw: responseData,
+              processedChartData: formatDataAgainstTime(responseData),
+            },
           }));
-        }
+
         if (error) {
-          setViralLoadResults((prev) => ({
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
+          setChartData((prev) => ({
+            ...prev,
+            viralLoadResults: {
+              raw: dummy,
+              processedChartData: formatDataAgainstTime(dummy),
+            },
           }));
           return error;
         }
@@ -350,19 +418,21 @@ const DashboardProvider = ({ children }) => {
     await getClientData({
       url: `/ws/rest/v1/ssemr/dashboard/highVl?startDate=${time.startDate}&endDate=${time.endDate}`,
       onResult: (responseData, error) => {
-        if (responseData) {
-          console.log("responseData", responseData);
-          setHighViralLoad((prev) => ({
-            raw: responseData,
-            // processedChartData: formatDataAgainstTime(responseData),
-            // processedChartData: formatViralLoadData(responseData),
-            processedChartData: formatViralLoadData(highViralLoadDummy),
+        if (responseData)
+          setChartData((prev) => ({
+            ...prev,
+            highViralLoad: {
+              raw: responseData,
+              processedChartData: formatViralLoadData(highViralLoadDummy),
+            },
           }));
-        }
         if (error) {
-          setHighViralLoad((prev) => ({
-            raw: dummy,
-            processedChartData: formatViralLoadData(highViralLoadDummy),
+          setChartData((prev) => ({
+            ...prev,
+            highViralLoad: {
+              raw: highViralLoadDummy,
+              processedChartData: formatViralLoadData(highViralLoadDummy),
+            },
           }));
           return error;
         }
@@ -374,17 +444,24 @@ const DashboardProvider = ({ children }) => {
     await getClientData({
       url: "/ws/rest/v1/ssemr/dashboard/adultART",
       onResult: (responseData, error) => {
-        if (responseData) {
-          setAdultART((prev) => ({
-            raw: responseData,
-            processedChartData: formatDataAgainstTime(responseData),
+        if (responseData)
+          setChartData((prev) => ({
+            ...prev,
+            adultART: {
+              raw: responseData,
+              processedChartData: formatDataAgainstTime(responseData),
+            },
           }));
-        }
+
         if (error) {
-          setAdultART((prev) => ({
-            raw: adultArtDummy,
-            processedChartData: formatDataAgainstTime(adultArtDummy),
+          setChartData((prev) => ({
+            ...prev,
+            adultART: {
+              raw: adultArtDummy,
+              processedChartData: formatDataAgainstTime(adultArtDummy),
+            },
           }));
+
           return error;
         }
       },
@@ -395,16 +472,22 @@ const DashboardProvider = ({ children }) => {
     await getClientData({
       url: "/ws/rest/v1/ssemr/dashboard/childART",
       onResult: (responseData, error) => {
-        if (responseData) {
-          setChildART((prev) => ({
-            raw: responseData,
-            processedChartData: formatDataAgainstTime(responseData),
+        if (responseData)
+          setChartData((prev) => ({
+            ...prev,
+            childART: {
+              raw: responseData,
+              processedChartData: formatDataAgainstTime(responseData),
+            },
           }));
-        }
+
         if (error) {
-          setChildART((prev) => ({
-            raw: childArtDummy,
-            processedChartData: formatDataAgainstTime(childArtDummy),
+          setChartData((prev) => ({
+            ...prev,
+            childART: {
+              raw: childArtDummy,
+              processedChartData: formatDataAgainstTime(childArtDummy),
+            },
           }));
           return error;
         }
@@ -450,43 +533,43 @@ const DashboardProvider = ({ children }) => {
   const stats = [
     {
       title: "Newly enrolled clients",
-      stat: getStat(newlyEnrolledClients?.raw?.results),
-      results: filterStatData(newlyEnrolledClients?.raw?.results),
+      stat: getStat(chartData.newlyEnrolledClients?.raw?.results),
+      results: filterStatData(chartData.newlyEnrolledClients?.raw?.results),
     },
     {
       title: "Active clients (TX_CURR)",
-      stat: getStat(activeClients?.raw?.results),
-      results: filterStatData(activeClients?.raw?.results),
+      stat: getStat(chartData.activeClients?.raw?.results),
+      results: filterStatData(chartData.activeClients?.raw?.results),
     },
     {
       title: "On appointment",
-      stat: getStat(onAppointment?.raw?.results),
-      results: filterStatData(onAppointment?.raw?.results),
+      stat: getStat(chartData.onAppointment?.raw?.results),
+      results: filterStatData(chartData.onAppointment?.raw?.results),
     },
     {
       title: "Missed appointments",
-      stat: getStat(missedAppointment?.raw?.results),
-      results: filterStatData(missedAppointment?.raw?.results),
+      stat: getStat(chartData.missedAppointment?.raw?.results),
+      results: filterStatData(chartData.missedAppointment?.raw?.results),
     },
     {
       title: "Interruptions in Treatment(Iit)",
-      stat: getStat(interrupted?.raw?.results),
-      results: filterStatData(interrupted?.raw?.results),
+      stat: getStat(chartData.interrupted?.raw?.results),
+      results: filterStatData(chartData.interrupted?.raw?.results),
     },
     {
       title: "Returned to Treatment(Tx_Rtt)",
-      stat: getStat(returned?.raw?.results),
-      results: filterStatData(returned?.raw?.results),
+      stat: getStat(chartData.returned?.raw?.results),
+      results: filterStatData(chartData.returned?.raw?.results),
     },
     {
       title: "Due for viral load",
-      stat: getStat(dueForViralLoad?.raw?.results),
-      results: filterStatData(dueForViralLoad?.raw?.results),
+      stat: getStat(chartData.dueForViralLoad?.raw?.results),
+      results: filterStatData(chartData.dueForViralLoad?.raw?.results),
     },
     {
       title: "High viral load",
-      stat: getStat(highViralLoad?.raw?.results),
-      results: filterStatData(highViralLoad?.raw?.results),
+      stat: getStat(chartData.highViralLoad?.raw?.results),
+      results: filterStatData(chartData.highViralLoad?.raw?.results),
     },
   ];
 
@@ -510,26 +593,15 @@ const DashboardProvider = ({ children }) => {
     <DashboardContext.Provider
       value={{
         activeClients,
-        allClients,
         currentTimeFilter,
         currentTopFilterIndex,
-        dueForViralLoad,
         filterTabs,
         filters,
-        highViralLoad,
-        interrupted,
-        missedAppointment,
-        newlyEnrolledClients,
-        onAppointment,
-        returned,
+        chartData,
         setCurrentTimeFilter,
         setCurrentTopFilterIndex,
         setFilters,
         stats,
-        viralLoadResults,
-        viralLoadSamples,
-        childART,
-        adultART,
         time,
         setTime,
       }}

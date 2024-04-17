@@ -96,36 +96,36 @@ const HomeDashboard = () => {
           </ChartCard>
         </div>
 
-        <ChartCard>
-          <Waterfall />
-        </ChartCard>
+        {/*<ChartCard>*/}
+        {/*  <Waterfall />*/}
+        {/*</ChartCard>*/}
 
         {/* ...............Charts....................... */}
-        <div className={styles.twoGridChartWrapper}>
-          <ChartCard>
-            <DueForViralLoad />
-          </ChartCard>
-          <ChartCard>
-            <ViralLoadSamples />
-          </ChartCard>
-        </div>
+        {/*<div className={styles.twoGridChartWrapper}>*/}
+        {/*  <ChartCard>*/}
+        {/*    <DueForViralLoad />*/}
+        {/*  </ChartCard>*/}
+        {/*  <ChartCard>*/}
+        {/*    <ViralLoadSamples />*/}
+        {/*  </ChartCard>*/}
+        {/*</div>*/}
 
         {/* ...............Charts....................... */}
-        <div className={styles.chartWrapper}>
-          <ChartCard>
-            <ViralLoadResults />
-          </ChartCard>
-          <ChartCard>
-            <ViralLoadCoverage />
-          </ChartCard>
-          <ChartCard>
-            <ViralLoadSuppression />
-          </ChartCard>
-        </div>
+        {/*<div className={styles.chartWrapper}>*/}
+        {/*  <ChartCard>*/}
+        {/*    <ViralLoadResults />*/}
+        {/*  </ChartCard>*/}
+        {/*  <ChartCard>*/}
+        {/*    <ViralLoadCoverage />*/}
+        {/*  </ChartCard>*/}
+        {/*  <ChartCard>*/}
+        {/*    <ViralLoadSuppression />*/}
+        {/*  </ChartCard>*/}
+        {/*</div>*/}
 
-        <ChartCard>
-          <HighViralLoadCascade />
-        </ChartCard>
+        {/*<ChartCard>*/}
+        {/*  <HighViralLoadCascade />*/}
+        {/*</ChartCard>*/}
       </div>
     </div>
   );
