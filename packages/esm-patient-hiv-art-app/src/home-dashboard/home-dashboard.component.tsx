@@ -15,6 +15,8 @@ import ChartCard from "./components/cards/ChartCard";
 import { DashboardContext } from "./context/DashboardContext";
 import Waterfall from "./charts/Waterfall";
 import { TimeFilter } from "./components/filter/TimeFilter";
+import DueForViralLoad from "./charts/DueForViralLoad";
+import ViralLoadSamples from "./charts/ViralLoadSamples";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
@@ -95,14 +97,14 @@ const HomeDashboard = () => {
         </ChartCard>
 
         {/* ...............Charts....................... */}
-        {/*<div className={styles.twoGridChartWrapper}>*/}
-        {/*  <ChartCard>*/}
-        {/*    <DueForViralLoad />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ViralLoadSamples />*/}
-        {/*  </ChartCard>*/}
-        {/*</div>*/}
+        <div className={styles.twoGridChartWrapper}>
+          <ChartCard>
+            <DueForViralLoad />
+          </ChartCard>
+          <ChartCard>
+            <ViralLoadSamples />
+          </ChartCard>
+        </div>
 
         {/* ...............Charts....................... */}
         {/*<div className={styles.chartWrapper}>*/}
