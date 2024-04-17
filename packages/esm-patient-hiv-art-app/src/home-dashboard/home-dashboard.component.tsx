@@ -17,11 +17,15 @@ import Waterfall from "./charts/Waterfall";
 import { TimeFilter } from "./components/filter/TimeFilter";
 import DueForViralLoad from "./charts/DueForViralLoad";
 import ViralLoadSamples from "./charts/ViralLoadSamples";
+import ViralLoadResults from "./charts/ViralLoadResults";
+import ViralLoadCoverage from "./charts/ViralLoadCoverage";
+import ViralLoadSuppression from "./charts/ViralLoadSuppression";
+import HighViralLoadCascade from "./charts/HighViralLoadCascade";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
 
-  const { setCurrentTimeFilter, stats, filterTabs, currentTopFilterIndex } =
+  const { stats, filterTabs, currentTopFilterIndex } =
     useContext(DashboardContext);
 
   return (
@@ -107,21 +111,21 @@ const HomeDashboard = () => {
         </div>
 
         {/* ...............Charts....................... */}
-        {/*<div className={styles.chartWrapper}>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ViralLoadResults />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ViralLoadCoverage />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ViralLoadSuppression />*/}
-        {/*  </ChartCard>*/}
-        {/*</div>*/}
+        <div className={styles.chartWrapper}>
+          <ChartCard>
+            <ViralLoadResults />
+          </ChartCard>
+          <ChartCard>
+            <ViralLoadCoverage />
+          </ChartCard>
+          <ChartCard>
+            <ViralLoadSuppression />
+          </ChartCard>
+        </div>
 
-        {/*<ChartCard>*/}
-        {/*  <HighViralLoadCascade />*/}
-        {/*</ChartCard>*/}
+        <ChartCard>
+          <HighViralLoadCascade />
+        </ChartCard>
       </div>
     </div>
   );

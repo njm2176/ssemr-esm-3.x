@@ -7,7 +7,10 @@ import { DashboardContext } from "../context/DashboardContext";
 import { ScaleTypes } from "../types";
 
 const ViralLoadResults = () => {
-  const { viralLoadResults, currentTimeFilter } = useContext(DashboardContext);
+  const {
+    chartData: { viralLoadResults },
+    currentTimeFilter,
+  } = useContext(DashboardContext);
 
   const options = {
     title: "Viral load results",
