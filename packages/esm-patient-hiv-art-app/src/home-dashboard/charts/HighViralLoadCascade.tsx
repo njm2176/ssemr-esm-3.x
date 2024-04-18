@@ -7,7 +7,9 @@ import { Loading } from "@carbon/react";
 import { DashboardContext } from "../context/DashboardContext";
 
 const HighViralLoadCascade = () => {
-  const { highViralLoad } = useContext(DashboardContext);
+  const {
+    chartData: { highViralLoad },
+  } = useContext(DashboardContext);
 
   const options = {
     title: "High viral load cascade",

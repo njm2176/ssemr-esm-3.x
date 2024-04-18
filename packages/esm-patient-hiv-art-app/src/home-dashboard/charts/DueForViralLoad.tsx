@@ -7,7 +7,10 @@ import { Loading } from "@carbon/react";
 import { ScaleTypes } from "../types";
 
 const DueForViralLoad = () => {
-  const { dueForViralLoad, currentTimeFilter } = useContext(DashboardContext);
+  const {
+    chartData: { dueForViralLoad },
+    currentTimeFilter,
+  } = useContext(DashboardContext);
 
   const options = {
     title: "Due for viral load",

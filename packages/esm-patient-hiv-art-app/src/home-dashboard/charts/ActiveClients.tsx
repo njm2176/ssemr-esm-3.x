@@ -4,7 +4,9 @@ import "@carbon/charts-react/styles.css";
 import { DashboardContext } from "../context/DashboardContext";
 
 const ActiveClients = () => {
-  const { activeClients, allClients } = useContext(DashboardContext);
+  const {
+    chartData: { activeClients, allClients },
+  } = useContext(DashboardContext);
 
   const formatData = () => {
     return [
