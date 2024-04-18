@@ -432,7 +432,7 @@ export const useChartData = () => {
 
   const stats = [
     {
-      title: "Newly enrolled clients",
+      title: "Newly enrolled clients(TX_NEW)",
       stat: getStat(chartData.newlyEnrolledClients?.raw?.results),
       results: filterStatData(chartData.newlyEnrolledClients?.raw?.results),
     },
@@ -452,12 +452,12 @@ export const useChartData = () => {
       results: filterStatData(chartData.missedAppointment?.raw?.results),
     },
     {
-      title: "Interruptions in Treatment(Iit)",
+      title: "Interruptions in Treatment(TX_IIT)",
       stat: getStat(chartData.interrupted?.raw?.results),
       results: filterStatData(chartData.interrupted?.raw?.results),
     },
     {
-      title: "Returned to Treatment(Tx_Rtt)",
+      title: "Returned to Treatment(TX_RTT)",
       stat: getStat(chartData.returned?.raw?.results),
       results: filterStatData(chartData.returned?.raw?.results),
     },
@@ -467,7 +467,7 @@ export const useChartData = () => {
       results: filterStatData(chartData.dueForViralLoad?.raw?.results),
     },
     {
-      title: "High viral load",
+      title: "High viral load (>= 1000 copies/ml)",
       stat: getStat(chartData.highViralLoad?.raw?.results),
       results: filterStatData(chartData.highViralLoad?.raw?.results),
     },
