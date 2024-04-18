@@ -2,14 +2,24 @@ import React, { useContext, useEffect, useState } from "react";
 import { RadioButton, RadioButtonGroup, Select } from "@carbon/react";
 import styles from "./index.scss";
 import { DashboardContext } from "../../context/DashboardContext";
+import { getStartAndEndDateOfWeek } from "../../helpers/dateOps";
+
 export const TimeFilter = () => {
   const [yearOptions, setYearOptions] = useState([]);
   const [timeFilter, setTimeFilter] = useState("groupYear");
   const [selectedYear, setSelectedYear] = useState("");
   const [month, setMonth] = useState("");
   const [week, setWeek] = useState("");
+  const { setCurrentTimeFilter, setTime } = useContext(DashboardContext);
 
-  const { setCurrentTimeFilter } = useContext(DashboardContext);
+  useEffect(() => {
+    if (week[0] === "-") setTime(getStartAndEndDateOfWeek(week));
+  }, [week]);
+
+  const weekChangeHandler = (value) => {
+    setWeek(value);
+    setTime(getStartAndEndDateOfWeek(value));
+  };
 
   useEffect(() => {
     setCurrentTimeFilter(timeFilter);
@@ -91,7 +101,7 @@ export const TimeFilter = () => {
               className={styles.timeInputs}
               value={week}
               type="week"
-              onChange={(evt) => setWeek(evt.target.value)}
+              onChange={(evt) => weekChangeHandler(evt.target.value)}
             />
           </div>
         )}
