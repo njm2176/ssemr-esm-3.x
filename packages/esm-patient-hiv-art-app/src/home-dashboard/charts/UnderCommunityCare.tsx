@@ -17,13 +17,13 @@ const UnderCommunityCare = () => {
   const formatData = () => {
     return [
       {
-        group: "Inactive",
+        group: "Not under care",
         value:
           allClients?.raw?.results?.length -
           underCareOfCommunityProgram?.raw?.results?.length,
       },
       {
-        group: "Active",
+        group: "Under care",
         value: underCareOfCommunityProgram?.raw?.results?.length,
       },
     ];
