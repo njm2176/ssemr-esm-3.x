@@ -1,19 +1,14 @@
-import React, { useContext, useEffect } from "react";
-import { currentARTClients } from "../dummy/data";
-import { AreaChart, LineChart } from "@carbon/charts-react";
+import React, { useContext } from "react";
+import { LineChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
 import styles from "./styles/index.scss";
-import useSWR from "swr";
-import { openmrsFetch } from "@openmrs/esm-framework";
 import { DashboardContext } from "../context/DashboardContext";
-import { Loading, SkeletonPlaceholder } from "@carbon/react";
+import { Loading } from "@carbon/react";
 import { ScaleTypes } from "../types";
 
 const NewlyEnrolled = () => {
-  // const { activeClients, currentTimeFilter } = useContext(DashboardContext);
-
   const {
-    chartData: { activeClients },
+    chartData: { newlyEnrolledClients },
     currentTimeFilter,
   } = useContext(DashboardContext);
 
@@ -34,12 +29,16 @@ const NewlyEnrolled = () => {
     curve: "curveMonotoneX",
     height: "400px",
   };
-
   return (
     <div className={styles.chartContainer}>
-      {activeClients?.processedChartData?.length > 0 &&
-      activeClients?.processedChartData[0][currentTimeFilter] ? (
-        <LineChart data={activeClients?.processedChartData} options={options} />
+      {newlyEnrolledClients?.processedChartData?.length === 0 ? (
+        <p>No records</p>
+      ) : newlyEnrolledClients?.processedChartData?.length > 0 &&
+        newlyEnrolledClients?.processedChartData[0][currentTimeFilter] ? (
+        <LineChart
+          data={newlyEnrolledClients?.processedChartData}
+          options={options}
+        />
       ) : (
         <Loading className={styles.spinner} withOverlay={false} />
       )}
