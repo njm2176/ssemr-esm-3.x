@@ -30,6 +30,7 @@ const DashboardProvider = ({ children }) => {
     getChildART,
     stats,
     filterTabs,
+    getUnderCareOfCommunityProgram,
   } = useChartData();
 
   useEffect(() => {
@@ -46,6 +47,7 @@ const DashboardProvider = ({ children }) => {
     getViralLoadResults();
     getChildART();
     getAdultART();
+    getUnderCareOfCommunityProgram();
   }, [currentTimeFilter, time]);
 
   return (
