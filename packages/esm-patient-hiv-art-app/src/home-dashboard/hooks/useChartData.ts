@@ -81,6 +81,10 @@ export const useChartData = () => {
       raw: null,
       processedChartData: [],
     },
+    underCareOfCommunityProgram: {
+      raw: null,
+      processedChartData: [],
+    },
   });
 
   const [currentTimeFilter, setCurrentTimeFilter] = useState(
@@ -377,10 +381,34 @@ export const useChartData = () => {
   const getChildART = async () =>
     getChartData({
       url: `/ws/rest/v1/ssemr/dashboard/childART?startDate=${time.startDate}&endDate=${time.endDate}`,
-      responseCallback: (data) =>
+      responseCallback: (data) => {
+        console.log("data", data);
         setChartData((prev) => ({
           ...prev,
           childART: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
+          },
+        }));
+      },
+
+      errorCallBack: (error) =>
+        setChartData((prev) => ({
+          ...prev,
+          childART: {
+            raw: dummy,
+            processedChartData: formatDataAgainstTime(childArtDummy),
+          },
+        })),
+    });
+
+  const getUnderCareOfCommunityProgram = async () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/underCareOfCommunityProgrammes?startDate=${time.startDate}&endDate=${time.endDate}`,
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          underCareOfCommunityProgram: {
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
@@ -389,8 +417,8 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           childART: {
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(childArtDummy),
+            raw: [],
+            processedChartData: [],
           },
         })),
     });
@@ -503,5 +531,6 @@ export const useChartData = () => {
     getChildART,
     stats,
     filterTabs,
+    getUnderCareOfCommunityProgram,
   };
 };
