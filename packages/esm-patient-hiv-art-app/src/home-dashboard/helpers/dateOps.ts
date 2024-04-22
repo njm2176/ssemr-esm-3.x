@@ -19,6 +19,19 @@ export const getStartAndEndDateOfWeek = (week) => {
   return { startDate: startDateFormatted, endDate: endDateFormatted };
 };
 
+export const getMonthStartAndLastDate = (value) => {
+  const [year, month] = value.split("-");
+
+  const firstDate = new Date(year, month - 1, 1);
+
+  const lastDate = new Date(year, month, 0);
+
+  const firstDateFormatted = firstDate.toISOString().split("T")[0];
+  const lastDateFormatted = lastDate.toISOString().split("T")[0];
+
+  return { startDate: firstDateFormatted, endDate: lastDateFormatted };
+};
+
 export const getThisYearsFirstAndLastDate = (year) => {
   const firstDayOfYear = new Date(year, 0, 1);
   const lastDayOfYear = new Date(year, 11, 31);

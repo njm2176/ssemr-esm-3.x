@@ -2,7 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { RadioButton, RadioButtonGroup, Select } from "@carbon/react";
 import styles from "./index.scss";
 import { DashboardContext } from "../../context/DashboardContext";
-import { getStartAndEndDateOfWeek } from "../../helpers/dateOps";
+import {
+  getMonthStartAndLastDate,
+  getStartAndEndDateOfWeek,
+  getThisYearsFirstAndLastDate,
+} from "../../helpers/dateOps";
 
 export const TimeFilter = () => {
   const [yearOptions, setYearOptions] = useState([]);
@@ -12,13 +16,29 @@ export const TimeFilter = () => {
   const [week, setWeek] = useState("");
   const { setCurrentTimeFilter, setTime } = useContext(DashboardContext);
 
-  useEffect(() => {
-    if (week[0] === "-") setTime(getStartAndEndDateOfWeek(week));
-  }, [week]);
+  const filterChangeHandler = (value) => {
+    if (value === "groupYear")
+      setTime(getThisYearsFirstAndLastDate(new Date().getFullYear()));
+    else if (value === "groupMonth")
+      setTime(getMonthStartAndLastDate(`${new Date().getFullYear()}-01`));
+    else setTime(getStartAndEndDateOfWeek(`${new Date().getFullYear()}-W01`));
+
+    setTimeFilter(value);
+  };
 
   const weekChangeHandler = (value) => {
     setWeek(value);
     setTime(getStartAndEndDateOfWeek(value));
+  };
+
+  const monthChangeHandler = (value) => {
+    setMonth(value);
+    setTime(getMonthStartAndLastDate(value));
+  };
+
+  const yearChangeHandler = (value) => {
+    setSelectedYear(value);
+    setTime(getThisYearsFirstAndLastDate(value));
   };
 
   useEffect(() => {
@@ -53,7 +73,9 @@ export const TimeFilter = () => {
         defaultSelected={timeFilter}
         orientation="horizontal"
         value={timeFilter}
-        onChange={(value: React.SetStateAction<string>) => setTimeFilter(value)}
+        onChange={(value: React.SetStateAction<string>) =>
+          filterChangeHandler(value)
+        }
       >
         <RadioButton
           labelText="Year"
@@ -71,9 +93,7 @@ export const TimeFilter = () => {
             id="yearPicker"
             labelText="Year"
             value={selectedYear}
-            onChange={(evt: {
-              target: { value: React.SetStateAction<string> };
-            }) => setSelectedYear(evt.target.value)}
+            onChange={(evt) => yearChangeHandler(evt.target.value)}
             defaultValue={yearOptions[0]}
           >
             {yearOptions.map((option, index) => (
@@ -90,7 +110,7 @@ export const TimeFilter = () => {
               className={styles.timeInputs}
               value={month}
               type="month"
-              onChange={(evt) => setMonth(evt.target.value)}
+              onChange={(evt) => monthChangeHandler(evt.target.value)}
             />
           </div>
         ) : (

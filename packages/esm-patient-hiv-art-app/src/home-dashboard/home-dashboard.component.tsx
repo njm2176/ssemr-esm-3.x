@@ -4,7 +4,6 @@ import styles from "./home-dashboard.scss";
 import { useTranslation } from "react-i18next";
 import StatCard from "./components/cards/StatCard";
 import "@carbon/charts/styles.css";
-import NewlyEnrolled from "./charts/NewlyEnrolled";
 import SSEMRTab from "./components/tabs/SSEMRTab";
 import CurrentlyEnrolled from "./charts/CurrentArtClients";
 import ActiveClients from "./charts/ActiveClients";
@@ -71,10 +70,10 @@ const HomeDashboard = () => {
         </div>
 
         {/* ...............Charts....................... */}
-        <div className={styles.chartWrapper}>
-          <ChartCard>
-            <NewlyEnrolled />
-          </ChartCard>
+        <div className={styles.twoGridChartWrapper}>
+          {/*<ChartCard>*/}
+          {/*  <NewlyEnrolled />*/}
+          {/*</ChartCard>*/}
           <ChartCard>
             <CurrentlyEnrolled />
           </ChartCard>
