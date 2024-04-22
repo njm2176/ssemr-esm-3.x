@@ -29,7 +29,6 @@ const AdultARTRegimen = () => {
     curve: "curveMonotoneX",
     height: "400px",
   };
-  console.log("adult art", adultART);
 
   return (
     <div className={styles.chartContainer}>

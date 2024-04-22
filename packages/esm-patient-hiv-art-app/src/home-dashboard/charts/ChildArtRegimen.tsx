@@ -29,7 +29,6 @@ const ChildArtRegimen = () => {
     curve: "curveMonotoneX",
     height: "400px",
   };
-  console.log("child art regimen", childART);
 
   return (
     <div className={styles.chartContainer}>
