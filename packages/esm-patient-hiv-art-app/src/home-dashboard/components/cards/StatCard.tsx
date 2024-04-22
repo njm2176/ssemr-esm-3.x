@@ -22,11 +22,21 @@ const StatCard = ({ item }) => {
     "Date enrolled",
     "Last Refill Date",
     "Contact",
+    "Land Mark",
+    "Village",
   ];
 
   const generateCSV = () => {
     const data = [
-      ["Name", "Sex", "Date enrolled", "Last Refill Date", "Contact"],
+      [
+        "Name",
+        "Sex",
+        "Date enrolled",
+        "Last Refill Date",
+        "Contact",
+        "Land Mark",
+        "Village",
+      ],
     ];
     rows.forEach((row) => {
       const values = Object.values(row);
