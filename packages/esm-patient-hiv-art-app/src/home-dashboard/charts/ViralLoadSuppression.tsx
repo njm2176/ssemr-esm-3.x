@@ -1,15 +1,39 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { PieChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
-import { viralLoadSuppression } from "../dummy/data";
+import { DashboardContext } from "../context/DashboardContext";
 
 const ViralLoadSuppression = () => {
   const options = {
-    title: "Viral Load Suppression",
+    title: "Viral load suppression",
     resizable: true,
     height: "400px",
   };
-  return <PieChart data={viralLoadSuppression} options={options}></PieChart>;
+
+  const {
+    chartData: { viralLoadSuppression, viralLoadCoverage },
+  } = useContext(DashboardContext);
+
+  const formatData = () => {
+    return [
+      {
+        group: "Covered but not suppressed",
+        value:
+          viralLoadCoverage?.raw?.results?.length -
+          viralLoadSuppression?.raw?.results?.length,
+      },
+      {
+        group: "Suppressed",
+        value: viralLoadSuppression?.raw?.results?.length,
+      },
+    ];
+  };
+
+  useEffect(() => {
+    formatData();
+  }, []);
+
+  return <PieChart data={formatData()} options={options}></PieChart>;
 };
 
 export default ViralLoadSuppression;

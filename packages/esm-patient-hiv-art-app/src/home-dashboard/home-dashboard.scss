@@ -16,6 +16,15 @@
   background-color: white;
 }
 
+@media (min-width: 1024px) {
+  .header {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 2rem 1rem 1rem 1rem;
+  }
+}
 
 .left-justified-items {
   display: flex;
@@ -30,19 +39,19 @@
 }
 
 .title {
-    @include type.type-style("heading-04");
-    color: colors.$gray-100;
-    margin: spacing.$spacing-03 1rem;
+  @include type.type-style("heading-04");
+  color: colors.$gray-100;
+  margin: spacing.$spacing-03 1rem;
 }
 
-.subTitle{
+.subTitle {
   @include type.type-style("body-01");
   color: colors.$gray-70;
   font-size: 1.2rem;
   margin: spacing.$spacing-03 1rem;
 }
 
-.parent{
+.parent {
   display: flex;
   flex-direction: column;
   gap: 4rem;
@@ -51,7 +60,7 @@
   margin-top: 5rem;
 }
 
-.titleContainer{
+.titleContainer {
   display: flex;
   align-items: center;
   width: 100%;
@@ -59,23 +68,23 @@
   flex-wrap: wrap;
 }
 
-svg.homeIcon{
+svg.homeIcon {
   font-size: x-large;
   font-weight: 700;
   fill: #0072c3;
   stroke: #0072c3;
 }
 
-.titleText{
+.titleText {
   font-size: x-large;
 }
 
-.dashboardText{
+.dashboardText {
   width: 100%;
 }
 
 
-.tabs{
+.tabs {
   display: flex;
   flex-wrap: nowrap;
   width: 100%;
@@ -83,7 +92,7 @@ svg.homeIcon{
   gap: 2rem;
 }
 
-.stats{
+.stats {
   display: flex;
   flex-wrap: nowrap;
   width: 100%;
@@ -91,7 +100,7 @@ svg.homeIcon{
   gap: 1rem;
 }
 
-.statIconWrapper{
+.statIconWrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -107,29 +116,29 @@ svg.homeIcon{
 
 }
 
-.statIcon{
+.statIcon {
   width: 1.5rem;
-  height:1.5rem;
+  height: 1.5rem;
   fill: white;
 }
 
 
-.chartWrapper{
+.chartWrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   width: 100%;
   gap: 2rem;
 }
 
-.twoGridChartWrapper{
+.twoGridChartWrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
   width: 100%;
   gap: 2rem;
 }
 
-.chart{
- display: flex;
- width: 100%;
- height: auto;
+.chart {
+  display: flex;
+  width: 100%;
+  height: auto;
 }

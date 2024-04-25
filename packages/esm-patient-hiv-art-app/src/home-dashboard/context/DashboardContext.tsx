@@ -31,6 +31,8 @@ const DashboardProvider = ({ children }) => {
     stats,
     filterTabs,
     getUnderCareOfCommunityProgram,
+    getViralLoadCoverage,
+    getViralLoadSuppression,
   } = useChartData();
 
   useEffect(() => {
@@ -48,6 +50,8 @@ const DashboardProvider = ({ children }) => {
     getChildART();
     getAdultART();
     getUnderCareOfCommunityProgram();
+    getViralLoadCoverage();
+    getViralLoadSuppression();
   }, [currentTimeFilter, time]);
 
   return (

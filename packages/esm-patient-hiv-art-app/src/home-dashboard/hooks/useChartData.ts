@@ -85,6 +85,14 @@ export const useChartData = () => {
       raw: null,
       processedChartData: [],
     },
+    viralLoadCoverage: {
+      raw: null,
+      processedChartData: [],
+    },
+    viralLoadSuppression: {
+      raw: null,
+      processedChartData: [],
+    },
   });
 
   const [currentTimeFilter, setCurrentTimeFilter] = useState(
@@ -144,14 +152,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) =>
-        setChartData((prev) => ({
-          ...prev,
-          activeClients: {
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
-          },
-        })),
+      errorCallBack: (error) => console.error("Error", error),
     });
 
   const getAllClients = async () =>
@@ -179,14 +180,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) =>
-        setChartData((prev) => ({
-          ...prev,
-          newlyEnrolledClients: {
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
-          },
-        })),
+      errorCallBack: (error) => console.error("Error", error),
     });
 
   const getClientsOnAppointment = async () =>
@@ -413,14 +407,35 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) =>
+      errorCallBack: (error) => console.error("Error", error),
+    });
+
+  const getViralLoadCoverage = async () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/viralLoadCoverage?startDate=${time.startDate}&endDate=${time.endDate}`,
+      responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
-          childART: {
-            raw: [],
-            processedChartData: [],
+          viralLoadCoverage: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
           },
         })),
+      errorCallBack: (error) => console.error("Error", error),
+    });
+
+  const getViralLoadSuppression = async () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/viralLoadSuppression?startDate=${time.startDate}&endDate=${time.endDate}`,
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          viralLoadSuppression: {
+            raw: data,
+            processedChartData: formatDataAgainstTime(data),
+          },
+        })),
+      errorCallBack: (error) => console.error("Error", error),
     });
 
   const getStat = (dataSet) => {
@@ -532,5 +547,7 @@ export const useChartData = () => {
     stats,
     filterTabs,
     getUnderCareOfCommunityProgram,
+    getViralLoadCoverage,
+    getViralLoadSuppression,
   };
 };
