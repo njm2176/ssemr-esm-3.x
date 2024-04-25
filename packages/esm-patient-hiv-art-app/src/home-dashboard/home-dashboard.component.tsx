@@ -20,6 +20,7 @@ import ViralLoadResults from "./charts/ViralLoadResults";
 import ViralLoadCoverage from "./charts/ViralLoadCoverage";
 import ViralLoadSuppression from "./charts/ViralLoadSuppression";
 import HighViralLoadCascade from "./charts/HighViralLoadCascade";
+import NewlyEnrolled from "./charts/NewlyEnrolled";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
@@ -70,10 +71,10 @@ const HomeDashboard = () => {
         </div>
 
         {/* ...............Charts....................... */}
-        <div className={styles.twoGridChartWrapper}>
-          {/*<ChartCard>*/}
-          {/*  <NewlyEnrolled />*/}
-          {/*</ChartCard>*/}
+        <div className={styles.chartWrapper}>
+          <ChartCard>
+            <NewlyEnrolled />
+          </ChartCard>
           <ChartCard>
             <CurrentlyEnrolled />
           </ChartCard>

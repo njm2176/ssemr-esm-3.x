@@ -13,7 +13,7 @@ const NewlyEnrolled = () => {
   } = useContext(DashboardContext);
 
   const options = {
-    title: "Currently Enrolled Clients",
+    title: "Clients currently receiving ART",
     axes: {
       bottom: {
         title: "",
@@ -32,7 +32,12 @@ const NewlyEnrolled = () => {
   return (
     <div className={styles.chartContainer}>
       {newlyEnrolledClients?.processedChartData?.length === 0 ? (
-        <p>No records</p>
+        <div className={styles.noRecords}>
+          <p className={styles.noRecordsTitle}>
+            Clients currently receiving ART
+          </p>
+          <p className={styles.noRecordsText}>No records</p>
+        </div>
       ) : newlyEnrolledClients?.processedChartData?.length > 0 &&
         newlyEnrolledClients?.processedChartData[0][currentTimeFilter] ? (
         <LineChart
