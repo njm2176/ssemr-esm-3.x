@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./dashboardLink.css";
-import { defaultErrorMap } from "zod";
 
 export interface DashboardLinkConfig {
   name: string;
