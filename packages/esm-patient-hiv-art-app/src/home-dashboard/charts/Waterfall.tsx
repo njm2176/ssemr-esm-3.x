@@ -1,8 +1,7 @@
 import React from "react";
-import { SimpleBarChart } from "@carbon/charts-react";
 import "@carbon/charts/styles.css";
-import { waterfallDummyData } from "../dummy/data";
 import { ScaleTypes } from "../types";
+import styles from "./styles/index.scss";
 
 const Waterfall = () => {
   const barOptions = {
@@ -21,10 +20,19 @@ const Waterfall = () => {
   };
 
   return (
-    <SimpleBarChart
-      data={waterfallDummyData}
-      options={barOptions}
-    ></SimpleBarChart>
+    <div className={styles.chartContainer}>
+      {/*<SimpleBarChart*/}
+      {/*  data={waterfallDummyData}*/}
+      {/*  options={barOptions}*/}
+      {/*></SimpleBarChart>*/}
+
+      <div className={styles.noRecords}>
+        <p style={{ marginBottom: "25%", fontWeight: 500 }}>
+          FY23Q4 waterfall analysis
+        </p>
+        <p className={styles.noRecordsText}>No records</p>
+      </div>
+    </div>
   );
 };
 

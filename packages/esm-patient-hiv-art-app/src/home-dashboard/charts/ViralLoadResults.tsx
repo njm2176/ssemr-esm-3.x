@@ -31,8 +31,13 @@ const ViralLoadResults = () => {
   };
   return (
     <div className={styles.chartContainer}>
-      {viralLoadResults?.processedChartData?.length > 0 &&
-      viralLoadResults?.processedChartData[0][currentTimeFilter] ? (
+      {viralLoadResults?.processedChartData?.length === 0 ? (
+        <div className={styles.noRecords}>
+          <p className={styles.noRecordsTitle}>Viral load results</p>
+          <p className={styles.noRecordsText}>No records</p>
+        </div>
+      ) : viralLoadResults?.processedChartData?.length > 0 &&
+        viralLoadResults?.processedChartData[0][currentTimeFilter] ? (
         <LineChart
           data={viralLoadResults?.processedChartData}
           options={options}
