@@ -25,7 +25,7 @@ function DashboardExtension({
   }, [location.pathname]);
 
   const reportsUrl =
-    "https://ssemr.intellisoftkenya.com/openmrs/module/reporting/dashboard/index.form";
+    "https://ssemr.intellisoftkenya.com/openmrs/ssemrreports/reports.page";
 
   const handleClick = () => {
     const url = name === "reports" ? reportsUrl : `${spaBasePath}/${name}`;
@@ -44,6 +44,8 @@ function DashboardExtension({
         cursor: "pointer",
       }}
       onClick={handleClick}
+      role="button"
+      tabIndex={-1}
     >
       {t(name, title)}
     </h1>
@@ -51,8 +53,9 @@ function DashboardExtension({
 }
 
 export const createDashboardLink =
-  (dashboardLinkConfig: DashboardLinkConfig) => () => (
-    <BrowserRouter>
-      <DashboardExtension dashboardLinkConfig={dashboardLinkConfig} />
-    </BrowserRouter>
-  );
+  (dashboardLinkConfig: DashboardLinkConfig) => () =>
+    (
+      <BrowserRouter>
+        <DashboardExtension dashboardLinkConfig={dashboardLinkConfig} />
+      </BrowserRouter>
+    );
