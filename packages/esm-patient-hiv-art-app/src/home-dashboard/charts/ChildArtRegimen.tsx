@@ -32,8 +32,13 @@ const ChildArtRegimen = () => {
 
   return (
     <div className={styles.chartContainer}>
-      {childART?.processedChartData?.length > 0 &&
-      childART?.processedChartData[0][currentTimeFilter] ? (
+      {childART?.processedChartData?.length === 0 ? (
+        <div className={styles.noRecords}>
+          <p className={styles.noRecordsTitle}>Child ART Regimen</p>
+          <p className={styles.noRecordsText}>No records</p>
+        </div>
+      ) : childART?.processedChartData?.length > 0 &&
+        childART?.processedChartData[0][currentTimeFilter] ? (
         <SimpleBarChart data={childART?.processedChartData} options={options} />
       ) : (
         <Loading className={styles.spinner} withOverlay={false} />

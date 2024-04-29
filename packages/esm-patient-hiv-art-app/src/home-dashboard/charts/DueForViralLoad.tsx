@@ -32,8 +32,13 @@ const DueForViralLoad = () => {
 
   return (
     <div className={styles.chartContainer}>
-      {dueForViralLoad?.processedChartData?.length > 0 &&
-      dueForViralLoad?.processedChartData[0][currentTimeFilter] ? (
+      {dueForViralLoad?.processedChartData?.length === 0 ? (
+        <div className={styles.noRecords}>
+          <p className={styles.noRecordsTitle}>Clients due for viral load</p>
+          <p className={styles.noRecordsText}>No records</p>
+        </div>
+      ) : dueForViralLoad?.processedChartData?.length > 0 &&
+        dueForViralLoad?.processedChartData[0][currentTimeFilter] ? (
         <LineChart
           data={dueForViralLoad?.processedChartData}
           options={options}

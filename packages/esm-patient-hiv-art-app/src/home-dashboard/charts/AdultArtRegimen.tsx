@@ -32,8 +32,13 @@ const AdultARTRegimen = () => {
 
   return (
     <div className={styles.chartContainer}>
-      {adultART?.processedChartData?.length > 0 &&
-      adultART?.processedChartData[0][currentTimeFilter] ? (
+      {adultART?.processedChartData?.length === 0 ? (
+        <div className={styles.noRecords}>
+          <p className={styles.noRecordsTitle}>Adult ART Regimen</p>
+          <p className={styles.noRecordsText}>No records</p>
+        </div>
+      ) : adultART?.processedChartData?.length > 0 &&
+        adultART?.processedChartData[0][currentTimeFilter] ? (
         <SimpleBarChart data={adultART?.processedChartData} options={options} />
       ) : (
         <Loading className={styles.spinner} withOverlay={false} />
