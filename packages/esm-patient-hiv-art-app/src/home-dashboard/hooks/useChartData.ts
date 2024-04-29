@@ -1,12 +1,6 @@
 import { openmrsFetch } from "@openmrs/esm-framework";
 import { useState } from "react";
 import { getThisYearsFirstAndLastDate } from "../helpers/dateOps";
-import {
-  adultArtDummy,
-  childArtDummy,
-  dummy,
-  highViralLoadDummy,
-} from "../dummy/data";
 
 export const useChartData = () => {
   const filterOptions = [
@@ -194,14 +188,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) =>
-        setChartData((prev) => ({
-          ...prev,
-          onAppointment: {
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
-          },
-        })),
+      errorCallBack: (error) => console.error("Error", error),
     });
 
   const getMissedAppointments = async () =>
@@ -215,14 +202,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) =>
-        setChartData((prev) => ({
-          ...prev,
-          missedAppointment: {
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
-          },
-        })),
+      errorCallBack: (error) => console.error("Error", error),
     });
 
   const getInterruptedTreatment = async () =>
@@ -236,14 +216,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) =>
-        setChartData((prev) => ({
-          ...prev,
-          interrupted: {
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
-          },
-        })),
+      errorCallBack: (error) => console.error("Error", error),
     });
 
   const getReturnedToTreatment = async () =>
@@ -257,14 +230,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) =>
-        setChartData((prev) => ({
-          ...prev,
-          returned: {
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
-          },
-        })),
+      errorCallBack: (error) => console.error("Error", error),
     });
 
   const getDueForViralLoad = async () =>
@@ -278,14 +244,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) =>
-        setChartData((prev) => ({
-          ...prev,
-          dueForViralLoad: {
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
-          },
-        })),
+      errorCallBack: (error) => console.error("Error", error),
     });
 
   const getViralLoadSamples = async () =>
@@ -299,14 +258,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) =>
-        setChartData((prev) => ({
-          ...prev,
-          viralLoadSamples: {
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
-          },
-        })),
+      errorCallBack: (error) => console.error("Error", error),
     });
 
   const getViralLoadResults = async () =>
@@ -320,14 +272,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) =>
-        setChartData((prev) => ({
-          ...prev,
-          viralLoadResults: {
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(dummy),
-          },
-        })),
+      errorCallBack: (error) => console.error("Error", error),
     });
 
   const getHighViralLoad = async () =>
@@ -338,17 +283,10 @@ export const useChartData = () => {
           ...prev,
           highViralLoad: {
             raw: data,
-            processedChartData: formatViralLoadData(highViralLoadDummy),
+            processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) =>
-        setChartData((prev) => ({
-          ...prev,
-          highViralLoad: {
-            raw: dummy,
-            processedChartData: formatViralLoadData(highViralLoadDummy),
-          },
-        })),
+      errorCallBack: (error) => console.error("Error", error),
     });
 
   const getAdultART = async () =>
@@ -362,38 +300,21 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) =>
-        setChartData((prev) => ({
-          ...prev,
-          adultART: {
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(adultArtDummy),
-          },
-        })),
+      errorCallBack: (error) => console.error("Error", error),
     });
 
   const getChildART = async () =>
     getChartData({
       url: `/ws/rest/v1/ssemr/dashboard/childART?startDate=${time.startDate}&endDate=${time.endDate}`,
-      responseCallback: (data) => {
-        console.log("data", data);
+      responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
           childART: {
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
-        }));
-      },
-
-      errorCallBack: (error) =>
-        setChartData((prev) => ({
-          ...prev,
-          childART: {
-            raw: dummy,
-            processedChartData: formatDataAgainstTime(childArtDummy),
-          },
         })),
+      errorCallBack: (error) => console.error("Error", error),
     });
 
   const getUnderCareOfCommunityProgram = async () =>
