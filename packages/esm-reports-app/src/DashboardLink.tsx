@@ -8,7 +8,7 @@ export interface DashboardLinkConfig {
   title: string;
 }
 
-function DashboardExtension({
+export function DashboardExtension({
   dashboardLinkConfig,
 }: {
   dashboardLinkConfig: DashboardLinkConfig;
