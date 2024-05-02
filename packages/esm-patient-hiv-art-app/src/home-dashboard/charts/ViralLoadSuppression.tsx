@@ -17,7 +17,7 @@ const ViralLoadSuppression = () => {
   const formatData = () => {
     return [
       {
-        group: "Covered but not suppressed",
+        group: "Unsuppressed",
         value:
           viralLoadCoverage?.raw?.results?.length -
           viralLoadSuppression?.raw?.results?.length,

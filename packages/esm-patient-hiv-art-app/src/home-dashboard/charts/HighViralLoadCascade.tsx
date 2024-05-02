@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { SimpleBarChart } from "@carbon/charts-react";
+import { LineChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
 import { ScaleTypes } from "../types";
 import styles from "./styles/index.scss";
@@ -37,10 +37,7 @@ const HighViralLoadCascade = () => {
         </div>
       ) : highViralLoad?.processedChartData?.length > 0 &&
         highViralLoad?.processedChartData[0][currentTimeFilter] ? (
-        <SimpleBarChart
-          data={highViralLoad?.processedChartData}
-          options={options}
-        />
+        <LineChart data={highViralLoad?.processedChartData} options={options} />
       ) : (
         <Loading className={styles.spinner} withOverlay={false} />
       )}

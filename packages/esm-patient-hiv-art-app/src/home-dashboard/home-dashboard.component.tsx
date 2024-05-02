@@ -20,6 +20,7 @@ import Waterfall from "./charts/Waterfall";
 import ViralLoadResults from "./charts/ViralLoadResults";
 import ViralLoadCoverage from "./charts/ViralLoadCoverage";
 import ViralLoadSuppression from "./charts/ViralLoadSuppression";
+import HighViralLoadCascade from "./charts/HighViralLoadCascade";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
@@ -122,9 +123,9 @@ const HomeDashboard = () => {
           </ChartCard>
         </div>
 
-        {/*<ChartCard>*/}
-        {/*  <HighViralLoadCascade />*/}
-        {/*</ChartCard>*/}
+        <ChartCard>
+          <HighViralLoadCascade />
+        </ChartCard>
       </div>
     </div>
   );
