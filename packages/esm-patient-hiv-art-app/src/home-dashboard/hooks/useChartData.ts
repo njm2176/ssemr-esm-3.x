@@ -397,41 +397,49 @@ export const useChartData = () => {
   const stats = [
     {
       title: "Newly enrolled clients(TX_NEW)",
+      color: "#3271F4",
       stat: getStat(chartData.newlyEnrolledClients?.raw?.results),
       results: filterStatData(chartData.newlyEnrolledClients?.raw?.results),
     },
     {
       title: "Active clients (TX_CURR)",
+      color: "#3271F4",
       stat: getStat(chartData.activeClients?.raw?.results),
       results: filterStatData(chartData.activeClients?.raw?.results),
     },
     {
       title: "On appointment",
+      color: "#3271F4",
       stat: getStat(chartData.onAppointment?.raw?.results),
       results: filterStatData(chartData.onAppointment?.raw?.results),
     },
     {
       title: "Missed appointments",
+      color: "#FF0000",
       stat: getStat(chartData.missedAppointment?.raw?.results),
       results: filterStatData(chartData.missedAppointment?.raw?.results),
     },
     {
       title: "Interruptions in Treatment(TX_IIT)",
+      color: "#FF8503",
       stat: getStat(chartData.interrupted?.raw?.results),
       results: filterStatData(chartData.interrupted?.raw?.results),
     },
     {
       title: "Returned to Treatment(TX_RTT)",
+      color: "#3271F4",
       stat: getStat(chartData.returned?.raw?.results),
       results: filterStatData(chartData.returned?.raw?.results),
     },
     {
       title: "Due for viral load",
+      color: "#FF8503",
       stat: getStat(chartData.dueForViralLoad?.raw?.results),
       results: filterStatData(chartData.dueForViralLoad?.raw?.results),
     },
     {
       title: "High viral load (>= 1000 copies/ml)",
+      color: "#FF0000",
       stat: getStat(chartData.highViralLoad?.raw?.results),
       results: filterStatData(chartData.highViralLoad?.raw?.results),
     },

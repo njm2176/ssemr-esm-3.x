@@ -78,7 +78,10 @@ const StatCard = ({ item }) => {
   }, [rows]);
 
   return (
-    <div className={styles.card}>
+    <div
+      style={{ color: item.color, borderColor: item.color }}
+      className={styles.card}
+    >
       {item?.results?.length > 0 && (
         <svg
           className={styles.download}
