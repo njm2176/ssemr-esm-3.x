@@ -13,15 +13,17 @@ const HighViralLoadCascade = () => {
   } = useContext(DashboardContext);
 
   const options = {
-    title: "High viral load cascade",
+    title: "High viral load",
     axes: {
       bottom: {
         title: "",
-        mapsTo: "group",
+        mapsTo: currentTimeFilter,
         scaleType: "labels" as ScaleTypes,
       },
       left: {
-        mapsTo: "value",
+        title: " Number of clients",
+        mapsTo: "clients",
+        scaleType: "linear" as ScaleTypes,
       },
     },
     curve: "curveMonotoneX",
