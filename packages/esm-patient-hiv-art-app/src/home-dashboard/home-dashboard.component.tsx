@@ -11,6 +11,9 @@ import ChartCard from "./components/cards/ChartCard";
 import { DashboardContext } from "./context/DashboardContext";
 import { TimeFilter } from "./components/filter/TimeFilter";
 import NewlyEnrolled from "./charts/NewlyEnrolled";
+import AdultARTRegimen from "./charts/AdultArtRegimen";
+import ChildArtRegimen from "./charts/ChildArtRegimen";
+import UnderCommunityCare from "./charts/UnderCommunityCare";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
@@ -74,17 +77,17 @@ const HomeDashboard = () => {
         </div>
 
         {/* ...............Charts....................... */}
-        {/*<div className={styles.chartWrapper}>*/}
-        {/*  <ChartCard>*/}
-        {/*    <AdultARTRegimen />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ChildArtRegimen />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <UnderCommunityCare />*/}
-        {/*  </ChartCard>*/}
-        {/*</div>*/}
+        <div className={styles.chartWrapper}>
+          <ChartCard>
+            <AdultARTRegimen />
+          </ChartCard>
+          <ChartCard>
+            <ChildArtRegimen />
+          </ChartCard>
+          <ChartCard>
+            <UnderCommunityCare />
+          </ChartCard>
+        </div>
 
         {/*<ChartCard>*/}
         {/*  <Waterfall />*/}
