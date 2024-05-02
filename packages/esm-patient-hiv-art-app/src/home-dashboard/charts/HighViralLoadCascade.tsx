@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { SimpleBarChart } from "@carbon/charts-react";
+import { LineChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
 import { ScaleTypes } from "../types";
 import styles from "./styles/index.scss";
@@ -13,15 +13,17 @@ const HighViralLoadCascade = () => {
   } = useContext(DashboardContext);
 
   const options = {
-    title: "High viral load cascade",
+    title: "High viral load",
     axes: {
       bottom: {
         title: "",
-        mapsTo: "group",
+        mapsTo: currentTimeFilter,
         scaleType: "labels" as ScaleTypes,
       },
       left: {
-        mapsTo: "value",
+        title: " Number of clients",
+        mapsTo: "clients",
+        scaleType: "linear" as ScaleTypes,
       },
     },
     curve: "curveMonotoneX",
@@ -32,17 +34,12 @@ const HighViralLoadCascade = () => {
     <div className={styles.chartContainer}>
       {highViralLoad?.processedChartData?.length === 0 ? (
         <div className={styles.noRecords}>
-          <p style={{ marginBottom: "25%", fontWeight: 500 }}>
-            High viral load cascade
-          </p>
+          <p className={styles.noRecordsTitle}>High viral load cascade</p>
           <p className={styles.noRecordsText}>No records</p>
         </div>
       ) : highViralLoad?.processedChartData?.length > 0 &&
         highViralLoad?.processedChartData[0][currentTimeFilter] ? (
-        <SimpleBarChart
-          data={highViralLoad?.processedChartData}
-          options={options}
-        />
+        <LineChart data={highViralLoad?.processedChartData} options={options} />
       ) : (
         <Loading className={styles.spinner} withOverlay={false} />
       )}

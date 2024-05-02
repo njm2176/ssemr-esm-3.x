@@ -7,20 +7,20 @@ import "@carbon/charts/styles.css";
 import SSEMRTab from "./components/tabs/SSEMRTab";
 import CurrentlyEnrolled from "./charts/CurrentArtClients";
 import ActiveClients from "./charts/ActiveClients";
+import ChartCard from "./components/cards/ChartCard";
+import { DashboardContext } from "./context/DashboardContext";
+import { TimeFilter } from "./components/filter/TimeFilter";
+import NewlyEnrolled from "./charts/NewlyEnrolled";
 import AdultARTRegimen from "./charts/AdultArtRegimen";
 import ChildArtRegimen from "./charts/ChildArtRegimen";
 import UnderCommunityCare from "./charts/UnderCommunityCare";
-import ChartCard from "./components/cards/ChartCard";
-import { DashboardContext } from "./context/DashboardContext";
-import Waterfall from "./charts/Waterfall";
-import { TimeFilter } from "./components/filter/TimeFilter";
 import DueForViralLoad from "./charts/DueForViralLoad";
 import ViralLoadSamples from "./charts/ViralLoadSamples";
+import Waterfall from "./charts/Waterfall";
 import ViralLoadResults from "./charts/ViralLoadResults";
 import ViralLoadCoverage from "./charts/ViralLoadCoverage";
 import ViralLoadSuppression from "./charts/ViralLoadSuppression";
 import HighViralLoadCascade from "./charts/HighViralLoadCascade";
-import NewlyEnrolled from "./charts/NewlyEnrolled";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
