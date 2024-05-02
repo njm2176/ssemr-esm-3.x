@@ -14,6 +14,8 @@ import NewlyEnrolled from "./charts/NewlyEnrolled";
 import AdultARTRegimen from "./charts/AdultArtRegimen";
 import ChildArtRegimen from "./charts/ChildArtRegimen";
 import UnderCommunityCare from "./charts/UnderCommunityCare";
+import DueForViralLoad from "./charts/DueForViralLoad";
+import ViralLoadSamples from "./charts/ViralLoadSamples";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
@@ -94,14 +96,14 @@ const HomeDashboard = () => {
         {/*</ChartCard>*/}
 
         {/* ...............Charts....................... */}
-        {/*<div className={styles.twoGridChartWrapper}>*/}
-        {/*  <ChartCard>*/}
-        {/*    <DueForViralLoad />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ViralLoadSamples />*/}
-        {/*  </ChartCard>*/}
-        {/*</div>*/}
+        <div className={styles.twoGridChartWrapper}>
+          <ChartCard>
+            <DueForViralLoad />
+          </ChartCard>
+          <ChartCard>
+            <ViralLoadSamples />
+          </ChartCard>
+        </div>
 
         {/* ...............Charts....................... */}
         {/*<div className={styles.chartWrapper}>*/}
