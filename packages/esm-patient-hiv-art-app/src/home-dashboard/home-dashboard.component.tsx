@@ -16,6 +16,10 @@ import ChildArtRegimen from "./charts/ChildArtRegimen";
 import UnderCommunityCare from "./charts/UnderCommunityCare";
 import DueForViralLoad from "./charts/DueForViralLoad";
 import ViralLoadSamples from "./charts/ViralLoadSamples";
+import Waterfall from "./charts/Waterfall";
+import ViralLoadResults from "./charts/ViralLoadResults";
+import ViralLoadCoverage from "./charts/ViralLoadCoverage";
+import ViralLoadSuppression from "./charts/ViralLoadSuppression";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
@@ -91,9 +95,9 @@ const HomeDashboard = () => {
           </ChartCard>
         </div>
 
-        {/*<ChartCard>*/}
-        {/*  <Waterfall />*/}
-        {/*</ChartCard>*/}
+        <ChartCard>
+          <Waterfall />
+        </ChartCard>
 
         {/* ...............Charts....................... */}
         <div className={styles.twoGridChartWrapper}>
@@ -106,17 +110,17 @@ const HomeDashboard = () => {
         </div>
 
         {/* ...............Charts....................... */}
-        {/*<div className={styles.chartWrapper}>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ViralLoadResults />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ViralLoadCoverage />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ViralLoadSuppression />*/}
-        {/*  </ChartCard>*/}
-        {/*</div>*/}
+        <div className={styles.chartWrapper}>
+          <ChartCard>
+            <ViralLoadResults />
+          </ChartCard>
+          <ChartCard>
+            <ViralLoadCoverage />
+          </ChartCard>
+          <ChartCard>
+            <ViralLoadSuppression />
+          </ChartCard>
+        </div>
 
         {/*<ChartCard>*/}
         {/*  <HighViralLoadCascade />*/}
