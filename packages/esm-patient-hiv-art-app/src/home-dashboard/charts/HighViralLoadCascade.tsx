@@ -32,9 +32,7 @@ const HighViralLoadCascade = () => {
     <div className={styles.chartContainer}>
       {highViralLoad?.processedChartData?.length === 0 ? (
         <div className={styles.noRecords}>
-          <p style={{ marginBottom: "25%", fontWeight: 500 }}>
-            High viral load cascade
-          </p>
+          <p className={styles.noRecordsTitle}>High viral load cascade</p>
           <p className={styles.noRecordsText}>No records</p>
         </div>
       ) : highViralLoad?.processedChartData?.length > 0 &&

@@ -27,9 +27,7 @@ const Waterfall = () => {
       {/*></SimpleBarChart>*/}
 
       <div className={styles.noRecords}>
-        <p style={{ marginBottom: "25%", fontWeight: 500 }}>
-          FY23Q4 waterfall analysis
-        </p>
+        <p className={styles.noRecordsTitle}>FY23Q4 waterfall analysis</p>
         <p className={styles.noRecordsText}>No records</p>
       </div>
     </div>
