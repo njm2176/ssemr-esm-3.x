@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { useContext } from "react";
 import classNames from "classnames";
 import { Field, useField } from "formik";
 import { useTranslation } from "react-i18next";
@@ -171,12 +171,9 @@ function DateObsField({
   const { t } = useTranslation();
   const today = new Date();
 
-  const onDateChange = useCallback(
-    (selectedDate: Date) => {
-      setFieldValue("date", selectedDate);
-    },
-    [setFieldValue]
-  );
+  function onDateChange(selectedDate) {
+    setFieldValue("date", selectedDate);
+  }
 
   const fieldName = `obs.${concept.uuid}`;
   return (
