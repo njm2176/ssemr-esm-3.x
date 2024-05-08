@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { LineChart } from "@carbon/charts-react";
+import { SimpleBarChart } from "@carbon/charts-react";
 import { Loading } from "@carbon/react";
 import "@carbon/charts/styles.css";
 import styles from "./styles/index.scss";
@@ -39,7 +39,7 @@ const NewlyEnrolled = () => {
         </div>
       ) : newlyEnrolledClients?.processedChartData?.length > 0 &&
         newlyEnrolledClients?.processedChartData[0][currentTimeFilter] ? (
-        <LineChart
+        <SimpleBarChart
           data={newlyEnrolledClients?.processedChartData}
           options={options}
         />
