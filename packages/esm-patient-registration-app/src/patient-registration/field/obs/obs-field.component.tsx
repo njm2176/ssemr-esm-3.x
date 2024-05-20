@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useMemo, useContext } from "react";
 import classNames from "classnames";
 import { Field, useField } from "formik";
 import { useTranslation } from "react-i18next";
@@ -11,25 +11,28 @@ import {
   DatePickerInput,
 } from "@carbon/react";
 import { useConfig } from "@openmrs/esm-framework";
-import { ConceptResponse } from "../../patient-registration.types";
-import { FieldDefinition, RegistrationConfig } from "../../../config-schema";
+import { type ConceptResponse } from "../../patient-registration.types";
+import {
+  type FieldDefinition,
+  type RegistrationConfig,
+} from "../../../config-schema";
 import { Input } from "../../input/basic-input/input/input.component";
 import { useConcept, useConceptAnswers } from "../field.resource";
 import styles from "./../field.scss";
 import { generateFormatting } from "../../date-util";
-import { PatientRegistrationContext } from "../../patient-registration-context";
 
 export interface ObsFieldProps {
   fieldDefinition: FieldDefinition;
 }
 
 export function ObsField({ fieldDefinition }: ObsFieldProps) {
+  const { t } = useTranslation();
   const { data: concept, isLoading } = useConcept(fieldDefinition.uuid);
-  const config = useConfig() as RegistrationConfig;
   const [date, dateMeta] = useField("date");
-  const { setFieldValue } = useContext(PatientRegistrationContext);
 
   const { format, dateFormat } = generateFormatting(["d", "m", "Y"], "/");
+
+  const config = useConfig<RegistrationConfig>();
 
   if (!config.registrationObs.encounterTypeUuid) {
     console.error(
@@ -43,6 +46,7 @@ export function ObsField({ fieldDefinition }: ObsFieldProps) {
   if (isLoading) {
     return null;
   }
+
   switch (concept.datatype.display) {
     case "Text":
       return (
@@ -70,7 +74,6 @@ export function ObsField({ fieldDefinition }: ObsFieldProps) {
           dateFormat={dateFormat}
           date={date}
           dateMeta={dateMeta}
-          setFieldValue={setFieldValue}
           format={format}
         />
       );
@@ -81,12 +84,20 @@ export function ObsField({ fieldDefinition }: ObsFieldProps) {
           answerConceptSetUuid={fieldDefinition.answerConceptSetUuid}
           label={fieldDefinition.label}
           required={fieldDefinition.validation.required}
+          customConceptAnswers={fieldDefinition.customConceptAnswers}
         />
       );
     default:
       return (
         <InlineNotification kind="error" title="Error">
-          Concept has unknown datatype "{concept.datatype.display}"
+          {t(
+            "obsFieldUnknownDatatype",
+            `Concept for obs field '{{fieldDefinitionId}}' has unknown datatype '{{datatypeName}}'`,
+            {
+              fieldDefinitionId: fieldDefinition.id,
+              datatypeName: concept.datatype.display,
+            }
+          )}
         </InlineNotification>
       );
   }
@@ -147,65 +158,6 @@ function TextObsField({
   );
 }
 
-interface DateObsFieldProps {
-  concept: ConceptResponse;
-  label: string;
-  required?: boolean;
-  dateFormat: string;
-  date: any;
-  dateMeta: any;
-  setFieldValue: any;
-  format: any;
-}
-
-function DateObsField({
-  concept,
-  label,
-  required,
-  dateFormat,
-  date,
-  dateMeta,
-  setFieldValue,
-  format,
-}: DateObsFieldProps) {
-  const { t } = useTranslation();
-  const today = new Date();
-
-  function onDateChange(selectedDate) {
-    setFieldValue("date", selectedDate);
-  }
-
-  const fieldName = `obs.${concept.uuid}`;
-  return (
-    <div
-      className={classNames(styles.customField, styles.halfWidthInDesktopView)}
-    >
-      <Field name={fieldName}>
-        {({ field, form: { touched, errors }, meta }) => {
-          return (
-            <DatePicker
-              dateFormat={dateFormat}
-              datePickerType="single"
-              onChange={onDateChange}
-              maxDate={format(today)}
-            >
-              <DatePickerInput
-                id={fieldName}
-                labelText={label ?? concept.display}
-                required={required}
-                invalid={errors[fieldName] && touched[fieldName]}
-                invalidText={dateMeta.error && t(dateMeta.error)}
-                value={format(date.value)}
-                {...field}
-              />
-            </DatePicker>
-          );
-        }}
-      </Field>
-    </div>
-  );
-}
-
 interface NumericObsFieldProps {
   concept: ConceptResponse;
   label: string;
@@ -213,8 +165,6 @@ interface NumericObsFieldProps {
 }
 
 function NumericObsField({ concept, label, required }: NumericObsFieldProps) {
-  const { t } = useTranslation();
-
   const fieldName = `obs.${concept.uuid}`;
 
   return (
@@ -239,11 +189,64 @@ function NumericObsField({ concept, label, required }: NumericObsFieldProps) {
   );
 }
 
+interface DateObsFieldProps {
+  concept: ConceptResponse;
+  label: string;
+  required?: boolean;
+  dateFormat: string;
+  date: any;
+  dateMeta: any;
+  format: any;
+}
+
+function DateObsField({
+  concept,
+  label,
+  required,
+  dateFormat,
+  date,
+  dateMeta,
+  format,
+}: DateObsFieldProps) {
+  const { t } = useTranslation();
+  const today = new Date();
+
+  const fieldName = `obs.${concept.uuid}`;
+  return (
+    <div
+      className={classNames(styles.customField, styles.halfWidthInDesktopView)}
+    >
+      <Field name={fieldName}>
+        {({ field, form: { touched, errors }, meta }) => {
+          return (
+            <DatePicker
+              dateFormat={dateFormat}
+              datePickerType="single"
+              maxDate={format(today)}
+            >
+              <DatePickerInput
+                id={fieldName}
+                labelText={label ?? concept.display}
+                required={required}
+                invalid={errors[fieldName] && touched[fieldName]}
+                invalidText={dateMeta.error && t(dateMeta.error)}
+                value={format(date.value)}
+                {...field}
+              />
+            </DatePicker>
+          );
+        }}
+      </Field>
+    </div>
+  );
+}
+
 interface CodedObsFieldProps {
   concept: ConceptResponse;
   answerConceptSetUuid?: string;
   label?: string;
   required?: boolean;
+  customConceptAnswers: Array<{ uuid: string; label?: string }>;
 }
 
 function CodedObsField({
@@ -251,15 +254,28 @@ function CodedObsField({
   answerConceptSetUuid,
   label,
   required,
+  customConceptAnswers,
 }: CodedObsFieldProps) {
-  const config = useConfig() as RegistrationConfig;
-  const { data: conceptAnswers, isLoading: isLoadingConceptAnswers } =
-    useConceptAnswers(answerConceptSetUuid ?? concept.uuid);
-
+  const { t } = useTranslation();
   const fieldName = `obs.${concept.uuid}`;
-  const fieldDefinition = config?.fieldDefinitions?.filter(
-    (def) => def.type === "obs" && def.uuid === concept.uuid
-  )[0];
+
+  const { data: conceptAnswers, isLoading: isLoadingConceptAnswers } =
+    useConceptAnswers(
+      customConceptAnswers.length ? "" : answerConceptSetUuid ?? concept.uuid
+    );
+
+  const answers = useMemo(
+    () =>
+      customConceptAnswers.length
+        ? customConceptAnswers
+        : isLoadingConceptAnswers
+        ? []
+        : conceptAnswers.map((answer) => ({
+            ...answer,
+            label: answer.display,
+          })),
+    [customConceptAnswers, conceptAnswers, isLoadingConceptAnswers]
+  );
 
   return (
     <div
@@ -268,33 +284,6 @@ function CodedObsField({
       {!isLoadingConceptAnswers ? (
         <Field name={fieldName}>
           {({ field, form: { touched, errors }, meta }) => {
-            if (fieldDefinition?.customConceptAnswers?.length) {
-              return (
-                <Layer>
-                  <Select
-                    id={fieldName}
-                    name={fieldName}
-                    required={required}
-                    labelText={label ?? concept?.display}
-                    invalid={errors[fieldName] && touched[fieldName]}
-                    {...field}
-                  >
-                    <SelectItem
-                      key={`no-answer-select-item-${fieldName}`}
-                      value={""}
-                      text=""
-                    />
-                    {fieldDefinition?.customConceptAnswers.map((answer) => (
-                      <SelectItem
-                        key={answer.uuid}
-                        value={answer.uuid}
-                        text={answer.label}
-                      />
-                    ))}
-                  </Select>
-                </Layer>
-              );
-            }
             return (
               <Layer>
                 <Select
@@ -308,13 +297,13 @@ function CodedObsField({
                   <SelectItem
                     key={`no-answer-select-item-${fieldName}`}
                     value={""}
-                    text=""
+                    text={t("selectAnOption", "Select an option")}
                   />
-                  {conceptAnswers.map((answer) => (
+                  {answers.map((answer) => (
                     <SelectItem
                       key={answer.uuid}
                       value={answer.uuid}
-                      text={answer.display}
+                      text={answer.label}
                     />
                   ))}
                 </Select>
