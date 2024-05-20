@@ -31,7 +31,7 @@ function DashboardExtension({
         navLink.match(name) && "active-left-nav-link"
       }`}
     >
-      {t("hivCareAndART", "HIV Care and ART")}
+      {t("facilityDashboard", "Facility Dashboard")}
     </ConfigurableLink>
   );
 }
