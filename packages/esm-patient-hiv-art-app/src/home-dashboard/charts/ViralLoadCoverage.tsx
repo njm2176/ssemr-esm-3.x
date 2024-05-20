@@ -11,7 +11,7 @@ const ViralLoadCoverage = () => {
   };
 
   const {
-    chartData: { viralLoadCoverage, allClients },
+    chartData: { viralLoadCoverage, activeClients },
   } = useContext(DashboardContext);
 
   const formatData = () => {
@@ -19,7 +19,7 @@ const ViralLoadCoverage = () => {
       {
         group: "Not covered",
         value:
-          allClients?.raw?.results?.length -
+          activeClients?.raw?.results?.length -
           viralLoadCoverage?.raw?.results?.length,
       },
       {
