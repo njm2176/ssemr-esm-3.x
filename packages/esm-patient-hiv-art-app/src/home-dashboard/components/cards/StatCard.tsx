@@ -10,10 +10,31 @@ import {
   TableRow,
 } from "@carbon/react";
 
-const StatCard = ({ item }) => {
+interface Client {
+  name: string;
+  sex: string;
+  dateEnrolled: string;
+  lastRefillDate: string;
+  contact: string;
+  landMark: string;
+  village: string;
+}
+
+interface Item {
+  title: string;
+  color: string;
+  stat: string;
+  results?: Client[];
+}
+
+interface StatCardProps {
+  item: Item;
+}
+
+const StatCard: React.FC<StatCardProps> = ({ item }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [rows, setRows] = useState([]);
-  const [csvData, setCsvData] = useState(null);
+  const [rows, setRows] = useState<Client[]>([]);
+  const [csvData, setCsvData] = useState<string | null>(null);
 
   const headers = [
     "Name",
@@ -38,8 +59,15 @@ const StatCard = ({ item }) => {
       ],
     ];
     rows.forEach((row) => {
-      const values = Object.values(row);
-      // @ts-ignore
+      const values = [
+        row.name,
+        row.sex,
+        row.dateEnrolled,
+        row.lastRefillDate,
+        row.contact,
+        row.landMark,
+        row.village,
+      ];
       data.push(values);
     });
 
@@ -52,11 +80,13 @@ const StatCard = ({ item }) => {
   };
 
   const handleDownload = () => {
-    const blob = new Blob([csvData], { type: "text/csv" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `${item.title}.csv`;
-    link.click();
+    if (csvData) {
+      const blob = new Blob([csvData], { type: "text/csv" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${item.title}.csv`;
+      link.click();
+    }
   };
 
   useEffect(() => {
@@ -67,6 +97,8 @@ const StatCard = ({ item }) => {
         dateEnrolled: client.dateEnrolled,
         lastRefillDate: client.lastRefillDate,
         contact: client.contact,
+        landMark: client.landMark,
+        village: client.village,
       }));
 
       setRows(formattedResults);
@@ -116,9 +148,13 @@ const StatCard = ({ item }) => {
           <TableBody>
             {rows.map((row, index) => (
               <TableRow key={index}>
-                {Object.keys(row).map((key) => (
-                  <TableCell key={key}>{row[key]}</TableCell>
-                ))}
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.sex}</TableCell>
+                <TableCell>{row.dateEnrolled}</TableCell>
+                <TableCell>{row.lastRefillDate}</TableCell>
+                <TableCell>{row.contact}</TableCell>
+                <TableCell>{row.landMark}</TableCell>
+                <TableCell>{row.village}</TableCell>
               </TableRow>
             ))}
           </TableBody>

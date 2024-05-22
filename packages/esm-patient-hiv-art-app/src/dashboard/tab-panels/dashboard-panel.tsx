@@ -53,13 +53,14 @@ const DashboardPanel: React.FC<DashboardPanel> = ({
         header: t("visitType", "Visit Type"),
       },
     ];
-  }, []);
+  }, [t]);
 
   const handleOpenForm = () =>
     launchPatientWorkspace("patient-form-entry-workspace", {
       workspaceTitle: dashboardTitle,
       formInfo: { encounterUuid: "", formUuid: formUuid, visit: currentVisit },
     });
+
   const tableRows =
     encounters
       ?.filter((enc) => enc.form.encounterType.uuid === encounterType)
