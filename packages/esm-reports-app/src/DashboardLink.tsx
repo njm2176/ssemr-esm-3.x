@@ -24,7 +24,6 @@ export function DashboardExtension({
     return decodeURIComponent(lastElement);
   }, [location.pathname]);
 
-  // Dynamically get the base URL
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
   const reportsUrl = `${baseUrl}/openmrs/ssemrreports/reports.page`;
 
