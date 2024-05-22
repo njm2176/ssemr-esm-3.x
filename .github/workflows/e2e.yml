@@ -18,7 +18,6 @@ jobs:
       - name: Copy test environment variables
         run: |
           cp example.env .env
-          sed -i 's/8080/8180/g' .env
 
       - name: Setup node
         uses: actions/setup-node@v3
