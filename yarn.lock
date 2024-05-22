@@ -5650,6 +5650,7 @@ __metadata:
     "@carbon/charts-react": ^1.5.2
     "@carbon/pictograms-react": ^11.56.1
     "@types/uuid": ^9.0.4
+    cross-env: ^7.0.3
     lodash-es: ^4.17.21
     uuid: ^8.3.2
     webpack: ^5.88.2
@@ -5674,6 +5675,7 @@ __metadata:
   dependencies:
     "@carbon/react": ^1.12.0
     core-js-pure: ^3.35.1
+    cross-env: ^7.0.3
     formik: ^2.1.5
     geopattern: ^1.2.3
     lodash: ^4.17.21
@@ -5698,6 +5700,7 @@ __metadata:
   dependencies:
     "@carbon/react": ^1.42.1
     "@openmrs/esm-patient-common-lib": next
+    cross-env: ^7.0.3
     lodash-es: ^4.17.15
     react-data-table-component: ^7.6.2
     react-to-print: ^2.14.13
@@ -5762,6 +5765,7 @@ __metadata:
     "@types/webpack-env": ^1.18.1
     "@typescript-eslint/eslint-plugin": ^5.61.0
     "@typescript-eslint/parser": ^5.61.0
+    cross-env: ^7.0.3
     css-loader: ^6.8.1
     eslint: ^8.44.0
     eslint-config-prettier: ^8.8.0
