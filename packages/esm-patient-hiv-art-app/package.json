@@ -57,6 +57,7 @@
   },
   "devDependencies": {
     "@types/uuid": "^9.0.4",
+    "cross-env": "^7.0.3",
     "webpack": "^5.88.2"
   }
 }

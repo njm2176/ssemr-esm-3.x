@@ -1,4 +1,4 @@
-name: OpenMRS CI
+name: SSEMR CI
 
 on:
   push:
@@ -17,47 +17,149 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     permissions:
       actions: read
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "21"
 
       - name: Cache dependencies
         id: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v3
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Set yarn version
+        run: yarn set version berry
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --immutable
+        run: yarn install
 
       - name: Setup local cache server for Turborepo
-        uses: felixmosh/turborepo-gh-artifacts@v3
+        uses: felixmosh/turborepo-gh-artifacts@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          server-token: ${{ env.TURBO_TOKEN }}
-
-      - name: Run lint, type checks and tests
-        run: yarn verify
+          server-token: ${{ secrets.TURBO_SERVER_TOKEN }}
 
       - name: Run build
-        run: yarn turbo build --concurrency=5
+        run: yarn turbo run build --color
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
         with:
           name: packages
           path: |
             packages/**/dist
-          overwrite: true
+
+
+  deploy_esm_patient_hiv_art_app:
+    runs-on: ubuntu-latest
+
+    env:
+      DIR_NAME: "esm-patient-hiv-art-app"
+      ESM_NAME: "@ssemr/esm-patient-hiv-art-app"
+      JS_NAME: "ssemr-esm-patient-hiv-art-app.js"
+
+    needs: build
+
+    if: ${{ github.event_name == 'push' }}
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Compute Timestamp
+        run: echo "TIMESTAMP=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: Prepare Directory
+        shell: bash
+        run: |
+          mkdir -p dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}
+          mv packages/${{ env.DIR_NAME }}/dist/*.* dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}/
+          ls dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}/
+
+  deploy_esm_vpatient_registration_app:
+    runs-on: ubuntu-latest
+
+    env:
+      DIR_NAME: "esm-patient-registration-app"
+      ESM_NAME: "@ssemr/esm-patient-registration-app"
+      JS_NAME: "ssemr-esm-patient-registration-app.js"
+
+    needs: build
+
+    if: ${{ github.event_name == 'push' }}
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Compute Timestamp
+        run: echo "TIMESTAMP=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: Prepare Directory
+        shell: bash
+        run: |
+          mkdir -p dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}
+          mv packages/${{ env.DIR_NAME }}/dist/*.* dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}/
+          ls dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}/
+
+  deploy_esm_patient_summary_app:
+    runs-on: ubuntu-latest
+
+    env:
+      DIR_NAME: "esm-patient-summary-app"
+      ESM_NAME: "@ssemr/esm-patient-summary-app"
+      JS_NAME: "ssemr-esm-patient-summary-app.js"
+
+    needs: build
+
+    if: ${{ github.event_name == 'push' }}
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Compute Timestamp
+        run: echo "TIMESTAMP=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: Prepare Directory
+        shell: bash
+        run: |
+          mkdir -p dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}
+          mv packages/${{ env.DIR_NAME }}/dist/*.* dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}/
+          ls dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}/
+
+  deploy_esm_reports_app:
+    runs-on: ubuntu-latest
+
+    env:
+      DIR_NAME: "esm-reports-app"
+      ESM_NAME: "@ssemr/esm-reports-dashboard"
+      JS_NAME: "ssemr-esm-reports-app.js"
+
+    needs: build
+
+    if: ${{ github.event_name == 'push' }}
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Compute Timestamp
+        run: echo "TIMESTAMP=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: Prepare Directory
+        shell: bash
+        run: |
+          mkdir -p dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}
+          mv packages/${{ env.DIR_NAME }}/dist/*.* dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}/
+          ls dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}/
 
   pre_release:
     runs-on: ubuntu-latest
@@ -67,46 +169,59 @@ jobs:
     if: ${{ github.event_name == 'push' }}
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v1
         with:
-          node-version: "18"
+          node-version: "21"
           registry-url: "https://registry.npmjs.org"
 
       - name: Cache dependencies
         id: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v3
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --immutable
-
-      - name: Version
-        run: yarn workspaces foreach --worktree --topological --exclude @openmrs/esm-patient-management version "$(node -e "console.log(require('semver').inc(require('./package.json').version, 'patch'))")-pre.${{ github.run_number }}"
+        run: npx lerna bootstrap
 
       - name: Build
-        run: yarn turbo build --concurrency=5
+        run: yarn turbo run build --color
 
-      - run: git config user.email "info@openmrs.org" && git config user.name "OpenMRS CI"
+      - name: Patch
+        run: yarn lerna version patch --no-git-tag-version --no-push --yes
+
+      - name: Version
+        run: npx lerna version "$(node -e "console.log(require('./lerna.json').version)")-pre.${{ github.run_number }}" --no-git-tag-version --yes
+
+      - run: git config user.email "info@intellisoftkenya.com" && git config user.name "SSEMR CI"
       - run: git add . && git commit -m "Prerelease version" --no-verify
 
       - name: Pre-release
-        run: yarn config set npmAuthToken "${NODE_AUTH_TOKEN}" && yarn run ci:prepublish
+        run: yarn run ci:prepublish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: see directory
+        shell: bash
+        run: |
+          ls -alh
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+  Trigger_server_build:
+    runs-on: ubuntu-latest
+    needs: pre_release
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Invoke workflow without inputs. Don't wait for result
+        uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          name: packages
-          path: |
-            packages/**/dist
-          overwrite: true
-
+          workflow: SSEMR CI
+          repo: IntelliSOFT-Consulting/ssemr
+          token: ${{ secrets.PERSONAL_TOKENS }}
+          wait-for-completion: false 
   release:
     runs-on: ubuntu-latest
 
@@ -115,41 +230,28 @@ jobs:
     if: ${{ github.event_name == 'release' }}
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v1
         with:
-          node-version: "18"
+          node-version: "21"
           registry-url: "https://registry.npmjs.org"
 
       - name: Cache dependencies
         id: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v3
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --immutable
+        run: npx lerna bootstrap
 
-      - run: yarn turbo build --color
-      - run: yarn config set npmAuthToken "${NODE_AUTH_TOKEN}" && yarn run ci:publish
+      - name: Build
+        run: yarn turbo run build --color
+
+      - name: Publish
+        run: yarn run ci:publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-
-  deploy_patient_management:
-    runs-on: ubuntu-latest
-
-    needs: pre_release
-
-    if: ${{ github.event_name == 'push' }}
-
-    steps:
-      - name: Trigger RefApp Build
-        uses: fjogeleit/http-request-action@v1
-        continue-on-error: true
-        with:
-          url: https://ci.openmrs.org/rest/api/latest/queue/O3-BF
-          method: "POST"
-          customHeaders: '{ "Authorization": "Bearer ${{ secrets.BAMBOO_TOKEN }}" }'

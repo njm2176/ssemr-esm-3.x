@@ -24,8 +24,8 @@ export function DashboardExtension({
     return decodeURIComponent(lastElement);
   }, [location.pathname]);
 
-  const reportsUrl =
-    "https://ssemr.intellisoftkenya.com/openmrs/ssemrreports/reports.page";
+  const baseUrl = `${window.location.protocol}//${window.location.host}`;
+  const reportsUrl = `${baseUrl}/openmrs/ssemrreports/reports.page`;
 
   const handleClick = () => {
     const url = name === "reports" ? reportsUrl : `${spaBasePath}/${name}`;
@@ -33,22 +33,25 @@ export function DashboardExtension({
   };
 
   return (
-    <h1
+    <button
       className={`cds--side-nav__link ${
         navLink.match(name) && "active-left-nav-link"
       }`}
       style={{
-        textAlign: "left",
-        paddingLeft: "16px",
-        lineHeight: "2.5",
+        paddingLeft: "50px",
+        lineHeight: "inherit",
         cursor: "pointer",
+        background: "none",
+        border: "none",
+        padding: "0",
+        marginLeft: "17px",
+        fontSize: "15px",
+        color: "inherit",
       }}
       onClick={handleClick}
-      role="button"
-      tabIndex={-1}
     >
       {t(name, title)}
-    </h1>
+    </button>
   );
 }
 

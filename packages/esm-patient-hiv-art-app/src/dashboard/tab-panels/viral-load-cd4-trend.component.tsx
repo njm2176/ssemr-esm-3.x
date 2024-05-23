@@ -21,7 +21,7 @@ const ViralLoadCD4Trend: React.FC<ViralLoadCD4TrendProps> = ({
   const { cd4ViralLoadConcepts } = useConfig<ConfigObject>();
   const { obs, isLoading, error } = usePatientObs(
     patientUuid,
-    cd4ViralLoadConcepts,
+    cd4ViralLoadConcepts
   );
   const chartData =
     obs
@@ -35,7 +35,6 @@ const ViralLoadCD4Trend: React.FC<ViralLoadCD4TrendProps> = ({
         key: dayjs(result.effectiveDateTime).format("DD.MM.YYYY"),
       }))
       .splice(0, 10) ?? [];
-  console.log(chartData);
   const chartOptions: any = useMemo(() => {
     return {
       title: "HIV & Art trends",
@@ -65,7 +64,7 @@ const ViralLoadCD4Trend: React.FC<ViralLoadCD4TrendProps> = ({
         },
       },
     };
-  }, []);
+  }, [t]);
 
   if (isLoading) {
     return <InlineLoading description={t("loading", "Loading...")} />;
