@@ -9,7 +9,6 @@ import { Loading } from "@carbon/react";
 const ChildArtRegimen = () => {
   const {
     chartData: { childART },
-    currentTimeFilter,
   } = useContext(DashboardContext);
 
   const options = {
@@ -17,12 +16,12 @@ const ChildArtRegimen = () => {
     axes: {
       bottom: {
         title: "",
-        mapsTo: currentTimeFilter,
+        mapsTo: "text",
         scaleType: "labels" as ScaleTypes,
       },
       left: {
-        title: " Number of clients",
-        mapsTo: "clients",
+        title: "Number of clients",
+        mapsTo: "total",
         scaleType: "linear" as ScaleTypes,
       },
     },
@@ -37,8 +36,7 @@ const ChildArtRegimen = () => {
           <p className={styles.noRecordsTitle}>Child ART Regimen</p>
           <p className={styles.noRecordsText}>No records</p>
         </div>
-      ) : childART?.processedChartData?.length > 0 &&
-        childART?.processedChartData[0][currentTimeFilter] ? (
+      ) : childART?.processedChartData?.length > 0 ? (
         <SimpleBarChart data={childART?.processedChartData} options={options} />
       ) : (
         <Loading className={styles.spinner} withOverlay={false} />
