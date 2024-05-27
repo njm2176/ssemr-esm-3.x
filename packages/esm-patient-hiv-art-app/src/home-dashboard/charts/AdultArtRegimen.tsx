@@ -9,7 +9,6 @@ import { DashboardContext } from "../context/DashboardContext";
 const AdultARTRegimen = () => {
   const {
     chartData: { adultART },
-    currentTimeFilter,
   } = useContext(DashboardContext);
 
   const options = {
@@ -17,12 +16,12 @@ const AdultARTRegimen = () => {
     axes: {
       bottom: {
         title: "",
-        mapsTo: currentTimeFilter,
+        mapsTo: "text",
         scaleType: "labels" as ScaleTypes,
       },
       left: {
-        title: " Number of clients",
-        mapsTo: "clients",
+        title: "Number of clients",
+        mapsTo: "total",
         scaleType: "linear" as ScaleTypes,
       },
     },
@@ -37,8 +36,7 @@ const AdultARTRegimen = () => {
           <p className={styles.noRecordsTitle}>Adult ART Regimen</p>
           <p className={styles.noRecordsText}>No records</p>
         </div>
-      ) : adultART?.processedChartData?.length > 0 &&
-        adultART?.processedChartData[0][currentTimeFilter] ? (
+      ) : adultART?.processedChartData?.length > 0 ? (
         <SimpleBarChart data={adultART?.processedChartData} options={options} />
       ) : (
         <Loading className={styles.spinner} withOverlay={false} />

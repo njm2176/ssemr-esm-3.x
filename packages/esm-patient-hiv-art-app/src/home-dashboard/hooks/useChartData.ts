@@ -291,13 +291,13 @@ export const useChartData = () => {
 
   const getAdultART = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/adultART?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/adultRegimenTreatment?startDate=${time.startDate}&endDate=${time.endDate}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
           adultART: {
             raw: data,
-            processedChartData: formatDataAgainstTime(data),
+            processedChartData: data?.results,
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
@@ -305,13 +305,13 @@ export const useChartData = () => {
 
   const getChildART = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/childART?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/childRegimenTreatment?startDate=${time.startDate}&endDate=${time.endDate}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
           childART: {
             raw: data,
-            processedChartData: formatDataAgainstTime(data),
+            processedChartData: data?.results,
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
