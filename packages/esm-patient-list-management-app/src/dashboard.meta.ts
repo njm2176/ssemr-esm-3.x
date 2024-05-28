@@ -1,5 +1,5 @@
 export const dashboardMeta = {
-  name: 'client-lists',
-  slot: 'client-lists-dashboard-slot',
+  name: 'patient-lists',
+  slot: 'patient-lists-dashboard-slot',
   title: 'Client Lists',
 };
