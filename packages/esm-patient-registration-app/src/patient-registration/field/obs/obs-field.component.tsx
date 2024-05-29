@@ -1,4 +1,4 @@
-import React, { useMemo, useContext } from "react";
+import React, { useMemo, useCallback, useContext } from "react";
 import classNames from "classnames";
 import { Field, useField } from "formik";
 import { useTranslation } from "react-i18next";
@@ -10,7 +10,11 @@ import {
   DatePicker,
   DatePickerInput,
 } from "@carbon/react";
-import { useConfig } from "@openmrs/esm-framework";
+import {
+  OpenmrsDatePicker,
+  parseDate,
+  useConfig,
+} from "@openmrs/esm-framework";
 import { type ConceptResponse } from "../../patient-registration.types";
 import {
   type FieldDefinition,
@@ -20,6 +24,7 @@ import { Input } from "../../input/basic-input/input/input.component";
 import { useConcept, useConceptAnswers } from "../field.resource";
 import styles from "./../field.scss";
 import { generateFormatting } from "../../date-util";
+import { PatientRegistrationContext } from "../../patient-registration-context";
 
 export interface ObsFieldProps {
   fieldDefinition: FieldDefinition;
@@ -71,10 +76,8 @@ export function ObsField({ fieldDefinition }: ObsFieldProps) {
           concept={concept}
           label={fieldDefinition.label}
           required={fieldDefinition.validation.required}
-          dateFormat={dateFormat}
-          date={date}
-          dateMeta={dateMeta}
-          format={format}
+          dateFormat={fieldDefinition.dateFormat}
+          placeholder={fieldDefinition.placeholder}
         />
       );
     case "Coded":
@@ -193,51 +196,59 @@ interface DateObsFieldProps {
   concept: ConceptResponse;
   label: string;
   required?: boolean;
-  dateFormat: string;
-  date: any;
-  dateMeta: any;
-  format: any;
+  dateFormat?: string;
+  placeholder?: string;
 }
 
 function DateObsField({
   concept,
   label,
   required,
-  dateFormat,
-  date,
-  dateMeta,
-  format,
+  placeholder,
 }: DateObsFieldProps) {
   const { t } = useTranslation();
-  const today = new Date();
-
   const fieldName = `obs.${concept.uuid}`;
+  const { setFieldValue } = useContext(PatientRegistrationContext);
+  const { format, placeHolder, dateFormat } = generateFormatting(
+    ["d", "m", "Y"],
+    "/"
+  );
+
+  const onDateChange = useCallback(
+    (date: Date) => {
+      setFieldValue(fieldName, date);
+    },
+    [setFieldValue]
+  );
+
   return (
-    <div
-      className={classNames(styles.customField, styles.halfWidthInDesktopView)}
-    >
-      <Field name={fieldName}>
-        {({ field, form: { touched, errors }, meta }) => {
-          return (
-            <DatePicker
-              dateFormat={dateFormat}
-              datePickerType="single"
-              maxDate={format(today)}
-            >
-              <DatePickerInput
+    <Layer>
+      <div className={styles.dobField}>
+        <Field name={fieldName}>
+          {({ field, form: { touched, errors }, meta }) => {
+            const dateValue = field.value
+              ? parseDate(field.value)
+              : field.value;
+            return (
+              <OpenmrsDatePicker
                 id={fieldName}
-                labelText={label ?? concept.display}
-                required={required}
-                invalid={errors[fieldName] && touched[fieldName]}
-                invalidText={dateMeta.error && t(dateMeta.error)}
-                value={format(date.value)}
                 {...field}
+                required={required}
+                dateFormat={dateFormat}
+                onChange={onDateChange}
+                labelText={label ?? concept.display}
+                invalid={errors[fieldName] && touched[fieldName]}
+                invalidText={meta.error && t(meta.error)}
+                value={dateValue}
+                carbonOptions={{
+                  placeholder: placeholder ?? placeHolder,
+                }}
               />
-            </DatePicker>
-          );
-        }}
-      </Field>
-    </div>
+            );
+          }}
+        </Field>
+      </div>
+    </Layer>
   );
 }
 
