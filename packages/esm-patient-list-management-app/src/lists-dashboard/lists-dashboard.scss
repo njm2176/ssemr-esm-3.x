@@ -108,3 +108,17 @@
     fill: $interactive-01;
   }
 }
+
+.skeleton{
+  width: 100%;
+  height: 100%
+}
+
+
+.filterComponent{
+  display: flex;
+  align-items: center;
+  max-width: 768px;
+  margin-left: auto;
+  gap: spacing.$spacing-04;
+}
