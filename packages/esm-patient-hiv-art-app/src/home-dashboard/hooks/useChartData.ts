@@ -119,12 +119,19 @@ export const useChartData = () => {
   };
 
   const formatDataAgainstTime = (data) => {
-    const bottomAxesArray = Object.keys(data?.summary[currentTimeFilter]);
+    let bottomAxesArray;
+    if (data?.summary)
+      bottomAxesArray = Object.keys(data?.summary[currentTimeFilter]);
+    else bottomAxesArray = Object.keys(data[currentTimeFilter]);
 
     const formattedData = bottomAxesArray.map((item) => {
       const returnObject = {};
       returnObject[currentTimeFilter] = item;
-      returnObject["clients"] = data?.summary[currentTimeFilter][item];
+
+      let clients;
+      if (data?.summary) clients = data?.summary[currentTimeFilter][item];
+      else clients = data[currentTimeFilter][item];
+      returnObject["clients"] = clients;
 
       return returnObject;
     });
@@ -249,7 +256,7 @@ export const useChartData = () => {
 
   const getViralLoadSamples = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/dueForVl?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/viralLoadSamplesCollected?startDate=${time.startDate}&endDate=${time.endDate}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
@@ -263,7 +270,7 @@ export const useChartData = () => {
 
   const getViralLoadResults = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/dueForVl?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/viralLoadSamplesCollected?startDate=${time.startDate}&endDate=${time.endDate}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
