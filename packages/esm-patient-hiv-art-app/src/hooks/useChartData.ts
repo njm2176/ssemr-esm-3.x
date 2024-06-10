@@ -87,6 +87,10 @@ export const useChartData = () => {
       raw: null,
       processedChartData: [],
     },
+    highViralLoadCascade: {
+      raw: null,
+      processedChartData: [],
+    },
   });
 
   const [currentTimeFilter, setCurrentTimeFilter] = useState(
@@ -270,7 +274,7 @@ export const useChartData = () => {
 
   const getViralLoadResults = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/viralLoadSamplesCollected?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/viralLoadResults?startDate=${time.startDate}&endDate=${time.endDate}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
@@ -291,6 +295,20 @@ export const useChartData = () => {
           highViralLoad: {
             raw: data,
             processedChartData: formatDataAgainstTime(data),
+          },
+        })),
+      errorCallBack: (error) => console.error("Error", error),
+    });
+
+  const getHighViralLoadCascade = async () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/viralLoadCascade?startDate=${time.startDate}&endDate=${time.endDate}`,
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          highViralLoadCascade: {
+            raw: data?.results,
+            processedChartData: data,
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
@@ -485,5 +503,6 @@ export const useChartData = () => {
     getUnderCareOfCommunityProgram,
     getViralLoadCoverage,
     getViralLoadSuppression,
+    getHighViralLoadCascade,
   };
 };

@@ -6,14 +6,14 @@ import styles from "./styles/index.scss";
 import { Loading } from "@carbon/react";
 import { DashboardContext } from "../context/DashboardContext";
 
-const HighViralLoadCascade = () => {
+const ActiveClients = () => {
   const {
-    chartData: { highViralLoad },
+    chartData: { activeClients },
     currentTimeFilter,
   } = useContext(DashboardContext);
 
   const options = {
-    title: "High viral load",
+    title: "Active clients",
     axes: {
       bottom: {
         title: "",
@@ -32,14 +32,14 @@ const HighViralLoadCascade = () => {
 
   return (
     <div className={styles.chartContainer}>
-      {highViralLoad?.processedChartData?.length === 0 ? (
+      {activeClients?.processedChartData?.length === 0 ? (
         <div className={styles.noRecords}>
-          <p className={styles.noRecordsTitle}>High viral load cascade</p>
+          <p className={styles.noRecordsTitle}>Active clients</p>
           <p className={styles.noRecordsText}>No records</p>
         </div>
-      ) : highViralLoad?.processedChartData?.length > 0 &&
-        highViralLoad?.processedChartData[0][currentTimeFilter] ? (
-        <LineChart data={highViralLoad?.processedChartData} options={options} />
+      ) : activeClients?.processedChartData?.length > 0 &&
+        activeClients?.processedChartData[0][currentTimeFilter] ? (
+        <LineChart data={activeClients?.processedChartData} options={options} />
       ) : (
         <Loading className={styles.spinner} withOverlay={false} />
       )}
@@ -47,4 +47,4 @@ const HighViralLoadCascade = () => {
   );
 };
 
-export default HighViralLoadCascade;
+export default ActiveClients;

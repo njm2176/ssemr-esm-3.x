@@ -30,11 +30,6 @@ export const rootHome = getAsyncLifecycle(
   options
 );
 
-export const hivArtTrendsDashboard = getAsyncLifecycle(
-  () => import("./dashboard/hiv-art-dashboard.component"),
-  options
-);
-
 export const homeHIVCareAndARTLink =
   // t('HIV Care & ART', 'HIV Care & ART')
   getSyncLifecycle(createHomeDashboardLink(homeDashboardMeta), options);
