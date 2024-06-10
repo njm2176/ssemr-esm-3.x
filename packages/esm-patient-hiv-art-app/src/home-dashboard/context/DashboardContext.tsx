@@ -33,6 +33,7 @@ const DashboardProvider = ({ children }) => {
     getUnderCareOfCommunityProgram,
     getViralLoadCoverage,
     getViralLoadSuppression,
+    getHighViralLoadCascade,
   } = useChartData();
 
   useEffect(() => {
@@ -52,6 +53,7 @@ const DashboardProvider = ({ children }) => {
     getUnderCareOfCommunityProgram();
     getViralLoadCoverage();
     getViralLoadSuppression();
+    getHighViralLoadCascade();
   }, [currentTimeFilter, time]);
 
   return (
