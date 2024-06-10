@@ -71,57 +71,57 @@ const HomeDashboard = () => {
         </div>
 
         {/* ...............Charts....................... */}
-        {/*<div className={styles.chartWrapper}>*/}
-        {/*  <ChartCard>*/}
-        {/*    <NewlyEnrolled />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <CurrentlyEnrolled />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ActiveClients />*/}
-        {/*  </ChartCard>*/}
-        {/*</div>*/}
+        <div className={styles.chartWrapper}>
+          <ChartCard>
+            <NewlyEnrolled />
+          </ChartCard>
+          <ChartCard>
+            <CurrentlyEnrolled />
+          </ChartCard>
+          <ChartCard>
+            <ActiveClients />
+          </ChartCard>
+        </div>
 
         {/* ...............Charts....................... */}
-        {/*<div className={styles.chartWrapper}>*/}
-        {/*  <ChartCard>*/}
-        {/*    <AdultARTRegimen />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ChildArtRegimen />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <UnderCommunityCare />*/}
-        {/*  </ChartCard>*/}
-        {/*</div>*/}
+        <div className={styles.chartWrapper}>
+          <ChartCard>
+            <AdultARTRegimen />
+          </ChartCard>
+          <ChartCard>
+            <ChildArtRegimen />
+          </ChartCard>
+          <ChartCard>
+            <UnderCommunityCare />
+          </ChartCard>
+        </div>
 
-        {/*<ChartCard>*/}
-        {/*  <Waterfall />*/}
-        {/*</ChartCard>*/}
-
-        {/* ...............Charts....................... */}
-        {/*<div className={styles.twoGridChartWrapper}>*/}
-        {/*  <ChartCard>*/}
-        {/*    <DueForViralLoad />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ViralLoadSamples />*/}
-        {/*  </ChartCard>*/}
-        {/*</div>*/}
+        <ChartCard>
+          <Waterfall />
+        </ChartCard>
 
         {/* ...............Charts....................... */}
-        {/*<div className={styles.chartWrapper}>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ViralLoadResults />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ViralLoadCoverage />*/}
-        {/*  </ChartCard>*/}
-        {/*  <ChartCard>*/}
-        {/*    <ViralLoadSuppression />*/}
-        {/*  </ChartCard>*/}
-        {/*</div>*/}
+        <div className={styles.twoGridChartWrapper}>
+          <ChartCard>
+            <DueForViralLoad />
+          </ChartCard>
+          <ChartCard>
+            <ViralLoadSamples />
+          </ChartCard>
+        </div>
+
+        {/* ...............Charts....................... */}
+        <div className={styles.chartWrapper}>
+          <ChartCard>
+            <ViralLoadResults />
+          </ChartCard>
+          <ChartCard>
+            <ViralLoadCoverage />
+          </ChartCard>
+          <ChartCard>
+            <ViralLoadSuppression />
+          </ChartCard>
+        </div>
 
         <ChartCard>
           <HighViralLoadCascade />
