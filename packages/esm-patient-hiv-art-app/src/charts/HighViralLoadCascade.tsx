@@ -8,7 +8,7 @@ import { DashboardContext } from "../context/DashboardContext";
 
 const HighViralLoadCascade = () => {
   const {
-    chartData: { highViralLoad },
+    chartData: { highViralLoad, highViralLoadCascade },
     currentTimeFilter,
   } = useContext(DashboardContext);
 
@@ -30,6 +30,7 @@ const HighViralLoadCascade = () => {
     height: "400px",
   };
 
+  console.log("hgh vl", highViralLoadCascade);
   return (
     <div className={styles.chartContainer}>
       {highViralLoad?.processedChartData?.length === 0 ? (

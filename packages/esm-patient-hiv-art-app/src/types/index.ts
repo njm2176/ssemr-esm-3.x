@@ -30,3 +30,11 @@ interface LinkItem {
   uri: string;
   resourceAlias: null | string;
 }
+
+export enum ScaleTypes {
+  TIME = "time",
+  LINEAR = "linear",
+  LOG = "log",
+  LABELS = "labels",
+  LABELS_RATIO = "labels-ratio",
+}

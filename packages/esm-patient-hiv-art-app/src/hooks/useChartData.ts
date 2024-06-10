@@ -503,6 +503,6 @@ export const useChartData = () => {
     getUnderCareOfCommunityProgram,
     getViralLoadCoverage,
     getViralLoadSuppression,
-    getHighViralLoadCascade
+    getHighViralLoadCascade,
   };
 };

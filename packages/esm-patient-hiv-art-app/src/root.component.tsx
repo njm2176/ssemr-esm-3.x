@@ -1,7 +1,7 @@
 import React from "react";
 import { SWRConfig } from "swr";
-import HomeDashboard from "./home-dashboard/home-dashboard.component";
-import DashboardProvider from "./home-dashboard/context/DashboardContext";
+import HomeDashboard from "./home-dashboard.component";
+import DashboardProvider from "./context/DashboardContext";
 
 const swrConfiguration = {
   errorRetryCount: 3,

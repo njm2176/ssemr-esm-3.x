@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { LineChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
-import { DashboardContext } from "../context/DashboardContext";
 import { ScaleTypes } from "../types";
 import styles from "./styles/index.scss";
 import { Loading } from "@carbon/react";
+import { DashboardContext } from "../context/DashboardContext";
 
 const ActiveClients = () => {
   const {
