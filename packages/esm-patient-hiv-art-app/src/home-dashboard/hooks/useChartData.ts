@@ -270,7 +270,7 @@ export const useChartData = () => {
 
   const getViralLoadResults = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/viralLoadSamplesCollected?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/viralLoadResults?startDate=${time.startDate}&endDate=${time.endDate}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
