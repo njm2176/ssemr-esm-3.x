@@ -307,7 +307,7 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           highViralLoadCascade: {
-            raw: data,
+            raw: data?.results,
             processedChartData: data,
           },
         })),

@@ -37,22 +37,22 @@ const DashboardProvider = ({ children }) => {
   } = useChartData();
 
   useEffect(() => {
-    getHighViralLoad();
-    getDueForViralLoad();
-    getNewlyEnrolledClients();
-    getClientsOnAppointment();
-    getActiveClients();
-    getMissedAppointments();
-    getAllClients();
-    getReturnedToTreatment();
-    getInterruptedTreatment();
-    getViralLoadSamples();
-    getViralLoadResults();
-    getChildART();
-    getAdultART();
-    getUnderCareOfCommunityProgram();
-    getViralLoadCoverage();
-    getViralLoadSuppression();
+    // getHighViralLoad();
+    // getDueForViralLoad();
+    // getNewlyEnrolledClients();
+    // getClientsOnAppointment();
+    // getActiveClients();
+    // getMissedAppointments();
+    // getAllClients();
+    // getReturnedToTreatment();
+    // getInterruptedTreatment();
+    // getViralLoadSamples();
+    // getViralLoadResults();
+    // getChildART();
+    // getAdultART();
+    // getUnderCareOfCommunityProgram();
+    // getViralLoadCoverage();
+    // getViralLoadSuppression();
     getHighViralLoadCascade();
   }, [currentTimeFilter, time]);
 
