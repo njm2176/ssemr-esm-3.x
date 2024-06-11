@@ -157,7 +157,7 @@ const SVGChart = () => {
                 <text
                   key={d.text}
                   x={
-                    axisPadding + index * (barWidth + barSpacing) + barWidth / 2
+                    axisPadding + index * (barWidth + barSpacing) + ( barWidth / 2)
                   }
                   y={chartHeight + 25}
                   textAnchor="middle"
@@ -169,35 +169,46 @@ const SVGChart = () => {
               ))}
 
               {/* Percentage */}
-              {data.map((d, index) => (
-                <text
-                  key={d.index}
-                  x={
-                    axisPadding + index * (barWidth + barSpacing) + barWidth / 2
-                  }
-                  y={chartHeight + 50}
-                  textAnchor="middle"
-                  fontSize="16"
-                  fontWeight="600"
-                >
-                  {Math.round(d.percentage * 100) / 100}%
-                </text>
-              ))}
+              {data.map(
+                (d, index) =>
+                  index !== 0 && (
+                    <text
+                      key={d.index}
+                      x={
+                        axisPadding +
+                        index * (barWidth + barSpacing) +
+                        barWidth / 2
+                      }
+                      y={chartHeight + 50}
+                      textAnchor="middle"
+                      fontSize="16"
+                      fontWeight="600"
+                    >
+                      {Math.round(d.percentage * 100) / 100}%
+                    </text>
+                  )
+              )}
 
               {/*Turn around */}
-              {data.map((d, index) => (
-                <text
-                  key={index}
-                  x={
-                    axisPadding + index * (barWidth + barSpacing) + barWidth / 2
-                  }
-                  y={chartHeight + 75}
-                  textAnchor="middle"
-                  fontSize="10"
-                >
-                  {Math.round(d.averageTurnaroundTimeMonths * 100) / 100} Months
-                </text>
-              ))}
+              {data.map(
+                (d, index) =>
+                  index !== 0 && (
+                    <text
+                      key={index}
+                      x={
+                        axisPadding +
+                        index * (barWidth + barSpacing) +
+                        barWidth / 2
+                      }
+                      y={chartHeight + 75}
+                      textAnchor="middle"
+                      fontSize="10"
+                    >
+                      {Math.round(d.averageTurnaroundTimeMonths * 100) / 100}{" "}
+                      Months
+                    </text>
+                  )
+              )}
 
               {/* Arrow */}
               {data.map(

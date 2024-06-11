@@ -43,8 +43,8 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding-left: 9rem;
   position: relative;
+  padding-left: 2rem;
   min-height: 600px;
 }
 
@@ -56,7 +56,7 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  bottom: 10px;
+  bottom: 0px;
   left: 0;
   gap: 8px;
   white-space: wrap;
@@ -64,7 +64,7 @@
 }
 
 .legendText{
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   font-style: italic;
 }
