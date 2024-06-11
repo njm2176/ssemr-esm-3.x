@@ -39,14 +39,13 @@
 
 
 .cascadeContainer{
-  height: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   padding-left: 9rem;
   position: relative;
-
+  min-height: 600px;
 }
 
 .SVGWrapper{
@@ -68,4 +67,11 @@
   font-size: 12px;
   font-weight: 700;
   font-style: italic;
+}
+
+.cascadeHeader{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }
