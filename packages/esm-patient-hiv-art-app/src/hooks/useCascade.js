@@ -6,6 +6,7 @@ export const useCascade = () => {
   const roundToNearestFactorOfFive = (num) => Math.round(num / 5) * 5;
 
   const generateScale = ({ dataset }) => {
+    setScale([]);
     if (dataset?.length === 0) return null;
 
     const minValue = roundToNearestFactorOfFive(
@@ -21,11 +22,13 @@ export const useCascade = () => {
 
     const scale = [];
     for (let i = 0; i <= numSteps; i++) {
-      setScale((prev) => [...prev, minValue + (i * stepSize)]);
+      setScale((prev) => [...prev, minValue + i * stepSize]);
     }
 
     return scale;
   };
 
-  return { generateScale, scale };
+  const clearScale = () => setScale([]);
+
+  return { generateScale, scale, clearScale };
 };

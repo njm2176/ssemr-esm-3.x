@@ -52,12 +52,13 @@ const SVGChart = () => {
     setTooltip({ visible: false, x: 0, y: 0, data: {} });
   };
 
-  const { generateScale, scale } = useCascade();
+  const { generateScale, scale, clearScale } = useCascade();
   useEffect(() => {
     if (highViralLoadCascade?.raw?.length > 0) {
       generateScale({ dataset: highViralLoadCascade?.raw });
       setData(highViralLoadCascade.raw);
     }
+    return () => clearScale();
   }, [highViralLoadCascade]);
 
   const maxValue = Math.max(...data.map((d) => d.total));
@@ -170,23 +171,23 @@ const SVGChart = () => {
               {/* Percentage */}
               {data.map((d, index) => (
                 <text
-                  key={d.percentage}
+                  key={d.index}
                   x={
                     axisPadding + index * (barWidth + barSpacing) + barWidth / 2
                   }
                   y={chartHeight + 50}
                   textAnchor="middle"
-                  fontSize="20"
+                  fontSize="16"
                   fontWeight="600"
                 >
-                  {Math.round(d.percentage)}%
+                  {Math.round(d.percentage * 100) / 100}%
                 </text>
               ))}
 
               {/*Turn around */}
               {data.map((d, index) => (
                 <text
-                  key={d.averageTurnaroundTimeMonths}
+                  key={index}
                   x={
                     axisPadding + index * (barWidth + barSpacing) + barWidth / 2
                   }
@@ -194,7 +195,7 @@ const SVGChart = () => {
                   textAnchor="middle"
                   fontSize="10"
                 >
-                  {d.averageTurnaroundTimeMonths} Months
+                  {Math.round(d.averageTurnaroundTimeMonths * 100) / 100} Months
                 </text>
               ))}
 
