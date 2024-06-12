@@ -48,6 +48,12 @@
   min-height: 600px;
 }
 
+.cascadeContentWrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 .SVGWrapper{
   width: 100%;
 }

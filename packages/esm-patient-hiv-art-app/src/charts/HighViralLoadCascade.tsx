@@ -5,6 +5,7 @@ import { useCascade } from "../hooks/useCascade.js";
 import styles from "./styles/index.scss";
 import { Loading } from "@carbon/react";
 import CascadeHeader from "../components/headers/cascade-header.component";
+import CascadePicker from "../components/filter/cascade-picker.component";
 import Tooltip from "../components/tabs/cascade-tooltip.component";
 
 const SVGChart = () => {
@@ -86,7 +87,8 @@ const SVGChart = () => {
     <div className={styles.cascadeContainer}>
       <div ref={divRef} className={styles.SVGWrapper}>
         {data?.length >= 1 ? (
-          <>
+          <div className={styles.cascadeContentWrapper}>
+            <CascadePicker filterChangeHandler={() => null} />
             <CascadeHeader
               data={data}
               headers={headers}
@@ -157,7 +159,7 @@ const SVGChart = () => {
                 <text
                   key={d.text}
                   x={
-                    axisPadding + index * (barWidth + barSpacing) + ( barWidth / 2)
+                    axisPadding + index * (barWidth + barSpacing) + barWidth / 2
                   }
                   y={chartHeight + 25}
                   textAnchor="middle"
@@ -231,7 +233,7 @@ const SVGChart = () => {
                   )
               )}
             </svg>
-          </>
+          </div>
         ) : (
           <Loading className={styles.spinner} withOverlay={false} />
         )}
