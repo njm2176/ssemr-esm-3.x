@@ -1,28 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./index.scss";
 import { RadioButton, RadioButtonGroup, Select } from "@carbon/react";
 import QuarterPickerComponent from "./quarter-picker.component";
 import BiannualPickerComponent from "./biannual-picker.component";
+import { DashboardContext } from "../../context/DashboardContext";
+import AnnualPickerComponent from "./annual-picker.component";
 
 const groupingOptions = ["annually", "biannually", "quarterly"];
 
-const CascadePickerComponent = ({ filterChangeHandler }) => {
+const CascadePickerComponent = () => {
+  const { setViralLoadRange } = useContext(DashboardContext);
+
   const [grouping, setGrouping] = React.useState("annually");
-  const [yearOptions, setYearOptions] = useState([]);
-
-  useEffect(() => {
-    const currentYear = new Date().getFullYear();
-
-    for (let year = currentYear; year >= currentYear - 19; year--) {
-      setYearOptions((prev) => [
-        ...prev,
-        { value: year, label: year.toString() },
-      ]);
-    }
-  }, []);
 
   const changeCallback = (range) => {
-    console.log("log", range);
+    setViralLoadRange(range);
   };
 
   return (
@@ -54,19 +46,7 @@ const CascadePickerComponent = ({ filterChangeHandler }) => {
       {grouping === "quarterly" ? (
         <QuarterPickerComponent changeCallback={changeCallback} />
       ) : grouping === "annually" ? (
-        <Select
-          id="yearPicker"
-          labelText="Year"
-          value={yearOptions.at(-1)}
-          defaultValue={yearOptions[0]}
-          onChange={changeCallback}
-        >
-          {yearOptions.map((option, index) => (
-            <option key={index} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </Select>
+        <AnnualPickerComponent changeCallback={changeCallback} />
       ) : (
         <BiannualPickerComponent changeCallback={changeCallback} />
       )}

@@ -36,6 +36,8 @@ const DashboardProvider = ({ children }) => {
     getHighViralLoadCascade,
     setWaterFallDateRange,
     waterFallDateRange,
+    viralLoadRange,
+    setViralLoadRange,
   } = useChartData();
 
   useEffect(() => {
@@ -62,6 +64,11 @@ const DashboardProvider = ({ children }) => {
     //insert function to fetch waterfall model data
   }, [waterFallDateRange]);
 
+  useEffect(() => {
+    //insert function to fetch waterfall model data
+    getHighViralLoadCascade();
+  }, [viralLoadRange]);
+
   return (
     <DashboardContext.Provider
       value={{
@@ -78,6 +85,7 @@ const DashboardProvider = ({ children }) => {
         time,
         setTime,
         setWaterFallDateRange,
+        setViralLoadRange,
       }}
     >
       {children}

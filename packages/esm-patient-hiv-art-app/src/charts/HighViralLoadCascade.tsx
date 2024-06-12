@@ -88,7 +88,7 @@ const SVGChart = () => {
       <div ref={divRef} className={styles.SVGWrapper}>
         {data?.length >= 1 ? (
           <div className={styles.cascadeContentWrapper}>
-            <CascadePicker filterChangeHandler={() => null} />
+            <CascadePicker />
             <CascadeHeader
               data={data}
               headers={headers}
@@ -96,6 +96,9 @@ const SVGChart = () => {
               setIsModalOpen={setIsTableOpen}
               rows={data}
             />
+            <div style={{ fontSize: "16px", fontWeight: "600" }}>
+              High Viral Load Cascade
+            </div>
             <svg width={divWidth} height={chartHeight + 2 * axisPadding}>
               {/* Y-axis */}
               <line

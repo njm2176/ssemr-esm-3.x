@@ -17,9 +17,14 @@ const Waterfall = () => {
 
   return (
     <div className={styles.chartContainer}>
-      <QuarterPickerComponent changeCallback={handleChange} />
+      <div className={styles.waterfallHeaderContainer}>
+        <p className="">Header</p>
+        <div className={styles.waterfallFilterWrapper}>
+          <QuarterPickerComponent changeCallback={handleChange} />
+        </div>
+      </div>
+
       <div className={styles.noRecords}>
-        <p className={styles.noRecordsTitle}>FY23Q4 waterfall analysis</p>
         <p className={styles.noRecordsText}>No records</p>
       </div>
     </div>
