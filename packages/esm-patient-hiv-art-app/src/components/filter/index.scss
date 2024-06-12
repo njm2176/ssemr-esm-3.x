@@ -44,3 +44,36 @@ input{
 .timeInputs :focus{
   outline: none;
 }
+
+
+.quarterPickerParent{
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: end;
+  max-width: 1024px;
+  font-size: 10px;
+}
+
+.quarterPickerDisplay{
+  display: flex;
+  flex-direction: row;
+  gap: 4rem;
+}
+
+
+.cascadePicker{
+  display: flex;
+  flex-direction: row;
+  gap: 4rem;
+  max-width: fit-content;
+  margin-left: auto;
+  justify-self: flex-end;
+  align-items: end;
+}
+
+.cascadeRadios{
+  display: flex;
+  max-width: 100px;
+  justify-content: end;
+}

@@ -1,6 +1,9 @@
 import { openmrsFetch } from "@openmrs/esm-framework";
 import { useState } from "react";
-import { getThisYearsFirstAndLastDate } from "../helpers/dateOps";
+import {
+  getThisQuartersRange,
+  getThisYearsFirstAndLastDate,
+} from "../helpers/dateOps";
 
 export const useChartData = () => {
   const filterOptions = [
@@ -21,6 +24,21 @@ export const useChartData = () => {
   const [currentTopFilterIndex, setCurrentTopFilterIndex] = useState(0);
 
   const [filters, setFilters] = useState(filterOptions[0].value);
+
+  const [time, setTime] = useState({
+    startDate: getThisYearsFirstAndLastDate(new Date().getFullYear()).startDate,
+    endDate: getThisYearsFirstAndLastDate(new Date().getFullYear()).endDate,
+  });
+
+  const [waterFallDateRange, setWaterFallDateRange] = useState({
+    start: "",
+    end: "",
+  });
+
+  const [viralLoadRange, setViralLoadRange] = useState({
+    start: getThisYearsFirstAndLastDate(new Date().getFullYear()).startDate,
+    end: getThisYearsFirstAndLastDate(new Date().getFullYear()).endDate,
+  });
 
   const [chartData, setChartData] = useState({
     activeClients: {
@@ -96,11 +114,6 @@ export const useChartData = () => {
   const [currentTimeFilter, setCurrentTimeFilter] = useState(
     filterOptions[0].value
   );
-
-  const [time, setTime] = useState({
-    startDate: getThisYearsFirstAndLastDate(new Date().getFullYear()).startDate,
-    endDate: getThisYearsFirstAndLastDate(new Date().getFullYear()).endDate,
-  });
 
   const getChartData = async ({ url, responseCallback, errorCallBack }) => {
     try {
@@ -302,7 +315,7 @@ export const useChartData = () => {
 
   const getHighViralLoadCascade = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/viralLoadCascade?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/viralLoadCascade?startDate=${viralLoadRange.start}&endDate=${viralLoadRange.end}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
@@ -504,5 +517,9 @@ export const useChartData = () => {
     getViralLoadCoverage,
     getViralLoadSuppression,
     getHighViralLoadCascade,
+    waterFallDateRange,
+    setWaterFallDateRange,
+    viralLoadRange,
+    setViralLoadRange,
   };
 };

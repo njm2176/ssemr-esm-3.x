@@ -42,3 +42,29 @@ export const getThisYearsFirstAndLastDate = (year) => {
 
   return { startDate: firstDayFormatted, endDate: lastDayFormatted };
 };
+
+export const getThisQuartersRange = () => {
+  const month = new Date().getMonth() + 1;
+  let start;
+  let end;
+
+  switch (true) {
+    case month <= 3:
+      start = `${new Date().getFullYear()}-01-01`;
+      end = `${new Date().getFullYear()}-03-31`;
+      break;
+    case month <= 6:
+      start = `${new Date().getFullYear()}-04-01`;
+      end = `${new Date().getFullYear()}-06-30`;
+      break;
+    case month <= 9:
+      start = `${new Date().getFullYear()}-07-01`;
+      end = `${new Date().getFullYear()}-09-01`;
+      break;
+    default:
+      start = `${new Date().getFullYear()}-10-01`;
+      end = `${new Date().getFullYear()}-12-31`;
+  }
+
+  return { start, end };
+};
