@@ -96,9 +96,6 @@ const HomeDashboard = () => {
           </ChartCard>
         </div>
 
-        <ChartCard>
-          <Waterfall />
-        </ChartCard>
 
         {/* ...............Charts....................... */}
         <div className={styles.twoGridChartWrapper}>
@@ -125,6 +122,10 @@ const HomeDashboard = () => {
 
         <ChartCard>
           <HighViralLoadCascade />
+        </ChartCard>
+
+        <ChartCard>
+          <Waterfall />
         </ChartCard>
       </div>
     </div>

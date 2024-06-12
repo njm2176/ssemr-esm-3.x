@@ -22,6 +22,11 @@ export const useChartData = () => {
 
   const [filters, setFilters] = useState(filterOptions[0].value);
 
+  const [waterFallDateRange, setWaterFallDateRange] = useState({
+    start: "",
+    end: "",
+  });
+
   const [chartData, setChartData] = useState({
     activeClients: {
       raw: null,
@@ -504,5 +509,7 @@ export const useChartData = () => {
     getViralLoadCoverage,
     getViralLoadSuppression,
     getHighViralLoadCascade,
+    waterFallDateRange,
+    setWaterFallDateRange,
   };
 };
