@@ -2,7 +2,7 @@ import React, { type CSSProperties, useCallback, useId, useMemo, useState, useEf
 import { useTranslation } from 'react-i18next';
 import fuzzy from 'fuzzy';
 import orderBy from 'lodash-es/orderBy';
-import type { TFunction } from 'i18next';
+import { TFunction } from 'i18next';
 import {
   Button,
   DataTable,
@@ -102,7 +102,7 @@ const ListsTable: React.FC<PatientListTableProps> = ({
 
   const tableRows = useMemo(
     () =>
-      results.map((list) => ({
+      results.map((list: any) => ({
         id: list.id,
         display: list.display,
         description: list.description,
@@ -236,7 +236,7 @@ interface PatientListStarIconProps {
   cohortUuid: string;
   isStarred: boolean;
   toggleStarredList: (cohortUuid: string, starList) => void;
-  t: TFunction;
+  t: any;
 }
 
 const PatientListStarIcon: React.FC<PatientListStarIconProps> = ({ cohortUuid, isStarred, toggleStarredList, t }) => {
