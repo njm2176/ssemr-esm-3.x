@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 import React from "react";
 import { openmrsFetch } from "@openmrs/esm-framework";
+import { Tag } from "@carbon/react";
+import styles from "../lists-dashboard/lists-dashboard.scss";
 
 export const usePatientListing = () => {
   const { t } = useTranslation();
@@ -23,25 +25,54 @@ export const usePatientListing = () => {
     {
       id: "allClients",
       text: t("allClients", "All Clients"),
+      tabClass: "allTab",
+      textClass: "tabText",
     },
     {
       id: "activeClients",
       text: t("activeClients", "Active Clients"),
+      tabClass: "activeTab",
+      textClass: "activeTabText",
     },
     {
       id: "IIT",
       text: t("iit", "IIT Clients"),
+      tabClass: "iitTab",
+      textClass: "iitTabText",
     },
     {
       id: "TAD",
-      text: t("transferOutAndDied", "Transferred Out And Died"),
+      text: t("transferOutAndDied", "Transferred Out Clients"),
+      tabClass: "tTab",
+      textClass: "tTabText",
+    },
+    {
+      id: "Deceased",
+      text: t("deceased", "Deceased Clients"),
+      tabClass: "deceasedTab",
+      textClass: "deceasedTabText",
     },
   ];
 
   const defaultTableHeaders = [
     {
+      name: "SN",
+      selector: (row, index) => index + 1,
+    },
+    {
+      name: "ART",
+      selector: (row) =>
+        row?.identifiers?.find((item) =>
+          item?.identifierType?.toLowerCase()?.includes("art")
+        )?.identifier,
+    },
+    {
       name: "Name",
       selector: (row) => row.name,
+    },
+    {
+      name: "Age",
+      selector: (row) => row.age,
     },
     {
       name: "Sex",
@@ -52,20 +83,12 @@ export const usePatientListing = () => {
       selector: (row) => row.dateEnrolled,
     },
     {
+      name: "Date of initiation",
+      selector: (row) => row.initiationDate,
+    },
+    {
       name: "Last refill date",
       selector: (row) => row.lastRefillDate,
-    },
-    {
-      name: "Contact",
-      selector: (row) => row.contact,
-    },
-    {
-      name: "Landmark",
-      selector: (row) => row.landmark,
-    },
-    {
-      name: "Village",
-      selector: (row) => row.village,
     },
   ];
 
@@ -83,6 +106,14 @@ export const usePatientListing = () => {
 
       case 2:
         getIIT();
+        break;
+
+      case 3:
+        getTransferredOut();
+        break;
+
+      case 4:
+        getDeceased();
         break;
 
       default:
@@ -107,7 +138,27 @@ export const usePatientListing = () => {
       url: `/ws/rest/v1/ssemr/dashboard/allClients?startDate=${startDate}&endDate=${endDate}`,
       responseCallback: (data) => {
         setTableData(data.results);
-        setTableHeaders(defaultTableHeaders);
+        setTableHeaders([
+          ...defaultTableHeaders,
+          {
+            name: "Clinical Status",
+            button: true,
+            cell: (row) => (
+              <Tag
+                className={
+                  row.clinicalStatus === "ACTIVE"
+                    ? styles.greenChip
+                    : row.clinicalStatus === "INACTIVE"
+                    ? styles.redChip
+                    : styles.amberChip
+                }
+                size="sm"
+              >
+                {row.clinicalStatus}
+              </Tag>
+            ),
+          },
+        ]);
       },
       errorCallBack: (error) => console.error(error),
     });
@@ -125,6 +176,26 @@ export const usePatientListing = () => {
   const getIIT = async () =>
     getChartData({
       url: `/ws/rest/v1/ssemr/dashboard/interruptedInTreatment?startDate=${startDate}&endDate=${endDate}`,
+      responseCallback: (data) => {
+        setTableData(data.results);
+        setTableHeaders(defaultTableHeaders);
+      },
+      errorCallBack: (error) => console.error(error),
+    });
+
+  const getTransferredOut = async () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/transferredOut?startDate=${startDate}&endDate=${endDate}`,
+      responseCallback: (data) => {
+        setTableData(data.results);
+        setTableHeaders(defaultTableHeaders);
+      },
+      errorCallBack: (error) => console.error(error),
+    });
+
+  const getDeceased = async () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/deceased?startDate=${startDate}&endDate=${endDate}`,
       responseCallback: (data) => {
         setTableData(data.results);
         setTableHeaders(defaultTableHeaders);

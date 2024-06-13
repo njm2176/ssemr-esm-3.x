@@ -73,8 +73,8 @@ const ListsDashboard: React.FC = () => {
         >
           <TabList className={styles.tablist} aria-label="List tabs" contained>
             {tabs.map((tab) => (
-              <Tab className={styles.tab} key={tab.id} tab={tab}>
-                {tab.text}
+              <Tab className={styles[tab.tabClass]} key={tab.id} tab={tab}>
+                <p className={styles[tab.textClass]}>{tab.text}</p>
               </Tab>
             ))}
           </TabList>
