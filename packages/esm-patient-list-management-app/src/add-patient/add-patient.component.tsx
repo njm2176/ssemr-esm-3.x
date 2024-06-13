@@ -250,7 +250,7 @@ async function findRealPatientListsWithoutPatient(
 
 async function findFakePatientListsWithoutPatient(
   patientUuid: string,
-  t: TFunction,
+  t: any,
 ): Promise<Array<AddablePatientListViewModel>> {
   const offlinePatients = await getDynamicOfflineDataEntries('patient');
   const isPatientOnOfflineList = offlinePatients.some((x) => x.identifier === patientUuid);
