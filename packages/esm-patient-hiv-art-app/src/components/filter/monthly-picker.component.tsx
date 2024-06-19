@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./index.scss";
 import { getMonthStartAndLastDate } from "../../helpers/dateOps";
 
-const QuarterPickerComponent = ({ changeCallback }) => {
-  const [month, setMonth] = useState("");
+const MonthlyPickerComponent = ({ changeCallback }) => {
+  const [month, setMonth] = useState(
+    `${new Date().getFullYear()}-${
+      new Date().getMonth() + 1 < 9
+        ? "0" + (new Date().getMonth() + 1)
+        : new Date().getMonth() + 1
+    }`
+  );
 
   const monthChangeHandler = (value) => {
     const range = getMonthStartAndLastDate(value);
     changeCallback({ start: range.startDate, end: range.endDate });
     setMonth(value);
   };
-
-  // useEffect(() => {
-  //   changeCallback(dateRange);
-  // }, [dateRange]);
 
   return (
     <div className={styles.quarterPickerParent}>
@@ -31,4 +33,4 @@ const QuarterPickerComponent = ({ changeCallback }) => {
   );
 };
 
-export default QuarterPickerComponent;
+export default MonthlyPickerComponent;

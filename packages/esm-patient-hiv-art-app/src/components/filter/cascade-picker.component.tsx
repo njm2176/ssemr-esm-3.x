@@ -1,17 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import styles from "./index.scss";
-import { RadioButton, RadioButtonGroup, Select } from "@carbon/react";
-import QuarterPickerComponent from "./quarter-picker.component";
-import BiannualPickerComponent from "./biannual-picker.component";
+import { RadioButton, RadioButtonGroup } from "@carbon/react";
 import { DashboardContext } from "../../context/DashboardContext";
-import AnnualPickerComponent from "./annual-picker.component";
+import MonthlyPickerComponent from "./monthly-picker.component";
+import WeeklyPickerComponent from "./weekly-picker.component";
 
-const groupingOptions = ["annually", "biannually", "quarterly"];
+const groupingOptions = ["monthly", "weekly"];
 
 const CascadePickerComponent = () => {
   const { setViralLoadRange } = useContext(DashboardContext);
 
-  const [grouping, setGrouping] = React.useState("annually");
+  const [grouping, setGrouping] = React.useState("monthly");
 
   const changeCallback = (range) => {
     setViralLoadRange(range);
@@ -43,12 +42,10 @@ const CascadePickerComponent = () => {
         </RadioButtonGroup>
       </div>
 
-      {grouping === "quarterly" ? (
-        <QuarterPickerComponent changeCallback={changeCallback} />
-      ) : grouping === "annually" ? (
-        <AnnualPickerComponent changeCallback={changeCallback} />
+      {grouping === "monthly" ? (
+        <MonthlyPickerComponent changeCallback={changeCallback} />
       ) : (
-        <BiannualPickerComponent changeCallback={changeCallback} />
+        <WeeklyPickerComponent changeCallback={changeCallback} />
       )}
     </div>
   );
