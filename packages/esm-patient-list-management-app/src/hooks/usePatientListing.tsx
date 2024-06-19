@@ -152,9 +152,11 @@ export const usePatientListing = () => {
                     ? styles.redChip
                     : styles.amberChip
                 }
-                size="sm"
+                size="md"
               >
-                {row.clinicalStatus}
+                {row.clinicalStatus.toLowerCase().includes("interrupt")
+                  ? "IIT"
+                  : row.clinicalStatus}
               </Tag>
             ),
           },

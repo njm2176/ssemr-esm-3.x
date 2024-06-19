@@ -1,17 +1,11 @@
 import React from "react";
 import classnames from "classnames";
-import {
-  Tab,
-  Tabs,
-  TabList,
-  SkeletonPlaceholder,
-  Button,
-  TextInput,
-} from "@carbon/react";
+import { SkeletonPlaceholder, Button, TextInput } from "@carbon/react";
 import Header from "../header/header.component";
 import styles from "./lists-dashboard.scss";
 import { usePatientListing } from "../hooks/usePatientListing";
 import DataTable from "react-data-table-component";
+import SsemrListTabComponent from "../components/ssemr-list-tab.component";
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <div className={styles.filterComponent}>
@@ -65,20 +59,15 @@ const ListsDashboard: React.FC = () => {
     >
       <section className={styles.dashboard}>
         <Header />
-        <Tabs
-          selectedIndex={currentTab}
-          onChange={({ selectedIndex }) => handleTabChange(selectedIndex)}
-          tabContentClassName={styles.hiddenTabsContent}
-          className={styles.tabs}
-        >
-          <TabList className={styles.tablist} aria-label="List tabs" contained>
-            {tabs.map((tab) => (
-              <Tab className={styles[tab.tabClass]} key={tab.id} tab={tab}>
-                <p className={styles[tab.textClass]}>{tab.text}</p>
-              </Tab>
-            ))}
-          </TabList>
-        </Tabs>
+        <div className={styles.tabs}>
+          {tabs.map((tab, index) => (
+            <SsemrListTabComponent
+              name={tab.text}
+              handler={() => handleTabChange(index)}
+              isActive={index === currentTab}
+            />
+          ))}
+        </div>
         <div className={styles.listsTableContainer}>
           {loading ? (
             <SkeletonPlaceholder className={styles.skeleton} />

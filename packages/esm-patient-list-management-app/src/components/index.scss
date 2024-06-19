@@ -1,0 +1,28 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/colors';
+@use '@carbon/styles/scss/type';
+@import "../root";
+
+.tab{
+  padding: .5rem 1rem;
+  border: 1px solid $primary-color;
+  border-radius: 8px;
+  background: $secondary-color;
+  font-size: small;
+  color: $dark-color;
+  text-transform: capitalize;
+  cursor: pointer;
+  width: 100%;
+}
+
+.activeTab{
+  padding: .5rem 1rem;
+  border: 1px solid $primary-color;
+  border-radius: 8px;
+  background: $primary-color;
+  font-size: small;
+  color: $secondary-color;
+  text-transform: capitalize;
+  cursor: pointer;
+  width: 100%;
+}
