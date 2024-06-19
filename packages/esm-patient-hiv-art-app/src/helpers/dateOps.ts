@@ -16,7 +16,7 @@ export const getStartAndEndDateOfWeek = (week) => {
 
   const startDateFormatted = startOfWeek.toISOString().split("T")[0];
   const endDateFormatted = endOfWeek.toISOString().split("T")[0];
-  return { startDate: startDateFormatted, endDate: endDateFormatted };
+  return { startDate: endDateFormatted, endDate: startDateFormatted };
 };
 
 export const getMonthStartAndLastDate = (value) => {
