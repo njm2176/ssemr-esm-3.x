@@ -38,6 +38,7 @@ const DashboardProvider = ({ children }) => {
     waterFallDateRange,
     viralLoadRange,
     setViralLoadRange,
+    getWaterFallData,
   } = useChartData();
 
   useEffect(() => {
@@ -58,10 +59,12 @@ const DashboardProvider = ({ children }) => {
     getViralLoadCoverage();
     getViralLoadSuppression();
     getHighViralLoadCascade();
+    getWaterFallData();
   }, [currentTimeFilter, time]);
 
   useEffect(() => {
     //insert function to fetch waterfall model data
+    getWaterFallData();
   }, [waterFallDateRange]);
 
   useEffect(() => {

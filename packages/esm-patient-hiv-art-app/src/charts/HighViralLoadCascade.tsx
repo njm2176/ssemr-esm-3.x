@@ -147,7 +147,7 @@ const SVGChart = () => {
                     y={chartHeight - (d.total / maxValue) * chartHeight}
                     width={barWidth}
                     height={(d.total / maxValue) * chartHeight}
-                    fill="#0072c3"
+                    fill="#6929c4"
                     onMouseOver={(evt) => handleMouseOver(evt, d)}
                     onMouseOut={handleMouseOut}
                   />
