@@ -239,31 +239,60 @@ export const useChartData = () => {
       },
       {
         group: "TX_DEATH",
-        value: [potentialTXCurr - TX_DEATH, potentialTXCurr],
+        value: [
+          potentialTXCurr - transferOut - TX_DEATH,
+          potentialTXCurr - transferOut,
+        ],
       },
       {
         group: "TX_ML_Self Transfer",
-        value: [potentialTXCurr - selfTransfer, potentialTXCurr],
+        value: [
+          potentialTXCurr - transferOut - TX_DEATH - selfTransfer,
+          potentialTXCurr - transferOut - TX_DEATH,
+        ],
       },
       {
         group: "TX_ML_Refusal/Stopped",
-        value: [potentialTXCurr - refusal, potentialTXCurr],
+        value: [
+          potentialTXCurr - transferOut - TX_DEATH - selfTransfer - refusal,
+          potentialTXCurr - transferOut - TX_DEATH - selfTransfer,
+        ],
       },
       {
         group: "TX_ML_IIT (on ART <3 mo)",
-        value: [potentialTXCurr - onARTLessThanThree, potentialTXCurr],
+        value: [
+          potentialTXCurr -
+            transferOut -
+            TX_DEATH -
+            selfTransfer -
+            refusal -
+            onARTLessThanThree,
+          potentialTXCurr - transferOut - TX_DEATH - selfTransfer - refusal,
+        ],
       },
       {
         group: "TX_ML_IIT (on ART 3+ mo)",
-        value: [potentialTXCurr - onARTMoreThanThree, potentialTXCurr],
+        value: [
+          potentialTXCurr -
+            transferOut -
+            TX_DEATH -
+            selfTransfer -
+            refusal -
+            onARTLessThanThree -
+            onARTMoreThanThree,
+          potentialTXCurr -
+            transferOut -
+            TX_DEATH -
+            selfTransfer -
+            refusal -
+            onARTLessThanThree,
+        ],
       },
       {
         group: "Calculated",
         value: [0, calculated],
       },
     ];
-
-    console.log("processed", processed);
 
     return processed;
   };
