@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "@carbon/charts-react/styles.css";
 import { DashboardContext } from "../context/DashboardContext";
-import { useCascade } from "../hooks/useCascade.js";
+import { useCascade } from "../hooks/useCascade";
 import styles from "./styles/index.scss";
 import { Loading } from "@carbon/react";
 import CascadeHeader from "../components/headers/cascade-header.component";
