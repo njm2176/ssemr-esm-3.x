@@ -1,7 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import { PieChart } from "@carbon/charts-react";
+import { LineChart, PieChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
 import { DashboardContext } from "../context/DashboardContext";
+import styles from "./styles/index.scss";
+import { Loading } from "@carbon/react";
 
 const UnderCommunityCare = () => {
   const options = {
@@ -33,7 +35,15 @@ const UnderCommunityCare = () => {
     formatData();
   }, []);
 
-  return <PieChart data={formatData()} options={options}></PieChart>;
+  return (
+    <div className={styles.chartContainer}>
+      {underCareOfCommunityProgram.loading ? (
+        <Loading className={styles.spinner} withOverlay={false} />
+      ) : (
+        <PieChart data={formatData()} options={options}></PieChart>
+      )}
+    </div>
+  );
 };
 
 export default UnderCommunityCare;

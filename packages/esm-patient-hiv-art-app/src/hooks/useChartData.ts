@@ -31,8 +31,8 @@ export const useChartData = () => {
   });
 
   const [waterFallDateRange, setWaterFallDateRange] = useState({
-    start: "",
-    end: "",
+    start: getThisQuartersRange().start,
+    end: getThisQuartersRange().end,
   });
 
   const [viralLoadRange, setViralLoadRange] = useState({
@@ -44,70 +44,92 @@ export const useChartData = () => {
     activeClients: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     allClients: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     newlyEnrolledClients: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     onAppointment: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     missedAppointment: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     interrupted: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     returned: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     dueForViralLoad: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     adultART: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     childART: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     viralLoadSamples: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     viralLoadResults: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     highViralLoad: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     underCareOfCommunityProgram: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     viralLoadCoverage: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     viralLoadSuppression: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     highViralLoadCascade: {
       raw: null,
       processedChartData: [],
+      loading: false,
+    },
+    waterfall: {
+      raw: null,
+      processedChartData: [],
+      loading: false,
     },
   });
 
@@ -115,12 +137,42 @@ export const useChartData = () => {
     filterOptions[0].value
   );
 
-  const getChartData = async ({ url, responseCallback, errorCallBack }) => {
+  const getChartData = async ({
+    url,
+    responseCallback,
+    errorCallBack,
+    chartKey,
+  }) => {
     try {
+      setChartData((prev) => {
+        const obj = {
+          ...prev,
+        };
+        obj[chartKey] = {
+          ...prev[chartKey],
+          loading: true,
+        };
+
+        return obj;
+      });
+
       const response = await openmrsFetch(url);
       responseCallback(response.data);
     } catch (error) {
       errorCallBack(error);
+    } finally {
+      setChartData((prev) => {
+        const obj = {
+          ...prev,
+        };
+
+        obj[chartKey] = {
+          ...prev[chartKey],
+          loading: false,
+        };
+
+        return obj;
+      });
     }
   };
 
@@ -156,6 +208,143 @@ export const useChartData = () => {
     return formattedData;
   };
 
+  const formatWaterfallData = (data) => {
+    const TX_CURR = data.find((item) => Object.keys(item).includes("TX_CURR"))[
+      "TX_CURR"
+    ];
+
+    const transferIn = data.find((item) =>
+      Object.keys(item).includes("Transfer In")
+    )["Transfer In"];
+
+    const TX_NEW = data.find((item) => Object.keys(item).includes("TX_NEW"))[
+      "TX_NEW"
+    ];
+
+    const TX_RTT = data.find((item) => Object.keys(item).includes("TX_RTT"))[
+      "TX_RTT"
+    ];
+
+    const potentialTXCurr = data.find((item) =>
+      Object.keys(item).includes("Potential TX_CURR")
+    )["Potential TX_CURR"];
+
+    const transferOut = data.find((item) =>
+      Object.keys(item).includes("Transfer Out")
+    )["Transfer Out"];
+
+    const TX_DEATH = data.find((item) =>
+      Object.keys(item).includes("TX_DEATH")
+    )["TX_DEATH"];
+
+    const selfTransfer = data.find((item) =>
+      Object.keys(item).includes("TX_ML_Self Transfer")
+    )["TX_ML_Self Transfer"];
+
+    const refusal = data.find((item) =>
+      Object.keys(item).includes("TX_ML_Refusal/Stopped")
+    )["TX_ML_Refusal/Stopped"];
+
+    const onARTLessThanThree = data.find((item) =>
+      Object.keys(item).includes("TX_ML_IIT (on ART <3 mo)")
+    )["TX_ML_IIT (on ART <3 mo)"];
+
+    const onARTMoreThanThree = data.find((item) =>
+      Object.keys(item).includes("TX_ML_IIT (on ART 3+ mo)")
+    )["TX_ML_IIT (on ART 3+ mo)"];
+
+    const calculated = data.find((item) =>
+      Object.keys(item).includes("CALCULATED TX_CURR")
+    )["CALCULATED TX_CURR"];
+
+    const processed = [
+      {
+        group: "TX_CURR",
+        value: [0, TX_CURR],
+      },
+      {
+        group: "Transfer In",
+        value: [TX_CURR, transferIn + TX_CURR],
+      },
+      {
+        group: "TX_NEW",
+        value: [transferIn + TX_CURR, transferIn + TX_CURR + TX_NEW],
+      },
+      {
+        group: "TX_RTT",
+        value: [
+          transferIn + TX_CURR + TX_NEW,
+          transferIn + TX_CURR + TX_NEW + TX_RTT,
+        ],
+      },
+      {
+        group: "Potential TX_CURR",
+        value: [0, potentialTXCurr],
+      },
+      {
+        group: "Transfer Out",
+        value: [potentialTXCurr - transferOut, potentialTXCurr],
+      },
+      {
+        group: "TX_DEATH",
+        value: [
+          potentialTXCurr - transferOut - TX_DEATH,
+          potentialTXCurr - transferOut,
+        ],
+      },
+      {
+        group: "TX_ML_Self Transfer",
+        value: [
+          potentialTXCurr - transferOut - TX_DEATH - selfTransfer,
+          potentialTXCurr - transferOut - TX_DEATH,
+        ],
+      },
+      {
+        group: "TX_ML_Refusal/Stopped",
+        value: [
+          potentialTXCurr - transferOut - TX_DEATH - selfTransfer - refusal,
+          potentialTXCurr - transferOut - TX_DEATH - selfTransfer,
+        ],
+      },
+      {
+        group: "TX_ML_IIT (on ART <3 mo)",
+        value: [
+          potentialTXCurr -
+            transferOut -
+            TX_DEATH -
+            selfTransfer -
+            refusal -
+            onARTLessThanThree,
+          potentialTXCurr - transferOut - TX_DEATH - selfTransfer - refusal,
+        ],
+      },
+      {
+        group: "TX_ML_IIT (on ART 3+ mo)",
+        value: [
+          potentialTXCurr -
+            transferOut -
+            TX_DEATH -
+            selfTransfer -
+            refusal -
+            onARTLessThanThree -
+            onARTMoreThanThree,
+          potentialTXCurr -
+            transferOut -
+            TX_DEATH -
+            selfTransfer -
+            refusal -
+            onARTLessThanThree,
+        ],
+      },
+      {
+        group: "Calculated",
+        value: [0, calculated],
+      },
+    ];
+
+    return processed;
+  };
+
   /**
    * AJAX requests defined here to avoid repeating them in individual components
    */
@@ -166,11 +355,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           activeClients: {
+            ...prev.activeClients,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "activeClients",
     });
 
   const getAllClients = async () =>
@@ -180,11 +371,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           allClients: {
+            ...prev.allClients,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error(error),
+      chartKey: "allClients",
     });
 
   const getNewlyEnrolledClients = async () =>
@@ -194,11 +387,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           newlyEnrolledClients: {
+            ...prev.newlyEnrolledClients,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "newlyEnrolledClients",
     });
 
   const getClientsOnAppointment = async () =>
@@ -208,11 +403,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           onAppointment: {
+            ...prev.onAppointment,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "onAppointment",
     });
 
   const getMissedAppointments = async () =>
@@ -222,11 +419,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           missedAppointment: {
+            ...prev.missedAppointment,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "missedAppointment",
     });
 
   const getInterruptedTreatment = async () =>
@@ -236,11 +435,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           interrupted: {
+            ...prev.interrupted,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "interrupted",
     });
 
   const getReturnedToTreatment = async () =>
@@ -250,11 +451,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           returned: {
+            ...prev.returned,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "returned",
     });
 
   const getDueForViralLoad = async () =>
@@ -264,11 +467,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           dueForViralLoad: {
+            ...prev.dueForViralLoad,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "dueForViralLoad",
     });
 
   const getViralLoadSamples = async () =>
@@ -278,11 +483,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           viralLoadSamples: {
+            ...prev.viralLoadSamples,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "viralLoadSamples",
     });
 
   const getViralLoadResults = async () =>
@@ -292,11 +499,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           viralLoadResults: {
+            ...prev.viralLoadResults,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "viralLoadResults",
     });
 
   const getHighViralLoad = async () =>
@@ -306,11 +515,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           highViralLoad: {
+            ...prev.highViralLoad,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "highViralLoad",
     });
 
   const getHighViralLoadCascade = async () =>
@@ -320,11 +531,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           highViralLoadCascade: {
+            ...prev.highViralLoadCascade,
             raw: data?.results,
             processedChartData: data,
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "highViralLoadCascade",
     });
 
   const getAdultART = async () =>
@@ -334,11 +547,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           adultART: {
+            ...prev.adultART,
             raw: data,
             processedChartData: data?.results,
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "adultART",
     });
 
   const getChildART = async () =>
@@ -348,11 +563,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           childART: {
+            ...prev.childART,
             raw: data,
             processedChartData: data?.results,
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "childART",
     });
 
   const getUnderCareOfCommunityProgram = async () =>
@@ -362,11 +579,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           underCareOfCommunityProgram: {
+            ...prev.underCareOfCommunityProgram,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "underCareOfCommunityProgram",
     });
 
   const getViralLoadCoverage = async () =>
@@ -376,11 +595,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           viralLoadCoverage: {
+            ...prev.viralLoadCoverage,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "viralLoadCoverage",
     });
 
   const getViralLoadSuppression = async () =>
@@ -390,11 +611,29 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           viralLoadSuppression: {
+            ...prev.viralLoadSuppression,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "viralLoadSuppression",
+    });
+
+  const getWaterFallData = async () =>
+    getChartData({
+      url: `/ws/rest/v1/ssemr/dashboard/waterfallAnalysis?startDate=${waterFallDateRange.start}&endDate=${waterFallDateRange.end}`,
+      responseCallback: (data) =>
+        setChartData((prev) => ({
+          ...prev,
+          waterfall: {
+            ...prev.waterfall,
+            raw: data,
+            processedChartData: formatWaterfallData(data?.results),
+          },
+        })),
+      errorCallBack: (error) => console.error("Error", error),
+      chartKey: "waterfall",
     });
 
   const getStat = (dataSet) => {
@@ -521,5 +760,6 @@ export const useChartData = () => {
     setWaterFallDateRange,
     viralLoadRange,
     setViralLoadRange,
+    getWaterFallData,
   };
 };

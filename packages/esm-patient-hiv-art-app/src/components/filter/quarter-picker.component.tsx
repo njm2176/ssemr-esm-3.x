@@ -1,11 +1,50 @@
 import React, { useEffect, useState } from "react";
 import styles from "./index.scss";
 import { Select } from "@carbon/react";
-import { date } from "zod";
+
+
+const quarterOptions = [
+  {
+    id: "q1",
+    text: "January 1 - March 31",
+    value: 1,
+  },
+  {
+    id: "q2",
+    text: "April 1 - June 30",
+    value: 2,
+  },
+  {
+    id: "q3",
+    text: "July 1 - September 30",
+    value: 3,
+  },
+  {
+    id: "q4",
+    text: "October 1 - December 31",
+    value: 4,
+  },
+];
 
 const QuarterPickerComponent = ({ changeCallback }) => {
+
+  const getCurrentQuarter = () => {
+    const month = new Date().getMonth() + 1;
+
+    switch (true) {
+      case month <= 3:
+        return quarterOptions[0];
+      case month <= 6:
+        return quarterOptions[1];
+      case month <= 9:
+        return quarterOptions[2];
+      default:
+        return quarterOptions[3];
+    }
+  };
+
   const [year, setYear] = React.useState<number>(new Date().getFullYear());
-  const [quarter, setQuarter] = React.useState(1);
+  const [quarter, setQuarter] = React.useState(getCurrentQuarter().value);
   const [dateRange, setDateRange] = React.useState<{
     start: string;
     end: string;
@@ -60,35 +99,9 @@ const QuarterPickerComponent = ({ changeCallback }) => {
         startDate = "";
         endDate = "";
     }
-    setDateRange({ start: startDate, end: endDate });
+    // setDateRange({ start: startDate, end: endDate });
+    changeCallback({ start: startDate, end: endDate });
   };
-
-  const quarterOptions = [
-    {
-      id: "q1",
-      text: "January 1 - March 31",
-      value: 1,
-    },
-    {
-      id: "q2",
-      text: "April 1 - June 30",
-      value: 2,
-    },
-    {
-      id: "q3",
-      text: "July 1 - September 30",
-      value: 3,
-    },
-    {
-      id: "q4",
-      text: "October 1 - December 31",
-      value: 4,
-    },
-  ];
-
-  useEffect(() => {
-    changeCallback(dateRange);
-  }, [dateRange]);
 
   return (
     <div className={styles.quarterPickerParent}>
@@ -113,7 +126,7 @@ const QuarterPickerComponent = ({ changeCallback }) => {
         id="quarterPicker"
         value={quarter}
         onChange={(evt) => handleQuarterChange(evt)}
-        defaultValue={quarterOptions[0]}
+        defaultValue={getCurrentQuarter().value}
       >
         {quarterOptions.map((option, index) => (
           <option key={index} value={option.value}>

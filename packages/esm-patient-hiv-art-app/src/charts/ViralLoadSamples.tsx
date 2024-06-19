@@ -31,19 +31,13 @@ const ViralLoadSamples = () => {
   };
   return (
     <div className={styles.chartContainer}>
-      {viralLoadSamples?.processedChartData?.length === 0 ? (
-        <div className={styles.noRecords}>
-          <p className={styles.noRecordsTitle}>Viral load samples</p>
-          <p className={styles.noRecordsText}>No records</p>
-        </div>
-      ) : viralLoadSamples?.processedChartData?.length > 0 &&
-        viralLoadSamples?.processedChartData[0][currentTimeFilter] ? (
+      {viralLoadSamples.loading ? (
+        <Loading className={styles.spinner} withOverlay={false} />
+      ) : (
         <LineChart
           data={viralLoadSamples?.processedChartData}
           options={options}
         />
-      ) : (
-        <Loading className={styles.spinner} withOverlay={false} />
       )}
     </div>
   );

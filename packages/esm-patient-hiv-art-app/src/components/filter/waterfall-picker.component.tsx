@@ -1,19 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./index.scss";
-import { RadioButton, RadioButtonGroup } from "@carbon/react";
+import { RadioButton, RadioButtonGroup, Select } from "@carbon/react";
+import QuarterPickerComponent from "./quarter-picker.component";
 import { DashboardContext } from "../../context/DashboardContext";
 import MonthlyPickerComponent from "./monthly-picker.component";
-import WeeklyPickerComponent from "./weekly-picker.component";
 
-const groupingOptions = ["monthly", "weekly"];
+const groupingOptions = ["quarterly", "monthly"];
 
-const CascadePickerComponent = () => {
-  const { setViralLoadRange } = useContext(DashboardContext);
+const WaterfallPicker = () => {
+  const { setWaterFallDateRange } = useContext(DashboardContext);
 
-  const [grouping, setGrouping] = React.useState("monthly");
+  const [grouping, setGrouping] = React.useState("quarterly");
 
   const changeCallback = (range) => {
-    setViralLoadRange(range);
+    setWaterFallDateRange(range);
   };
 
   return (
@@ -23,32 +23,32 @@ const CascadePickerComponent = () => {
           className={styles.cacadeRadios}
           size="sm"
           legendText="Group data ..."
-          name="group-year"
+          name="waterfall grouping"
           defaultSelected={grouping}
           selected={grouping}
           orientation="horizontal"
           value={grouping}
           onChange={(value: React.SetStateAction<string>) => setGrouping(value)}
         >
-          {groupingOptions.map((option) => (
+          {groupingOptions.map((option, index) => (
             <RadioButton
               checked={option == grouping}
               labelText={option}
               value={option}
-              id={option}
-              key={option}
+              id={index}
+              key={index}
             />
           ))}
         </RadioButtonGroup>
       </div>
 
-      {grouping === "monthly" ? (
-        <MonthlyPickerComponent changeCallback={changeCallback} />
+      {grouping === "quarterly" ? (
+        <QuarterPickerComponent changeCallback={changeCallback} />
       ) : (
-        <WeeklyPickerComponent changeCallback={changeCallback} />
+        <MonthlyPickerComponent changeCallback={changeCallback} />
       )}
     </div>
   );
 };
 
-export default CascadePickerComponent;
+export default WaterfallPicker;

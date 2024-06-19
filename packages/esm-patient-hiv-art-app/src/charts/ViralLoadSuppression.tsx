@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from "react";
 import { PieChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
 import { DashboardContext } from "../context/DashboardContext";
+import styles from "./styles/index.scss";
+import { Loading } from "@carbon/react";
 
 const ViralLoadSuppression = () => {
   const options = {
@@ -33,7 +35,15 @@ const ViralLoadSuppression = () => {
     formatData();
   }, []);
 
-  return <PieChart data={formatData()} options={options}></PieChart>;
+  return (
+    <div className={styles.chartContainer}>
+      {viralLoadSuppression.loading || viralLoadCoverage.loading ? (
+        <Loading className={styles.spinner} withOverlay={false} />
+      ) : (
+        <PieChart data={formatData()} options={options} />
+      )}
+    </div>
+  );
 };
 
 export default ViralLoadSuppression;
