@@ -54,6 +54,7 @@ const SVGChart = () => {
   };
 
   const { generateScale, scale, clearScale } = useCascade();
+
   useEffect(() => {
     if (highViralLoadCascade?.raw?.length > 0) {
       generateScale({ dataset: highViralLoadCascade?.raw });

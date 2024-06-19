@@ -31,8 +31,8 @@ export const useChartData = () => {
   });
 
   const [waterFallDateRange, setWaterFallDateRange] = useState({
-    start: "",
-    end: "",
+    start: getThisQuartersRange().start,
+    end: getThisQuartersRange().end,
   });
 
   const [viralLoadRange, setViralLoadRange] = useState({

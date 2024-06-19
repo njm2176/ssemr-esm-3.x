@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./index.scss";
 import { Select } from "@carbon/react";
-import { date } from "zod";
 
 const BiannualPickerComponent = ({ changeCallback }) => {
   const [year, setYear] = React.useState<number>(new Date().getFullYear());

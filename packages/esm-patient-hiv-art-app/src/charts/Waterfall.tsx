@@ -2,19 +2,14 @@ import React, { useContext } from "react";
 import "@carbon/charts/styles.css";
 import { ScaleTypes } from "../types";
 import styles from "./styles/index.scss";
-import QuarterPickerComponent from "../components/filter/quarter-picker.component";
 import { DashboardContext } from "../context/DashboardContext";
 import { SimpleBarChart } from "@carbon/charts-react";
+import WaterfallPicker from "../components/filter/waterfall-picker.component";
 
 const Waterfall = () => {
   const {
     chartData: { waterfall },
-    setWaterFallDateRange,
   } = useContext(DashboardContext);
-
-  const handleChange = (dateRange: { start: string; end: string }) => {
-    setWaterFallDateRange(dateRange);
-  };
 
   const options = {
     title: "",
@@ -57,7 +52,7 @@ const Waterfall = () => {
       <div className={styles.waterfallHeaderContainer}>
         <p style={{ fontSize: "16px", fontWeight: "600" }}>Waterfall Chart</p>
         <div className={styles.waterfallFilterWrapper}>
-          <QuarterPickerComponent changeCallback={handleChange} />
+          <WaterfallPicker />
         </div>
       </div>
       {waterfall?.processedChartData?.length <= 0 ? (
