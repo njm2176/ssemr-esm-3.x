@@ -86,168 +86,178 @@ const SVGChart = () => {
 
   return (
     <div className={styles.cascadeContainer}>
-      <div ref={divRef} className={styles.SVGWrapper}>
-        {data?.length >= 1 ? (
-          <div className={styles.cascadeContentWrapper}>
-            <CascadePicker />
-            <CascadeHeader
-              data={data}
-              headers={headers}
-              isModalOpen={isTableOpen}
-              setIsModalOpen={setIsTableOpen}
-              rows={data}
-            />
-            <div style={{ fontSize: "16px", fontWeight: "600" }}>
-              High Viral Load Cascade
-            </div>
-            <svg width={divWidth} height={chartHeight + 2 * axisPadding}>
-              {/* Y-axis */}
-              <line
-                x1={axisPadding - 20}
-                y1={0}
-                x2={axisPadding - 20}
-                y2={chartHeight}
-                stroke="black"
+      {highViralLoadCascade.loading ? (
+        <Loading className={styles.spinner} withOverlay={false} />
+      ) : (
+        <div ref={divRef} className={styles.SVGWrapper}>
+          {data?.length >= 1 ? (
+            <div className={styles.cascadeContentWrapper}>
+              <CascadePicker />
+              <CascadeHeader
+                data={data}
+                headers={headers}
+                isModalOpen={isTableOpen}
+                setIsModalOpen={setIsTableOpen}
+                rows={data}
               />
+              <div style={{ fontSize: "16px", fontWeight: "600" }}>
+                High Viral Load Cascade
+              </div>
+              <svg width={divWidth} height={chartHeight + 2 * axisPadding}>
+                {/* Y-axis */}
+                <line
+                  x1={axisPadding - 20}
+                  y1={0}
+                  x2={axisPadding - 20}
+                  y2={chartHeight}
+                  stroke="black"
+                />
 
-              {/* Y-axis intervals */}
-              {scale.map((value, index) => (
-                <g key={index}>
-                  <line
-                    x1={axisPadding}
-                    y1={chartHeight - (value / maxValue) * chartHeight}
-                    x2={2500}
-                    y2={chartHeight - (value / maxValue) * chartHeight}
-                    stroke="#C0C0C0"
-                    strokeDasharray="5,5"
-                  />
-                  <line
-                    x1={axisPadding - 25}
-                    y1={chartHeight - (value / maxValue) * chartHeight}
-                    x2={axisPadding - 25}
-                    y2={chartHeight - (value / maxValue) * chartHeight}
-                    stroke="black"
-                  />
-                  <text
-                    x={axisPadding - 30}
-                    y={chartHeight - (value / maxValue) * chartHeight + 5}
-                    textAnchor="end"
-                    fontSize="10"
-                  >
-                    {value}
-                  </text>
-                </g>
-              ))}
-
-              {/* Bars */}
-              {data.map((d, index) => (
-                <g key={index}>
-                  <rect
-                    key={d.text}
-                    x={axisPadding + index * (barWidth + barSpacing)}
-                    y={chartHeight - (d.total / maxValue) * chartHeight}
-                    width={barWidth}
-                    height={(d.total / maxValue) * chartHeight}
-                    fill="#6929c4"
-                    onMouseOver={(evt) => handleMouseOver(evt, d)}
-                    onMouseOut={handleMouseOut}
-                  />
-                  {tooltip.visible && (
-                    <Tooltip x={tooltip.x} y={tooltip.y} data={tooltip.data} />
-                  )}
-                </g>
-              ))}
-
-              {/* Name */}
-              {data.map((d, index) => (
-                <text
-                  key={d.text}
-                  x={
-                    axisPadding + index * (barWidth + barSpacing) + barWidth / 2
-                  }
-                  y={chartHeight + 25}
-                  textAnchor="middle"
-                  fontSize="10"
-                  fontWeight="500"
-                >
-                  {d.text}
-                </text>
-              ))}
-
-              {/* Percentage */}
-              {data.map(
-                (d, index) =>
-                  index !== 0 && (
+                {/* Y-axis intervals */}
+                {scale.map((value, index) => (
+                  <g key={index}>
+                    <line
+                      x1={axisPadding}
+                      y1={chartHeight - (value / maxValue) * chartHeight}
+                      x2={2500}
+                      y2={chartHeight - (value / maxValue) * chartHeight}
+                      stroke="#C0C0C0"
+                      strokeDasharray="5,5"
+                    />
+                    <line
+                      x1={axisPadding - 25}
+                      y1={chartHeight - (value / maxValue) * chartHeight}
+                      x2={axisPadding - 25}
+                      y2={chartHeight - (value / maxValue) * chartHeight}
+                      stroke="black"
+                    />
                     <text
-                      key={d.index}
-                      x={
-                        axisPadding +
-                        index * (barWidth + barSpacing) +
-                        barWidth / 2
-                      }
-                      y={chartHeight + 50}
-                      textAnchor="middle"
-                      fontSize="16"
-                      fontWeight="600"
-                    >
-                      {Math.round(d.percentage * 100) / 100}%
-                    </text>
-                  )
-              )}
-
-              {/*Turn around */}
-              {data.map(
-                (d, index) =>
-                  index !== 0 && (
-                    <text
-                      key={index}
-                      x={
-                        axisPadding +
-                        index * (barWidth + barSpacing) +
-                        barWidth / 2
-                      }
-                      y={chartHeight + 75}
-                      textAnchor="middle"
+                      x={axisPadding - 30}
+                      y={chartHeight - (value / maxValue) * chartHeight + 5}
+                      textAnchor="end"
                       fontSize="10"
                     >
-                      {Math.round(d.averageTurnaroundTimeMonths * 100) / 100}{" "}
-                      Months
+                      {value}
                     </text>
-                  )
-              )}
+                  </g>
+                ))}
 
-              {/* Arrow */}
-              {data.map(
-                (d, index) =>
-                  index !== data.length - 1 && (
-                    <svg
-                      width={12}
-                      key={index}
-                      x={
-                        axisPadding +
-                        index * (barWidth + barSpacing) +
-                        barWidth * 3
-                      }
-                      y={chartHeight / 2}
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 448 512"
-                    >
-                      <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
-                    </svg>
-                  )
-              )}
-            </svg>
-          </div>
-        ) : (
-          <Loading className={styles.spinner} withOverlay={false} />
-        )}
-        {data.length > 0 && (
-          <div className={styles.legend}>
-            <p className={styles.legendText}>Proportion of services %</p>
-            <p className={styles.legendText}>Average turnaround time</p>
-          </div>
-        )}
-      </div>
+                {/* Bars */}
+                {data.map((d, index) => (
+                  <g key={index}>
+                    <rect
+                      key={d.text}
+                      x={axisPadding + index * (barWidth + barSpacing)}
+                      y={chartHeight - (d.total / maxValue) * chartHeight}
+                      width={barWidth}
+                      height={(d.total / maxValue) * chartHeight}
+                      fill="#6929c4"
+                      onMouseOver={(evt) => handleMouseOver(evt, d)}
+                      onMouseOut={handleMouseOut}
+                    />
+                    {tooltip.visible && (
+                      <Tooltip
+                        x={tooltip.x}
+                        y={tooltip.y}
+                        data={tooltip.data}
+                      />
+                    )}
+                  </g>
+                ))}
+
+                {/* Name */}
+                {data.map((d, index) => (
+                  <text
+                    key={d.text}
+                    x={
+                      axisPadding +
+                      index * (barWidth + barSpacing) +
+                      barWidth / 2
+                    }
+                    y={chartHeight + 25}
+                    textAnchor="middle"
+                    fontSize="10"
+                    fontWeight="500"
+                  >
+                    {d.text}
+                  </text>
+                ))}
+
+                {/* Percentage */}
+                {data.map(
+                  (d, index) =>
+                    index !== 0 && (
+                      <text
+                        key={d.index}
+                        x={
+                          axisPadding +
+                          index * (barWidth + barSpacing) +
+                          barWidth / 2
+                        }
+                        y={chartHeight + 50}
+                        textAnchor="middle"
+                        fontSize="16"
+                        fontWeight="600"
+                      >
+                        {Math.round(d.percentage * 100) / 100}%
+                      </text>
+                    )
+                )}
+
+                {/*Turn around */}
+                {data.map(
+                  (d, index) =>
+                    index !== 0 && (
+                      <text
+                        key={index}
+                        x={
+                          axisPadding +
+                          index * (barWidth + barSpacing) +
+                          barWidth / 2
+                        }
+                        y={chartHeight + 75}
+                        textAnchor="middle"
+                        fontSize="10"
+                      >
+                        {Math.round(d.averageTurnaroundTimeMonths * 100) / 100}{" "}
+                        Months
+                      </text>
+                    )
+                )}
+
+                {/* Arrow */}
+                {data.map(
+                  (d, index) =>
+                    index !== data.length - 1 && (
+                      <svg
+                        width={12}
+                        key={index}
+                        x={
+                          axisPadding +
+                          index * (barWidth + barSpacing) +
+                          barWidth * 3
+                        }
+                        y={chartHeight / 2}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 448 512"
+                      >
+                        <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+                      </svg>
+                    )
+                )}
+              </svg>
+            </div>
+          ) : (
+            <Loading className={styles.spinner} withOverlay={false} />
+          )}
+          {data.length > 0 && (
+            <div className={styles.legend}>
+              <p className={styles.legendText}>Proportion of services %</p>
+              <p className={styles.legendText}>Average turnaround time</p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

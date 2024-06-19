@@ -31,15 +31,10 @@ const ChildArtRegimen = () => {
 
   return (
     <div className={styles.chartContainer}>
-      {childART?.processedChartData?.length === 0 ? (
-        <div className={styles.noRecords}>
-          <p className={styles.noRecordsTitle}>Child ART Regimen</p>
-          <p className={styles.noRecordsText}>No records</p>
-        </div>
-      ) : childART?.processedChartData?.length > 0 ? (
-        <SimpleBarChart data={childART?.processedChartData} options={options} />
-      ) : (
+      {childART.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
+      ) : (
+        <SimpleBarChart data={childART?.processedChartData} options={options} />
       )}
     </div>
   );

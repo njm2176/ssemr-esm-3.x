@@ -44,74 +44,92 @@ export const useChartData = () => {
     activeClients: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     allClients: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     newlyEnrolledClients: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     onAppointment: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     missedAppointment: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     interrupted: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     returned: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     dueForViralLoad: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     adultART: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     childART: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     viralLoadSamples: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     viralLoadResults: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     highViralLoad: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     underCareOfCommunityProgram: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     viralLoadCoverage: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     viralLoadSuppression: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     highViralLoadCascade: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
     waterfall: {
       raw: null,
       processedChartData: [],
+      loading: false,
     },
   });
 
@@ -119,12 +137,42 @@ export const useChartData = () => {
     filterOptions[0].value
   );
 
-  const getChartData = async ({ url, responseCallback, errorCallBack }) => {
+  const getChartData = async ({
+    url,
+    responseCallback,
+    errorCallBack,
+    chartKey,
+  }) => {
     try {
+      setChartData((prev) => {
+        const obj = {
+          ...prev,
+        };
+        obj[chartKey] = {
+          ...prev[chartKey],
+          loading: true,
+        };
+
+        return obj;
+      });
+
       const response = await openmrsFetch(url);
       responseCallback(response.data);
     } catch (error) {
       errorCallBack(error);
+    } finally {
+      setChartData((prev) => {
+        const obj = {
+          ...prev,
+        };
+
+        obj[chartKey] = {
+          ...prev[chartKey],
+          loading: false,
+        };
+
+        return obj;
+      });
     }
   };
 
@@ -307,11 +355,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           activeClients: {
+            ...prev.activeClients,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "activeClients",
     });
 
   const getAllClients = async () =>
@@ -321,11 +371,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           allClients: {
+            ...prev.allClients,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error(error),
+      chartKey: "allClients",
     });
 
   const getNewlyEnrolledClients = async () =>
@@ -335,11 +387,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           newlyEnrolledClients: {
+            ...prev.newlyEnrolledClients,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "newlyEnrolledClients",
     });
 
   const getClientsOnAppointment = async () =>
@@ -349,11 +403,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           onAppointment: {
+            ...prev.onAppointment,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "onAppointment",
     });
 
   const getMissedAppointments = async () =>
@@ -363,11 +419,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           missedAppointment: {
+            ...prev.missedAppointment,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "missedAppointment",
     });
 
   const getInterruptedTreatment = async () =>
@@ -377,11 +435,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           interrupted: {
+            ...prev.interrupted,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "interrupted",
     });
 
   const getReturnedToTreatment = async () =>
@@ -391,11 +451,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           returned: {
+            ...prev.returned,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "returned",
     });
 
   const getDueForViralLoad = async () =>
@@ -405,11 +467,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           dueForViralLoad: {
+            ...prev.dueForViralLoad,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "dueForViralLoad",
     });
 
   const getViralLoadSamples = async () =>
@@ -419,11 +483,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           viralLoadSamples: {
+            ...prev.viralLoadSamples,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "viralLoadSamples",
     });
 
   const getViralLoadResults = async () =>
@@ -433,11 +499,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           viralLoadResults: {
+            ...prev.viralLoadResults,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "viralLoadResults",
     });
 
   const getHighViralLoad = async () =>
@@ -447,11 +515,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           highViralLoad: {
+            ...prev.highViralLoad,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "highViralLoad",
     });
 
   const getHighViralLoadCascade = async () =>
@@ -461,11 +531,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           highViralLoadCascade: {
+            ...prev.highViralLoadCascade,
             raw: data?.results,
             processedChartData: data,
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "highViralLoadCascade",
     });
 
   const getAdultART = async () =>
@@ -475,11 +547,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           adultART: {
+            ...prev.adultART,
             raw: data,
             processedChartData: data?.results,
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "adultART",
     });
 
   const getChildART = async () =>
@@ -489,11 +563,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           childART: {
+            ...prev.childART,
             raw: data,
             processedChartData: data?.results,
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "childART",
     });
 
   const getUnderCareOfCommunityProgram = async () =>
@@ -503,11 +579,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           underCareOfCommunityProgram: {
+            ...prev.underCareOfCommunityProgram,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "underCareOfCommunityProgram",
     });
 
   const getViralLoadCoverage = async () =>
@@ -517,11 +595,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           viralLoadCoverage: {
+            ...prev.viralLoadCoverage,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "viralLoadCoverage",
     });
 
   const getViralLoadSuppression = async () =>
@@ -531,11 +611,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           viralLoadSuppression: {
+            ...prev.viralLoadSuppression,
             raw: data,
             processedChartData: formatDataAgainstTime(data),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "viralLoadSuppression",
     });
 
   const getWaterFallData = async () =>
@@ -545,11 +627,13 @@ export const useChartData = () => {
         setChartData((prev) => ({
           ...prev,
           waterfall: {
+            ...prev.waterfall,
             raw: data,
             processedChartData: formatWaterfallData(data?.results),
           },
         })),
       errorCallBack: (error) => console.error("Error", error),
+      chartKey: "waterfall",
     });
 
   const getStat = (dataSet) => {

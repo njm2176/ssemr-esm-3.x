@@ -32,16 +32,10 @@ const ActiveClients = () => {
 
   return (
     <div className={styles.chartContainer}>
-      {activeClients?.processedChartData?.length === 0 ? (
-        <div className={styles.noRecords}>
-          <p className={styles.noRecordsTitle}>Active clients</p>
-          <p className={styles.noRecordsText}>No records</p>
-        </div>
-      ) : activeClients?.processedChartData?.length > 0 &&
-        activeClients?.processedChartData[0][currentTimeFilter] ? (
-        <LineChart data={activeClients?.processedChartData} options={options} />
-      ) : (
+      {activeClients.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
+      ) : (
+        <LineChart data={activeClients?.processedChartData} options={options} />
       )}
     </div>
   );

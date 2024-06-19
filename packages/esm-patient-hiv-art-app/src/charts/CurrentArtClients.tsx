@@ -31,21 +31,13 @@ const NewlyEnrolled = () => {
   };
   return (
     <div className={styles.chartContainer}>
-      {newlyEnrolledClients?.processedChartData?.length === 0 ? (
-        <div className={styles.noRecords}>
-          <p className={styles.noRecordsTitle}>
-            Clients currently receiving ART
-          </p>
-          <p className={styles.noRecordsText}>No records</p>
-        </div>
-      ) : newlyEnrolledClients?.processedChartData?.length > 0 &&
-        newlyEnrolledClients?.processedChartData[0][currentTimeFilter] ? (
+      {newlyEnrolledClients?.loading ? (
+        <Loading className={styles.spinner} withOverlay={false} />
+      ) : (
         <SimpleBarChart
           data={newlyEnrolledClients?.processedChartData}
           options={options}
         />
-      ) : (
-        <Loading className={styles.spinner} withOverlay={false} />
       )}
     </div>
   );

@@ -99,13 +99,9 @@ const QuarterPickerComponent = ({ changeCallback }) => {
         startDate = "";
         endDate = "";
     }
-    setDateRange({ start: startDate, end: endDate });
+    // setDateRange({ start: startDate, end: endDate });
+    changeCallback({ start: startDate, end: endDate });
   };
-
-
-  useEffect(() => {
-    changeCallback(dateRange);
-  }, [dateRange]);
 
   return (
     <div className={styles.quarterPickerParent}>

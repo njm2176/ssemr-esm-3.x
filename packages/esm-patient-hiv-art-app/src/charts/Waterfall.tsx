@@ -5,6 +5,7 @@ import styles from "./styles/index.scss";
 import { DashboardContext } from "../context/DashboardContext";
 import { SimpleBarChart } from "@carbon/charts-react";
 import WaterfallPicker from "../components/filter/waterfall-picker.component";
+import { Loading } from "@carbon/react";
 
 const Waterfall = () => {
   const {
@@ -55,15 +56,10 @@ const Waterfall = () => {
           <WaterfallPicker />
         </div>
       </div>
-      {waterfall?.processedChartData?.length <= 0 ? (
-        <div className={styles.noRecords}>
-          <p className={styles.noRecordsText}>No records</p>
-        </div>
+      {waterfall.loading ? (
+        <Loading className={styles.spinner} withOverlay={false} />
       ) : (
-        <SimpleBarChart
-          options={options}
-          data={waterfall.processedChartData}
-        ></SimpleBarChart>
+        <SimpleBarChart options={options} data={waterfall.processedChartData} />
       )}
     </div>
   );

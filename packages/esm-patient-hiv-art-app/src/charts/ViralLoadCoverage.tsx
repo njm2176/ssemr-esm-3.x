@@ -2,16 +2,18 @@ import React, { useContext, useEffect } from "react";
 import { PieChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
 import { DashboardContext } from "../context/DashboardContext";
+import styles from "./styles/index.scss";
+import { Loading } from "@carbon/react";
 
 const ViralLoadCoverage = () => {
   const options = {
     title: "Viral load coverage",
     resizable: true,
-    height: "400px",
+    height: "400px"
   };
 
   const {
-    chartData: { viralLoadCoverage, activeClients },
+    chartData: { viralLoadCoverage, activeClients }
   } = useContext(DashboardContext);
 
   const formatData = () => {
@@ -20,12 +22,12 @@ const ViralLoadCoverage = () => {
         group: "Not covered",
         value:
           activeClients?.raw?.results?.length -
-          viralLoadCoverage?.raw?.results?.length,
+          viralLoadCoverage?.raw?.results?.length
       },
       {
         group: "Covered",
-        value: viralLoadCoverage?.raw?.results?.length,
-      },
+        value: viralLoadCoverage?.raw?.results?.length
+      }
     ];
   };
 
@@ -33,7 +35,15 @@ const ViralLoadCoverage = () => {
     formatData();
   }, []);
 
-  return <PieChart data={formatData()} options={options}></PieChart>;
+  return (
+    <div className={styles.chartContainer}>
+      {viralLoadCoverage.loading || activeClients.loading ? (
+        <Loading className={styles.spinner} withOverlay={false} />
+      ) : (
+        <PieChart data={formatData()} options={options} />
+      )}
+    </div>
+  );
 };
 
 export default ViralLoadCoverage;
