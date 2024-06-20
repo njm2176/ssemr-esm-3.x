@@ -60,11 +60,15 @@ export const usePatientListing = () => {
       selector: (row, index) => index + 1,
     },
     {
-      name: "ART",
+      name: "ART NO",
       selector: (row) =>
         row?.identifiers?.find((item) =>
           item?.identifierType?.toLowerCase()?.includes("art")
         )?.identifier,
+    },
+    {
+      name: "ART Regimen",
+      selector: (row) => row?.ARTRegimen,
     },
     {
       name: "Name",
@@ -77,10 +81,6 @@ export const usePatientListing = () => {
     {
       name: "Sex",
       selector: (row) => row.sex,
-    },
-    {
-      name: "Date enrolled",
-      selector: (row) => row.dateEnrolled,
     },
     {
       name: "Date of initiation",
