@@ -12,7 +12,6 @@ const ViralLoadResults = () => {
     chartData: { viralLoadResults },
     currentTimeFilter,
   } = useContext(DashboardContext);
-  console.log("results", viralLoadResults);
 
   const options = {
     title: "Viral load results",
