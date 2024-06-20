@@ -39,6 +39,7 @@ const DueForViralLoad = () => {
         <ChartWrapperComponent
           data={dueForViralLoad?.processedChartData}
           chartName="Due for viral load"
+          currentTimeFilter={currentTimeFilter}
         >
           <LineChart
             data={dueForViralLoad?.processedChartData}

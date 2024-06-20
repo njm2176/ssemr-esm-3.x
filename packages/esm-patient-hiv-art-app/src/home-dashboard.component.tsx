@@ -119,13 +119,13 @@ const HomeDashboard = () => {
           </ChartCard>
         </div>
 
-        {/*<ChartCard>*/}
-        {/*  <HighViralLoadCascade />*/}
-        {/*</ChartCard>*/}
+        <ChartCard>
+          <HighViralLoadCascade />
+        </ChartCard>
 
-        {/*<ChartCard>*/}
-        {/*  <Waterfall />*/}
-        {/*</ChartCard>*/}
+        <ChartCard>
+          <Waterfall />
+        </ChartCard>
       </div>
     </div>
   );

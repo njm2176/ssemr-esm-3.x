@@ -10,11 +10,11 @@ const ViralLoadSuppression = () => {
   const options = {
     title: "Viral load suppression",
     resizable: true,
-    height: "400px"
+    height: "400px",
   };
 
   const {
-    chartData: { viralLoadSuppression, viralLoadCoverage }
+    chartData: { viralLoadSuppression, viralLoadCoverage },
   } = useContext(DashboardContext);
 
   const formatData = () => {
@@ -23,12 +23,12 @@ const ViralLoadSuppression = () => {
         group: "Unsuppressed",
         value:
           viralLoadCoverage?.raw?.results?.length -
-          viralLoadSuppression?.raw?.results?.length
+          viralLoadSuppression?.raw?.results?.length,
       },
       {
         group: "Suppressed",
-        value: viralLoadSuppression?.raw?.results?.length
-      }
+        value: viralLoadSuppression?.raw?.results?.length,
+      },
     ];
   };
 

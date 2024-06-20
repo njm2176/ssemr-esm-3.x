@@ -38,6 +38,7 @@ const ViralLoadSamples = () => {
         <ChartWrapperComponent
           data={viralLoadSamples?.processedChartData}
           chartName="Viral Load Samples"
+          currentTimeFilter={currentTimeFilter}
         >
           <LineChart
             data={viralLoadSamples?.processedChartData}
