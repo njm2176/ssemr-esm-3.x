@@ -25,32 +25,32 @@ export const usePatientListing = () => {
     {
       id: "allClients",
       text: t("allClients", "All Clients"),
-      tabClass: "allTab",
-      textClass: "tabText",
+      activeClassName: "darkActive",
+      interClassName: "darkInert",
     },
     {
       id: "activeClients",
       text: t("activeClients", "Active Clients"),
-      tabClass: "activeTab",
-      textClass: "activeTabText",
+      activeClassName: "greenActive",
+      interClassName: "greenInert",
     },
     {
       id: "IIT",
       text: t("iit", "IIT Clients"),
-      tabClass: "iitTab",
-      textClass: "iitTabText",
+      activeClassName: "amberActive",
+      interClassName: "amberInert",
     },
     {
       id: "TAD",
-      text: t("transferOutAndDied", "Transferred Out Clients"),
-      tabClass: "tTab",
-      textClass: "tTabText",
+      text: t("transferOut", "Transferred Out Clients"),
+      activeClassName: "blueActive",
+      interClassName: "blueInert",
     },
     {
       id: "Deceased",
       text: t("deceased", "Deceased Clients"),
-      tabClass: "deceasedTab",
-      textClass: "deceasedTabText",
+      activeClassName: "redActive",
+      interClassName: "redInert",
     },
   ];
 

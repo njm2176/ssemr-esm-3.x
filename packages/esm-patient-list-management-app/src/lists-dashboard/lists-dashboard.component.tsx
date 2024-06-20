@@ -1,6 +1,6 @@
 import React from "react";
 import classnames from "classnames";
-import { SkeletonPlaceholder, Button, TextInput } from "@carbon/react";
+import { SkeletonPlaceholder, Button, TextInput, Loading } from "@carbon/react";
 import Header from "../header/header.component";
 import styles from "./lists-dashboard.scss";
 import { usePatientListing } from "../hooks/usePatientListing";
@@ -63,6 +63,8 @@ const ListsDashboard: React.FC = () => {
           {tabs.map((tab, index) => (
             <SsemrListTabComponent
               name={tab.text}
+              activeClassName={tab.activeClassName}
+              inertClassName={tab.interClassName}
               handler={() => handleTabChange(index)}
               isActive={index === currentTab}
             />
@@ -70,7 +72,7 @@ const ListsDashboard: React.FC = () => {
         </div>
         <div className={styles.listsTableContainer}>
           {loading ? (
-            <SkeletonPlaceholder className={styles.skeleton} />
+            <Loading small className={styles.spinner} withOverlay={false} />
           ) : (
             <DataTable
               paginationResetDefaultPage={resetPaginationToggle}
