@@ -63,6 +63,8 @@ const ListsDashboard: React.FC = () => {
           {tabs.map((tab, index) => (
             <SsemrListTabComponent
               name={tab.text}
+              activeClassName={tab.activeClassName}
+              inertClassName={tab.interClassName}
               handler={() => handleTabChange(index)}
               isActive={index === currentTab}
             />

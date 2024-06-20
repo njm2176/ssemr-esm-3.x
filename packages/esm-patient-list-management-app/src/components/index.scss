@@ -5,24 +5,80 @@
 
 .tab{
   padding: .5rem 1rem;
-  border: 1px solid $primary-color;
   border-radius: 8px;
-  background: $secondary-color;
-  font-size: small;
-  color: $dark-color;
+  font-size: medium;
+  font-weight: 700;
   text-transform: capitalize;
   cursor: pointer;
   width: 100%;
 }
 
-.activeTab{
-  padding: .5rem 1rem;
-  border: 1px solid $primary-color;
-  border-radius: 8px;
-  background: $primary-color;
-  font-size: small;
+.darkInert{
+  @extend .tab;
+  border: 1px solid $secondary-color;
+  background-color: $secondary-color;
+  color: $dark-color;
+}
+
+.darkActive{
+  @extend .tab;
+  border: 1px solid $dark-color;
+  background-color: $dark-color;
   color: $secondary-color;
-  text-transform: capitalize;
-  cursor: pointer;
-  width: 100%;
+}
+
+.greenInert{
+  @extend .tab;
+  border: 1px solid $secondary-color;
+  background-color: $secondary-color;
+  color: $success-color;
+}
+
+.greenActive{
+  @extend .tab;
+  border: 1px solid $success-color;
+  background-color: $success-color;
+  color: $dark-color;
+}
+
+.amberInert{
+  @extend .tab;
+  border: 1px solid $secondary-color;
+  background-color: $secondary-color;
+  color: $warning-color;
+}
+
+.amberActive{
+  @extend .tab;
+  border: 1px solid $warning-color;
+  background-color: $warning-color;
+  color: $dark-color;
+}
+
+.blueInert{
+  @extend .tab;
+  border: 1px solid $secondary-color;
+  background-color: $secondary-color;
+  color: $primary-color;
+}
+
+.blueActive{
+  @extend .tab;
+  border: 1px solid $primary-color;
+  background-color: $primary-color;
+  color: $secondary-color;
+}
+
+.redInert{
+  @extend .tab;
+  border: 1px solid $secondary-color;
+  background-color: $secondary-color;
+  color: $danger-color;
+}
+
+.redActive{
+  @extend .tab;
+  border: 1px solid $danger-color;
+  background-color: $danger-color;
+  color: $secondary-color;
 }

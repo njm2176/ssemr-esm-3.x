@@ -1,10 +1,16 @@
 import React from "react";
 import styles from "./index.scss";
 
-const SsemrListTabComponent = ({ name, handler, isActive }) => {
+const SsemrListTabComponent = ({
+  name,
+  handler,
+  isActive,
+  activeClassName,
+  inertClassName,
+}) => {
   return (
     <button
-      className={isActive ? styles.activeTab : styles.tab}
+      className={isActive ? styles[activeClassName] : styles[inertClassName]}
       onClick={handler}
     >
       {name}
