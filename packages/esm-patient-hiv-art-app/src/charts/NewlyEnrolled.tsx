@@ -12,8 +12,6 @@ const NewlyEnrolled = () => {
     chartData: { newlyEnrolledClients },
     currentTimeFilter,
   } = useContext(DashboardContext);
-  console.log("processed chart data", newlyEnrolledClients?.processedChartData);
-  console.log("current Time filter", currentTimeFilter);
   const options = {
     title: "Clients newly enrolled on ART",
     axes: {
