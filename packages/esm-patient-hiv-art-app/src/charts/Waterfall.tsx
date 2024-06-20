@@ -59,7 +59,10 @@ const Waterfall = () => {
       {waterfall.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
       ) : (
-        <SimpleBarChart options={options} data={waterfall.processedChartData} />
+        <SimpleBarChart
+          options={options}
+          data={waterfall?.processedChartData}
+        />
       )}
     </div>
   );

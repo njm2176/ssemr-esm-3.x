@@ -5,6 +5,7 @@ import styles from "./styles/index.scss";
 import { Loading } from "@carbon/react";
 import { DashboardContext } from "../context/DashboardContext";
 import { ScaleTypes } from "../types";
+import ChartWrapperComponent from "./components/chart-wrapper.component";
 
 const ViralLoadSamples = () => {
   const {
@@ -34,10 +35,15 @@ const ViralLoadSamples = () => {
       {viralLoadSamples.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
       ) : (
-        <LineChart
+        <ChartWrapperComponent
           data={viralLoadSamples?.processedChartData}
-          options={options}
-        />
+          chartName="Viral Load Samples"
+        >
+          <LineChart
+            data={viralLoadSamples?.processedChartData}
+            options={options}
+          />
+        </ChartWrapperComponent>
       )}
     </div>
   );

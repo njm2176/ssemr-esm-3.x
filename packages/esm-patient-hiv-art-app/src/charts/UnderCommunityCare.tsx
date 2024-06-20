@@ -4,6 +4,7 @@ import "@carbon/charts-react/styles.css";
 import { DashboardContext } from "../context/DashboardContext";
 import styles from "./styles/index.scss";
 import { Loading } from "@carbon/react";
+import ChartWrapperComponent from "./components/chart-wrapper.component";
 
 const UnderCommunityCare = () => {
   const options = {
@@ -40,7 +41,12 @@ const UnderCommunityCare = () => {
       {underCareOfCommunityProgram.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
       ) : (
-        <PieChart data={formatData()} options={options}></PieChart>
+        <ChartWrapperComponent
+          data={formatData()}
+          chartName="underCareOfCommunityProgram"
+        >
+          <PieChart data={formatData()} options={options}></PieChart>
+        </ChartWrapperComponent>
       )}
     </div>
   );

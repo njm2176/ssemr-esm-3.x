@@ -5,13 +5,15 @@ import "@carbon/charts/styles.css";
 import styles from "./styles/index.scss";
 import { DashboardContext } from "../context/DashboardContext";
 import { ScaleTypes } from "../types";
+import ChartWrapperComponent from "./components/chart-wrapper.component";
 
 const NewlyEnrolled = () => {
   const {
     chartData: { newlyEnrolledClients },
     currentTimeFilter,
   } = useContext(DashboardContext);
-
+  console.log("processed chart data", newlyEnrolledClients?.processedChartData);
+  console.log("current Time filter", currentTimeFilter);
   const options = {
     title: "Clients newly enrolled on ART",
     axes: {
@@ -35,10 +37,16 @@ const NewlyEnrolled = () => {
       {newlyEnrolledClients.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
       ) : (
-        <SimpleBarChart
+        <ChartWrapperComponent
+          currentTimeFilter={currentTimeFilter}
+          chartName="NewlyEnrolled Clients"
           data={newlyEnrolledClients?.processedChartData}
-          options={options}
-        />
+        >
+          <SimpleBarChart
+            data={newlyEnrolledClients?.processedChartData}
+            options={options}
+          />
+        </ChartWrapperComponent>
       )}
     </div>
   );

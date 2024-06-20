@@ -5,6 +5,7 @@ import { ScaleTypes } from "../types";
 import styles from "./styles/index.scss";
 import { Loading } from "@carbon/react";
 import { DashboardContext } from "../context/DashboardContext";
+import ChartWrapperComponent from "./components/chart-wrapper.component";
 
 const ActiveClients = () => {
   const {
@@ -35,7 +36,16 @@ const ActiveClients = () => {
       {activeClients.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
       ) : (
-        <LineChart data={activeClients?.processedChartData} options={options} />
+        <ChartWrapperComponent
+          data={activeClients?.processedChartData}
+          chartName="Active clients"
+          currentTimeFilter={currentTimeFilter}
+        >
+          <LineChart
+            data={activeClients?.processedChartData}
+            options={options}
+          />
+        </ChartWrapperComponent>
       )}
     </div>
   );

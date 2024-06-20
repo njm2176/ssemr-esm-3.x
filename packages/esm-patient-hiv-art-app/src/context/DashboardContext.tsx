@@ -58,8 +58,6 @@ const DashboardProvider = ({ children }) => {
     getUnderCareOfCommunityProgram();
     getViralLoadCoverage();
     getViralLoadSuppression();
-    getHighViralLoadCascade();
-    getWaterFallData();
   }, [currentTimeFilter, time]);
 
   useEffect(() => {

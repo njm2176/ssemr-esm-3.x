@@ -5,12 +5,14 @@ import styles from "./styles/index.scss";
 import { Loading } from "@carbon/react";
 import { DashboardContext } from "../context/DashboardContext";
 import { ScaleTypes } from "../types";
+import ChartWrapperComponent from "./components/chart-wrapper.component";
 
 const ViralLoadResults = () => {
   const {
     chartData: { viralLoadResults },
     currentTimeFilter,
   } = useContext(DashboardContext);
+  console.log("results", viralLoadResults);
 
   const options = {
     title: "Viral load results",
@@ -34,10 +36,15 @@ const ViralLoadResults = () => {
       {viralLoadResults.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
       ) : (
-        <LineChart
+        <ChartWrapperComponent
           data={viralLoadResults?.processedChartData}
-          options={options}
-        />
+          chartName="Viral Load Results"
+        >
+          <LineChart
+            data={viralLoadResults?.processedChartData}
+            options={options}
+          />
+        </ChartWrapperComponent>
       )}
     </div>
   );

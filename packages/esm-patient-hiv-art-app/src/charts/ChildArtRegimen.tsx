@@ -5,6 +5,7 @@ import { ScaleTypes } from "../types";
 import { DashboardContext } from "../context/DashboardContext";
 import styles from "./styles/index.scss";
 import { Loading } from "@carbon/react";
+import ChartWrapperComponent from "./components/chart-wrapper.component";
 
 const ChildArtRegimen = () => {
   const {
@@ -34,7 +35,15 @@ const ChildArtRegimen = () => {
       {childART.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
       ) : (
-        <SimpleBarChart data={childART?.processedChartData} options={options} />
+        <ChartWrapperComponent
+          data={childART?.processedChartData}
+          chartName="Child ART Regimen"
+        >
+          <SimpleBarChart
+            data={childART?.processedChartData}
+            options={options}
+          />
+        </ChartWrapperComponent>
       )}
     </div>
   );

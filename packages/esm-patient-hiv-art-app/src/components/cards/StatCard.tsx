@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./index.scss";
 import {
+  Loading,
   Modal,
   Table,
   TableBody,
@@ -21,6 +22,7 @@ interface Client {
 }
 
 interface Item {
+  loading: boolean;
   title: string;
   color: string;
   stat: string;
@@ -161,7 +163,13 @@ const StatCard: React.FC<StatCardProps> = ({ item }) => {
         </Table>
       </Modal>
       <div className={styles.title}>{item.title}</div>
-      <p className={styles.stat}>{item.stat}</p>
+      <div className={styles.stat}>
+        {item.loading ? (
+          <Loading small className={styles.spinner} withOverlay={false} />
+        ) : (
+          <p className="">{item.stat}</p>
+        )}
+      </div>
     </div>
   );
 };
