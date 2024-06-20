@@ -7,6 +7,7 @@ import { Loading } from "@carbon/react";
 import CascadeHeader from "../components/headers/cascade-header.component";
 import CascadePicker from "../components/filter/cascade-picker.component";
 import Tooltip from "../components/tabs/cascade-tooltip.component";
+import ChartWrapperComponent from "./components/chart-wrapper.component";
 
 const SVGChart = () => {
   const {

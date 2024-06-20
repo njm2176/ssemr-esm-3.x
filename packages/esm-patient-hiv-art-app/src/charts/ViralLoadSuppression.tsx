@@ -4,6 +4,7 @@ import "@carbon/charts-react/styles.css";
 import { DashboardContext } from "../context/DashboardContext";
 import styles from "./styles/index.scss";
 import { Loading } from "@carbon/react";
+import ChartWrapperComponent from "./components/chart-wrapper.component";
 
 const ViralLoadSuppression = () => {
   const options = {
@@ -40,7 +41,12 @@ const ViralLoadSuppression = () => {
       {viralLoadSuppression.loading || viralLoadCoverage.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
       ) : (
-        <PieChart data={formatData()} options={options} />
+        <ChartWrapperComponent
+          data={viralLoadSuppression?.processedChartData}
+          chartName="Viral Load Suppression"
+        >
+          <PieChart data={formatData()} options={options} />
+        </ChartWrapperComponent>
       )}
     </div>
   );

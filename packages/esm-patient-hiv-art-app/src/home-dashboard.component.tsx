@@ -83,7 +83,7 @@ const HomeDashboard = () => {
           </ChartCard>
         </div>
 
-        {/* ...............Charts....................... */}
+        {/*  /!* ...............Charts....................... *!/*/}
         <div className={styles.chartWrapper}>
           <ChartCard>
             <AdultARTRegimen />
@@ -95,7 +95,6 @@ const HomeDashboard = () => {
             <UnderCommunityCare />
           </ChartCard>
         </div>
-
 
         {/* ...............Charts....................... */}
         <div className={styles.twoGridChartWrapper}>

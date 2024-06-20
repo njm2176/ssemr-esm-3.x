@@ -5,6 +5,7 @@ import styles from "./styles/index.scss";
 import { DashboardContext } from "../context/DashboardContext";
 import { Loading } from "@carbon/react";
 import { ScaleTypes } from "../types";
+import ChartWrapperComponent from "./components/chart-wrapper.component";
 
 const DueForViralLoad = () => {
   const {
@@ -35,10 +36,16 @@ const DueForViralLoad = () => {
       {dueForViralLoad?.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
       ) : (
-        <LineChart
+        <ChartWrapperComponent
           data={dueForViralLoad?.processedChartData}
-          options={options}
-        />
+          chartName="Due for viral load"
+          currentTimeFilter={currentTimeFilter}
+        >
+          <LineChart
+            data={dueForViralLoad?.processedChartData}
+            options={options}
+          />
+        </ChartWrapperComponent>
       )}
     </div>
   );

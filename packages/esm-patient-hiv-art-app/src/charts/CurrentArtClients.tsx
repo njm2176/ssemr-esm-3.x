@@ -5,6 +5,7 @@ import styles from "./styles/index.scss";
 import { DashboardContext } from "../context/DashboardContext";
 import { Loading } from "@carbon/react";
 import { ScaleTypes } from "../types";
+import ChartWrapperComponent from "./components/chart-wrapper.component";
 
 const NewlyEnrolled = () => {
   const {
@@ -34,10 +35,16 @@ const NewlyEnrolled = () => {
       {newlyEnrolledClients?.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
       ) : (
-        <SimpleBarChart
+        <ChartWrapperComponent
           data={newlyEnrolledClients?.processedChartData}
-          options={options}
-        />
+          currentTimeFilter={currentTimeFilter}
+          chartName="Current ART Clients"
+        >
+          <SimpleBarChart
+            data={newlyEnrolledClients?.processedChartData}
+            options={options}
+          />
+        </ChartWrapperComponent>
       )}
     </div>
   );
