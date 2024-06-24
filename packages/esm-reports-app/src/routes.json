@@ -5,6 +5,7 @@
       "name": "home-reports-dashboard-link",
       "component": "homeReportsLink",
       "slot": "homepage-dashboard-slot",
+      "order": 30,
       "meta": {
         "name": "reports",
         "slot": "reports-dashboard-slot",
