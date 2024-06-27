@@ -13,7 +13,7 @@ const NewlyEnrolled = () => {
     currentTimeFilter,
   } = useContext(DashboardContext);
   const options = {
-    title: "Clients newly enrolled on ART",
+    title: "Clients newly enrolled on ART (TX_NEW)",
     axes: {
       bottom: {
         title: "",
@@ -37,7 +37,7 @@ const NewlyEnrolled = () => {
       ) : (
         <ChartWrapperComponent
           currentTimeFilter={currentTimeFilter}
-          chartName="NewlyEnrolled Clients"
+          chartName="NewlyEnrolled Clients (TX_NEW)"
           data={newlyEnrolledClients?.processedChartData}
         >
           <SimpleBarChart
