@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { LineChart } from "@carbon/charts-react";
+import { LineChart, SimpleBarChart } from "@carbon/charts-react";
 import "@carbon/charts-react/styles.css";
 import { ScaleTypes } from "../types";
 import styles from "./styles/index.scss";
@@ -14,7 +14,7 @@ const ActiveClients = () => {
   } = useContext(DashboardContext);
 
   const options = {
-    title: "Active clients",
+    title: "Active clients (TX_CURR)",
     axes: {
       bottom: {
         title: "",
@@ -38,10 +38,10 @@ const ActiveClients = () => {
       ) : (
         <ChartWrapperComponent
           data={activeClients?.processedChartData}
-          chartName="Active clients"
+          chartName="Active clients (TX_CURR)"
           currentTimeFilter={currentTimeFilter}
         >
-          <LineChart
+          <SimpleBarChart
             data={activeClients?.processedChartData}
             options={options}
           />

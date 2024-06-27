@@ -71,12 +71,9 @@ const HomeDashboard = () => {
         </div>
 
         {/* ...............Charts....................... */}
-        <div className={styles.chartWrapper}>
+        <div className={styles.twoGridChartWrapper}>
           <ChartCard>
             <NewlyEnrolled />
-          </ChartCard>
-          <ChartCard>
-            <CurrentlyEnrolled />
           </ChartCard>
           <ChartCard>
             <ActiveClients />
