@@ -17,8 +17,7 @@ interface Client {
   dateEnrolled: string;
   lastRefillDate: string;
   contact: string;
-  landMark: string;
-  village: string;
+  address: string;
 }
 
 interface Item {
@@ -29,13 +28,23 @@ interface Item {
   results?: Client[];
 }
 
+interface Address {
+  name: string;
+  sex: string;
+  dateEnrolled: string;
+  lastRefillDate: string;
+  contact: string;
+  landMark: string;
+  village: string;
+}
+
 interface StatCardProps {
   item: Item;
 }
 
 const StatCard: React.FC<StatCardProps> = ({ item }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [rows, setRows] = useState<Client[]>([]);
+  const [rows, setRows] = useState<Address[]>([]);
   const [csvData, setCsvData] = useState<string | null>(null);
 
   const headers = [
@@ -93,15 +102,19 @@ const StatCard: React.FC<StatCardProps> = ({ item }) => {
 
   useEffect(() => {
     if (item?.results) {
-      const formattedResults = item.results.map((client) => ({
-        name: client.name,
-        sex: client.sex,
-        dateEnrolled: client.dateEnrolled,
-        lastRefillDate: client.lastRefillDate,
-        contact: client.contact,
-        landMark: client.landMark,
-        village: client.village,
-      }));
+      const formattedResults = item.results.map((client) => {
+        const [landMark, village] = client.address.split(",").map(part => part.split(":")[1].trim());
+
+        return {
+          name: client.name,
+          sex: client.sex,
+          dateEnrolled: client.dateEnrolled,
+          lastRefillDate: client.lastRefillDate,
+          contact: client.contact,
+          landMark,
+          village,
+        };
+      });
 
       setRows(formattedResults);
     }
