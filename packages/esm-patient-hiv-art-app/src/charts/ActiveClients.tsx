@@ -14,7 +14,7 @@ const ActiveClients = () => {
   } = useContext(DashboardContext);
 
   const options = {
-    title: "Active clients (TX_CURR)",
+    title: "Clients currently receiving ART (TX_CURR)",
     axes: {
       bottom: {
         title: "",
@@ -38,7 +38,7 @@ const ActiveClients = () => {
       ) : (
         <ChartWrapperComponent
           data={activeClients?.processedChartData}
-          chartName="Active clients (TX_CURR)"
+          chartName="Clients currently receiving ART (TX_CURR)"
           currentTimeFilter={currentTimeFilter}
         >
           <SimpleBarChart
