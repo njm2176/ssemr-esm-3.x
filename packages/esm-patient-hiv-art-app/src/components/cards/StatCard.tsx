@@ -10,9 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from "@carbon/react";
+import Link from "@carbon/react/lib/components/UIShell/Link";
 
 interface Client {
   name: string;
+  uuid: string;
   sex: string;
   dateEnrolled: string;
   lastRefillDate: string;
@@ -30,6 +32,7 @@ interface Item {
 
 interface Address {
   name: string;
+  uuid: string;
   sex: string;
   dateEnrolled: string;
   lastRefillDate: string;
@@ -107,6 +110,7 @@ const StatCard: React.FC<StatCardProps> = ({ item }) => {
 
         return {
           name: client.name,
+          uuid: client.uuid,
           sex: client.sex,
           dateEnrolled: client.dateEnrolled,
           lastRefillDate: client.lastRefillDate,
@@ -163,7 +167,15 @@ const StatCard: React.FC<StatCardProps> = ({ item }) => {
           <TableBody>
             {rows.map((row, index) => (
               <TableRow key={index}>
-                <TableCell>{row.name}</TableCell>
+                <TableCell>
+                  <Link
+                    href={`${window.getOpenmrsSpaBase()}patient/${
+                      row.uuid
+                    }/chart/Patient%20Summary`}
+                  >
+                    {row.name}
+                  </Link>
+                </TableCell>
                 <TableCell>{row.sex}</TableCell>
                 <TableCell>{row.dateEnrolled}</TableCell>
                 <TableCell>{row.lastRefillDate}</TableCell>
