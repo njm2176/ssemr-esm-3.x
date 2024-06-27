@@ -3,6 +3,7 @@ import React from "react";
 import { openmrsFetch } from "@openmrs/esm-framework";
 import { Tag } from "@carbon/react";
 import styles from "../lists-dashboard/lists-dashboard.scss";
+import Link from "@carbon/react/lib/components/UIShell/Link";
 
 export const usePatientListing = () => {
   const { t } = useTranslation();
@@ -60,19 +61,14 @@ export const usePatientListing = () => {
       selector: (row, index) => index + 1,
     },
     {
-      name: "ART NO",
-      selector: (row) =>
-        row?.identifiers?.find((item) =>
-          item?.identifierType?.toLowerCase()?.includes("art")
-        )?.identifier,
-    },
-    {
-      name: "ART Regimen",
-      selector: (row) => row?.ARTRegimen,
-    },
-    {
       name: "Name",
-      selector: (row) => row.name,
+      cell: (row) => (
+        <Link
+          href={`${window.getOpenmrsSpaBase()}patient/${row.uuid}/chart/Patient%20Summary`}
+        >
+          {row.name}
+        </Link>
+      ),
     },
     {
       name: "Age",
@@ -81,6 +77,17 @@ export const usePatientListing = () => {
     {
       name: "Sex",
       selector: (row) => row.sex,
+    },
+    {
+      name: "UAN",
+      selector: (row) =>
+        row?.identifiers?.find((item) =>
+          item?.identifierType?.toLowerCase()?.includes("art")
+        )?.identifier,
+    },
+    {
+      name: "ART Regimen",
+      selector: (row) => row?.ARTRegimen,
     },
     {
       name: "Date of initiation",
