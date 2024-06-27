@@ -8,6 +8,7 @@
       "name": "patient-lists-dashboard-link",
       "component": "patientListDashboardLink",
       "slot": "homepage-dashboard-slot",
+      "order": 0,
       "meta": {
         "name": "patient-lists",
         "slot": "patient-lists-dashboard-slot",
