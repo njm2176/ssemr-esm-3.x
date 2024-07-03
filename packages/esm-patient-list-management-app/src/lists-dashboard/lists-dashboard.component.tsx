@@ -74,7 +74,7 @@ const ListsDashboard: React.FC = () => {
           {loading ? (
             <div>
               <div className={styles.noRecords}>
-                <p className={styles.noRecordsText}>Please wait as we fetch the clients. This may take up to a few minutes.</p>
+                <p className={styles.noRecordsText}>Please wait as we fetch the clients. This may take up to a few seconds.</p>
               </div>
               <Loading small className={styles.spinner} withOverlay={false} />
             </div>
