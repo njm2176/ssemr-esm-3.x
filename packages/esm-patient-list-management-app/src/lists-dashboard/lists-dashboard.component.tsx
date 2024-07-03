@@ -72,7 +72,12 @@ const ListsDashboard: React.FC = () => {
         </div>
         <div className={styles.listsTableContainer}>
           {loading ? (
-            <Loading small className={styles.spinner} withOverlay={false} />
+            <div>
+              <div className={styles.noRecords}>
+                <p className={styles.noRecordsText}>Please wait as we fetch the clients. This may take up to a few seconds.</p>
+              </div>
+              <Loading small className={styles.spinner} withOverlay={false} />
+            </div>
           ) : (
             <DataTable
               paginationResetDefaultPage={resetPaginationToggle}

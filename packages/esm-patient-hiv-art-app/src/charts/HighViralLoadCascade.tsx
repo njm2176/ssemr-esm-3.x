@@ -65,10 +65,12 @@ const SVGChart = () => {
   }, [highViralLoadCascade]);
 
   const maxValue = Math.max(...data.map((d) => d.total));
-  const barWidth = 40;
-  const barSpacing = (divWidth * 0.85) / data.length;
+  const barWidth = (divWidth * 0.1) / (data.length - 1); // 10% of div width
+  // const barWidth = 20;
+  // const barSpacing = (divWidth * 0.9) / data.length;
   const chartHeight = 500;
   const axisPadding = 40;
+  const barSpacing = (divWidth - axisPadding * 2 - barWidth * data.length) / (data.length - 1);
 
   const updateWidth = () => {
     if (divRef.current) setDivWidth(divRef.current.clientWidth);
@@ -104,7 +106,11 @@ const SVGChart = () => {
               <div style={{ fontSize: "16px", fontWeight: "600" }}>
                 High Viral Load Cascade
               </div>
-              <svg width={divWidth} height={chartHeight + 2 * axisPadding}>
+              <svg
+                width={divWidth}
+                height={chartHeight + 2 * axisPadding}
+                viewBox={`0 0 ${divWidth} ${chartHeight + 2 * axisPadding}`}
+              >
                 {/* Y-axis */}
                 <line
                   x1={axisPadding - 20}
@@ -120,7 +126,7 @@ const SVGChart = () => {
                     <line
                       x1={axisPadding}
                       y1={chartHeight - (value / maxValue) * chartHeight}
-                      x2={2500}
+                      x2={divWidth - axisPadding}
                       y2={chartHeight - (value / maxValue) * chartHeight}
                       stroke="#C0C0C0"
                       strokeDasharray="5,5"
@@ -179,6 +185,7 @@ const SVGChart = () => {
                     textAnchor="middle"
                     fontSize="10"
                     fontWeight="500"
+                    className={styles.labelText}
                   >
                     {d.text}
                   </text>
@@ -199,6 +206,7 @@ const SVGChart = () => {
                         textAnchor="middle"
                         fontSize="16"
                         fontWeight="600"
+                        className={styles.percentageText}
                       >
                         {Math.round(d.percentage * 100) / 100}%
                       </text>
@@ -219,6 +227,7 @@ const SVGChart = () => {
                         y={chartHeight + 75}
                         textAnchor="middle"
                         fontSize="10"
+                        className={styles.labelText}
                       >
                         {Math.round(d.averageTurnaroundTimeMonths * 100) / 100}{" "}
                         Months
@@ -236,11 +245,12 @@ const SVGChart = () => {
                         x={
                           axisPadding +
                           index * (barWidth + barSpacing) +
-                          barWidth * 3
+                          barWidth + barSpacing / 1.5
                         }
                         y={chartHeight / 2}
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 448 512"
+                        className={styles.arrow}
                       >
                         <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
                       </svg>
