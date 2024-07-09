@@ -13,9 +13,9 @@ const SVGChart = () => {
     chartData: { highViralLoadCascade },
   } = useContext(DashboardContext);
 
-  const divRef = useRef(null);
+  const chartContainerRef = useRef(null);
 
-  const [divWidth, setDivWidth] = useState(0);
+  const [chartContainerWidth, setChartContainerWidth] = useState(0);
 
   const [data, setData] = useState([]);
 
@@ -64,15 +64,18 @@ const SVGChart = () => {
   }, [highViralLoadCascade]);
 
   const maxValue = Math.max(...data.map((d) => d.total));
-  const barWidth = (divWidth * 0.1) / (data.length - 1); // 10% of div width
+  const barWidth = (chartContainerWidth * 0.1) / (data.length - 1); // 10% of div width
   // const barWidth = 20;
-  // const barSpacing = (divWidth * 0.9) / data.length;
+  // const barSpacing = (chartContainerWidth * 0.9) / data.length;
   const chartHeight = 500;
   const axisPadding = 40;
-  const barSpacing = (divWidth - axisPadding * 2 - barWidth * data.length) / (data.length - 1);
+  const barSpacing =
+    (chartContainerWidth - axisPadding * 2 - barWidth * data.length) /
+    data.length;
 
   const updateWidth = () => {
-    if (divRef.current) setDivWidth(divRef.current.clientWidth);
+    if (chartContainerRef.current)
+      setChartContainerWidth(chartContainerRef.current.clientWidth);
   };
 
   useEffect(() => {
@@ -91,7 +94,7 @@ const SVGChart = () => {
       {highViralLoadCascade.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
       ) : (
-        <div ref={divRef} className={styles.SVGWrapper}>
+        <div ref={chartContainerRef} className={styles.SVGWrapper}>
           {data?.length >= 1 ? (
             <div className={styles.cascadeContentWrapper}>
               <CascadePicker />
@@ -106,9 +109,11 @@ const SVGChart = () => {
                 High Viral Load Cascade
               </div>
               <svg
-                width={divWidth}
+                width={chartContainerWidth}
                 height={chartHeight + 2 * axisPadding}
-                viewBox={`0 0 ${divWidth} ${chartHeight + 2 * axisPadding}`}
+                viewBox={`0 0 ${chartContainerWidth} ${
+                  chartHeight + 2 * axisPadding
+                }`}
               >
                 {/* Y-axis */}
                 <line
@@ -125,7 +130,7 @@ const SVGChart = () => {
                     <line
                       x1={axisPadding}
                       y1={chartHeight - (value / maxValue) * chartHeight}
-                      x2={divWidth - axisPadding}
+                      x2={chartContainerWidth - axisPadding}
                       y2={chartHeight - (value / maxValue) * chartHeight}
                       stroke="#C0C0C0"
                       strokeDasharray="5,5"
@@ -244,7 +249,8 @@ const SVGChart = () => {
                         x={
                           axisPadding +
                           index * (barWidth + barSpacing) +
-                          barWidth + barSpacing / 1.5
+                          barWidth +
+                          barSpacing / 1.5
                         }
                         y={chartHeight / 2}
                         xmlns="http://www.w3.org/2000/svg"
