@@ -15,13 +15,13 @@
       "name": "care-panel-summary-dashboard-link",
       "component": "carePanelSummaryDashboardLink",
       "slot": "patient-chart-dashboard-slot",
-      "order": 11,
+      "order": 0,
       "meta": {
         "columns": 1,
         "columnSpan": 1,
         "slot": "patient-chart-care-panel-dashboard-slot",
-        "title": "Downloadable Patient Summary",
-        "path": "Downloadable Patient Summary"
+        "title": "Downloadable Client Summary",
+        "path": "Downloadable Client Summary"
       }
     },
     {
