@@ -29,10 +29,10 @@ const SVGChart = () => {
   const [isTableOpen, setIsTableOpen] = useState(false);
 
   const headers = [
-    "text",
-    "total",
-    "percentage",
-    "averageTurnaroundTimeMonths",
+    "Session",
+    "Total",
+    "Percentage",
+    "Average Turnaround Time(Months)",
   ];
 
   const handleMouseOver = (evt, d) => {
@@ -164,7 +164,7 @@ const SVGChart = () => {
                       height={(d.total / maxValue) * chartHeight}
                       fill="#6929c4"
                       onMouseOver={(evt) => handleMouseOver(evt, d)}
-                      onMouseOut={handleMouseOut}
+                      onPointerOut={handleMouseOut}
                     />
                     {tooltip.visible && (
                       <Tooltip
