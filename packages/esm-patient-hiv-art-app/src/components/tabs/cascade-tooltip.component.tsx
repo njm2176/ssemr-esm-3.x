@@ -1,7 +1,7 @@
 import React from "react";
 
 const Tooltip = ({ x, y, data }) => (
-  <foreignObject x={x} y={y} width="100%" height={200}>
+  <foreignObject x={x} y={y} width="100%" height={200} style={{pointerEvents: 'none'}}>
     <div
       style={{
         position: "absolute",

@@ -10,7 +10,7 @@ import { createDashboardLink } from "@openmrs/esm-patient-common-lib";
 import { createDashboardLink as createHomeDashboardLink } from "./DashboardLink";
 
 const options = {
-  featureName: "hiv-art-treatment-dashboard",
+  featureName: "esm-patient-hiv-art-app",
   moduleName,
 };
 

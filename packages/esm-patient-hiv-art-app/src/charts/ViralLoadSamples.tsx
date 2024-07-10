@@ -14,7 +14,7 @@ const ViralLoadSamples = () => {
   } = useContext(DashboardContext);
 
   const options = {
-    title: "Viral load samples",
+    title: "Viral load samples collected",
     axes: {
       bottom: {
         title: "",
@@ -37,7 +37,7 @@ const ViralLoadSamples = () => {
       ) : (
         <ChartWrapperComponent
           data={viralLoadSamples?.processedChartData}
-          chartName="Viral Load Samples"
+          chartName="Viral Load Samples collected"
           currentTimeFilter={currentTimeFilter}
         >
           <LineChart
