@@ -717,7 +717,7 @@ export const useChartData = () => {
       selector: "dueForVl",
       cell: (row) => (
         <TableCell>
-          <Tag size="md" type={`${row.dueForVl ? "red" : "blue"}`}>
+          <Tag size="md" type={`${row.dueForVl ? "green" : "red"}`}>
             {row?.dueForVl ? "Eligible" : "Not eligible"}
           </Tag>
         </TableCell>
