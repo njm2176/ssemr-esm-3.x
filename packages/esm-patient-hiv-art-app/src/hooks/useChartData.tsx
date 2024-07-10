@@ -5,8 +5,7 @@ import {
   getThisYearsFirstAndLastDate,
 } from "../helpers/dateOps";
 import Link from "@carbon/react/lib/components/UIShell/Link";
-import { TableCell } from "@carbon/react";
-import { Tag } from "@carbon/react";
+import { TableCell, Tag } from "@carbon/react";
 
 export const useChartData = () => {
   const filterOptions = [
@@ -663,19 +662,11 @@ export const useChartData = () => {
       title: "pregnant and Breastfeeding Women",
       filterFunction: (item) => item.pregnantAndBreastfeeding,
     },
-    {
-      index: 3,
-      title: "Return to treatment",
-      filterFunction: (item) => item.returningToTreatment,
-    },
   ];
 
   const filterStatData = (stat) => {
     return stat?.filter(filterTabs[currentTopFilterIndex].filterFunction);
   };
-
-  const getPatientDashLink = (uuid: string) =>
-    `${window.getOpenmrsSpaBase()}patient/${uuid}/chart/Patient%20Summary`;
 
   const defaultStatHeaders = [
     {
@@ -722,12 +713,12 @@ export const useChartData = () => {
   const txCURRHeaders = [
     ...defaultStatHeaders,
     {
-      name: "Eligible for viral load",
+      name: "Eligible for VL",
       selector: "dueForVl",
       cell: (row) => (
         <TableCell>
           <Tag size="md" type={`${row.dueForVl ? "red" : "blue"}`}>
-            {row?.dueForVl ? "Yes" : "No"}
+            {row?.dueForVl ? "Eligible" : "Not eligible"}
           </Tag>
         </TableCell>
       ),
