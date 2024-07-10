@@ -10,7 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from "@carbon/react";
-import Link from "@carbon/react/lib/components/UIShell/Link";
 
 interface Client {
   name: string;
@@ -21,13 +20,18 @@ interface Client {
   contact: string;
   address: string;
 }
-
+interface header {
+  name: string;
+  selector: string;
+  cell: any;
+}
 interface Item {
   loading: boolean;
   title: string;
   color: string;
   stat: string;
   results?: Client[];
+  headers: header[];
 }
 
 interface Address {
@@ -49,16 +53,6 @@ const StatCard: React.FC<StatCardProps> = ({ item }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rows, setRows] = useState<Address[]>([]);
   const [csvData, setCsvData] = useState<string | null>(null);
-
-  const headers = [
-    "Name",
-    "Sex",
-    "Date enrolled",
-    "Last Refill Date",
-    "Contact",
-    "Land Mark",
-    "Village",
-  ];
 
   const generateCSV = () => {
     const data = [
@@ -106,15 +100,12 @@ const StatCard: React.FC<StatCardProps> = ({ item }) => {
   useEffect(() => {
     if (item?.results) {
       const formattedResults = item.results.map((client) => {
-        const [landMark, village] = client.address.split(",").map(part => part.split(":")[1].trim());
+        const [landMark, village] = client.address
+          .split(",")
+          .map((part) => part.split(":")[1].trim());
 
         return {
-          name: client.name,
-          uuid: client.uuid,
-          sex: client.sex,
-          dateEnrolled: client.dateEnrolled,
-          lastRefillDate: client.lastRefillDate,
-          contact: client.contact,
+          ...client,
           landMark,
           village,
         };
@@ -157,9 +148,9 @@ const StatCard: React.FC<StatCardProps> = ({ item }) => {
         <Table size="md" useZebraStyles={false}>
           <TableHead>
             <TableRow>
-              {headers.map((header) => (
+              {item.headers.map((header) => (
                 <TableHeader id={header} key={header}>
-                  {header}
+                  {header.name}
                 </TableHeader>
               ))}
             </TableRow>
@@ -167,21 +158,15 @@ const StatCard: React.FC<StatCardProps> = ({ item }) => {
           <TableBody>
             {rows.map((row, index) => (
               <TableRow key={index}>
-                <TableCell>
-                  <Link
-                    href={`${window.getOpenmrsSpaBase()}patient/${
-                      row.uuid
-                    }/chart/Patient%20Summary`}
-                  >
-                    {row.name}
-                  </Link>
-                </TableCell>
-                <TableCell>{row.sex}</TableCell>
-                <TableCell>{row.dateEnrolled}</TableCell>
-                <TableCell>{row.lastRefillDate}</TableCell>
-                <TableCell>{row.contact}</TableCell>
-                <TableCell>{row.landMark}</TableCell>
-                <TableCell>{row.village}</TableCell>
+                {item.headers.map((header) => (
+                  <>
+                    {header.cell ? (
+                      header.cell(row)
+                    ) : (
+                      <TableCell>{row[header.selector]}</TableCell>
+                    )}
+                  </>
+                ))}
               </TableRow>
             ))}
           </TableBody>

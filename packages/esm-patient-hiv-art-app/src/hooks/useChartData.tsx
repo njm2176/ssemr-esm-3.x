@@ -1,9 +1,12 @@
 import { openmrsFetch } from "@openmrs/esm-framework";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   getThisQuartersRange,
   getThisYearsFirstAndLastDate,
 } from "../helpers/dateOps";
+import Link from "@carbon/react/lib/components/UIShell/Link";
+import { TableCell } from "@carbon/react";
+import { Tag } from "@carbon/react";
 
 export const useChartData = () => {
   const filterOptions = [
@@ -671,6 +674,66 @@ export const useChartData = () => {
     return stat?.filter(filterTabs[currentTopFilterIndex].filterFunction);
   };
 
+  const getPatientDashLink = (uuid: string) =>
+    `${window.getOpenmrsSpaBase()}patient/${uuid}/chart/Patient%20Summary`;
+
+  const defaultStatHeaders = [
+    {
+      name: "Name",
+      selector: "name",
+      cell: (row) => (
+        <TableCell>
+          <Link
+            href={`${window.getOpenmrsSpaBase()}patient/${
+              row?.uuid
+            }/chart/Patient%20Summary`}
+          >
+            {row.name}
+          </Link>
+        </TableCell>
+      ),
+    },
+    {
+      name: "Sex",
+      selector: "sex",
+    },
+    {
+      name: "Date enrolled",
+      selector: "dateEnrolled",
+    },
+    {
+      name: "Last refill date",
+      selector: "lastRefillDate",
+    },
+    {
+      name: "Contact",
+      selector: "contact",
+    },
+    {
+      name: "Landmark",
+      selector: "landMark",
+    },
+    {
+      name: "Village",
+      selector: "village",
+    },
+  ];
+
+  const txCURRHeaders = [
+    ...defaultStatHeaders,
+    {
+      name: "Eligible for viral load",
+      selector: "dueForVl",
+      cell: (row) => (
+        <TableCell>
+          <Tag size="md" type={`${row.dueForVl ? "red" : "blue"}`}>
+            {row?.dueForVl ? "Yes" : "No"}
+          </Tag>
+        </TableCell>
+      ),
+    },
+  ];
+
   const stats = [
     {
       title: "Newly enrolled clients(TX_NEW)",
@@ -678,6 +741,7 @@ export const useChartData = () => {
       stat: getStat(chartData.newlyEnrolledClients?.raw?.results),
       results: filterStatData(chartData.newlyEnrolledClients?.raw?.results),
       loading: chartData.newlyEnrolledClients.loading,
+      headers: defaultStatHeaders,
     },
     {
       title: "Active clients (TX_CURR)",
@@ -685,6 +749,7 @@ export const useChartData = () => {
       stat: getStat(chartData.activeClients?.raw?.results),
       results: filterStatData(chartData.activeClients?.raw?.results),
       loading: chartData.activeClients.loading,
+      headers: txCURRHeaders,
     },
     {
       title: "On appointment",
@@ -692,6 +757,7 @@ export const useChartData = () => {
       stat: getStat(chartData.onAppointment?.raw?.results),
       results: filterStatData(chartData.onAppointment?.raw?.results),
       loading: chartData.onAppointment.loading,
+      headers: defaultStatHeaders,
     },
     {
       title: "Missed appointments",
@@ -699,6 +765,7 @@ export const useChartData = () => {
       stat: getStat(chartData.missedAppointment?.raw?.results),
       results: filterStatData(chartData.missedAppointment?.raw?.results),
       loading: chartData.missedAppointment.loading,
+      headers: defaultStatHeaders,
     },
     {
       title: "Interruptions in Treatment(TX_IIT)",
@@ -706,6 +773,7 @@ export const useChartData = () => {
       stat: getStat(chartData.interrupted?.raw?.results),
       results: filterStatData(chartData.interrupted?.raw?.results),
       loading: chartData.interrupted.loading,
+      headers: defaultStatHeaders,
     },
     {
       title: "Returned to Treatment(TX_RTT)",
@@ -713,6 +781,7 @@ export const useChartData = () => {
       stat: getStat(chartData.returned?.raw?.results),
       results: filterStatData(chartData.returned?.raw?.results),
       loading: chartData.returned.loading,
+      headers: defaultStatHeaders,
     },
     {
       title: "Due for viral load",
@@ -720,6 +789,7 @@ export const useChartData = () => {
       stat: getStat(chartData.dueForViralLoad?.raw?.results),
       results: filterStatData(chartData.dueForViralLoad?.raw?.results),
       loading: chartData.dueForViralLoad.loading,
+      headers: defaultStatHeaders,
     },
     {
       title: "High viral load (>= 1000 copies/ml)",
@@ -727,6 +797,7 @@ export const useChartData = () => {
       stat: getStat(chartData.highViralLoad?.raw?.results),
       results: filterStatData(chartData.highViralLoad?.raw?.results),
       loading: chartData.highViralLoad.loading,
+      headers: defaultStatHeaders,
     },
   ];
 

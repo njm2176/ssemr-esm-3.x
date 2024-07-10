@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import StatCard from "./components/cards/StatCard";
 import "@carbon/charts/styles.css";
 import SSEMRTab from "./components/tabs/SSEMRTab";
-import CurrentlyEnrolled from "./charts/CurrentArtClients";
 import ActiveClients from "./charts/ActiveClients";
 import ChartCard from "./components/cards/ChartCard";
 import { DashboardContext } from "./context/DashboardContext";
