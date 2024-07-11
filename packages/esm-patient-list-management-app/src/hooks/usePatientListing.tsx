@@ -52,7 +52,7 @@ export const usePatientListing = () => {
       text: t("died", "Died"),
       activeClassName: "redActive",
       interClassName: "redInert",
-    }
+    },
   ];
 
   const defaultTableHeaders = [
@@ -64,7 +64,9 @@ export const usePatientListing = () => {
       name: "Name",
       cell: (row) => (
         <Link
-          href={`${window.getOpenmrsSpaBase()}patient/${row.uuid}/chart/Patient%20Summary`}
+          href={`${window.getOpenmrsSpaBase()}patient/${
+            row.uuid
+          }/chart/Patient%20Summary`}
         >
           {row.name}
         </Link>
@@ -140,6 +142,21 @@ export const usePatientListing = () => {
     }
   };
 
+  const getChipClassName = ({ clinicalStatus }) => {
+    switch (clinicalStatus) {
+      case "ACTIVE":
+        return "greenChip";
+      case "INTERRUPTED_IN_TREATMENT":
+        return "amberChip";
+      case "TRANSFERRED_OUT":
+        return "blueChip";
+      case "DIED":
+        return "redChip";
+      default:
+        return "grayChip";
+    }
+  };
+
   const getAllClients = async () =>
     getChartData({
       url: `/ws/rest/v1/ssemr/dashboard/allClients?startDate=${startDate}&endDate=${endDate}`,
@@ -153,16 +170,16 @@ export const usePatientListing = () => {
             cell: (row) => (
               <Tag
                 className={
-                  row.clinicalStatus === "ACTIVE"
-                    ? styles.greenChip
-                    : row.clinicalStatus === "INACTIVE"
-                    ? styles.redChip
-                    : styles.amberChip
+                  styles[
+                    getChipClassName({ clinicalStatus: row.clinicalStatus })
+                  ]
                 }
                 size="md"
               >
                 {row.clinicalStatus.toLowerCase().includes("interrupt")
                   ? "IIT"
+                  : row.clinicalStatus.toLowerCase().includes("transfer")
+                  ? "TO"
                   : row.clinicalStatus}
               </Tag>
             ),

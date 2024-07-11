@@ -240,6 +240,20 @@
   font-weight: 600;
 }
 
+.blueChip {
+  background-color: $primary-color;
+  color: white;
+  width: 100%;
+  font-weight: 600;
+}
+
+.grayChip {
+  background-color: $accent-color;
+  color: $dark-color;
+  width: 100%;
+  font-weight: 600;
+}
+
 
 .tabs {
   display: flex;
