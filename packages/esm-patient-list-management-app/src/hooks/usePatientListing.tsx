@@ -48,8 +48,8 @@ export const usePatientListing = () => {
       interClassName: "blueInert",
     },
     {
-      id: "Deceased",
-      text: t("deceased", "Deceased Clients"),
+      id: "Died",
+      text: t("died", "Died"),
       activeClassName: "redActive",
       interClassName: "redInert",
     },
