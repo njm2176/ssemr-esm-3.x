@@ -52,7 +52,7 @@ export const usePatientListing = () => {
       text: t("died", "Died"),
       activeClassName: "redActive",
       interClassName: "redInert",
-    },
+    }
   ];
 
   const defaultTableHeaders = [
