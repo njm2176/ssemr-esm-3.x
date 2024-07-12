@@ -248,12 +248,12 @@ export const useChartData = () => {
     )["TX_ML_Refusal/Stopped"];
 
     const onARTLessThanThree = data.find((item) =>
-      Object.keys(item).includes("TX_ML_IIT (on ART <3 mo)")
-    )["TX_ML_IIT (on ART <3 mo)"];
+      Object.keys(item).includes("TX_ML_IIT (<3 mo)")
+    )["TX_ML_IIT (<3 mo)"];
 
     const onARTMoreThanThree = data.find((item) =>
-      Object.keys(item).includes("TX_ML_IIT (on ART 3+ mo)")
-    )["TX_ML_IIT (on ART 3+ mo)"];
+      Object.keys(item).includes("TX_ML_IIT (3+ mo)")
+    )["TX_ML_IIT (3+ mo)"];
 
     const calculated = data.find((item) =>
       Object.keys(item).includes("CALCULATED TX_CURR")
