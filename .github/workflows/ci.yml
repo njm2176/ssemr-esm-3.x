@@ -223,7 +223,7 @@ jobs:
       - name: Build
         run: yarn turbo run build --color --concurrency=5
 
-      - run: run: git config user.email "info@intellisoftkenya.com" && git config user.name "SSEMR CI"
+      - run: git config user.email "info@intellisoftkenya.com" && git config user.name "SSEMR CI"
 
       - name: Pre-release
         run: yarn config set npmAuthToken "${NODE_AUTH_TOKEN}" && yarn run ci:prepublish
