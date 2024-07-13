@@ -4,6 +4,7 @@ import { GenericSection } from "./generic-section.component";
 import { DeathInfoSection } from "./death-info/death-info-section.component";
 import { DemographicsSection } from "./demographics/demographics-section.component";
 import { RelationshipsSection } from "./patient-relationships/relationships-section.component";
+import { HIVSection } from "./hiv-info/hiv-section.component";
 
 export interface SectionProps {
   sectionDefinition: SectionDefinition;
@@ -13,6 +14,8 @@ export function Section({ sectionDefinition }: SectionProps) {
   switch (sectionDefinition.id) {
     case "demographics":
       return <DemographicsSection fields={sectionDefinition.fields} />;
+    case "hiv":
+      return <HIVSection fields={sectionDefinition.fields} />;
     case "death":
       return <DeathInfoSection />;
     case "relationships":

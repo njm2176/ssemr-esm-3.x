@@ -30,7 +30,6 @@ export interface Gender {
   value: string;
   id: string;
 }
-
 export interface RegistrationConfig {
   sections: Array<string>;
   sectionDefinitions: Array<SectionDefinition>;
