@@ -217,9 +217,18 @@ jobs:
       - run: git config user.email "info@intellisoftkenya.com" && git config user.name "SSEMR CI"
 
       - name: Pre-release
-        run: yarn run ci:prepublish
+        run: yarn config set npmAuthToken "${NODE_AUTH_TOKEN}" && yarn run ci:prepublish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: |
+            packages/**/dist
+          overwrite: true
+          
       - name: see directory
         shell: bash
         run: |
