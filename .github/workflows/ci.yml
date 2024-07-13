@@ -33,11 +33,11 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
       - name: Set yarn version
         run: yarn set version berry
 
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install
 
       - name: Setup local cache server for Turborepo
@@ -55,7 +55,6 @@ jobs:
           name: packages
           path: |
             packages/**/dist
-
 
   deploy_esm_patient_hiv_art_app:
     runs-on: ubuntu-latest
@@ -83,7 +82,7 @@ jobs:
           mv packages/${{ env.DIR_NAME }}/dist/*.* dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}/
           ls dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}/
 
-  deploy_esm_vpatient_registration_app:
+  deploy_esm_patient_registration_app:
     runs-on: ubuntu-latest
 
     env:
@@ -184,7 +183,6 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
         run: npx lerna bootstrap
 
       - name: Build
@@ -222,6 +220,7 @@ jobs:
           repo: IntelliSOFT-Consulting/ssemr
           token: ${{ secrets.PERSONAL_TOKENS }}
           wait-for-completion: false 
+
   release:
     runs-on: ubuntu-latest
 
@@ -245,7 +244,6 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
         run: npx lerna bootstrap
 
       - name: Build
