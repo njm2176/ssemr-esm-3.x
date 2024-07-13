@@ -211,8 +211,32 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npx lerna bootstrap
 
+      - name: Ensure lerna.json exists
+        run: |
+          if [ ! -f lerna.json ]; then
+            echo '{
+              "packages": [
+                "packages/*"
+              ],
+              "npmClient": "yarn",
+              "useWorkspaces": true,
+              "version": "5.2.0",
+              "command": {
+                "publish": {
+                  "verifyAccess": false
+                }
+              }
+            }' > lerna.json
+          fi
+
       - name: Build
         run: yarn turbo run build --color
+
+      - name: Patch
+        run: npx lerna version patch --no-git-tag-version --no-push --yes
+
+      - name: Version
+        run: npx lerna version "$(node -e "console.log(require('./lerna.json').version)")-pre.${{ github.run_number }}" --no-git-tag-version --yes
 
       - run: git config user.email "info@intellisoftkenya.com" && git config user.name "SSEMR CI"
 
@@ -228,7 +252,7 @@ jobs:
           path: |
             packages/**/dist
           overwrite: true
-          
+
       - name: see directory
         shell: bash
         run: |
