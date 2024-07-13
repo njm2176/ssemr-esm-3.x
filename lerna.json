@@ -1,13 +1,13 @@
 {
-    "packages": [
-      "packages/*"
-    ],
-    "npmClient": "yarn",
-    "useWorkspaces": true,
-    "version": "5.2.0",
-    "command": {
-      "publish": {
-        "verifyAccess": false
-      }
+  "packages": [
+    "packages/*"
+  ],
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "version": "5.2.0",
+  "command": {
+    "publish": {
+      "verifyAccess": false
     }
   }
+}
