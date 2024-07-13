@@ -198,7 +198,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          registry-url: "https://registry.npmjs.org"
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Cache dependencies
         id: cache
@@ -209,36 +209,21 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npx lerna bootstrap
+        run: yarn install --immutable
 
-      - name: Ensure lerna.json exists
-        run: |
-          if [ ! -f lerna.json ]; then
-            echo '{
-              "packages": [
-                "packages/*"
-              ],
-              "npmClient": "yarn",
-              "useWorkspaces": true,
-              "version": "5.2.0",
-              "command": {
-                "publish": {
-                  "verifyAccess": false
-                }
-              }
-            }' > lerna.json
-          fi
-
-      - name: Build
-        run: yarn turbo run build --color
-
-      - name: Patch
-        run: npx lerna version patch --no-git-tag-version --no-push --yes
+      - name: Setup local cache server for Turborepo
+        uses: felixmosh/turborepo-gh-artifacts@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          server-token: ${{ env.TURBO_TOKEN }}
 
       - name: Version
-        run: npx lerna version "$(node -e "console.log(require('./lerna.json').version)")-pre.${{ github.run_number }}" --no-git-tag-version --yes
+        run: yarn workspaces foreach --all --topological --exclude @ssemr/esm-patient-list-management-app version "$(node -e "console.log(require('semver').inc(require('./package.json').version, 'patch'))")-pre.${{ github.run_number }}"
 
-      - run: git config user.email "info@intellisoftkenya.com" && git config user.name "SSEMR CI"
+      - name: Build
+        run: yarn turbo run build --color --concurrency=5
+
+      - run: run: git config user.email "info@intellisoftkenya.com" && git config user.name "SSEMR CI"
 
       - name: Pre-release
         run: yarn config set npmAuthToken "${NODE_AUTH_TOKEN}" && yarn run ci:prepublish
@@ -252,11 +237,6 @@ jobs:
           path: |
             packages/**/dist
           overwrite: true
-
-      - name: see directory
-        shell: bash
-        run: |
-          ls -alh
 
   Trigger_server_build:
     runs-on: ubuntu-latest
