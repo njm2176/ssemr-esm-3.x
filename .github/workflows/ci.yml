@@ -38,6 +38,45 @@ jobs:
         run: yarn set version berry
 
       - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Setup local cache server for Turborepo
+        uses: felixmosh/turborepo-gh-artifacts@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          server-token: ${{ secrets.TURBO_SERVER_TOKEN }}
+
+      - name: Run build
+        run: yarn turbo run build --color
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: packages
+          path: |
+            packages/**/dist
+
+  handle_pull_requests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "21"
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Set yarn version
+        run: yarn set version berry
+
+      - name: Install dependencies
         run: yarn install
 
       - name: Setup local cache server for Turborepo
@@ -208,23 +247,19 @@ jobs:
 
   Trigger_server_build:
     runs-on: ubuntu-latest
-    needs: pre_release
+    permissions:
+      actions: read
+    if: ${{ github.event_name == 'release' }}
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - name: Trigger server build for release
+        run: gh workflow run SSEMR-Server-Build --repo IntelliSOFT-Consulting/seron-ssemr --ref main --json '{"release_version": "${{ github.event.release.tag_name }}"}'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Invoke workflow without inputs. Don't wait for result
-        uses: aurelien-baudet/workflow-dispatch@v2
-        with:
-          workflow: SSEMR CI
-          repo: IntelliSOFT-Consulting/ssemr
-          token: ${{ secrets.PERSONAL_TOKENS }}
-          wait-for-completion: false 
-
-  release:
+  Publish:
     runs-on: ubuntu-latest
-
-    needs: build
+    needs: [build, deploy_esm_patient_hiv_art_app, deploy_esm_patient_registration_app, deploy_esm_patient_summary_app, deploy_esm_reports_app]
 
     if: ${{ github.event_name == 'release' }}
 
@@ -244,10 +279,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
-        run: npx lerna bootstrap
-
-      - name: Build
-        run: yarn turbo run build --color
+        run: yarn install
 
       - name: Publish
         run: yarn run ci:publish
