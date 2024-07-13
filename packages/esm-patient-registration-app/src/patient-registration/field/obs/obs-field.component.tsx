@@ -1,20 +1,14 @@
-import React, { useMemo, useCallback, useContext } from "react";
+import React, { useCallback, useContext, useMemo } from "react";
 import classNames from "classnames";
-import { Field, useField } from "formik";
+import { Field } from "formik";
 import { useTranslation } from "react-i18next";
 import {
   InlineNotification,
   Layer,
   Select,
-  SelectItem,
-  DatePicker,
-  DatePickerInput,
+  SelectItem
 } from "@carbon/react";
-import {
-  OpenmrsDatePicker,
-  parseDate,
-  useConfig,
-} from "@openmrs/esm-framework";
+import { OpenmrsDatePicker, parseDate, useConfig } from '@openmrs/esm-framework';
 import { type ConceptResponse } from "../../patient-registration.types";
 import {
   type FieldDefinition,
@@ -23,8 +17,8 @@ import {
 import { Input } from "../../input/basic-input/input/input.component";
 import { useConcept, useConceptAnswers } from "../field.resource";
 import styles from "./../field.scss";
-import { generateFormatting } from "../../date-util";
-import { PatientRegistrationContext } from "../../patient-registration-context";
+import { PatientRegistrationContext } from '../../patient-registration-context';
+import { generateFormatting } from '../../date-util';
 
 export interface ObsFieldProps {
   fieldDefinition: FieldDefinition;
@@ -33,9 +27,6 @@ export interface ObsFieldProps {
 export function ObsField({ fieldDefinition }: ObsFieldProps) {
   const { t } = useTranslation();
   const { data: concept, isLoading } = useConcept(fieldDefinition.uuid);
-  const [date, dateMeta] = useField("date");
-
-  const { format, dateFormat } = generateFormatting(["d", "m", "Y"], "/");
 
   const config = useConfig<RegistrationConfig>();
 
@@ -70,16 +61,16 @@ export function ObsField({ fieldDefinition }: ObsFieldProps) {
           required={fieldDefinition.validation.required}
         />
       );
-    case "Date":
-      return (
-        <DateObsField
-          concept={concept}
-          label={fieldDefinition.label}
-          required={fieldDefinition.validation.required}
-          dateFormat={fieldDefinition.dateFormat}
-          placeholder={fieldDefinition.placeholder}
-        />
-      );
+      case 'Date':
+        return (
+          <DateObsField
+            concept={concept}
+            label={fieldDefinition.label}
+            required={fieldDefinition.validation.required}
+            dateFormat={fieldDefinition.dateFormat}
+            placeholder={fieldDefinition.placeholder}
+          />
+        );
     case "Coded":
       return (
         <CodedObsField
@@ -200,25 +191,22 @@ interface DateObsFieldProps {
   placeholder?: string;
 }
 
-function DateObsField({
-  concept,
-  label,
-  required,
-  placeholder,
-}: DateObsFieldProps) {
+function DateObsField({ concept, label, required, placeholder }: DateObsFieldProps) {
   const { t } = useTranslation();
   const fieldName = `obs.${concept.uuid}`;
   const { setFieldValue } = useContext(PatientRegistrationContext);
-  const { format, placeHolder, dateFormat } = generateFormatting(
-    ["d", "m", "Y"],
-    "/"
-  );
+  const { format, placeHolder, dateFormat } = generateFormatting(['YYYY', 'MM', 'DD'], '-');
 
   const onDateChange = useCallback(
-    (date: Date) => {
-      setFieldValue(fieldName, date);
+    (date: Date | null) => {
+      if (date instanceof Date && !isNaN(date.getTime())) {
+        const formattedDate = date.toISOString().split('T')[0];
+        setFieldValue(fieldName, formattedDate);
+      } else {
+        setFieldValue(fieldName, '');
+      }
     },
-    [setFieldValue]
+    [setFieldValue, fieldName]
   );
 
   return (
@@ -226,9 +214,7 @@ function DateObsField({
       <div className={styles.dobField}>
         <Field name={fieldName}>
           {({ field, form: { touched, errors }, meta }) => {
-            const dateValue = field.value
-              ? parseDate(field.value)
-              : field.value;
+            const dateValue = field.value ? parseDate(field.value) : null;
             return (
               <OpenmrsDatePicker
                 id={fieldName}
