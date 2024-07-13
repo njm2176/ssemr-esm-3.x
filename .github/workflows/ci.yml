@@ -23,18 +23,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "21"
+          node-version: 18
 
       - name: Cache dependencies
         id: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-      - name: Set yarn version
-        run: yarn set version berry
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
@@ -47,7 +45,7 @@ jobs:
           server-token: ${{ secrets.TURBO_SERVER_TOKEN }}
 
       - name: Run build
-        run: yarn turbo run build --color
+        run: yarn turbo run build --color --concurrency=5
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
@@ -173,7 +171,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: "21"
+          node-version: 18
           registry-url: "https://registry.npmjs.org"
 
       - name: Cache dependencies
@@ -234,7 +232,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: "21"
+          node-version: 18
           registry-url: "https://registry.npmjs.org"
 
       - name: Cache dependencies
@@ -249,9 +247,9 @@ jobs:
         run: npx lerna bootstrap
 
       - name: Build
-        run: yarn turbo run build --color
+        run: yarn turbo run build --color --concurrency=5
 
       - name: Publish
-        run: yarn run ci:publish
+        run: yarn config set npmAuthToken "${NODE_AUTH_TOKEN}" && yarn run ci:publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
