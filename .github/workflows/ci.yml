@@ -215,7 +215,7 @@ jobs:
         run: yarn turbo run build --color
 
       - name: Patch
-        run: npx lerna version patch --no-git-tag-version --no-push --yes
+        run: yarn lerna version patch --no-git-tag-version --no-push --yes
 
       - name: Version
         run: npx lerna version "$(node -e "console.log(require('./lerna.json').version)")-pre.${{ github.run_number }}" --no-git-tag-version --yes
