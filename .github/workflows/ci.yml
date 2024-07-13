@@ -83,7 +83,7 @@ jobs:
           mv packages/${{ env.DIR_NAME }}/dist/*.* dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}/
           ls dist/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}/
 
-  deploy_esm_vpatient_registration_app:
+  deploy_esm_patient_registration_app:
     runs-on: ubuntu-latest
 
     env:
