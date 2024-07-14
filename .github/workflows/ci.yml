@@ -224,9 +224,13 @@ jobs:
       - run: git add . && git commit -m "Prerelease version" --no-verify
 
       - name: Pre-release
-        run: yarn run ci:prepublish
+        run: |
+          yarn run ci:prepublish
+          echo "Publishing to npm..."
+          npx lerna publish --yes --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          
       - name: see directory
         shell: bash
         run: |
