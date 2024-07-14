@@ -19,6 +19,8 @@ import { useConcept, useConceptAnswers } from "../field.resource";
 import styles from "./../field.scss";
 import { PatientRegistrationContext } from '../../patient-registration-context';
 import { generateFormatting } from '../../date-util';
+import { DatePicker } from "@carbon/react";
+import { DatePickerInput } from "@carbon/react";
 
 export interface ObsFieldProps {
   fieldDefinition: FieldDefinition;
@@ -195,7 +197,11 @@ function DateObsField({ concept, label, required, placeholder }: DateObsFieldPro
   const { t } = useTranslation();
   const fieldName = `obs.${concept.uuid}`;
   const { setFieldValue } = useContext(PatientRegistrationContext);
-  const { format, placeHolder, dateFormat } = generateFormatting(['YYYY', 'MM', 'DD'], '-');
+  const { format, placeHolder, dateFormat } = generateFormatting(
+    ["m", "d", "Y"],
+    "/"
+  );
+  const today = new Date();
 
   const onDateChange = useCallback(
     (date: Date | null) => {
@@ -216,20 +222,27 @@ function DateObsField({ concept, label, required, placeholder }: DateObsFieldPro
           {({ field, form: { touched, errors }, meta }) => {
             const dateValue = field.value ? parseDate(field.value) : null;
             return (
-              <OpenmrsDatePicker
-                id={fieldName}
-                {...field}
-                required={required}
+              <DatePicker
                 dateFormat={dateFormat}
+                datePickerType="single"
                 onChange={onDateChange}
-                labelText={label ?? concept.display}
-                invalid={errors[fieldName] && touched[fieldName]}
-                invalidText={meta.error && t(meta.error)}
-                value={dateValue}
-                carbonOptions={{
-                  placeholder: placeholder ?? placeHolder,
-                }}
-              />
+                maxDate={format(today)}
+              >
+                <DatePickerInput
+                  id={fieldName}
+                  {...field}
+                  required={required}
+                  dateFormat={dateFormat}
+                  onChange={onDateChange}
+                  labelText={label ?? concept.display}
+                  invalid={errors[fieldName] && touched[fieldName]}
+                  invalidText={meta.error && t(meta.error)}
+                  value={dateValue}
+                  carbonOptions={{
+                    placeholder: placeholder ?? placeHolder,
+                  }}
+                />
+              </DatePicker>
             );
           }}
         </Field>
