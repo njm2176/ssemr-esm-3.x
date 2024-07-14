@@ -1,6 +1,6 @@
 {
   "name": "@ssemr/esm-ssem3.x-apps",
-  "private": false,
+  "private": true,
   "workspaces": [
     "packages/*"
   ],
