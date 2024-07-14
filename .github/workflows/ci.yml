@@ -220,7 +220,7 @@ jobs:
       - name: Version
         run: npx lerna version "$(node -e "console.log(require('./lerna.json').version)")-pre.${{ github.run_number }}" --no-git-tag-version --yes
 
-      - run: git config user.email "info@intellisoftkenya.com" && git config user.name "SSEMR CI"
+      - run: git config user.email "dev@intellisoftkenya.com" && git config user.name "SSEMR CI"
       - run: git add . && git commit -m "Prerelease version" --no-verify
 
       - name: Pre-release
