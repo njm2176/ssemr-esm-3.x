@@ -5,13 +5,15 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "openmrs develop --sources packages/esm-patient-hiv-art-app/ ",
-    "ci:publish": "lerna publish from-package --yes",
     "ci:prepublish": "lerna publish from-package --no-git-reset --yes --dist-tag next",
-    "release": "lerna version --no-git-tag-version",
-    "verify": "turbo lint typescript test --color --concurrency=5",
+    "ci:publish": "lerna publish from-package --yes --no-git-reset --yes",
+    "test-e2e": "playwright test",
+    "coverage": "yarn test --coverage",
+    "postinstall": "husky install",
     "prettier": "prettier --config prettier.config.js --write \"packages/**/*.{ts,tsx,css,scss}\" \"e2e/**/*.ts\"",
-    "postinstall": "husky install"
+    "release": "lerna version --no-git-tag-version",
+    "start": "openmrs develop",
+    "verify": "turbo run lint && turbo run typescript && turbo run test --color --concurrency=5"
   },
   "devDependencies": {
     "@openmrs/esm-framework": "next",
@@ -47,6 +49,7 @@
     "jest": "^28.1.3",
     "jest-cli": "^28.1.3",
     "jest-environment-jsdom": "^28.1.3",
+    "lerna": "^8.1.6",
     "openmrs": "next",
     "prettier": "^2.8.8",
     "pretty-quick": "^3.1.3",
