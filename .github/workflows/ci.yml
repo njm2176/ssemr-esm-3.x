@@ -217,6 +217,12 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           server-token: ${{ env.TURBO_TOKEN }}
 
+      - name: Check Yarn Version
+        run: yarn --version
+
+      - name: List Workspaces
+        run: yarn workspaces list
+
       - name: Version
         run: yarn workspaces foreach --all --topological --exclude @ssemr/esm-ssem3.x-apps version "$(node -e "console.log(require('semver').inc(require('./package.json').version, 'patch'))")-pre.${{ github.run_number }}"
 
