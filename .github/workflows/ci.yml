@@ -198,7 +198,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 18
-          registry-url: "https://registry.npmjs.org"
+          registry-url: "https://registry.npmjs.org/"
 
       - name: Cache dependencies
         id: cache
@@ -230,7 +230,7 @@ jobs:
           npx lerna publish --yes --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-          
+
       - name: see directory
         shell: bash
         run: |
@@ -263,7 +263,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: 'https://registry.npmjs.org/'
 
       - name: Cache dependencies
         id: cache
