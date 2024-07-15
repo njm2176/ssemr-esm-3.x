@@ -1,8 +1,8 @@
 @use '@carbon/colors';
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/styles/scss/type';
-@import '../style.scss';
-@import "../root";
+@import '../styles/style';
+@import "../styles/root";
 
 .container {
   margin: 1rem 0;

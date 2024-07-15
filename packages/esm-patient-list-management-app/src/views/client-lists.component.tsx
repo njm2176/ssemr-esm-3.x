@@ -1,11 +1,11 @@
 import React from "react";
 import classnames from "classnames";
-import { SkeletonPlaceholder, Button, TextInput, Loading } from "@carbon/react";
-import Header from "../header/header.component";
+import { Button, TextInput, Loading } from "@carbon/react";
 import styles from "./lists-dashboard.scss";
 import { usePatientListing } from "../hooks/usePatientListing";
 import DataTable from "react-data-table-component";
-import SsemrListTabComponent from "../components/ssemr-list-tab.component";
+import SsemrListTabComponent from "../components/tab/ssemr-list-tab.component";
+import Header from "../components/header/header.component";
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <div className={styles.filterComponent}>
@@ -74,12 +74,16 @@ const ListsDashboard: React.FC = () => {
           {loading ? (
             <div>
               <div className={styles.noRecords}>
-                <p className={styles.noRecordsText}>Please wait as we fetch the clients. This may take up to a few seconds.</p>
+                <p className={styles.noRecordsText}>
+                  Please wait as we fetch the clients. This may take up to a few
+                  seconds.
+                </p>
               </div>
               <Loading small className={styles.spinner} withOverlay={false} />
             </div>
           ) : (
             <DataTable
+              paginationPerPage={15}
               paginationResetDefaultPage={resetPaginationToggle}
               subHeader
               subHeaderComponent={SubHeaderComponentMemo}
