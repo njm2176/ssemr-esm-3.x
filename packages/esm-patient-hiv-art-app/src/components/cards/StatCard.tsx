@@ -62,8 +62,8 @@ const StatCard: React.FC<StatCardProps> = ({ item }) => {
         "Date enrolled",
         "Last Refill Date",
         "Contact",
-        "Land Mark",
         "Village",
+        "Land Mark",
       ],
     ];
     rows.forEach((row) => {
@@ -136,6 +136,7 @@ const StatCard: React.FC<StatCardProps> = ({ item }) => {
       )}
 
       <Modal
+        size="lg"
         onRequestSubmit={handleDownload}
         modalHeading={item.title}
         modalLabel="Do you want to download this as CSV?"
@@ -145,7 +146,7 @@ const StatCard: React.FC<StatCardProps> = ({ item }) => {
         onSecondarySubmit={() => setIsModalOpen(false)}
         onRequestClose={() => setIsModalOpen(false)}
       >
-        <Table size="md" useZebraStyles={false}>
+        <Table size="lg" useZebraStyles={false}>
           <TableHead>
             <TableRow>
               {item.headers.map((header) => (
