@@ -63,7 +63,7 @@ export const usePatientListing = () => {
   const defaultTableHeaders = [
     {
       name: "SN",
-      selector: (row, index) => index + 1,
+      selector: (row, index) => row.serialNumber,
     },
     {
       name: "Name",
@@ -276,9 +276,11 @@ export const usePatientListing = () => {
   }, []);
 
   React.useEffect(() => {
-    const filteredItems = tableData.filter((row) =>
-      row.name.toLowerCase().includes(filterText.toLowerCase())
-    );
+    const filteredItems = tableData
+      .filter((row) =>
+        row.name.toLowerCase().includes(filterText.toLowerCase())
+      )
+      .map((row, index) => ({ ...row, serialNumber: index + 1 }));
     setFilteredTableData(filteredItems);
     setResetPaginationToggle((prev) => !prev);
   }, [filterText, tableData]);
