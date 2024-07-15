@@ -701,12 +701,12 @@ export const useChartData = () => {
       selector: "contact",
     },
     {
-      name: "Landmark",
-      selector: "landMark",
-    },
-    {
       name: "Village",
       selector: "village",
+    },
+    {
+      name: "Landmark",
+      selector: "landMark",
     },
   ];
 
@@ -716,7 +716,7 @@ export const useChartData = () => {
       name: "Eligible for VL",
       selector: "dueForVl",
       cell: (row) => (
-        <TableCell>
+        <TableCell size="sm">
           <Tag size="md" type={`${row.dueForVl ? "green" : "red"}`}>
             {row?.dueForVl ? "Eligible" : "Not eligible"}
           </Tag>
