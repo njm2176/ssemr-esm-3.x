@@ -16,8 +16,13 @@ export const usePatientListing = () => {
   const [loading, setLoading] = React.useState(false);
   const [resetPaginationToggle, setResetPaginationToggle] =
     React.useState(false);
+  const [currentPaginationState, setCurrentPaginationState] = React.useState({
+    page: 0,
+    size: 15,
+  });
 
   const startDate = `1970-01-01`;
+
   const endDate = `${new Date().getFullYear()}-${
     new Date().getMonth() + 1
   }-${new Date().getDate()}`;
@@ -103,10 +108,20 @@ export const usePatientListing = () => {
 
   const handleTabChange = (selectedIndex) => {
     setCurrentTab(selectedIndex);
+    //reset state variables
+    setTableData([]);
+    setTableHeaders(defaultTableHeaders);
+    setCurrentPaginationState({
+      page: 0,
+      size: 15,
+    });
 
     switch (selectedIndex) {
       case 0:
-        getAllClients();
+        getAllClients({
+          currentPage: currentPaginationState.page,
+          pageSize: currentPaginationState.size,
+        });
         break;
 
       case 1:
@@ -126,7 +141,10 @@ export const usePatientListing = () => {
         break;
 
       default:
-        getAllClients();
+        getAllClients({
+          currentPage: currentPaginationState.page,
+          pageSize: currentPaginationState.size,
+        });
     }
   };
 
@@ -157,37 +175,58 @@ export const usePatientListing = () => {
     }
   };
 
-  const getAllClients = async () =>
-    getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/allClients?startDate=${startDate}&endDate=${endDate}`,
-      responseCallback: (data) => {
-        setTableData(data.results);
-        setTableHeaders([
-          ...defaultTableHeaders,
-          {
-            name: "Clinical Status",
-            button: true,
-            cell: (row) => (
-              <Tag
-                className={
-                  styles[
-                    getChipClassName({ clinicalStatus: row.clinicalStatus })
-                  ]
-                }
-                size="md"
-              >
-                {row.clinicalStatus.toLowerCase().includes("interrupt")
-                  ? "IIT"
-                  : row.clinicalStatus.toLowerCase().includes("transfer")
-                  ? "TO"
-                  : row.clinicalStatus}
-              </Tag>
-            ),
-          },
-        ]);
-      },
-      errorCallBack: (error) => console.error(error),
-    });
+  const getAllClients = async ({ currentPage, pageSize }) => {
+    try {
+      if (currentPage === 0) setLoading(true);
+
+      const url = `/ws/rest/v1/ssemr/dashboard/allClients?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=${pageSize}`;
+
+      const { data } = await openmrsFetch(url);
+      if (data?.results?.length > 0)
+        setTableData((prev) => [...prev, ...data.results]);
+
+      if (data?.results?.length === pageSize)
+        setCurrentPaginationState((prev) => ({
+          ...prev,
+          page: ++prev.page,
+        }));
+    } catch (e) {
+      return e;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    if (currentTab === 0) {
+      setTableHeaders([
+        ...defaultTableHeaders,
+        {
+          name: "Clinical Status",
+          button: true,
+          cell: (row) => (
+            <Tag
+              className={
+                styles[getChipClassName({ clinicalStatus: row.clinicalStatus })]
+              }
+              size="md"
+            >
+              {row.clinicalStatus.toLowerCase().includes("interrupt")
+                ? "IIT"
+                : row.clinicalStatus.toLowerCase().includes("transfer")
+                ? "TO"
+                : row.clinicalStatus}
+            </Tag>
+          ),
+        },
+      ]);
+    }
+    if (currentPaginationState.page > 0)
+      getAllClients({
+        currentPage: currentPaginationState.page,
+        pageSize: currentPaginationState.size,
+      });
+  }, [currentPaginationState, currentTab]);
 
   const getActiveClients = async () =>
     getChartData({
@@ -230,7 +269,10 @@ export const usePatientListing = () => {
     });
 
   React.useEffect(() => {
-    getAllClients();
+    getAllClients({
+      currentPage: currentPaginationState.page,
+      pageSize: currentPaginationState.size,
+    });
   }, []);
 
   React.useEffect(() => {

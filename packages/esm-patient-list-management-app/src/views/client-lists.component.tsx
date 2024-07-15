@@ -83,6 +83,7 @@ const ListsDashboard: React.FC = () => {
             </div>
           ) : (
             <DataTable
+              paginationPerPage={15}
               paginationResetDefaultPage={resetPaginationToggle}
               subHeader
               subHeaderComponent={SubHeaderComponentMemo}
