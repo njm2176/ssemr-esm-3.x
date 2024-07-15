@@ -1,6 +1,6 @@
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/styles/scss/type';
-@import '../style.scss';
+@import '../../styles/style';
 
 .patientListHeader {
   @include type.type-style('body-compact-02');

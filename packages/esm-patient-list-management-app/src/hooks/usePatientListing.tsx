@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import React from "react";
 import { openmrsFetch } from "@openmrs/esm-framework";
 import { Tag } from "@carbon/react";
-import styles from "../lists-dashboard/lists-dashboard.scss";
+import styles from "../views/lists-dashboard.scss";
 import Link from "@carbon/react/lib/components/UIShell/Link";
 
 export const usePatientListing = () => {

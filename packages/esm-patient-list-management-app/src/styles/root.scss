@@ -1,6 +1,6 @@
 @use '@carbon/styles/scss/spacing';
-@use '@carbon/styles/scss/type';
-@import "./variables.scss";
+@use '@carbon/styles/scss/type/index';
+@import "variables";
 
 :global(div.cds--cc--legend.vertical){
   width: fit-content;
