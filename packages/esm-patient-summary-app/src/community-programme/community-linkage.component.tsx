@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./community-linkage.scss";
 import { useTranslation } from "react-i18next";
-import { formatDate, useLayoutType } from "@openmrs/esm-framework";
+import { useLayoutType } from "@openmrs/esm-framework";
 import { StructuredListSkeleton, Tile } from "@carbon/react";
 import useObservationData from "../hooks/useObservationData";
 
