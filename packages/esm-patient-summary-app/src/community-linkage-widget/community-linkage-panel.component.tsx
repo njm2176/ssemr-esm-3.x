@@ -20,8 +20,8 @@ const CommunityLinkagePanel: React.FC<CommunityLinkagePanelProps> = ({
       <div className={styles.widgetCard}>
         <CardHeader
           title={t(
-            "linkageToCommunityProgramme",
-            "Linkage To Community Programme"
+            "linkageToCommunityWorker",
+            "Linkage to Community Worker"
           )}
           children={""}
         ></CardHeader>
