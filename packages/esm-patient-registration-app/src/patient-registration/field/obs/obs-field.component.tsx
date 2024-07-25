@@ -19,8 +19,7 @@ import { useConcept, useConceptAnswers } from "../field.resource";
 import styles from "./../field.scss";
 import { PatientRegistrationContext } from '../../patient-registration-context';
 import { generateFormatting } from '../../date-util';
-import { DatePicker } from "@carbon/react";
-import { DatePickerInput } from "@carbon/react";
+import { format } from 'date-fns';
 
 export interface ObsFieldProps {
   fieldDefinition: FieldDefinition;
@@ -197,11 +196,13 @@ function DateObsField({ concept, label, required, placeholder }: DateObsFieldPro
   const { t } = useTranslation();
   const fieldName = `obs.${concept.uuid}`;
   const { setFieldValue } = useContext(PatientRegistrationContext);
-  const { format, placeHolder, dateFormat } = generateFormatting(['d', 'm', 'Y'], '/');
+  const { format: dateFormat, placeHolder } = generateFormatting(['d', 'm', 'Y'], '/');
 
   const onDateChange = useCallback(
     (date: Date) => {
-      setFieldValue(fieldName, date);
+      const formattedDate = format(date, 'dd-MM-yyyy');
+      console.log('Formatted Date:', formattedDate);
+      setFieldValue(fieldName, formattedDate);
     },
     [setFieldValue],
   );
