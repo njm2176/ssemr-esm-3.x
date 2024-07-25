@@ -63,16 +63,16 @@ export function ObsField({ fieldDefinition }: ObsFieldProps) {
           required={fieldDefinition.validation.required}
         />
       );
-      case 'Date':
-        return (
-          <DateObsField
-            concept={concept}
-            label={fieldDefinition.label}
-            required={fieldDefinition.validation.required}
-            dateFormat={fieldDefinition.dateFormat}
-            placeholder={fieldDefinition.placeholder}
-          />
-        );
+    case 'Date':
+      return (
+        <DateObsField
+          concept={concept}
+          label={fieldDefinition.label}
+          required={fieldDefinition.validation.required}
+          dateFormat={fieldDefinition.dateFormat}
+          placeholder={fieldDefinition.placeholder}
+        />
+      );
     case "Coded":
       return (
         <CodedObsField
@@ -197,22 +197,13 @@ function DateObsField({ concept, label, required, placeholder }: DateObsFieldPro
   const { t } = useTranslation();
   const fieldName = `obs.${concept.uuid}`;
   const { setFieldValue } = useContext(PatientRegistrationContext);
-  const { format, placeHolder, dateFormat } = generateFormatting(
-    ["m", "d", "Y"],
-    "/"
-  );
-  const today = new Date();
+  const { format, placeHolder, dateFormat } = generateFormatting(['d', 'm', 'Y'], '/');
 
   const onDateChange = useCallback(
-    (date: Date | null) => {
-      if (date instanceof Date && !isNaN(date.getTime())) {
-        const formattedDate = date.toISOString().split('T')[0];
-        setFieldValue(fieldName, formattedDate);
-      } else {
-        setFieldValue(fieldName, '');
-      }
+    (date: Date) => {
+      setFieldValue(fieldName, date);
     },
-    [setFieldValue, fieldName]
+    [setFieldValue],
   );
 
   return (
@@ -220,29 +211,22 @@ function DateObsField({ concept, label, required, placeholder }: DateObsFieldPro
       <div className={styles.dobField}>
         <Field name={fieldName}>
           {({ field, form: { touched, errors }, meta }) => {
-            const dateValue = field.value ? parseDate(field.value) : null;
+            const dateValue = field.value ? parseDate(field.value) : field.value;
             return (
-              <DatePicker
+              <OpenmrsDatePicker
+                id={fieldName}
+                {...field}
+                required={required}
                 dateFormat={dateFormat}
-                datePickerType="single"
                 onChange={onDateChange}
-                maxDate={format(today)}
-              >
-                <DatePickerInput
-                  id={fieldName}
-                  {...field}
-                  required={required}
-                  dateFormat={dateFormat}
-                  onChange={onDateChange}
-                  labelText={label ?? concept.display}
-                  invalid={errors[fieldName] && touched[fieldName]}
-                  invalidText={meta.error && t(meta.error)}
-                  value={dateValue}
-                  carbonOptions={{
-                    placeholder: placeholder ?? placeHolder,
-                  }}
-                />
-              </DatePicker>
+                labelText={label ?? concept.display}
+                invalid={errors[fieldName] && touched[fieldName]}
+                invalidText={meta.error && t(meta.error)}
+                value={dateValue}
+                carbonOptions={{
+                  placeholder: placeholder ?? placeHolder,
+                }}
+              />
             );
           }}
         </Field>

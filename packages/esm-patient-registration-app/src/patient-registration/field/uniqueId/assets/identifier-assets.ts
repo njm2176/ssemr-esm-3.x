@@ -1,6 +1,6 @@
 export const facilities = [
   {
-    "Western Equatoria States": [
+    "Western Equatoria State": [
       {
         name: "Bazungua PHCC",
         code: "WES/BZG/",
