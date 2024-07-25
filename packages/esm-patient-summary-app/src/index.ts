@@ -14,6 +14,7 @@ import carePanelPatientSummaryComponent from "./patient-summary/patient-summary.
 import VlPanelComponent from "./vl-history-widget/vl-panel.component";
 import CommunityLinkagePanelComponent from "./community-linkage-widget/community-linkage-panel.component";
 import ClientFamilyInfoPanelComponent from "./family-history-information-widget/more-client-info-panel.component";
+import IndexFamilyHistoryPanelComponent from "./index-family-history-information-widget/index-family-history-panel.component";
 
 const moduleName = "@ssemr/esm-patient-panel-app";
 
@@ -53,6 +54,11 @@ export const patientData = getSyncLifecycle(
 
 export const linkageToCHW = getSyncLifecycle(
   CommunityLinkagePanelComponent,
+  options
+);
+
+export const indexFamilyHistory = getSyncLifecycle(
+  IndexFamilyHistoryPanelComponent,
   options
 );
 
