@@ -19,7 +19,6 @@ import { useConcept, useConceptAnswers } from "../field.resource";
 import styles from "./../field.scss";
 import { PatientRegistrationContext } from '../../patient-registration-context';
 import { generateFormatting } from '../../date-util';
-import { format } from 'date-fns';
 
 export interface ObsFieldProps {
   fieldDefinition: FieldDefinition;
@@ -200,9 +199,7 @@ function DateObsField({ concept, label, required, placeholder }: DateObsFieldPro
 
   const onDateChange = useCallback(
     (date: Date) => {
-      const formattedDate = format(date, 'dd-MM-yyyy');
-      console.log('Formatted Date:', formattedDate);
-      setFieldValue(fieldName, formattedDate);
+      setFieldValue(fieldName, date);
     },
     [setFieldValue],
   );
