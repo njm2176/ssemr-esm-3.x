@@ -1,5 +1,7 @@
-@import "https://fonts.googleapis.com/css?family=IBM+Plex+Sans+Condensed|IBM+Plex+Sans:400,600&display=swap";
-@import "https://unpkg.com/carbon-components/css/carbon-components.min.css";
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/colors';
+@use '@carbon/styles/scss/type';
+@import "../../root.scss";
 
 .chartContainer {
   height: 100%;
@@ -71,7 +73,6 @@
   left: 0;
   gap: 8px;
   white-space: wrap;
-  // z-index: 50;
 }
 
 .legendText{

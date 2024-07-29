@@ -20,13 +20,20 @@ import ViralLoadResults from "./charts/ViralLoadResults";
 import ViralLoadCoverage from "./charts/ViralLoadCoverage";
 import ViralLoadSuppression from "./charts/ViralLoadSuppression";
 import HighViralLoadCascade from "./charts/HighViralLoadCascade";
+import D3BarChartComponent from "./charts/components/d3-bar-chart.component";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
 
-  const { stats, filterTabs, currentTopFilterIndex } =
-    useContext(DashboardContext);
-
+  const {
+    stats,
+    filterTabs,
+    currentTopFilterIndex,
+    chartData: { activeClients },
+    currentTimeFilter,
+    defaultStatHeaders,
+    txCURRHeaders,
+  } = useContext(DashboardContext);
   return (
     <div style={{ position: "relative" }}>
       {/* ................Title......................... */}
@@ -70,7 +77,17 @@ const HomeDashboard = () => {
         </div>
 
         {/* ...............Charts....................... */}
-        <div className={styles.twoGridChartWrapper}>
+        <div className={styles.chartWrapper}>
+          <D3BarChartComponent
+            loading={activeClients?.loading}
+            tooltipRenderFunction={(row) => `Clients: ${row.clients}`}
+            chartData={activeClients?.processedChartData}
+            listData={activeClients?.raw?.results}
+            title="Clients currently receiving ART (TX_CURR)"
+            headerTableColumns={txCURRHeaders}
+            xKey={currentTimeFilter}
+            yKey={"clients"}
+          />
           <ChartCard>
             <NewlyEnrolled />
           </ChartCard>

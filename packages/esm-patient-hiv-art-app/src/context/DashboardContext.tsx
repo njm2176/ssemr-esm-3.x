@@ -39,6 +39,8 @@ const DashboardProvider = ({ children }) => {
     viralLoadRange,
     setViralLoadRange,
     getWaterFallData,
+    defaultStatHeaders,
+    txCURRHeaders,
   } = useChartData();
 
   useEffect(() => {
@@ -87,6 +89,8 @@ const DashboardProvider = ({ children }) => {
         setTime,
         setWaterFallDateRange,
         setViralLoadRange,
+        defaultStatHeaders,
+        txCURRHeaders,
       }}
     >
       {children}
