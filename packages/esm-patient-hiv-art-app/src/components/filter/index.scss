@@ -62,9 +62,9 @@ input{
 .cascadePicker{
   display: flex;
   gap: 4rem;
-  width: 100%;
+  width: fit-content;
   margin-left: auto;
-  align-items: baseline;
+  align-items: center;
 }
 
 .monthPicker{
@@ -73,7 +73,5 @@ input{
 
 .cascadeRadios{
   display: flex;
-  max-width: 100px;
-  justify-content: end;
   text-transform: capitalize;
 }

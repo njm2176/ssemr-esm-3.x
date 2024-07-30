@@ -21,51 +21,66 @@
   height: 100%;
 }
 
-.noRecords{
+.noRecords {
   height: 100%;
   display: flex;
   flex-direction: column;
   gap: 8rem;
 }
 
-.noRecordsTitle{
+.noRecordsTitle {
   font-weight: 600;
   font-size: 16px;
   max-width: fit-content;
   margin-right: auto;
 }
 
-.noRecordsText{
+.noRecordsText {
   text-align: center;
   margin: auto;
 }
 
-.waterfallFilterWrapper{
+.waterfallFilterWrapper {
   max-width: fit-content;
   margin-left: auto;
 }
 
-.cascadeContainer{
+.cascadeContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
   position: relative;
   padding-left: 2rem;
   min-height: 600px;
+  gap: 4rem;
 }
 
-.cascadeContentWrapper{
+.cascadeTitle {
+  font-size: 16px;
+  font-weight: 600;
+  width: 100%;
+}
+
+.cascadeHeaderContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.cascadeContentWrapper {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-.SVGWrapper{
+.SVGWrapper {
   width: 100%;
 }
 
-.legend{
+.legend {
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -75,20 +90,20 @@
   white-space: wrap;
 }
 
-.legendText{
+.legendText {
   font-size: 14px;
   font-weight: 700;
   font-style: italic;
 }
 
-.cascadeHeader{
+.cascadeHeader {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
 }
 
 
-.waterfallHeaderContainer{
+.waterfallHeaderContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -100,7 +115,7 @@
   .labelText {
     font-size: 8px;
   }
-  .arrow{
+  .arrow {
     width: 4px;
   }
   .percentageText {

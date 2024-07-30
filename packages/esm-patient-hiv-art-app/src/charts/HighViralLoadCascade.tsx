@@ -65,8 +65,7 @@ const SVGChart = () => {
 
   const maxValue = Math.max(...data.map((d) => d.total));
   const barWidth = (chartContainerWidth * 0.1) / (data.length - 1); // 10% of div width
-  // const barWidth = 20;
-  // const barSpacing = (chartContainerWidth * 0.9) / data.length;
+
   const chartHeight = 500;
   const axisPadding = 40;
   const barSpacing =
@@ -91,23 +90,23 @@ const SVGChart = () => {
 
   return (
     <div className={styles.cascadeContainer}>
+      <div className={styles.cascadeHeaderContainer}>
+        <div className={styles.cascadeTitle}>High Viral Load Cascade</div>
+        <CascadePicker />
+        <CascadeHeader
+          data={data}
+          headers={headers}
+          isModalOpen={isTableOpen}
+          setIsModalOpen={setIsTableOpen}
+          rows={data}
+        />
+      </div>
       {highViralLoadCascade.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
       ) : (
         <div ref={chartContainerRef} className={styles.SVGWrapper}>
           {data?.length >= 1 ? (
             <div className={styles.cascadeContentWrapper}>
-              <CascadePicker />
-              <CascadeHeader
-                data={data}
-                headers={headers}
-                isModalOpen={isTableOpen}
-                setIsModalOpen={setIsTableOpen}
-                rows={data}
-              />
-              <div style={{ fontSize: "16px", fontWeight: "600" }}>
-                High Viral Load Cascade
-              </div>
               <svg
                 width={chartContainerWidth}
                 height={chartHeight + 2 * axisPadding}
