@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
-import styles from "../styles/bar-graph.scss";
-import { Loading, TableCell } from "@carbon/react";
-import ChartHeaderComponent from "./chart-header.component";
-import { concatAll } from "rxjs/operators";
+import styles from "../index.scss";
+import { Loading } from "@carbon/react";
+import ChartHeaderComponent from "../chart-header.component";
 
 interface D3BarChartProps {
   chartData: Array<any>;
@@ -16,7 +15,7 @@ interface D3BarChartProps {
   loading: boolean;
 }
 
-const D3BarChartComponent: React.FC<D3BarChartProps> = ({
+const D3LineGraphComponent: React.FC<D3BarChartProps> = ({
   chartData,
   listData,
   title = "",
@@ -32,6 +31,7 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
   const [scales, setScales] = useState({
     xScale: null,
     yScale: null,
+    line: null,
   });
   /**
    * Tooltip state
@@ -62,18 +62,16 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
     height: 0,
   });
 
-  const maximumBarWidth = 35;
-  const margin = { top: 20, right: 30, bottom: 110, left: 40 };
+  const margin = { top: 20, right: 80, bottom: 150, left: 20 };
 
   /**
    * Generate scales
    */
   const generateScales = () => {
     const xScale = d3
-      .scaleBand()
+      .scalePoint()
       .domain(chartData.map((d) => d[xKey]))
-      .range([margin.left, chartDimensions.width - margin.right])
-      .padding(0.1);
+      .range([margin.left, chartDimensions.width - margin.right]);
 
     const yScale = d3
       .scaleLinear()
@@ -81,13 +79,19 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
       .nice()
       .range([chartDimensions.height - margin.bottom, margin.top]);
 
-    setScales({ xScale, yScale });
+    const line = d3
+      .line()
+      .x((d) => xScale(d[xKey]))
+      .y((d) => yScale(d[yKey]))
+      .curve(d3.curveCatmullRom);
+
+    setScales({ xScale, yScale, line });
   };
   useEffect(() => {
     if (chartData && chartDimensions.height > 0) generateScales();
   }, [chartData, chartDimensions]);
 
-  const { xScale, yScale } = scales;
+  const { xScale, yScale, line } = scales;
 
   /**
    * Mouse over on bars handler to position and toggle the tooltip
@@ -142,22 +146,27 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
           />
         )}
       </div>
-      <svg ref={svgRef} width={chartDimensions.width} height={500}>
+      <svg
+        ref={svgRef}
+        width={chartDimensions.width}
+        height={chartDimensions.height}
+      >
         {xScale && yScale && !loading && (
-          <>
-            {chartData.map((d) => (
-              <rect
-                className={styles.bars}
-                key={d[xKey]}
-                x={
-                  xScale(d[xKey]) +
-                  (xScale.bandwidth() -
-                    Math.min(xScale.bandwidth(), maximumBarWidth)) /
-                    2
-                }
-                y={yScale(d[yKey])}
-                width={Math.min(xScale.bandwidth(), maximumBarWidth)}
-                height={yScale(0) - yScale(d[yKey])}
+          <g transform={`translate(${margin.left}, ${margin.top})`}>
+            <path
+              d={line(chartData)}
+              fill="none"
+              stroke="steelblue"
+              strokeWidth="2"
+            />
+            {chartData.map((d, i) => (
+              <circle
+                // className={styles.points}
+                key={i}
+                cx={xScale(d[xKey])}
+                cy={yScale(d[yKey])}
+                r={5}
+                fill="steelblue"
                 onMouseOver={(event) => handleMouseOver(event, d)}
                 onMouseOut={handleMouseOut}
               />
@@ -190,7 +199,7 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
                 className={styles.horizontalLines}
               />
             ))}
-          </>
+          </g>
         )}
       </svg>
       {/*........TOOLTIP*/}
@@ -205,4 +214,4 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
     </div>
   );
 };
-export default D3BarChartComponent;
+export default D3LineGraphComponent;

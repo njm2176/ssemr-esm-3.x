@@ -1,6 +1,7 @@
 import React, { createContext, useEffect } from "react";
 import activeClients from "../charts/ActiveClients";
 import { useChartData } from "../hooks/useChartData";
+import waterfall from "../charts/Waterfall";
 
 export const DashboardContext = createContext(null);
 
@@ -65,7 +66,7 @@ const DashboardProvider = ({ children }) => {
   useEffect(() => {
     //insert function to fetch waterfall model data
     getWaterFallData();
-  }, [waterFallDateRange]);
+  }, [`${waterFallDateRange.start}-${waterFallDateRange.end}`]);
 
   useEffect(() => {
     //insert function to fetch waterfall model data

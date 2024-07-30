@@ -11,7 +11,6 @@ const Waterfall = () => {
   const {
     chartData: { waterfall },
   } = useContext(DashboardContext);
-
   const options = {
     title: "",
     axes: {

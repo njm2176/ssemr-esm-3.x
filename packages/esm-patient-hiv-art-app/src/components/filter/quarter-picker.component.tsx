@@ -45,13 +45,6 @@ const QuarterPickerComponent = ({ changeCallback }) => {
 
   const [year, setYear] = React.useState<number>(new Date().getFullYear());
   const [quarter, setQuarter] = React.useState(getCurrentQuarter().value);
-  const [dateRange, setDateRange] = React.useState<{
-    start: string;
-    end: string;
-  }>({
-    start: "",
-    end: "",
-  });
   const [yearOptions, setYearOptions] = useState([]);
 
   useEffect(() => {
@@ -99,7 +92,6 @@ const QuarterPickerComponent = ({ changeCallback }) => {
         startDate = "";
         endDate = "";
     }
-    // setDateRange({ start: startDate, end: endDate });
     changeCallback({ start: startDate, end: endDate });
   };
 
