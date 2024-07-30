@@ -5,7 +5,7 @@ import {
   getThisYearsFirstAndLastDate,
 } from "../helpers/dateOps";
 import Link from "@carbon/react/lib/components/UIShell/Link";
-import { Table, TableCell, Tag } from "@carbon/react";
+import { TableCell, Tag } from "@carbon/react";
 
 export const useChartData = () => {
   const filterOptions = [

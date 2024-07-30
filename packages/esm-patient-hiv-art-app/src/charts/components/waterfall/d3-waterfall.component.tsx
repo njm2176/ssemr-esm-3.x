@@ -133,19 +133,17 @@ const D3WaterfallComponent: React.FC<D3WaterfallChartProps> = ({
       {loading && <Loading className={styles.spinner} withOverlay={false} />}
       <div className={styles.headerContainer}>
         <p className={styles.title}>{title}</p>
-        {!loading && (
-          <>
-            <WaterfallPicker />
-            <ChartHeaderComponent
-              isModalOpen={isModalOpen}
-              rows={listData}
-              headers={headerTableColumns}
-              open={() => setIsModalOpen(true)}
-              close={() => setIsModalOpen(false)}
-              title={title}
-            />
-          </>
-        )}
+        <div className={styles.waterfallFilterWrapper}>
+          <WaterfallPicker />
+        </div>
+        <ChartHeaderComponent
+          isModalOpen={isModalOpen}
+          rows={listData}
+          headers={headerTableColumns}
+          open={() => setIsModalOpen(true)}
+          close={() => setIsModalOpen(false)}
+          title={title}
+        />
       </div>
       <svg
         ref={svgRef}

@@ -53,13 +53,18 @@
 .headerContainer{
   display: flex;
   width: 100%;
-  padding: 0rem 1rem 0rem 1rem;
+  padding: 1rem 1rem 0rem 1rem;
   justify-content: space-between;
   align-content: center;
+  gap: 4rem;
 }
 
 .title {
   font-size: 16px;
   font-weight: 600;
-  width: 100%;
+}
+
+.waterfallFilterWrapper{
+  margin-left: auto;
+  max-width: fit-content;
 }

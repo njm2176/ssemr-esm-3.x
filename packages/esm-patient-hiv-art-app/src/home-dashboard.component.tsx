@@ -15,7 +15,6 @@ import ChildArtRegimen from "./charts/ChildArtRegimen";
 import UnderCommunityCare from "./charts/UnderCommunityCare";
 import DueForViralLoad from "./charts/DueForViralLoad";
 import ViralLoadSamples from "./charts/ViralLoadSamples";
-import Waterfall from "./charts/Waterfall";
 import ViralLoadResults from "./charts/ViralLoadResults";
 import ViralLoadCoverage from "./charts/ViralLoadCoverage";
 import ViralLoadSuppression from "./charts/ViralLoadSuppression";
@@ -186,10 +185,6 @@ const HomeDashboard = () => {
           xKey={"group"}
           loading={waterfall.loading}
         />
-
-        {/*<ChartCard>*/}
-        {/*  <Waterfall />*/}
-        {/*</ChartCard>*/}
       </div>
     </div>
   );
