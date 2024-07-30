@@ -6,13 +6,13 @@ import ChartHeaderComponent from "../chart-header.component";
 import WaterfallPicker from "../../../components/filter/waterfall-picker.component";
 
 interface D3WaterfallChartProps {
-  chartData: Array<any>;
-  listData: Array<any>;
-  title: string;
-  tooltipRenderFunction: ({ currentItem, previousItem }) => string;
-  headerTableColumns: Array<any>;
-  xKey: string;
-  loading: boolean;
+  chartData?: Array<any>;
+  listData?: Array<any>;
+  title?: string;
+  tooltipRenderFunction?: ({ currentItem, previousItem }) => string;
+  headerTableColumns?: Array<any>;
+  xKey?: string;
+  loading?: boolean;
 }
 
 const D3WaterfallComponent: React.FC<D3WaterfallChartProps> = ({

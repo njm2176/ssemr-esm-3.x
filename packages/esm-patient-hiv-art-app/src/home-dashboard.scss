@@ -4,6 +4,10 @@
 @import '~@openmrs/esm-styleguide/src/vars';
 @import "./root.scss";
 
+.container{
+  width: 97.5%;
+}
+
 .header {
   display: flex;
   flex-direction: column;

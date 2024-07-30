@@ -5,14 +5,14 @@ import { Loading } from "@carbon/react";
 import ChartHeaderComponent from "../chart-header.component";
 
 interface D3BarChartProps {
-  chartData: Array<any>;
-  listData: Array<any>;
-  title: string;
-  tooltipRenderFunction: (item: any) => string;
-  headerTableColumns: Array<any>;
-  xKey: string;
-  yKey: string;
-  loading: boolean;
+  chartData?: Array<any>;
+  listData?: Array<any>;
+  title?: string;
+  tooltipRenderFunction?: (item: any) => string;
+  headerTableColumns?: Array<any>;
+  xKey?: string;
+  yKey?: string;
+  loading?: boolean;
 }
 
 const D3LineGraphComponent: React.FC<D3BarChartProps> = ({
@@ -151,7 +151,7 @@ const D3LineGraphComponent: React.FC<D3BarChartProps> = ({
         width={chartDimensions.width}
         height={chartDimensions.height}
       >
-        {xScale && yScale && !loading && (
+        {xScale && yScale && !loading && chartData?.length > 0 &&(
           <g transform={`translate(${margin.left}, ${margin.top})`}>
             <path
               d={line(chartData)}

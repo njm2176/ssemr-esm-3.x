@@ -5,13 +5,12 @@ import { Loading } from "@carbon/react";
 import ChartHeaderComponent from "../chart-header.component";
 
 interface props {
-  chartData: Array<any>;
-  listData: Array<any>;
-  title: string;
-  tooltipRenderFunction: (item: any) => string;
-  headerTableColumns: Array<any>;
-  loading: boolean;
-  total: number;
+  chartData?: Array<any>;
+  listData?: Array<any>;
+  title?: string;
+  tooltipRenderFunction?: (item: any) => string;
+  headerTableColumns?: Array<any>;
+  loading?: boolean;
 }
 
 const D3PieChartComponent: React.FC<props> = ({
@@ -21,7 +20,6 @@ const D3PieChartComponent: React.FC<props> = ({
   tooltipRenderFunction,
   headerTableColumns,
   loading,
-  total,
 }) => {
   /**
    * Tooltip state

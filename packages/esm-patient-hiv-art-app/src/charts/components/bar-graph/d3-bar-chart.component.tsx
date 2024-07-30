@@ -5,14 +5,14 @@ import { Loading } from "@carbon/react";
 import ChartHeaderComponent from "../chart-header.component";
 
 interface D3BarChartProps {
-  chartData: Array<any>;
-  listData: Array<any>;
-  title: string;
-  tooltipRenderFunction: (item: any) => string;
-  headerTableColumns: Array<any>;
-  xKey: string;
-  yKey: string;
-  loading: boolean;
+  chartData?: Array<any>;
+  listData?: Array<any>;
+  title?: string;
+  tooltipRenderFunction?: (item: any) => string;
+  headerTableColumns?: Array<any>;
+  xKey?: string;
+  yKey?: string;
+  loading?: boolean;
 }
 
 const D3BarChartComponent: React.FC<D3BarChartProps> = ({
@@ -141,8 +141,12 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
           />
         )}
       </div>
-      <svg ref={svgRef} width={chartDimensions.width} height={chartDimensions.height}>
-        {xScale && yScale && !loading && (
+      <svg
+        ref={svgRef}
+        width={chartDimensions.width}
+        height={chartDimensions.height}
+      >
+        {xScale && yScale && !loading && chartData.length > 0 && (
           <>
             {chartData.map((d) => (
               <rect
