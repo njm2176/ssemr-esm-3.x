@@ -102,6 +102,10 @@
   justify-content: flex-end;
 }
 
+.bars {
+  fill: $primary-color;
+  cursor: pointer;
+}
 
 .waterfallHeaderContainer {
   display: flex;
