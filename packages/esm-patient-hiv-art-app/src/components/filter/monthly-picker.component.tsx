@@ -20,10 +20,9 @@ const MonthlyPickerComponent = ({ changeCallback }) => {
   return (
     <div className={styles.quarterPickerParent}>
       <div className={styles.formGroup}>
-        <label htmlFor="month">Month</label>
         <input
           id="month"
-          className={styles.timeInputs}
+          className={styles.monthPicker}
           value={month}
           type="month"
           onChange={(evt) => monthChangeHandler(evt.target.value)}

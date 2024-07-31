@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "@carbon/charts-react/styles.css";
-import { DashboardContext } from "../context/DashboardContext";
-import { useCascade } from "../hooks/useCascade";
-import styles from "./styles/index.scss";
+import { DashboardContext } from "../../../context/DashboardContext";
+import { useCascade } from "../../../hooks/useCascade";
+import styles from "../../chart-styles/index.scss";
 import { Loading } from "@carbon/react";
-import CascadeHeader from "../components/headers/cascade-header.component";
-import CascadePicker from "../components/filter/cascade-picker.component";
-import Tooltip from "../components/tabs/cascade-tooltip.component";
+import CascadeHeader from "../../../components/headers/cascade-header.component";
+import CascadePicker from "../../../components/filter/cascade-picker.component";
+import Tooltip from "../../../components/tabs/cascade-tooltip.component";
 
 const SVGChart = () => {
   const {
@@ -65,8 +65,7 @@ const SVGChart = () => {
 
   const maxValue = Math.max(...data.map((d) => d.total));
   const barWidth = (chartContainerWidth * 0.1) / (data.length - 1); // 10% of div width
-  // const barWidth = 20;
-  // const barSpacing = (chartContainerWidth * 0.9) / data.length;
+
   const chartHeight = 500;
   const axisPadding = 40;
   const barSpacing =
@@ -91,23 +90,23 @@ const SVGChart = () => {
 
   return (
     <div className={styles.cascadeContainer}>
+      <div className={styles.cascadeHeaderContainer}>
+        <div className={styles.cascadeTitle}>High Viral Load Cascade</div>
+        <CascadePicker />
+        <CascadeHeader
+          data={data}
+          headers={headers}
+          isModalOpen={isTableOpen}
+          setIsModalOpen={setIsTableOpen}
+          rows={data}
+        />
+      </div>
       {highViralLoadCascade.loading ? (
         <Loading className={styles.spinner} withOverlay={false} />
       ) : (
         <div ref={chartContainerRef} className={styles.SVGWrapper}>
           {data?.length >= 1 ? (
             <div className={styles.cascadeContentWrapper}>
-              <CascadePicker />
-              <CascadeHeader
-                data={data}
-                headers={headers}
-                isModalOpen={isTableOpen}
-                setIsModalOpen={setIsTableOpen}
-                rows={data}
-              />
-              <div style={{ fontSize: "16px", fontWeight: "600" }}>
-                High Viral Load Cascade
-              </div>
               <svg
                 width={chartContainerWidth}
                 height={chartHeight + 2 * axisPadding}
@@ -162,7 +161,7 @@ const SVGChart = () => {
                       y={chartHeight - (d.total / maxValue) * chartHeight}
                       width={barWidth}
                       height={(d.total / maxValue) * chartHeight}
-                      fill="#6929c4"
+                      className={styles.bars}
                       onMouseOver={(evt) => handleMouseOver(evt, d)}
                       onPointerOut={handleMouseOut}
                     />
@@ -176,91 +175,84 @@ const SVGChart = () => {
                   </g>
                 ))}
 
-                {/* Name */}
-                {data.map((d, index) => (
-                  <text
-                    key={d.text}
-                    x={
-                      axisPadding +
-                      index * (barWidth + barSpacing) +
-                      barWidth / 2
-                    }
-                    y={chartHeight + 25}
-                    textAnchor="middle"
-                    fontSize="10"
-                    fontWeight="500"
-                    className={styles.labelText}
-                  >
-                    {d.text}
-                  </text>
-                ))}
-
-                {/* Percentage */}
-                {data.map(
-                  (d, index) =>
-                    index !== 0 && (
+                <g>
+                  {data.map((d, index) => (
+                    <>
+                      {/*..........LABEL...................*/}
                       <text
-                        key={d.index}
+                        key={d.text}
                         x={
                           axisPadding +
                           index * (barWidth + barSpacing) +
                           barWidth / 2
                         }
-                        y={chartHeight + 50}
-                        textAnchor="middle"
-                        fontSize="16"
-                        fontWeight="600"
-                        className={styles.percentageText}
-                      >
-                        {Math.round(d.percentage * 100) / 100}%
-                      </text>
-                    )
-                )}
-
-                {/*Turn around */}
-                {data.map(
-                  (d, index) =>
-                    index !== 0 && (
-                      <text
-                        key={index}
-                        x={
-                          axisPadding +
-                          index * (barWidth + barSpacing) +
-                          barWidth / 2
-                        }
-                        y={chartHeight + 75}
+                        y={chartHeight + 25}
                         textAnchor="middle"
                         fontSize="10"
+                        fontWeight="500"
                         className={styles.labelText}
                       >
-                        {Math.round(d.averageTurnaroundTimeMonths * 100) / 100}{" "}
-                        Months
+                        {d.text}
                       </text>
-                    )
-                )}
-
-                {/* Arrow */}
-                {data.map(
-                  (d, index) =>
-                    index !== data.length - 1 && (
-                      <svg
-                        width={12}
-                        key={index}
-                        x={
-                          axisPadding +
-                          index * (barWidth + barSpacing) +
-                          barWidth +
-                          barSpacing / 1.5
-                        }
-                        y={chartHeight / 2}
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 448 512"
-                        className={styles.arrow}
-                      >
-                        <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
-                      </svg>
-                    )
-                )}
+                      {/*..............PERCENTAGE..................*/}
+                      {index !== 0 && (
+                        <text
+                          key={d.index}
+                          x={
+                            axisPadding +
+                            index * (barWidth + barSpacing) +
+                            barWidth / 2
+                          }
+                          y={chartHeight + 50}
+                          textAnchor="middle"
+                          fontSize="16"
+                          fontWeight="600"
+                          className={styles.percentageText}
+                        >
+                          {Math.round(d.percentage * 100) / 100}%
+                        </text>
+                      )}
+                      {/*...............TURNAROUND TIME........................*/}
+                      {index !== 0 && (
+                        <text
+                          key={index}
+                          x={
+                            axisPadding +
+                            index * (barWidth + barSpacing) +
+                            barWidth / 2
+                          }
+                          y={chartHeight + 75}
+                          textAnchor="middle"
+                          fontSize="10"
+                          className={styles.labelText}
+                        >
+                          {Math.round(d.averageTurnaroundTimeMonths * 100) /
+                            100}{" "}
+                          Months
+                        </text>
+                      )}
+                      {/*.........................ARROW........................*/}
+                      {index !== data.length - 1 && (
+                        <svg
+                          width={12}
+                          key={index}
+                          x={
+                            axisPadding +
+                            index * (barWidth + barSpacing) +
+                            barWidth +
+                            barSpacing / 1.5
+                          }
+                          y={chartHeight / 2}
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 448 512"
+                          className={styles.arrow}
+                        >
+                          <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+                        </svg>
+                      )}
+                    </>
+                  ))}
+                </g>
               </svg>
             </div>
           ) : (

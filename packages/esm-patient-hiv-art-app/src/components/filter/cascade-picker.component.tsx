@@ -22,7 +22,6 @@ const CascadePickerComponent = () => {
         <RadioButtonGroup
           className={styles.cacadeRadios}
           size="sm"
-          legendText="Group data ..."
           name="group-year"
           defaultSelected={grouping}
           selected={grouping}
