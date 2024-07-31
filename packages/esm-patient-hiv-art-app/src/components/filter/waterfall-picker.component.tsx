@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext } from "react";
 import styles from "./index.scss";
 import { RadioButton, RadioButtonGroup, Select } from "@carbon/react";
 import QuarterPickerComponent from "./quarter-picker.component";
@@ -8,13 +8,17 @@ import MonthlyPickerComponent from "./monthly-picker.component";
 const groupingOptions = ["quarterly", "monthly"];
 
 const WaterfallPicker = () => {
-  const { setWaterFallDateRange } = useContext(DashboardContext);
+  const { setWaterFallDateRange, waterfallDateRange } =
+    useContext(DashboardContext);
 
   const [grouping, setGrouping] = React.useState("quarterly");
 
-  const changeCallback = (range) => {
-    setWaterFallDateRange(range);
-  };
+  const changeCallback = useCallback(
+    (range) => {
+      setWaterFallDateRange(range);
+    },
+    [waterfallDateRange]
+  );
 
   return (
     <div className={styles.cascadePicker}>
@@ -22,7 +26,6 @@ const WaterfallPicker = () => {
         <RadioButtonGroup
           className={styles.cacadeRadios}
           size="sm"
-          legendText="Group data ..."
           name="waterfall grouping"
           defaultSelected={grouping}
           selected={grouping}

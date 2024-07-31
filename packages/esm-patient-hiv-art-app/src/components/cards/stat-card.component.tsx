@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./index.scss";
+import styles from "./stat-card.scss";
 import {
   Loading,
   Modal,
@@ -49,7 +49,7 @@ interface StatCardProps {
   item: Item;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ item }) => {
+const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rows, setRows] = useState<Address[]>([]);
   const [csvData, setCsvData] = useState<string | null>(null);
@@ -185,4 +185,4 @@ const StatCard: React.FC<StatCardProps> = ({ item }) => {
   );
 };
 
-export default StatCard;
+export default StatCardComponent;

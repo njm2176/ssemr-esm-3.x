@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styles from "./index.scss";
-import { Select } from "@carbon/react";
-
 
 const quarterOptions = [
   {
@@ -27,7 +25,6 @@ const quarterOptions = [
 ];
 
 const QuarterPickerComponent = ({ changeCallback }) => {
-
   const getCurrentQuarter = () => {
     const month = new Date().getMonth() + 1;
 
@@ -45,13 +42,6 @@ const QuarterPickerComponent = ({ changeCallback }) => {
 
   const [year, setYear] = React.useState<number>(new Date().getFullYear());
   const [quarter, setQuarter] = React.useState(getCurrentQuarter().value);
-  const [dateRange, setDateRange] = React.useState<{
-    start: string;
-    end: string;
-  }>({
-    start: "",
-    end: "",
-  });
   const [yearOptions, setYearOptions] = useState([]);
 
   useEffect(() => {
@@ -99,41 +89,37 @@ const QuarterPickerComponent = ({ changeCallback }) => {
         startDate = "";
         endDate = "";
     }
-    // setDateRange({ start: startDate, end: endDate });
     changeCallback({ start: startDate, end: endDate });
   };
 
   return (
     <div className={styles.quarterPickerParent}>
-      <Select
-        size="sm"
-        id="yearPicker"
-        placeholder="Year"
-        noLabel={true}
-        value={year}
-        onChange={(evt) => handleYearChange(evt)}
-        defaultValue={yearOptions[0]}
+      <select
+        onChange={handleYearChange}
+        value={quarter}
+        name="Year"
+        id="year"
       >
         {yearOptions.map((option, index) => (
-          <option key={index} value={option.value}>
+          <option key={index} {...option}>
             {option.label}
           </option>
         ))}
-      </Select>
-      <Select
-        size="sm"
-        noLabel={true}
-        id="quarterPicker"
+        <option />
+      </select>
+      <select
+        onChange={handleQuarterChange}
         value={quarter}
-        onChange={(evt) => handleQuarterChange(evt)}
-        defaultValue={getCurrentQuarter().value}
+        name="quarter"
+        id="quarter"
       >
         {quarterOptions.map((option, index) => (
-          <option key={index} value={option.value}>
+          <option key={index} {...option}>
             {option.text}
           </option>
         ))}
-      </Select>
+        <option />
+      </select>
     </div>
   );
 };

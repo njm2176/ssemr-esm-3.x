@@ -703,10 +703,20 @@ export const useChartData = () => {
     {
       name: "Village",
       selector: "village",
+      cell: (row) => (
+        <TableCell>
+          <p className="">{row.address.split(",")[0].split(":")[1]}</p>
+        </TableCell>
+      ),
     },
     {
       name: "Landmark",
       selector: "landMark",
+      cell: (row) => (
+        <TableCell>
+          <p className="">{row.address.split(",")[1].split(":")[1]}</p>
+        </TableCell>
+      ),
     },
   ];
 
@@ -831,5 +841,7 @@ export const useChartData = () => {
     viralLoadRange,
     setViralLoadRange,
     getWaterFallData,
+    defaultStatHeaders,
+    txCURRHeaders,
   };
 };

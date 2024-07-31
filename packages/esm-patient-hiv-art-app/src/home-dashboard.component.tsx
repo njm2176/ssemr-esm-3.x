@@ -2,33 +2,20 @@ import React, { useContext } from "react";
 import { Home } from "@carbon/react/icons";
 import styles from "./home-dashboard.scss";
 import { useTranslation } from "react-i18next";
-import StatCard from "./components/cards/StatCard";
+import StatCardComponent from "./components/cards/stat-card.component";
 import "@carbon/charts/styles.css";
 import SSEMRTab from "./components/tabs/SSEMRTab";
-import ActiveClients from "./charts/ActiveClients";
-import ChartCard from "./components/cards/ChartCard";
 import { DashboardContext } from "./context/DashboardContext";
 import { TimeFilter } from "./components/filter/TimeFilter";
-import NewlyEnrolled from "./charts/NewlyEnrolled";
-import AdultARTRegimen from "./charts/AdultArtRegimen";
-import ChildArtRegimen from "./charts/ChildArtRegimen";
-import UnderCommunityCare from "./charts/UnderCommunityCare";
-import DueForViralLoad from "./charts/DueForViralLoad";
-import ViralLoadSamples from "./charts/ViralLoadSamples";
-import Waterfall from "./charts/Waterfall";
-import ViralLoadResults from "./charts/ViralLoadResults";
-import ViralLoadCoverage from "./charts/ViralLoadCoverage";
-import ViralLoadSuppression from "./charts/ViralLoadSuppression";
-import HighViralLoadCascade from "./charts/HighViralLoadCascade";
+import HivArtChartsLayoutComponent from "./layouts/hiv-art-charts-layout.component";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
 
   const { stats, filterTabs, currentTopFilterIndex } =
     useContext(DashboardContext);
-
   return (
-    <div style={{ position: "relative" }}>
+    <div className={styles.container}>
       {/* ................Title......................... */}
       <div className={styles.header}>
         <div className={styles["left-justified-items"]}>
@@ -48,7 +35,7 @@ const HomeDashboard = () => {
           <TimeFilter />
         </div>
       </div>
-      <div className={styles.parent}>
+      <div className={styles.artBody}>
         {/* ..................Tabs................. */}
         <div className={styles.tabs}>
           {filterTabs.map((item) => (
@@ -65,63 +52,11 @@ const HomeDashboard = () => {
         {/* ...................Stats.................... */}
         <div className={styles.stats}>
           {stats.map((stat) => (
-            <StatCard item={stat} key={stat.title} />
+            <StatCardComponent item={stat} key={stat.title} />
           ))}
         </div>
 
-        {/* ...............Charts....................... */}
-        <div className={styles.twoGridChartWrapper}>
-          <ChartCard>
-            <NewlyEnrolled />
-          </ChartCard>
-          <ChartCard>
-            <ActiveClients />
-          </ChartCard>
-        </div>
-
-        {/*  /!* ...............Charts....................... *!/*/}
-        <div className={styles.chartWrapper}>
-          <ChartCard>
-            <AdultARTRegimen />
-          </ChartCard>
-          <ChartCard>
-            <ChildArtRegimen />
-          </ChartCard>
-          <ChartCard>
-            <UnderCommunityCare />
-          </ChartCard>
-        </div>
-
-        {/* ...............Charts....................... */}
-        <div className={styles.twoGridChartWrapper}>
-          <ChartCard>
-            <DueForViralLoad />
-          </ChartCard>
-          <ChartCard>
-            <ViralLoadSamples />
-          </ChartCard>
-        </div>
-
-        {/* ...............Charts....................... */}
-        <div className={styles.chartWrapper}>
-          <ChartCard>
-            <ViralLoadResults />
-          </ChartCard>
-          <ChartCard>
-            <ViralLoadCoverage />
-          </ChartCard>
-          <ChartCard>
-            <ViralLoadSuppression />
-          </ChartCard>
-        </div>
-
-        <ChartCard>
-          <HighViralLoadCascade />
-        </ChartCard>
-
-        <ChartCard>
-          <Waterfall />
-        </ChartCard>
+        <HivArtChartsLayoutComponent />
       </div>
     </div>
   );

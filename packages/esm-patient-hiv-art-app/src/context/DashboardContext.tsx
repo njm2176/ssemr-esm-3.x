@@ -1,5 +1,4 @@
 import React, { createContext, useEffect } from "react";
-import activeClients from "../charts/ActiveClients";
 import { useChartData } from "../hooks/useChartData";
 
 export const DashboardContext = createContext(null);
@@ -39,6 +38,8 @@ const DashboardProvider = ({ children }) => {
     viralLoadRange,
     setViralLoadRange,
     getWaterFallData,
+    defaultStatHeaders,
+    txCURRHeaders,
   } = useChartData();
 
   useEffect(() => {
@@ -73,7 +74,6 @@ const DashboardProvider = ({ children }) => {
   return (
     <DashboardContext.Provider
       value={{
-        activeClients,
         currentTimeFilter,
         currentTopFilterIndex,
         filterTabs,
@@ -87,6 +87,8 @@ const DashboardProvider = ({ children }) => {
         setTime,
         setWaterFallDateRange,
         setViralLoadRange,
+        defaultStatHeaders,
+        txCURRHeaders,
       }}
     >
       {children}
