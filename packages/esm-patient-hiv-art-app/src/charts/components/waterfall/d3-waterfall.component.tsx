@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import * as d3 from "d3";
 import styles from "../index.scss";
 import {Loading} from "@carbon/react";
-import ChartHeaderComponent from "../chart-header.component";
+import ChartHeaderComponent from "../shared/chart-header.component";
 import WaterfallPicker from "../../../components/filter/waterfall-picker.component";
 
 interface D3WaterfallChartProps {
@@ -150,7 +150,7 @@ const D3WaterfallComponent: React.FC<D3WaterfallChartProps> = ({
         .attr("transform", "rotate(-45)")
         .style("text-anchor", "end")
         .style("cursor", "pointer");
-  }, [xScale])
+  }, [xScale]);
 
 
   return (

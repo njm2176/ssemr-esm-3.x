@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import styles from "../index.scss";
 import { Loading } from "@carbon/react";
-import ChartHeaderComponent from "../chart-header.component";
+import ChartHeaderComponent from "../shared/chart-header.component";
 
 interface props {
   chartData?: Array<any>;

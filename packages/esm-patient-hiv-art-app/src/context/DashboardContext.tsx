@@ -1,5 +1,4 @@
 import React, { createContext, useEffect } from "react";
-import activeClients from "../charts/ActiveClients";
 import { useChartData } from "../hooks/useChartData";
 
 export const DashboardContext = createContext(null);
@@ -62,11 +61,6 @@ const DashboardProvider = ({ children }) => {
     getViralLoadSuppression();
   }, [currentTimeFilter, time]);
 
-  // useEffect(() => {
-  //   //insert function to fetch waterfall model data
-  //   getWaterFallData();
-  // }, [`${waterFallDateRange.start}-${waterFallDateRange.end}`]);
-
   useEffect(() => {
     //insert function to fetch waterfall model data
     getWaterFallData();
@@ -80,7 +74,6 @@ const DashboardProvider = ({ children }) => {
   return (
     <DashboardContext.Provider
       value={{
-        activeClients,
         currentTimeFilter,
         currentTopFilterIndex,
         filterTabs,

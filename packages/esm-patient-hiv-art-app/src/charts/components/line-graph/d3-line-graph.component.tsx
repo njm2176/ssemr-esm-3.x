@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import styles from "../index.scss";
 import { Loading } from "@carbon/react";
-import ChartHeaderComponent from "../chart-header.component";
+import ChartHeaderComponent from "../shared/chart-header.component";
 
 interface D3BarChartProps {
   chartData?: Array<any>;
@@ -161,7 +161,7 @@ const D3LineGraphComponent: React.FC<D3BarChartProps> = ({
             />
             {chartData.map((d, i) => (
               <circle
-                // className={styles.points}
+                // className={chart-styles.points}
                 key={i}
                 cx={xScale(d[xKey])}
                 cy={yScale(d[yKey])}

@@ -1,4 +1,4 @@
-import styles from "../../charts/styles/index.scss";
+import styles from "../../chart-styles/index.scss";
 import {
   Modal,
   Table,
@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@carbon/react";
 import React, { useEffect, useState } from "react";
-import { generateChartCSV } from "../../helpers/generateChartCSV";
+import { generateChartCSV } from "../../../helpers/generateChartCSV";
 
 interface ChartHeaderProps {
   isModalOpen: boolean;

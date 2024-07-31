@@ -5,7 +5,7 @@ import React from "react";
 import D3LineGraphComponent from "../charts/components/line-graph/d3-line-graph.component";
 import D3PieChartComponent from "../charts/components/pie-chart/d3-pie-chart.component";
 import D3WaterfallComponent from "../charts/components/waterfall/d3-waterfall.component";
-import HighViralLoadCascade from "../charts/HighViralLoadCascade";
+import HighViralLoadCascade from "../charts/components/custom/HighViralLoadCascade";
 
 const HivArtChartsLayoutComponent = () => {
   const { chartConfig } = useARTCharts();
