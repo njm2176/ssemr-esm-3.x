@@ -167,7 +167,7 @@ export const useARTCharts = () => {
       loading: viralLoadSuppression.loading,
       tooltipRenderFunction: (item) =>
         `${item.data.name}: ${Math.round(
-          (item.data.value / allClients?.raw?.results?.length) * 100
+          (item.data.value / viralLoadCoverage?.raw?.results?.length) * 100
         )}%`,
       chartData: [
         {
@@ -183,7 +183,7 @@ export const useARTCharts = () => {
       ],
       listData: viralLoadSuppression?.raw?.results,
       title: "Viral Load Suppression",
-      total: allClients?.raw?.results?.length,
+      total: viralLoadCoverage?.raw?.results?.length,
       headerTableColumns: defaultStatHeaders,
       chartType: "pie",
     },

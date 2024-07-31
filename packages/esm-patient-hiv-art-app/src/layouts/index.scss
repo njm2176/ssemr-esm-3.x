@@ -1,31 +1,107 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/colors';
+@use '@carbon/styles/scss/type';
+@import "../root";
+
+
 .parent {
   display: grid;
-  width: 98%;
-  gap: 3rem;
-  grid-template-areas:
-  "chart1 chart1 chart1 chart2 chart2 chart2"
-  "chart3 chart3 chart4 chart4 chart5 chart5"
-  "chart6 chart6 chart6 chart7 chart7 chart7"
-  "chart8 chart8 chart9 chart9 chart10 chart10"
-  "chart11 chart11 chart11 chart11 chart11 chart11"
-  "chart12 chart12 chart12 chart12 chart12 chart12";
-}
-
-
-.chart{
   width: 100%;
-  height: 100%
+  gap: 2rem;
+  padding: 2rem;
+  box-sizing: border-box;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-areas:
+    "chart1"
+    "chart2"
+    "chart3"
+    "chart4"
+    "chart5"
+    "chart6"
+    "chart7"
+    "chart8"
+    "chart9"
+    "chart10"
+    "chart11"
+    "chart12";
 }
 
-.chart:nth-child(1) { grid-area: chart1; }
-.chart:nth-child(2) { grid-area: chart2; }
-.chart:nth-child(3) { grid-area: chart3; }
-.chart:nth-child(4) { grid-area: chart4; }
-.chart:nth-child(5) { grid-area: chart5; }
-.chart:nth-child(6) { grid-area: chart6; }
-.chart:nth-child(7) { grid-area: chart7; }
-.chart:nth-child(8) { grid-area: chart8; }
-.chart:nth-child(9) { grid-area: chart9; }
-.chart:nth-child(10) { grid-area: chart10; }
-.chart:nth-child(11) { grid-area: chart11; }
-.chart:nth-child(12) { grid-area: chart12; }
+@media(min-width: 1280px) {
+  .parent {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "chart1 chart2"
+      "chart3 chart4"
+      "chart5 chart6"
+      "chart7 chart8"
+      "chart9 chart10"
+      "chart11 chart11"
+      "chart12 chart12";
+  }
+}
+
+@media(min-width: 1440px) {
+  .parent {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-areas:
+      "chart1 chart1 chart1 chart2 chart2 chart2"
+      "chart3 chart3 chart4 chart4 chart5 chart5"
+      "chart6 chart6 chart6 chart7 chart7 chart7"
+      "chart8 chart8 chart9 chart9 chart10 chart10"
+      "chart11 chart11 chart11 chart11 chart11 chart11"
+      "chart12 chart12 chart12 chart12 chart12 chart12";
+  }
+}
+
+.chart {
+  width: 100%;
+  height: 700px;
+}
+
+.chart:nth-child(1) {
+  grid-area: chart1;
+}
+
+.chart:nth-child(2) {
+  grid-area: chart2;
+}
+
+.chart:nth-child(3) {
+  grid-area: chart3;
+}
+
+.chart:nth-child(4) {
+  grid-area: chart4;
+}
+
+.chart:nth-child(5) {
+  grid-area: chart5;
+}
+
+.chart:nth-child(6) {
+  grid-area: chart6;
+}
+
+.chart:nth-child(7) {
+  grid-area: chart7;
+}
+
+.chart:nth-child(8) {
+  grid-area: chart8;
+}
+
+.chart:nth-child(9) {
+  grid-area: chart9;
+}
+
+.chart:nth-child(10) {
+  grid-area: chart10;
+}
+
+.chart:nth-child(11) {
+  grid-area: chart11;
+}
+
+.chart:nth-child(12) {
+  grid-area: chart12;
+}

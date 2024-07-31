@@ -64,9 +64,14 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
     width: 0,
     height: 0,
   });
+  const [margins, setMargins] = useState({
+    top: 20,
+    right: 30,
+    bottom: 200,
+    left: 40,
+  });
 
   const maximumBarWidth = 35;
-  const margin = { top: 20, right: 30, bottom: 200, left: 40 };
 
   /**
    * Generate scales
@@ -75,20 +80,21 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
     const xScale = d3
       .scaleBand()
       .domain(chartData.map((d) => d[xKey]))
-      .range([margin.left, chartDimensions.width - margin.right])
+      .range([margins.left, chartDimensions.width - margins.right])
       .padding(0.1);
 
     const yScale = d3
       .scaleLinear()
       .domain([0, d3.max(chartData, (d) => d[yKey])])
       .nice()
-      .range([chartDimensions.height - margin.bottom, margin.top]);
+      .range([chartDimensions.height - margins.bottom, margins.top]);
 
     setScales({ xScale, yScale });
   };
+
   useEffect(() => {
     if (chartData && chartDimensions.height > 0) generateScales();
-  }, [chartData, chartDimensions]);
+  }, [chartData, chartDimensions, margins]);
 
   const { xScale, yScale } = scales;
 
@@ -117,8 +123,8 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
   const updateDimensions = () => {
     if (containerRef.current)
       setChartDimensions({
-        width: containerRef.current.offsetWidth,
-        height: containerRef.current.offsetHeight,
+        width: containerRef.current.getBoundingClientRect().width,
+        height: containerRef.current.getBoundingClientRect().height,
       });
   };
 
@@ -131,27 +137,31 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
   }, []);
 
   useEffect(() => {
-    if (xAxisRef.current) {
-      const xAxis = d3.select(xAxisRef.current).call(d3.axisBottom(xScale));
+    if (!xAxisRef.current) {
+      return;
+    }
+    const xAxis = d3.select(xAxisRef.current).call(d3.axisBottom(xScale));
+    const ticks = xAxis.selectAll(".tick text");
+    const tickSpacing = xScale.bandwidth();
+    let overlap = false;
+    let maxLabelWidth = 0;
 
-      // Check for label overlap
-      const ticks = xAxis.selectAll(".tick text");
-      const tickSpacing = xScale.bandwidth();
-      let overlap = false;
-
-      ticks?.each(function (tick, index) {
-        const thisLabel = d3.select(this);
-        const nextLabel = d3.select(ticks.nodes()[index + 1]);
-        if (!nextLabel.empty()) {
-          const thisLabelWidth = thisLabel.node().getBBox().width;
-          const nextLabelWidth = nextLabel.node().getBBox().width;
-          if (thisLabelWidth / 2 + nextLabelWidth / 2 > tickSpacing)
-            overlap = true;
-        }
-      });
-
-      if (overlap)
-        ticks.attr("transform", "rotate(-30)").style("text-anchor", "end");
+    ticks?.each(function (tick, index) {
+      const thisLabel = d3.select(this);
+      const nextLabel = d3.select(ticks.nodes()[index + 1]);
+      const thisLabelWidth = thisLabel.node().getBBox().width;
+      maxLabelWidth = Math.max(maxLabelWidth, thisLabelWidth);
+      if (!nextLabel.empty()) {
+        const nextLabelWidth = nextLabel.node().getBBox().width;
+        if (thisLabelWidth / 2 + nextLabelWidth / 2 > tickSpacing)
+          overlap = true;
+      }
+    });
+    if (overlap) {
+      ticks.attr("transform", "rotate(-30)").style("text-anchor", "end");
+      setMargins((prev) => ({ ...prev, bottom: 200 }));
+    } else {
+      setMargins((prev) => ({ ...prev, bottom: 150 }));
     }
   }, [xScale]);
 
@@ -199,17 +209,14 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
             {/*...................X-AXIS.............................*/}
             <g
               transform={`translate(0, ${
-                chartDimensions.height - margin.bottom
+                chartDimensions.height - margins.bottom
               })`}
-              // ref={(node) =>
-              //   d3.select(node).call(d3.axisBottom(xScale).tickSize(0))
-              // }
               ref={xAxisRef}
             />
 
             {/*................Y-AXIS.......................*/}
             <g
-              transform={`translate(${margin.left}, 0)`}
+              transform={`translate(${margins.left}, 0)`}
               ref={(node) => d3.select(node).call(d3.axisLeft(yScale))}
             />
 
@@ -217,8 +224,8 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
             {yScale.ticks().map((tick, index) => (
               <line
                 key={index}
-                x1={margin.left}
-                x2={chartDimensions.width - margin.right}
+                x1={margins.left}
+                x2={chartDimensions.width - margins.right}
                 y1={yScale(tick)}
                 y2={yScale(tick)}
                 className={styles.horizontalLines}

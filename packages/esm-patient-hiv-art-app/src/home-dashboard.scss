@@ -4,8 +4,11 @@
 @import '~@openmrs/esm-styleguide/src/vars';
 @import "./root.scss";
 
-.container{
-  width: 97.5%;
+.container {
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+  width: 100%;
 }
 
 .header {
@@ -55,13 +58,14 @@
   margin: spacing.$spacing-03 1rem;
 }
 
-.parent {
+.artBody {
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  row-gap: 4rem;
   padding: 2rem;
   width: 100%;
   margin-top: 5rem;
+  overflow-x: clip;
 }
 
 .titleContainer {
@@ -99,9 +103,9 @@ svg.homeIcon {
 .stats {
   display: flex;
   flex-wrap: nowrap;
-  width: 100%;
-  justify-content: space-between;
+  max-width: 100%;
   gap: 1rem;
+  box-sizing: border-box;
 }
 
 .statIconWrapper {

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Home } from "@carbon/react/icons";
 import styles from "./home-dashboard.scss";
 import { useTranslation } from "react-i18next";
-import StatCard from "./components/cards/StatCard";
+import StatCardComponent from "./components/cards/stat-card.component";
 import "@carbon/charts/styles.css";
 import SSEMRTab from "./components/tabs/SSEMRTab";
 import { DashboardContext } from "./context/DashboardContext";
@@ -35,7 +35,7 @@ const HomeDashboard = () => {
           <TimeFilter />
         </div>
       </div>
-      <div className={styles.parent}>
+      <div className={styles.artBody}>
         {/* ..................Tabs................. */}
         <div className={styles.tabs}>
           {filterTabs.map((item) => (
@@ -52,7 +52,7 @@ const HomeDashboard = () => {
         {/* ...................Stats.................... */}
         <div className={styles.stats}>
           {stats.map((stat) => (
-            <StatCard item={stat} key={stat.title} />
+            <StatCardComponent item={stat} key={stat.title} />
           ))}
         </div>
 

@@ -42,7 +42,7 @@ const D3PieChartComponent: React.FC<props> = ({
     height: 0,
     radius: 0,
   });
-  const margin = { top: 20, right: 30, bottom: 110, left: 40 };
+  const margin = { top: 100, right: 100, bottom: 100, left: 100 };
 
   /**
    * SVG red to reference parent DIV
