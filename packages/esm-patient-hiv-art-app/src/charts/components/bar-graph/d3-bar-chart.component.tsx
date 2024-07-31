@@ -50,9 +50,13 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
    */
   const svgRef = useRef(null);
   /**
-   * SVG red to reference parent DIV
+   * SVG ref to reference parent DIV
    */
   const containerRef = useRef(null);
+  /**
+   * Ref for x-axis
+   */
+  const xAxisRef = useRef(null);
   /**
    * Bar config
    */
@@ -62,7 +66,7 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
   });
 
   const maximumBarWidth = 35;
-  const margin = { top: 20, right: 30, bottom: 110, left: 40 };
+  const margin = { top: 20, right: 30, bottom: 200, left: 40 };
 
   /**
    * Generate scales
@@ -125,6 +129,32 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
       window.removeEventListener("resize", updateDimensions);
     };
   }, []);
+
+  useEffect(() => {
+    if (xAxisRef.current) {
+      const xAxis = d3.select(xAxisRef.current).call(d3.axisBottom(xScale));
+
+      // Check for label overlap
+      const ticks = xAxis.selectAll(".tick text");
+      const tickSpacing = xScale.bandwidth();
+      let overlap = false;
+
+      ticks?.each(function (tick, index) {
+        const thisLabel = d3.select(this);
+        const nextLabel = d3.select(ticks.nodes()[index + 1]);
+        if (!nextLabel.empty()) {
+          const thisLabelWidth = thisLabel.node().getBBox().width;
+          const nextLabelWidth = nextLabel.node().getBBox().width;
+          if (thisLabelWidth / 2 + nextLabelWidth / 2 > tickSpacing)
+            overlap = true;
+        }
+      });
+
+      if (overlap)
+        ticks.attr("transform", "rotate(-30)").style("text-anchor", "end");
+    }
+  }, [xScale]);
+
   return (
     <div ref={containerRef} className={styles.container}>
       {loading && <Loading className={styles.spinner} withOverlay={false} />}
@@ -171,9 +201,10 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
               transform={`translate(0, ${
                 chartDimensions.height - margin.bottom
               })`}
-              ref={(node) =>
-                d3.select(node).call(d3.axisBottom(xScale).tickSize(0))
-              }
+              // ref={(node) =>
+              //   d3.select(node).call(d3.axisBottom(xScale).tickSize(0))
+              // }
+              ref={xAxisRef}
             />
 
             {/*................Y-AXIS.......................*/}
