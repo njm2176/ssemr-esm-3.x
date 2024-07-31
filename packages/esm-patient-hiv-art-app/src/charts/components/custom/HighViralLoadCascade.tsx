@@ -175,91 +175,84 @@ const SVGChart = () => {
                   </g>
                 ))}
 
-                {/* Name */}
-                {data.map((d, index) => (
-                  <text
-                    key={d.text}
-                    x={
-                      axisPadding +
-                      index * (barWidth + barSpacing) +
-                      barWidth / 2
-                    }
-                    y={chartHeight + 25}
-                    textAnchor="middle"
-                    fontSize="10"
-                    fontWeight="500"
-                    className={styles.labelText}
-                  >
-                    {d.text}
-                  </text>
-                ))}
-
-                {/* Percentage */}
-                {data.map(
-                  (d, index) =>
-                    index !== 0 && (
+                <g>
+                  {data.map((d, index) => (
+                    <>
+                      {/*..........LABEL...................*/}
                       <text
-                        key={d.index}
+                        key={d.text}
                         x={
                           axisPadding +
                           index * (barWidth + barSpacing) +
                           barWidth / 2
                         }
-                        y={chartHeight + 50}
-                        textAnchor="middle"
-                        fontSize="16"
-                        fontWeight="600"
-                        className={styles.percentageText}
-                      >
-                        {Math.round(d.percentage * 100) / 100}%
-                      </text>
-                    )
-                )}
-
-                {/*Turn around */}
-                {data.map(
-                  (d, index) =>
-                    index !== 0 && (
-                      <text
-                        key={index}
-                        x={
-                          axisPadding +
-                          index * (barWidth + barSpacing) +
-                          barWidth / 2
-                        }
-                        y={chartHeight + 75}
+                        y={chartHeight + 25}
                         textAnchor="middle"
                         fontSize="10"
+                        fontWeight="500"
                         className={styles.labelText}
                       >
-                        {Math.round(d.averageTurnaroundTimeMonths * 100) / 100}{" "}
-                        Months
+                        {d.text}
                       </text>
-                    )
-                )}
-
-                {/* Arrow */}
-                {data.map(
-                  (d, index) =>
-                    index !== data.length - 1 && (
-                      <svg
-                        width={12}
-                        key={index}
-                        x={
-                          axisPadding +
-                          index * (barWidth + barSpacing) +
-                          barWidth +
-                          barSpacing / 1.5
-                        }
-                        y={chartHeight / 2}
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 448 512"
-                        className={styles.arrow}
-                      >
-                        <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
-                      </svg>
-                    )
-                )}
+                      {/*..............PERCENTAGE..................*/}
+                      {index !== 0 && (
+                        <text
+                          key={d.index}
+                          x={
+                            axisPadding +
+                            index * (barWidth + barSpacing) +
+                            barWidth / 2
+                          }
+                          y={chartHeight + 50}
+                          textAnchor="middle"
+                          fontSize="16"
+                          fontWeight="600"
+                          className={styles.percentageText}
+                        >
+                          {Math.round(d.percentage * 100) / 100}%
+                        </text>
+                      )}
+                      {/*...............TURNAROUND TIME........................*/}
+                      {index !== 0 && (
+                        <text
+                          key={index}
+                          x={
+                            axisPadding +
+                            index * (barWidth + barSpacing) +
+                            barWidth / 2
+                          }
+                          y={chartHeight + 75}
+                          textAnchor="middle"
+                          fontSize="10"
+                          className={styles.labelText}
+                        >
+                          {Math.round(d.averageTurnaroundTimeMonths * 100) /
+                            100}{" "}
+                          Months
+                        </text>
+                      )}
+                      {/*.........................ARROW........................*/}
+                      {index !== data.length - 1 && (
+                        <svg
+                          width={12}
+                          key={index}
+                          x={
+                            axisPadding +
+                            index * (barWidth + barSpacing) +
+                            barWidth +
+                            barSpacing / 1.5
+                          }
+                          y={chartHeight / 2}
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 448 512"
+                          className={styles.arrow}
+                        >
+                          <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+                        </svg>
+                      )}
+                    </>
+                  ))}
+                </g>
               </svg>
             </div>
           ) : (
