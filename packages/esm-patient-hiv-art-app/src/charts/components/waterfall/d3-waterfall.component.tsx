@@ -1,7 +1,7 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import styles from "../index.scss";
-import {Loading} from "@carbon/react";
+import { Loading } from "@carbon/react";
 import ChartHeaderComponent from "../shared/chart-header.component";
 import WaterfallPicker from "../../../components/filter/waterfall-picker.component";
 
@@ -9,21 +9,21 @@ interface D3WaterfallChartProps {
   chartData?: Array<any>;
   listData?: Array<any>;
   title?: string;
-  tooltipRenderFunction?: ({currentItem, previousItem}) => string;
+  tooltipRenderFunction?: ({ currentItem, previousItem }) => string;
   headerTableColumns?: Array<any>;
   xKey?: string;
   loading?: boolean;
 }
 
 const D3WaterfallComponent: React.FC<D3WaterfallChartProps> = ({
-                                                                 chartData,
-                                                                 listData,
-                                                                 title = "",
-                                                                 tooltipRenderFunction,
-                                                                 headerTableColumns,
-                                                                 xKey,
-                                                                 loading,
-                                                               }) => {
+  chartData,
+  listData,
+  title = "",
+  tooltipRenderFunction,
+  headerTableColumns,
+  xKey,
+  loading,
+}) => {
   /**
    * State for x and y scales
    */
@@ -65,7 +65,7 @@ const D3WaterfallComponent: React.FC<D3WaterfallChartProps> = ({
   });
 
   const maximumBarWidth = 35;
-  const margin = {top: 20, right: 30, bottom: 200, left: 40};
+  const margin = { top: 20, right: 30, bottom: 200, left: 40 };
 
   /**
    * Generate scales
@@ -83,14 +83,14 @@ const D3WaterfallComponent: React.FC<D3WaterfallChartProps> = ({
       .nice()
       .range([chartDimensions.height - margin.bottom, margin.top]);
 
-    setScales({xScale, yScale});
+    setScales({ xScale, yScale });
   };
 
   useEffect(() => {
     if (chartData && chartDimensions.height > 0) generateScales();
   }, [chartData, chartDimensions]);
 
-  const {xScale, yScale} = scales;
+  const { xScale, yScale } = scales;
 
   /**
    * Mouse over on bars handler to position and toggle the tooltip
@@ -114,7 +114,7 @@ const D3WaterfallComponent: React.FC<D3WaterfallChartProps> = ({
    * Mouse out handler to hide the tooltip
    */
   const handleMouseOut = () => {
-    setTooltip({visible: false, x: 0, y: 0, content: ""});
+    setTooltip({ visible: false, x: 0, y: 0, content: "" });
   };
 
   /**
@@ -152,14 +152,13 @@ const D3WaterfallComponent: React.FC<D3WaterfallChartProps> = ({
         .style("cursor", "pointer");
   }, [xScale]);
 
-
   return (
     <div ref={containerRef} className={styles.container}>
-      {loading && <Loading className={styles.spinner} withOverlay={false}/>}
+      {loading && <Loading className={styles.spinner} withOverlay={false} />}
       <div className={styles.headerContainer}>
         <p className={styles.title}>{title}</p>
         <div className={styles.waterfallFilterWrapper}>
-          <WaterfallPicker/>
+          <WaterfallPicker />
         </div>
         <ChartHeaderComponent
           isModalOpen={isModalOpen}
@@ -185,7 +184,7 @@ const D3WaterfallComponent: React.FC<D3WaterfallChartProps> = ({
                   xScale(d[xKey]) +
                   (xScale.bandwidth() -
                     Math.min(xScale.bandwidth(), maximumBarWidth)) /
-                  2
+                    2
                 }
                 y={yScale(Math.max(d.y0, d.y1))}
                 width={Math.min(xScale.bandwidth(), maximumBarWidth)}
@@ -233,7 +232,7 @@ const D3WaterfallComponent: React.FC<D3WaterfallChartProps> = ({
       {tooltip.visible && (
         <div
           className={styles.tooltip}
-          style={{left: tooltip.x + 10, top: tooltip.y - 6}}
+          style={{ left: tooltip.x + 10, top: tooltip.y - 6 }}
         >
           {tooltip.content}
         </div>
