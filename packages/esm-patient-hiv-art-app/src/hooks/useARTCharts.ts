@@ -198,10 +198,10 @@ export const useARTCharts = () => {
           previousValue: previousItem,
         }),
       chartData: processWaterfallData(waterfall?.processedChartData),
-      listData: viralLoadResults?.raw?.results,
+      listData: [],
       title: "Waterfall Chart",
-      headerTableColumns: defaultStatHeaders,
-      xKey: currentTimeFilter,
+      headerTableColumns: [],
+      xKey: "group",
       chartType: "waterfall",
     },
   ];
