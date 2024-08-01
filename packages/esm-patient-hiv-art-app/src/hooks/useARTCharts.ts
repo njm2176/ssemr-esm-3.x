@@ -190,20 +190,20 @@ export const useARTCharts = () => {
     {
       chartType: "HVL",
     },
-    // {
-    //   loading: waterfall?.loading,
-    //   tooltipRenderFunction: ({ currentItem, previousItem }) =>
-    //     renderWaterfallTooltip({
-    //       currentValue: currentItem,
-    //       previousValue: previousItem,
-    //     }),
-    //   chartData: processWaterfallData(waterfall?.processedChartData),
-    //   listData: [],
-    //   title: "Waterfall Chart",
-    //   headerTableColumns: [],
-    //   xKey: "group",
-    //   chartType: "waterfall",
-    // },
+    {
+      loading: waterfall?.loading,
+      tooltipRenderFunction: ({ currentItem, previousItem }) =>
+        renderWaterfallTooltip({
+          currentValue: currentItem,
+          previousValue: previousItem,
+        }),
+      chartData: processWaterfallData(waterfall?.processedChartData),
+      listData: [],
+      title: "Waterfall Chart",
+      headerTableColumns: [],
+      xKey: "group",
+      chartType: "waterfall",
+    },
   ];
 
   return { chartConfig };
