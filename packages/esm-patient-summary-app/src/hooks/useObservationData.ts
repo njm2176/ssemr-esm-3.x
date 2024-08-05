@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const useObservationData = (patientUuid, code) => {
+const useObservationData = (patientUuid) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -10,12 +10,13 @@ const useObservationData = (patientUuid, code) => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `/openmrs/ws/rest/v1/obs?patient=${patientUuid}&_sort=-date&limit=100`
+          `/openmrs/ws/rest/v1/ssemr/dashboard/obs?patientUuid=${patientUuid}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
         const jsonData = await response.json();
+        console.log(jsonData);
         setData(jsonData);
       } catch (error) {
         console.error("Error fetching observation data:", error);
@@ -27,18 +28,18 @@ const useObservationData = (patientUuid, code) => {
     fetchData();
   }, [patientUuid]);
 
-  const extractObservationData = (data, keyword) => {
-    if (data && data.results) {
-      const observation = data.results.find((entry) =>
-        entry.display.startsWith(keyword)
-      );
-      return observation ? observation.display.split(": ")[1] : "---";
-    } else {
-      return "No observation Found";
-    }
-  };
+  // const extractObservationData = (data, keyword) => {
+  //   if (data && data.results) {
+  //     const observation = data.results.find((entry) =>
+  //       entry.results
+  //     );
+  //     return observation ? observation : "---";
+  //   } else {
+  //     return "No observation Found";
+  //   }
+  // };
 
-  return { data, isLoading, setIsLoading, error, extractObservationData };
+  return { data, isLoading, setIsLoading, error };
 };
 
 export default useObservationData;

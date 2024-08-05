@@ -10,13 +10,15 @@ export interface lastArtVisitSummaryProps {
 }
 const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
   patientUuid,
-  code,
 }) => {
   const { t } = useTranslation();
-  const { data, isLoading, error, extractObservationData } = useObservationData(
-    patientUuid,
-    code
+  const { data, isLoading, error } = useObservationData(
+    patientUuid
   );
+
+  useEffect(() => {
+    console.log(data);
+  }, [])
 
   if (isLoading) {
     return <StructuredListSkeleton role="progressbar" />;
@@ -39,7 +41,7 @@ const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
             <p>
               {" "}
               <span className={styles.value}>
-                {extractObservationData(data, "TB Status")}
+                {(data.results[0]?.tbStatus)}
               </span>
             </p>
           </div>
@@ -47,7 +49,7 @@ const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
             <p>{t("lastArvRegimenDose", "Last ARV Regimen Dose")}</p>
             <p>
               <span className={styles.value}>
-                {extractObservationData(data, "Number of Days Dispensed")}
+                {(data.results[0]?.arvRegimenDose)}
               </span>
             </p>
           </div>
@@ -55,7 +57,7 @@ const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
             <p>{t("nextVisitDate", "Next Visit Date")}</p>
             <p>
               <span className={styles.value}>
-                {extractObservationData(data, "ART Follow up Date")}
+                {(data.results[0]?.dateOfInitiation)}
               </span>
             </p>
           </div>
@@ -63,7 +65,7 @@ const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
             <p>{t("whoHivClinicalStage", "WHO HIV Clinical Stage")}</p>
             <p>
               <span className={styles.value}>
-                {extractObservationData(data, "WHO Stage")}
+                {(data.results[0]?.whoClinicalStage)}
               </span>
             </p>
           </div>

@@ -42,9 +42,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
   const { t } = useTranslation();
   const isTablet = useLayoutType() == "tablet";
   const { patientData, Loading, isError } = usePatientData(patientUuid);
-  const { data, isLoading, error, extractObservationData } = useObservationData(
+  const { data, isLoading, error } = useObservationData(
     patientUuid,
-    code
   );
 
   const printRef = useReactToPrint({
@@ -169,14 +168,14 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 <p className={styles.label}>
                   {t("dateOfEnrollment", "Date of Enrollment")}
                 </p>
-                <p>{extractObservationData(data, "Date of enrollment")}</p>
+                <p>{(data.results[0]?.enrollmentDate)}</p>
               </div>
               <div className={styles.content}>
                 <p className={styles.label}>
                   {t("latestArvRegimen", "Latest ARV Regimen")}
                 </p>
                 <p className={styles.value}>
-                  {extractObservationData(data, "ARV Regimen")}
+                  {(data.results[0]?.arvRegimen)}
                 </p>
               </div>
               <div className={styles.content}>
@@ -185,7 +184,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 </p>
                 <p>
                   <span className={styles.value}>
-                    {extractObservationData(data, "CD4")}
+                    {(data.results[0]?.lastCD4Count)}
                   </span>
                 </p>
               </div>
@@ -201,7 +200,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 <p>
                   {" "}
                   <span className={styles.value}>
-                    {extractObservationData(data, "TB Status")}
+                    {(data.results[0]?.tbStatus)}
                   </span>
                 </p>
               </div>
@@ -211,7 +210,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 </p>
                 <p>
                   <span className={styles.value}>
-                    {extractObservationData(data, "Number of Days Dispensed")}
+                    {(data.results[0]?.arvRegimenDose)}
                   </span>
                 </p>
               </div>
@@ -221,7 +220,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 </p>
                 <p>
                   <span className={styles.value}>
-                    {extractObservationData(data, "ART Follow up Date")}
+                    {(data.results[0]?.nextVisitDate)}
                   </span>
                 </p>
               </div>
@@ -231,7 +230,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 </p>
                 <p>
                   <span className={styles.value}>
-                    {extractObservationData(data, "WHO Stage")}
+                    {(data.results[0]?.whoClinicalStage)}
                   </span>
                 </p>
               </div>
@@ -244,7 +243,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 <p className={styles.label}>{t("weight", "Weight")}</p>
                 <p>
                   <span className={styles.value}>
-                    {extractObservationData(data, "WEIGHT(Kg)")}
+                    {(data.results[0]?.weight)}
                   </span>
                 </p>
               </div>
@@ -252,7 +251,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 <p className={styles.label}>{t("height", "Height")}</p>
                 <p>
                   <span className={styles.value}>
-                    {extractObservationData(data, "HEIGHT(cm)")}
+                    {(data.results[0]?.height)}
                   </span>
                 </p>
               </div>
@@ -260,7 +259,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 <p className={styles.label}>{t("bmi", "BMI")}</p>
                 <p>
                   <span className={styles.value}>
-                    {extractObservationData(data, "Body mass index")}
+                    {(data.results[0]?.bmi)}
                   </span>
                 </p>
               </div>
@@ -268,9 +267,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 <p className={styles.label}>{t("muac", "MUAC")}</p>
                 <p>
                   <span className={styles.value}>
-                    {extractObservationData(
-                      data,
-                      "MID-UPPER ARM CIRCUMFERENCE Vitals"
+                    {(
+                      data.results[0]?.muac
                     )}
                   </span>
                 </p>

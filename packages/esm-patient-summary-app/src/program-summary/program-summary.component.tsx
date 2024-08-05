@@ -11,11 +11,9 @@ export interface ProgramSummaryProps {
 }
 const ProgramSummary: React.FC<ProgramSummaryProps> = ({
   patientUuid,
-  code,
 }) => {
-  const { data, isLoading, error, extractObservationData } = useObservationData(
+  const { data, isLoading, error } = useObservationData(
     patientUuid,
-    code
   );
   const { t } = useTranslation();
 
@@ -38,6 +36,16 @@ const ProgramSummary: React.FC<ProgramSummaryProps> = ({
     return null;
   }
 
+  const bmiMuac = () => {
+    if (data.results[0]?.bmi){
+      return data.results[0]?.bmi
+    }else if(data.results[0]?.muac){
+      return data.results[0]?.muac
+    }else{
+      return "---"
+    }
+  }
+
   return (
     <>
       <div className={styles.card}>
@@ -45,23 +53,22 @@ const ProgramSummary: React.FC<ProgramSummaryProps> = ({
           <div className={styles.content}>
             <p>{t("dateOfEnrollment", "Date of Enrollment")}</p>
             <p>
-              {extractObservationData(
-                data,
-                "ART Start Date (Date of Enrolment)"
+              {(
+                data.results[0]?.enrollmentDate
               )}
             </p>
           </div>
           <div className={styles.content}>
             <p>{t("latestArvRegimen", "Latest ARV Regimen")}</p>
             <p className={styles.value}>
-              {extractObservationData(data, "ARV Regimen")}
+              {(data.results[0]?.arvRegimen)}
             </p>
           </div>
           <div className={styles.content}>
             <p>{t("lastCD4Count", "Last CD4 count")}</p>
             <p>
               <span className={styles.value}>
-                {extractObservationData(data, "CD4")}
+                {(data.results[0]?.lastCD4Count)}
               </span>
             </p>
           </div>
@@ -69,7 +76,7 @@ const ProgramSummary: React.FC<ProgramSummaryProps> = ({
             <p>{t("bmiMuac", "BMI/MUAC")}</p>
             <p>
               <span className={styles.value}>
-                {extractObservationData(data, "Body mass index")}
+                {bmiMuac()}
               </span>
             </p>
           </div>

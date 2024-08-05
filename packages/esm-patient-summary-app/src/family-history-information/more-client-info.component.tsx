@@ -10,9 +10,8 @@ export interface ClientInfoProps {
   code: string;
 }
 const ClientInfo: React.FC<ClientInfoProps> = ({ patientUuid, code }) => {
-  const { data, isLoading, error, extractObservationData } = useObservationData(
-    patientUuid,
-    code
+  const { data, isLoading, error } = useObservationData(
+    patientUuid
   );
   const { t } = useTranslation();
 
