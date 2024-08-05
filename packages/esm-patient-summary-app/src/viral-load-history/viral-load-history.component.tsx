@@ -11,11 +11,9 @@ export interface ProgramSummaryProps {
 }
 const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
   patientUuid,
-  code,
 }) => {
-  const { data, isLoading, error, extractObservationData } = useObservationData(
+  const { data, isLoading, error } = useObservationData(
     patientUuid,
-    code
   );
   const { t } = useTranslation();
 
@@ -38,11 +36,10 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
     return null;
   }
 
-  const vlDate = extractObservationData(
-    data,
-    "Date Viral Load Results Received"
+  const vlDate = (
+    data.results[0]?.dateVLResultsReceived
   );
-  const vlResult = extractObservationData(data, "VL Results, Follow Up");
+  const vlResult = (data.results[0]?.vlResults);
   let vlStatus;
 
   if (!isNaN(vlResult)) {
@@ -51,9 +48,8 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
     vlStatus = "---";
   }
 
-  const dateVlSampleCollected = extractObservationData(
-    data,
-    "Date Viral Load Results Received"
+  const dateVlSampleCollected = (
+    data.results[0]?.dateVlSampleCollected
   );
 
   let eligibilityforvl;
@@ -79,7 +75,7 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
             <p>
               {" "}
               <span className={styles.value}>
-                {extractObservationData(data, "Date VL Sample Collected?")}
+                {(data.results[0]?.lastRefillDate)}
               </span>
             </p>
           </div>

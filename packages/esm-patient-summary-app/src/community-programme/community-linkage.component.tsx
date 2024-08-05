@@ -11,11 +11,9 @@ export interface CommunityLinkageProps {
 }
 const CommunityLinkage: React.FC<CommunityLinkageProps> = ({
   patientUuid,
-  code,
 }) => {
-  const { data, isLoading, error, extractObservationData } = useObservationData(
+  const { data, isLoading, error } = useObservationData(
     patientUuid,
-    code
   );
   const { t } = useTranslation();
 
@@ -46,12 +44,12 @@ const CommunityLinkage: React.FC<CommunityLinkageProps> = ({
             <p style={{ marginRight: "15px" }}>
               {t("nameOfCHW", "Name of the Community Health Worker (CHW)")}
             </p>
-            <p>{extractObservationData(data, "Name of CHW")}</p>
+            <p>{(data.results[0]?.chwName)}</p>
           </div>
           <div className={styles.content}>
             <p>{t("telephoneNumber", "Telephone Number")}</p>
             <p className={styles.value}>
-              {extractObservationData(data, "CHW Phone number")}
+              {(data.results[0]?.chwPhone)}
             </p>
           </div>
           <div className={styles.content}>
@@ -63,7 +61,7 @@ const CommunityLinkage: React.FC<CommunityLinkageProps> = ({
             </p>
             <p>
               <span className={styles.value}>
-                {extractObservationData(data, "CHW Address")}
+                {(data.results[0].chwAddress)}
               </span>
             </p>
           </div>
