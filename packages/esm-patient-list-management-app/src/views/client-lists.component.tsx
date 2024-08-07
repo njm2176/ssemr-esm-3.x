@@ -7,6 +7,15 @@ import DataTable from "react-data-table-component";
 import SsemrListTabComponent from "../components/tab/ssemr-list-tab.component";
 import Header from "../components/header/header.component";
 
+const customDatatableStyles = {
+  head: {
+    style: {
+      fontWeight: 700,
+      fontSize: "14px",
+    },
+  },
+};
+
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <div className={styles.filterComponent}>
     <TextInput
@@ -83,6 +92,7 @@ const ListsDashboard: React.FC = () => {
             </div>
           ) : (
             <DataTable
+              customStyles={customDatatableStyles}
               paginationPerPage={15}
               paginationResetDefaultPage={resetPaginationToggle}
               subHeader
