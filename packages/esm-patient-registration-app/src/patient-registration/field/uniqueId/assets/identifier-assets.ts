@@ -193,7 +193,7 @@ export const facilities = [
       },
       {
         name: "Rumbek State Hospital",
-        code: "LS/RSH/",
+        code: "LS/RK/",
       },
       {
         name: "Shambe PHCU",
