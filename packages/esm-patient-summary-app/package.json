@@ -56,5 +56,5 @@
     "cross-env": "^7.0.3",
     "webpack": "^5.74.0"
   },
-  "gitHead": "4eb1416f86889c1a679e5aa354a9138ec9a73adc"
+  "gitHead": "31c339d33016c99ec2bf6e2d793c1edc1db03b57"
 }
