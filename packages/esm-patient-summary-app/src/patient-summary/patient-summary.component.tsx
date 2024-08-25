@@ -80,6 +80,11 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
     }
   }
 
+  const displayField = (field, defaultValue = "---") => field ?? defaultValue;
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error || !data || !data.results) return <p>Error loading data</p>;
+
   return (
     <div className={styles.bodyContainer} ref={componentRef}>
       {printMode === true && <PrintComponent />}
@@ -109,7 +114,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
         {patientData && (
           <>
             <div className={styles.container}>
-              <div className={styles.content}>
+              <div className={styles.patientSummary}>
                 <p className={styles.label}>
                   {t("patientName", "Patient name")}
                 </p>
@@ -119,7 +124,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   </span>
                 </p>
               </div>
-              <div className={styles.content}>
+              <div className={styles.patientSummary}>
                 <p className={styles.label}>
                   {t("uniquePatientIdentifier", "Unique patient identifier")}
                 </p>
@@ -127,7 +132,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   <span className={styles.value}>{openMRSId}</span>
                 </p>
               </div>
-              <div className={styles.content}>
+              <div className={styles.patientSummary}>
                 <p className={styles.label}>
                   {t("uniqueArtNumber", "Unique ART Number")}
                 </p>
@@ -137,7 +142,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
               </div>
             </div>
             <div className={styles.container}>
-              <div className={styles.content}>
+              <div className={styles.patientSummary}>
                 <p className={styles.label}>{t("birthDate", "Birth date")}</p>
                 <p>
                   <span className={styles.value}>
@@ -145,7 +150,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   </span>
                 </p>
               </div>
-              <div className={styles.content}>
+              <div className={styles.patientSummary}>
                 <p className={styles.label}>{t("age", "Age")}</p>
                 <p>
                   <span className={styles.value}>
@@ -153,7 +158,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   </span>
                 </p>
               </div>
-              <div className={styles.content}>
+              <div className={styles.patientSummary}>
                 <p className={styles.label}>{t("gender", "Gender")}</p>
                 <p>
                   <span className={styles.value}>
@@ -170,14 +175,14 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 <p className={styles.label}>
                   {t("dateOfEnrollment", "Date of Enrollment")}
                 </p>
-                <p>{(data.results[0]?.enrollmentDate)}</p>
+                <p>{displayField(data.results[0]?.enrollmentDate)}</p>
               </div>
               <div className={styles.content}>
                 <p className={styles.label}>
                   {t("latestArvRegimen", "Latest ARV Regimen")}
                 </p>
-                <p className={styles.value}>
-                  {(data.results[0]?.arvRegimen)}
+                <p>
+                  {displayField(data.results[0]?.arvRegimen)}
                 </p>
               </div>
               <div className={styles.content}>
@@ -185,17 +190,17 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   {t("lastCD4Count", "Last CD4 count")}
                 </p>
                 <p>
-                  <span className={styles.value}>
-                    {(data.results[0]?.lastCD4Count)}
+                  <span>
+                    {displayField(data.results[0]?.lastCD4Count)}
                   </span>
                 </p>
               </div>
               <div className={styles.content}>
             <p className={styles.label}>
-              {t("bmiMuac", "BMI/MUAC")}
+              {displayField("bmiMuac", "BMI/MUAC")}
               </p>
             <p>
-              <span className={styles.value}>
+              <span>
                 {bmiMuac()}
               </span>
             </p>
@@ -211,8 +216,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 </p>
                 <p>
                   {" "}
-                  <span className={styles.value}>
-                    {(data.results[0]?.tbStatus)}
+                  <span>
+                    {displayField(data.results[0]?.tbStatus)}
                   </span>
                 </p>
               </div>
@@ -221,8 +226,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   {t("lastArvRegimenDose", "Last ARV Regimen Dose")}
                 </p>
                 <p>
-                  <span className={styles.value}>
-                    {(data.results[0]?.arvRegimenDose)}
+                  <span>
+                    {displayField(data.results[0]?.arvRegimenDose)}
                   </span>
                 </p>
               </div>
@@ -231,8 +236,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   {t("nextVisitDate", "Next Visit Date")}
                 </p>
                 <p>
-                  <span className={styles.value}>
-                    {(data.results[0]?.nextVisitDate)}
+                  <span>
+                    {displayField(data.results[0]?.nextVisitDate)}
                   </span>
                 </p>
               </div>
@@ -241,8 +246,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   {t("whoHivClinicalStage", "WHO HIV Clinical Stage")}
                 </p>
                 <p>
-                  <span className={styles.value}>
-                    {(data.results[0]?.whoClinicalStage)}
+                  <span>
+                    {displayField(data.results[0]?.whoClinicalStage)}
                   </span>
                 </p>
               </div>
@@ -257,8 +262,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 </p>
                 <p>
                   {" "}
-                  <span className={styles.value}>
-                    {(data.results[0]?.lastRefillDate)}
+                  <span>
+                    {displayField(data.results[0]?.lastRefillDate)}
                   </span>
                 </p>
               </div>
@@ -267,8 +272,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 {t("dateVLRecieved", "Date Viral Load Results Received")}
                 </p>
                 <p>
-                  <span className={styles.value}>
-                    {(data.results[0]?.dateVLResultsReceived)}
+                  <span>
+                    {displayField(data.results[0]?.dateVLResultsReceived)}
                   </span>
                 </p>
               </div>
@@ -277,8 +282,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 {t("lastVLResult", "Last VL Result")}
                 </p>
                 <p>
-                  <span className={styles.value}>
-                    {(data.results[0]?.vlResults)}
+                  <span>
+                    {displayField(data.results[0]?.vlResults)}
                   </span>
                 </p>
               </div>
@@ -287,8 +292,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 {t("vlStatus", "VL Status")}
                 </p>
                 <p>
-                  <span className={styles.value}>
-                    {(data.results[0]?.vlStatus === "Unknown" ? "---" : data.results[0]?.vlStatus)}
+                  <span>
+                    {displayField(data.results[0]?.vlStatus === "Unknown" ? "---" : data.results[0]?.vlStatus)}
                   </span>
                 </p>
               </div>
@@ -297,28 +302,28 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
             <hr />
 
             <div className={styles.container}>
-              <div className={styles.content}>
+              <div className={styles.patientSummary}>
                 <p className={styles.label}>
                 {t("nameOfCHW", "Name of the Community Health Worker (CHW)")}
                 </p>
                 <p>
                   {" "}
-                  <span className={styles.value}>
-                    {(data.results[0]?.chwName)}
+                  <span>
+                    {displayField(data.results[0]?.chwName)}
                   </span>
                 </p>
               </div>
-              <div className={styles.content}>
+              <div className={styles.patientSummary}>
                 <p className={styles.label}>
                 {t("telephoneNumber", "Telephone Number")}
                 </p>
                 <p>
-                  <span className={styles.value}>
-                    {(data.results[0]?.chwPhone)}
+                  <span>
+                    {displayField(data.results[0]?.chwPhone)}
                   </span>
                 </p>
               </div>
-              <div className={styles.content}>
+              <div className={styles.patientSummary}>
                 <p className={styles.label}>
                 {t(
                 "chwAddress",
@@ -326,8 +331,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
               )}
                 </p>
                 <p>
-                  <span className={styles.value}>
-                    {(data.results[0].chwAddress)}
+                  <span>
+                    {displayField(data.results[0]?.chwAddress)}
                   </span>
                 </p>
               </div>
