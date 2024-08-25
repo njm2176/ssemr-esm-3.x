@@ -7,7 +7,6 @@ import { configSchema } from "./config-schema";
 import { dashboardMeta } from "./dashboard.meta";
 import {
   createDashboardLink,
-  registerWorkspace,
 } from "@openmrs/esm-patient-common-lib";
 import carePanelComponent from "./patient-summary-widget/care-panel.component";
 import carePanelPatientSummaryComponent from "./patient-summary/patient-summary.component";

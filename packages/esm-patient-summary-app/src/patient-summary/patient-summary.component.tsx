@@ -15,14 +15,6 @@ import { Printer } from "@carbon/react/icons";
 import { useReactToPrint } from "react-to-print";
 import PrintComponent from "../print-layout/print.component";
 import styles from "./patient-summary.scss";
-import {
-  CardHeader,
-  EmptyState,
-  ErrorState,
-  useVisitOrOfflineVisit,
-  useVitalsConceptMetadata,
-  withUnit,
-} from "@openmrs/esm-patient-common-lib";
 import usePatientData from "../hooks/usePatientData";
 import useObservationData from "../hooks/useObservationData";
 
@@ -77,6 +69,16 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
   const uniqueARTNumber = trimIdentifierDisplay(
     patientData?.identifiers[1]?.display
   );
+
+  const bmiMuac = () => {
+    if (data.results[0]?.bmi){
+      return data.results[0]?.bmi
+    }else if(data.results[0]?.muac){
+      return data.results[0]?.muac
+    }else{
+      return "---"
+    }
+  }
 
   return (
     <div className={styles.bodyContainer} ref={componentRef}>
@@ -188,6 +190,16 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   </span>
                 </p>
               </div>
+              <div className={styles.content}>
+            <p className={styles.label}>
+              {t("bmiMuac", "BMI/MUAC")}
+              </p>
+            <p>
+              <span className={styles.value}>
+                {bmiMuac()}
+              </span>
+            </p>
+          </div>
             </div>
 
             <hr />
@@ -240,6 +252,89 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
 
             <div className={styles.container}>
               <div className={styles.content}>
+                <p className={styles.label}>
+                {t("lastArvRefillDate", "Last ARV Refill Date")}
+                </p>
+                <p>
+                  {" "}
+                  <span className={styles.value}>
+                    {(data.results[0]?.lastRefillDate)}
+                  </span>
+                </p>
+              </div>
+              <div className={styles.content}>
+                <p className={styles.label}>
+                {t("dateVLRecieved", "Date Viral Load Results Received")}
+                </p>
+                <p>
+                  <span className={styles.value}>
+                    {(data.results[0]?.dateVLResultsReceived)}
+                  </span>
+                </p>
+              </div>
+              <div className={styles.content}>
+                <p className={styles.label}>
+                {t("lastVLResult", "Last VL Result")}
+                </p>
+                <p>
+                  <span className={styles.value}>
+                    {(data.results[0]?.vlResults)}
+                  </span>
+                </p>
+              </div>
+              <div className={styles.content}>
+                <p className={styles.label}>
+                {t("vlStatus", "VL Status")}
+                </p>
+                <p>
+                  <span className={styles.value}>
+                    {(data.results[0]?.vlStatus === "Unknown" ? "---" : data.results[0]?.vlStatus)}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <hr />
+
+            <div className={styles.container}>
+              <div className={styles.content}>
+                <p className={styles.label}>
+                {t("nameOfCHW", "Name of the Community Health Worker (CHW)")}
+                </p>
+                <p>
+                  {" "}
+                  <span className={styles.value}>
+                    {(data.results[0]?.chwName)}
+                  </span>
+                </p>
+              </div>
+              <div className={styles.content}>
+                <p className={styles.label}>
+                {t("telephoneNumber", "Telephone Number")}
+                </p>
+                <p>
+                  <span className={styles.value}>
+                    {(data.results[0]?.chwPhone)}
+                  </span>
+                </p>
+              </div>
+              <div className={styles.content}>
+                <p className={styles.label}>
+                {t(
+                "chwAddress",
+                "LandMark/Address Of Community Health Worker (CHW)"
+              )}
+                </p>
+                <p>
+                  <span className={styles.value}>
+                    {(data.results[0].chwAddress)}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            {/* <div className={styles.container}>
+              <div className={styles.content}>
                 <p className={styles.label}>{t("weight", "Weight")}</p>
                 <p>
                   <span className={styles.value}>
@@ -255,25 +350,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   </span>
                 </p>
               </div>
-              <div className={styles.content}>
-                <p className={styles.label}>{t("bmi", "BMI")}</p>
-                <p>
-                  <span className={styles.value}>
-                    {(data.results[0]?.bmi)}
-                  </span>
-                </p>
-              </div>
-              <div className={styles.content}>
-                <p className={styles.label}>{t("muac", "MUAC")}</p>
-                <p>
-                  <span className={styles.value}>
-                    {(
-                      data.results[0]?.muac
-                    )}
-                  </span>
-                </p>
-              </div>
-            </div>
+              
+            </div> */}
 
             <hr />
 

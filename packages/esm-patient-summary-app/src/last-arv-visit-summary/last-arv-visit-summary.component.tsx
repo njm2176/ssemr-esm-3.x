@@ -57,7 +57,7 @@ const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
             <p>{t("nextVisitDate", "Next Visit Date")}</p>
             <p>
               <span className={styles.value}>
-                {(data.results[0]?.dateOfInitiation)}
+                ---
               </span>
             </p>
           </div>

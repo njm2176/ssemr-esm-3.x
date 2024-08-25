@@ -40,17 +40,8 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
     data.results[0]?.dateVLResultsReceived
   );
   const vlResult = (data.results[0]?.vlResults);
-  let vlStatus;
+  const vlStatus = data.results[0]?.vlStatus === "Unknown" ? "---" : data.results[0]?.vlStatus;
 
-  if (!isNaN(vlResult) && vlResult >= 1000) {
-    vlStatus = "Unsuppressed";
-  }else if(!isNaN(vlResult) && vlResult < 1000){
-    vlStatus = "Suppressed";
-  }else if(vlResult === "Below Detectable (BDL)"){
-    vlStatus = "Suppressed";
-  }else{
-    vlStatus = "---";
-  }
 
   const dateVlSampleCollected = (
     data.results[0]?.dateVlSampleCollected
