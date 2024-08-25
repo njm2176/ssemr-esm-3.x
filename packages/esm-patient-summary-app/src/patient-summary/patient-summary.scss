@@ -61,6 +61,12 @@
   color: $text-02;
 }
 
+.patientSummary {
+  margin-top: spacing.$spacing-05;
+  width: 30%;
+  margin-left: spacing.$spacing-03;
+}
+
 .container {
   display: flex;
   flex-direction: row;
@@ -70,7 +76,7 @@
 
 .content {
   margin-top: spacing.$spacing-05;
-  width: 30%;
+  width: 20%;
   margin-left: spacing.$spacing-03;
 }
 
