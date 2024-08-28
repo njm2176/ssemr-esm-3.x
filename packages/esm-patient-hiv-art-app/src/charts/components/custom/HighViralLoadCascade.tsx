@@ -16,6 +16,7 @@ const SVGChart = () => {
   const chartContainerRef = useRef(null);
 
   const [chartContainerWidth, setChartContainerWidth] = useState(0);
+  const [chartHeight, setChartHeight] = useState(500);
 
   const [data, setData] = useState([]);
 
@@ -66,16 +67,23 @@ const SVGChart = () => {
   const maxValue = Math.max(...data.map((d) => d.total));
   const barWidth = (chartContainerWidth * 0.1) / (data.length - 1); // 10% of div width
 
-  const chartHeight = 500;
   const axisPadding = 40;
   const barSpacing =
     (chartContainerWidth - axisPadding * 2 - barWidth * data.length) /
     data.length;
 
-  const updateWidth = () => {
-    if (chartContainerRef.current)
-      setChartContainerWidth(chartContainerRef.current.clientWidth);
-  };
+    const updateWidth = () => {
+      if (chartContainerRef.current) {
+        setChartContainerWidth(chartContainerRef.current.clientWidth);
+  
+    
+        if (window.innerWidth < 1620) {
+          setChartHeight(300);
+        } else {
+          setChartHeight(500);
+        }
+      }
+    };
 
   useEffect(() => {
     // Measure the div's width and update the state
