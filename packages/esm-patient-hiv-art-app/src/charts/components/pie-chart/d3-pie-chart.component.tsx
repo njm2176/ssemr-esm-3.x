@@ -121,7 +121,7 @@ const D3PieChartComponent: React.FC<props> = ({
       <svg width={chartDimensions.width} height={chartDimensions.height}>
         <g
           transform={`translate(${chartDimensions.width / 2}, ${
-            chartDimensions.height / 2
+            chartDimensions.height / 2 - 80
           })`}
         >
           {pie.map((d, i) => (
