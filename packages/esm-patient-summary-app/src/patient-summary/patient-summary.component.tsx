@@ -1,7 +1,7 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
-import { Button, StructuredListSkeleton } from "@carbon/react";
+import { Button } from "@carbon/react";
 import {
   formatDate,
   useLayoutType,
@@ -17,6 +17,9 @@ import PrintComponent from "../print-layout/print.component";
 import styles from "./patient-summary.scss";
 import usePatientData from "../hooks/usePatientData";
 import useObservationData from "../hooks/useObservationData";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import logo from "../assets/primary-navigation-ssemr.png"
 
 interface PatientSummaryProps {
   patientUuid: string;
@@ -47,9 +50,57 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
   });
 
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const hideButtton = () => {
+    document.querySelectorAll('.no-print').forEach(el  => (el as HTMLElement).style.display = 'none');
+    componentRef.current.classList.add('large-font')
+  }
+
+  const getNumberOfPages = () => {
+    return document.querySelectorAll('.page-break').length
+  }
   const handlePrint = async () => {
-    await delay(500);
-    printRef();
+    // await delay(10);
+    // printRef();
+    componentRef.current.style.fontSize = "1.5rem";
+
+    const canvas = await html2canvas(componentRef.current)
+    const imgData = canvas.toDataURL("image/png");
+
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "pt",
+      format: "a4",
+    });
+
+
+    doc.setFontSize(8);
+    doc.text(`${dayjs().format("DD/MM/YYYY, HH:mm")}`, 450, 50);
+    doc.setFontSize(12);
+    doc.text(`${patientData?.person.display}`, 50, 50);
+
+    const titleText = document.querySelector('.title');
+    doc.setFontSize(16)
+    // doc.text((titleText as HTMLSpanElement).innerText.trim(), 50, 70);
+
+    const logoImage = logo
+    doc.addImage(logoImage, "PNG", 20, 60, 100, 50);
+
+    const imgWidth = 500;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    doc.addImage(imgData, "PNG", 40, 110, imgWidth, imgHeight);
+
+    // Add footer content with page number
+    // doc.text(`Page ${doc.internal.getNumberOfPages()}`, 500, 580);
+
+    const pdfBlob = await doc.output("blob");
+
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+
+    const previewWindow = window.open(pdfUrl, "_blank");
+    previewWindow?.focus();
+
+    componentRef.current.style.fontSize = "";
   };
 
   const formatDate = (date) => {
@@ -99,9 +150,10 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
           {printMode === false && (
             <Button
               size="sm"
-              className={styles.btnShow}
+              className={`${styles.btnShow} no-print`}
               onClick={() => {
-                handlePrint(), setPrintMode(true);
+                hideButtton();
+                handlePrint();
               }}
               kind="tertiary"
               renderIcon={(props) => <Printer size={16} {...props} />}

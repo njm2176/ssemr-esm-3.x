@@ -87,3 +87,13 @@
 .btnShow {
   visibility: visible;
 }
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+.large-font{
+  font-size: 3rem;
+}
