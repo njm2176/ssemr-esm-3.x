@@ -104,3 +104,13 @@
 .chart:nth-child(12) {
   grid-area: chart12;
 }
+
+
+@media screen and (max-width: 1620px) {
+  .chart {
+    height: 500px;
+  }
+  // .chart:nth-child(11) {
+  //   height: 700px;
+  // }
+}

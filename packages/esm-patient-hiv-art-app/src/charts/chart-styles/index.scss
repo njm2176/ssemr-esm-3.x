@@ -59,6 +59,7 @@
   padding: 2rem;
   height: 100%;
   gap: 4rem;
+  height: 100%;
 }
 
 .cascadeTitle {
@@ -78,6 +79,7 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  height: 100%;
 }
 
 .SVGWrapper {
@@ -119,9 +121,24 @@
   margin-bottom: auto;
 }
 
+@media screen and (max-width: 1620px) {
+  .labelText {
+    font-size: 9px;
+  }
+  .arrow {
+    width: 4px;
+  }
+  .percentageText {
+    font-size: 14px;
+  }
+  .legendText {
+    font-size: 12px;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .labelText {
-    font-size: 8px;
+    font-size: 9px;
   }
   .arrow {
     width: 4px;
@@ -130,6 +147,6 @@
     font-size: 12px;
   }
   .legendText {
-    font-size: 12px;
+    font-size: 10px;
   }
 }
