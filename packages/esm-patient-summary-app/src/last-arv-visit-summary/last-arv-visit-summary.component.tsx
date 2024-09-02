@@ -32,6 +32,8 @@ const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
     return;
   }
 
+  const displayField = (field, defaultValue = "---") => field ?? defaultValue;
+
   return (
     <>
       <div className={styles.card}>
@@ -57,7 +59,7 @@ const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
             <p>{t("nextVisitDate", "Next Visit Date")}</p>
             <p>
               <span className={styles.value}>
-                ---
+                {displayField(data.results[0]?.appointmentDate)}
               </span>
             </p>
           </div>

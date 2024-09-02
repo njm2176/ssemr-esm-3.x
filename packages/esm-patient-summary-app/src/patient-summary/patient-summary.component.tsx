@@ -270,7 +270,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 </p>
                 <p>
                   <span>
-                    {displayField(data.results[0]?.nextVisitDate)}
+                  {displayField(data.results[0]?.appointmentDate)}
                   </span>
                 </p>
               </div>
