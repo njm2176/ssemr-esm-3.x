@@ -35,10 +35,10 @@ const ChartHeaderComponent: React.FC<ChartHeaderProps> = ({
    */
   useEffect(() => {
     if (rows) {
-      const formattedResults = rows.map((client) => {
+      const formattedResults = rows?.map((client) => {
         const [landMark, village] = client.address
           .split(",")
-          .map((part) => part.split(":")[1].trim());
+          .map((part) => part?.split(":")[1].trim());
 
         return {
           ...client,
