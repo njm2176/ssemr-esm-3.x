@@ -3,16 +3,11 @@ import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import { Button } from "@carbon/react";
 import {
-  formatDate,
   useLayoutType,
   useSession,
   age,
-  parseDate,
-  useConfig,
-  usePatient,
 } from "@openmrs/esm-framework";
 import { Printer } from "@carbon/react/icons";
-import { useReactToPrint } from "react-to-print";
 import PrintComponent from "../print-layout/print.component";
 import styles from "./patient-summary.scss";
 import usePatientData from "../hooks/usePatientData";
@@ -41,30 +36,16 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
     patientUuid,
   );
 
-  const printRef = useReactToPrint({
-    content: () => componentRef.current,
-    onBeforeGetContent: () => setPrintMode(true),
-    onAfterPrint: () => setPrintMode(false),
-    pageStyle: styles.pageStyle,
-    documentTitle: patientData?.person.display,
-  });
-
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
   const hideButtton = () => {
     document.querySelectorAll('.no-print').forEach(el  => (el as HTMLElement).style.display = 'none');
-    componentRef.current.classList.add('large-font')
   }
 
   const getNumberOfPages = () => {
     return document.querySelectorAll('.page-break').length
   }
   const handlePrint = async () => {
-    // await delay(10);
-    // printRef();
-    componentRef.current.style.fontSize = "1.5rem";
-
-    const canvas = await html2canvas(componentRef.current)
+    setPrintMode(true);
+    const canvas = await html2canvas(componentRef.current);
     const imgData = canvas.toDataURL("image/png");
 
     const doc = new jsPDF({
@@ -79,10 +60,6 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
     doc.setFontSize(12);
     doc.text(`${patientData?.person.display}`, 50, 50);
 
-    const titleText = document.querySelector('.title');
-    doc.setFontSize(16)
-    // doc.text((titleText as HTMLSpanElement).innerText.trim(), 50, 70);
-
     const logoImage = logo
     doc.addImage(logoImage, "PNG", 20, 60, 100, 50);
 
@@ -91,7 +68,9 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
     doc.addImage(imgData, "PNG", 40, 110, imgWidth, imgHeight);
 
     // Add footer content with page number
-    // doc.text(`Page ${doc.internal.getNumberOfPages()}`, 500, 580);
+    const pageCount = getNumberOfPages();
+    doc.setFontSize(4);
+    doc.text(`Page ${pageCount} of ${pageCount}`, 500, 800);
 
     const pdfBlob = await doc.output("blob");
 
@@ -101,6 +80,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
     previewWindow?.focus();
 
     componentRef.current.style.fontSize = "";
+
+    setPrintMode(false);
   };
 
   const formatDate = (date) => {
