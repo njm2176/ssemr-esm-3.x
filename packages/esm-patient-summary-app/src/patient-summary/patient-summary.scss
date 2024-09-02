@@ -87,3 +87,9 @@
 .btnShow {
   visibility: visible;
 }
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
