@@ -13,6 +13,11 @@
   width: 100%;
 }
 
+.tab:disabled{
+  font-style: italic;
+  color:$secondary-color;
+}
+
 .darkInert{
   @extend .tab;
   border: 1px solid $secondary-color;
