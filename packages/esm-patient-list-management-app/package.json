@@ -1,6 +1,6 @@
 {
   "name": "@ssemr/esm-patient-list-management-app",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Microfrontend for managing patient lists in O3",
   "browser": "dist/ssemr-esm-patient-list-management-app.js",
   "main": "src/index.ts",
@@ -52,5 +52,5 @@
   "devDependencies": {
     "webpack": "^5.74.0"
   },
-  "gitHead": "44f040f07ef07035a3607a85f7e34af0fc650ab4"
+  "gitHead": "517211f4a0c7a67ba122f00b54afd9e47f03e484"
 }
