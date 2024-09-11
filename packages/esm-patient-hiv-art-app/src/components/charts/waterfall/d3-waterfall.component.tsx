@@ -171,7 +171,6 @@ const D3WaterfallComponent: React.FC<D3WaterfallChartProps> = ({
       </div>
       <svg
         ref={svgRef}
-        width={chartDimensions.width}
         height={chartDimensions.height}
       >
         {xScale && yScale && !loading && (

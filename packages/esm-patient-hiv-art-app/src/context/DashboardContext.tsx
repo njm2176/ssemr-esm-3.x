@@ -1,9 +1,9 @@
-import React, {createContext, useEffect} from "react";
-import {useChartData} from "../hooks/useChartData";
+import React, { createContext, useCallback, useEffect } from "react";
+import { useChartData } from "../hooks/useChartData";
 
 export const DashboardContext = createContext(null);
 
-const DashboardProvider = ({children}) => {
+const DashboardProvider = ({ children }) => {
   const {
     chartData,
     setCurrentTimeFilter,
@@ -42,25 +42,37 @@ const DashboardProvider = ({children}) => {
     txCURRHeaders,
   } = useChartData();
 
+  const memoizedGenericChartRequests = useCallback(async () => {
+    try {
+      await getNewlyEnrolledClients();
+      await getActiveClients();
+      await getAdultART();
+      await getChildART();
+      await getUnderCareOfCommunityProgram();
+    } catch (e) {
+      return e;
+    }
+  }, [currentTimeFilter, time]);
+
   useEffect(() => {
     const fetchDataSequentially = async () => {
       try {
-        await getNewlyEnrolledClients();
-        await getActiveClients();
-        await getAdultART();
-        await getChildART();
+        // await getNewlyEnrolledClients();
+        // await getActiveClients();
+        // await getAdultART();
+        // await getChildART();
         await getAllClients();
-        await getUnderCareOfCommunityProgram();
-        await getDueForViralLoad();
-        await getViralLoadSamples();
-        await getViralLoadResults();
-        await getViralLoadCoverage();
-        await getViralLoadSuppression();
-        await getHighViralLoad();
-        await getClientsOnAppointment();
-        await getMissedAppointments();
-        await getReturnedToTreatment();
-        await getInterruptedTreatment();
+        // await getUnderCareOfCommunityProgram();
+        // await getDueForViralLoad();
+        // await getViralLoadSamples();
+        // await getViralLoadResults();
+        // await getViralLoadCoverage();
+        // await getViralLoadSuppression();
+        // await getHighViralLoad();
+        // await getClientsOnAppointment();
+        // await getMissedAppointments();
+        // await getReturnedToTreatment();
+        // await getInterruptedTreatment();
       } catch (e) {
         return e;
       }
@@ -114,6 +126,7 @@ const DashboardProvider = ({children}) => {
         getMissedAppointments,
         getReturnedToTreatment,
         getInterruptedTreatment,
+        memoizedGenericChartRequests
       }}
     >
       {children}
