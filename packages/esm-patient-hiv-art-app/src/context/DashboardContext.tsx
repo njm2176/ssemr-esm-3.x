@@ -54,42 +54,51 @@ const DashboardProvider = ({ children }) => {
     }
   }, [currentTimeFilter, time]);
 
-  useEffect(() => {
-    const fetchDataSequentially = async () => {
-      try {
-        // await getNewlyEnrolledClients();
-        // await getActiveClients();
-        // await getAdultART();
-        // await getChildART();
-        await getAllClients();
-        // await getUnderCareOfCommunityProgram();
-        // await getDueForViralLoad();
-        // await getViralLoadSamples();
-        // await getViralLoadResults();
-        // await getViralLoadCoverage();
-        // await getViralLoadSuppression();
-        // await getHighViralLoad();
-        // await getClientsOnAppointment();
-        // await getMissedAppointments();
-        // await getReturnedToTreatment();
-        // await getInterruptedTreatment();
-      } catch (e) {
-        return e;
-      }
-    };
+  const memoizedVLChartRequests = useCallback(async () => {
+    try {
+      await getViralLoadSamples();
+      await getViralLoadResults();
+      await getViralLoadCoverage();
+      await getViralLoadSuppression();
+    } catch (e) {
+      return e;
+    }
+  }, [currentTimeFilter, time]);
 
-    fetchDataSequentially();
+  const memoizedHVLCascade = useCallback(async () => {
+    try {
+      await getHighViralLoadCascade();
+    } catch (e) {
+      return e;
+    }
+  }, [viralLoadRange]);
+
+  const memoizedWaterFallData = useCallback(async () => {
+    try {
+      await getWaterFallData();
+    } catch (e) {
+      return e;
+    }
+  }, [waterFallDateRange]);
+
+  const memoizedInitialBatchOfData = useCallback(async () => {
+    try {
+      await getAllClients();
+      await getClientsOnAppointment();
+      await getMissedAppointments();
+      await getInterruptedTreatment();
+      await getReturnedToTreatment();
+      //since it's used in stat card
+      await getDueForViralLoad();
+      await getHighViralLoad();
+    } catch (e) {
+      return e;
+    }
   }, [currentTimeFilter, time]);
 
   useEffect(() => {
-    //insert function to fetch waterfall model data
-    getWaterFallData();
-  }, [waterFallDateRange]);
-
-  useEffect(() => {
-    //insert function to fetch waterfall model data
-    getHighViralLoadCascade();
-  }, [viralLoadRange]);
+    memoizedInitialBatchOfData();
+  }, [currentTimeFilter, time]);
 
   return (
     <DashboardContext.Provider
@@ -126,7 +135,12 @@ const DashboardProvider = ({ children }) => {
         getMissedAppointments,
         getReturnedToTreatment,
         getInterruptedTreatment,
-        memoizedGenericChartRequests
+        memoizedGenericChartRequests,
+        memoizedVLChartRequests,
+        viralLoadRange,
+        memoizedHVLCascade,
+        memoizedWaterFallData,
+        waterFallDateRange,
       }}
     >
       {children}
