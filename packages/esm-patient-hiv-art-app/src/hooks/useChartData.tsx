@@ -362,7 +362,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "activeClients",
     });
 
@@ -378,7 +378,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) => console.error(error),
+      errorCallBack: (error) => error,
       chartKey: "allClients",
     });
 
@@ -394,7 +394,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "newlyEnrolledClients",
     });
 
@@ -410,7 +410,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "onAppointment",
     });
 
@@ -426,7 +426,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "missedAppointment",
     });
 
@@ -442,7 +442,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "interrupted",
     });
 
@@ -458,7 +458,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "returned",
     });
 
@@ -474,7 +474,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "dueForViralLoad",
     });
 
@@ -490,7 +490,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "viralLoadSamples",
     });
 
@@ -506,7 +506,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "viralLoadResults",
     });
 
@@ -522,7 +522,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "highViralLoad",
     });
 
@@ -538,7 +538,7 @@ export const useChartData = () => {
             processedChartData: data,
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "highViralLoadCascade",
     });
 
@@ -554,7 +554,7 @@ export const useChartData = () => {
             processedChartData: data?.results,
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "adultART",
     });
 
@@ -570,7 +570,7 @@ export const useChartData = () => {
             processedChartData: data?.results,
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "childART",
     });
 
@@ -586,7 +586,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "underCareOfCommunityProgram",
     });
 
@@ -602,7 +602,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "viralLoadCoverage",
     });
 
@@ -618,7 +618,7 @@ export const useChartData = () => {
             processedChartData: formatDataAgainstTime(data),
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "viralLoadSuppression",
     });
 
@@ -634,7 +634,7 @@ export const useChartData = () => {
             processedChartData: formatWaterfallData(data?.results),
           },
         })),
-      errorCallBack: (error) => console.error("Error", error),
+      errorCallBack: (error) => error,
       chartKey: "waterfall",
     });
 
