@@ -1,9 +1,9 @@
-import React, { createContext, useEffect } from "react";
-import { useChartData } from "../hooks/useChartData";
+import React, {createContext, useEffect} from "react";
+import {useChartData} from "../hooks/useChartData";
 
 export const DashboardContext = createContext(null);
 
-const DashboardProvider = ({ children }) => {
+const DashboardProvider = ({children}) => {
   const {
     chartData,
     setCurrentTimeFilter,
@@ -43,22 +43,31 @@ const DashboardProvider = ({ children }) => {
   } = useChartData();
 
   useEffect(() => {
-    getHighViralLoad();
-    getDueForViralLoad();
-    getNewlyEnrolledClients();
-    getClientsOnAppointment();
-    getActiveClients();
-    getMissedAppointments();
-    getAllClients();
-    getReturnedToTreatment();
-    getInterruptedTreatment();
-    getViralLoadSamples();
-    getViralLoadResults();
-    getChildART();
-    getAdultART();
-    getUnderCareOfCommunityProgram();
-    getViralLoadCoverage();
-    getViralLoadSuppression();
+    const fetchDataSequentially = async () => {
+      try {
+        await getNewlyEnrolledClients();
+        await getActiveClients();
+        await getAdultART();
+        await getChildART();
+        await getAllClients();
+        await getUnderCareOfCommunityProgram();
+        await getDueForViralLoad();
+        await getViralLoadSamples();
+        await getViralLoadResults();
+        await getViralLoadCoverage();
+        await getViralLoadSuppression();
+        await getHighViralLoad();
+        await getClientsOnAppointment();
+        await getMissedAppointments();
+        await getReturnedToTreatment();
+        await getInterruptedTreatment();
+
+      } catch (e) {
+        return e;
+      }
+    }
+
+    fetchDataSequentially()
   }, [currentTimeFilter, time]);
 
   useEffect(() => {
