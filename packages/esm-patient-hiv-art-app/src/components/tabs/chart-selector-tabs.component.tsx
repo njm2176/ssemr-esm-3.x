@@ -22,11 +22,12 @@ const ChartSelectorTabsComponent = () => {
   ];
 
   return (
-    <Tabs selectedIndex={tabs.findIndex(tab=> location.pathname === tab.path)}>
+    <Tabs
+      selectedIndex={tabs.findIndex((tab) => location.pathname === tab.path)}
+    >
       <TabList aria-label="List of tabs">
         {tabs.map((tab, index) => (
           <Tab
-            // selectedIndex={location.pathname === tab.path}
             selectedIndex={location.pathname === tab.path}
             onClick={() => navigate(tab.path)}
             key={tab.path}
