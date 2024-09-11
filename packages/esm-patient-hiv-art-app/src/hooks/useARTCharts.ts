@@ -3,7 +3,7 @@ import { DashboardContext } from "../context/DashboardContext";
 import { processWaterfallData } from "../helpers/dataManipulation";
 import { renderWaterfallTooltip } from "../helpers/tooltips";
 
-interface ChartConfigItem {
+export interface ChartConfigItem {
   chartData?: Array<any>;
   listData?: Array<any>;
   title?: string;
@@ -37,7 +37,24 @@ export const useARTCharts = () => {
     txCURRHeaders,
   } = useContext(DashboardContext);
 
-  const chartConfig: Array<ChartConfigItem> = [
+  const waterfallConfig: Array<ChartConfigItem> = [
+    {
+      loading: waterfall?.loading,
+      tooltipRenderFunction: ({ currentItem, previousItem }) =>
+        renderWaterfallTooltip({
+          currentValue: currentItem,
+          previousValue: previousItem,
+        }),
+      chartData: processWaterfallData(waterfall?.processedChartData),
+      listData: [],
+      title: "Waterfall Chart",
+      headerTableColumns: [],
+      xKey: "group",
+      chartType: "waterfall",
+    },
+  ];
+
+  const genericChartsConfig = [
     {
       loading: newlyEnrolledClients?.loading,
       tooltipRenderFunction: (row) => `Clients: ${row.clients}`,
@@ -106,6 +123,9 @@ export const useARTCharts = () => {
       headerTableColumns: defaultStatHeaders,
       chartType: "pie",
     },
+  ];
+
+  const viralLoadChartsConfig = [
     {
       loading: dueForViralLoad?.loading,
       tooltipRenderFunction: (row) => `Clients: ${row.clients}`,
@@ -190,21 +210,7 @@ export const useARTCharts = () => {
     {
       chartType: "HVL",
     },
-    {
-      loading: waterfall?.loading,
-      tooltipRenderFunction: ({ currentItem, previousItem }) =>
-        renderWaterfallTooltip({
-          currentValue: currentItem,
-          previousValue: previousItem,
-        }),
-      chartData: processWaterfallData(waterfall?.processedChartData),
-      listData: [],
-      title: "Waterfall Chart",
-      headerTableColumns: [],
-      xKey: "group",
-      chartType: "waterfall",
-    },
   ];
 
-  return { chartConfig };
+  return { waterfallConfig, genericChartsConfig, viralLoadChartsConfig };
 };

@@ -1,11 +1,10 @@
 import React from "react";
+import { useARTCharts } from "../../hooks/useARTCharts";
+import HivArtChartsLayoutComponent from "../../layouts/hiv-art-charts-layout.component";
 
 const ComplexCharts = () => {
-  return (
-    <div>
-      <p className="">complex charts</p>
-    </div>
-  );
+  const { waterfallConfig } = useARTCharts();
+  return <HivArtChartsLayoutComponent config={waterfallConfig} styleKey="waterfall" />;
 };
 
 export default ComplexCharts;

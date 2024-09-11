@@ -61,13 +61,12 @@ const DashboardProvider = ({children}) => {
         await getMissedAppointments();
         await getReturnedToTreatment();
         await getInterruptedTreatment();
-
       } catch (e) {
         return e;
       }
-    }
+    };
 
-    fetchDataSequentially()
+    fetchDataSequentially();
   }, [currentTimeFilter, time]);
 
   useEffect(() => {
@@ -98,6 +97,23 @@ const DashboardProvider = ({children}) => {
         setViralLoadRange,
         defaultStatHeaders,
         txCURRHeaders,
+        //   http requests
+        getNewlyEnrolledClients,
+        getActiveClients,
+        getAdultART,
+        getChildART,
+        getAllClients,
+        getUnderCareOfCommunityProgram,
+        getDueForViralLoad,
+        getViralLoadSamples,
+        getViralLoadResults,
+        getViralLoadCoverage,
+        getViralLoadSuppression,
+        getHighViralLoad,
+        getClientsOnAppointment,
+        getMissedAppointments,
+        getReturnedToTreatment,
+        getInterruptedTreatment,
       }}
     >
       {children}

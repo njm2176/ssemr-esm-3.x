@@ -7,13 +7,18 @@ import "@carbon/charts/styles.css";
 import SSEMRTab from "../components/tabs/SSEMRTab";
 import { DashboardContext } from "../context/DashboardContext";
 import { TimeFilter } from "../components/filter/TimeFilter";
-import HivArtChartsLayoutComponent from "../layouts/hiv-art-charts-layout.component";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import GenericChartsComponent from "../components/chart-sections/generic-charts.component";
+import ChartSelectorTabsComponent from "../components/tabs/chart-selector-tabs.component";
+import ViralLoadChartsComponent from "../components/chart-sections/viral-load-charts.component";
+import ComplexCharts from "../components/chart-sections/complex-charts.component";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();
 
   const { stats, filterTabs, currentTopFilterIndex } =
     useContext(DashboardContext);
+
   return (
     <div className={styles.container}>
       {/* ................Title......................... */}
@@ -55,8 +60,15 @@ const HomeDashboard = () => {
             <StatCardComponent item={stat} key={stat.title} />
           ))}
         </div>
-
-        <HivArtChartsLayoutComponent />
+        <ChartSelectorTabsComponent />
+        <Routes>
+          <Route path="/" element={<GenericChartsComponent />} />
+          <Route
+            path="/viral-load-charts"
+            element={<ViralLoadChartsComponent />}
+          />
+          <Route path="/waterfall-chart" element={<ComplexCharts />} />
+        </Routes>
       </div>
     </div>
   );

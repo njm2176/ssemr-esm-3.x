@@ -1,11 +1,10 @@
 import React from "react";
+import { useARTCharts } from "../../hooks/useARTCharts";
+import HivArtChartsLayoutComponent from "../../layouts/hiv-art-charts-layout.component";
 
 const ViralLoadChartsComponent = () => {
-  return (
-    <div>
-      <p className="">Viral load</p>
-    </div>
-  );
+  const { viralLoadChartsConfig } = useARTCharts();
+  return <HivArtChartsLayoutComponent config={viralLoadChartsConfig} styleKey="viral-load" />;
 };
 
 export default ViralLoadChartsComponent;

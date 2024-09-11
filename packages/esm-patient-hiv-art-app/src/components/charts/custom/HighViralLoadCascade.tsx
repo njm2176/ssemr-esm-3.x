@@ -6,7 +6,7 @@ import styles from "../index.scss";
 import { Loading } from "@carbon/react";
 import CascadeHeader from "../../headers/cascade-header.component";
 import CascadePicker from "../../filter/cascade-picker.component";
-import Tooltip from "../../tabs/cascade-tooltip.component";
+import Tooltip from "../../tooltip/cascade-tooltip.component";
 
 const SVGChart = () => {
   const {
@@ -99,7 +99,7 @@ const SVGChart = () => {
   return (
     <div className={styles.cascadeContainer}>
       <div className={styles.cascadeHeaderContainer}>
-        <div className={styles.cascadeTitle}>High Viral Load Cascade</div>
+        <div className={styles.title}>High Viral Load Cascade</div>
         <CascadePicker />
         <CascadeHeader
           data={data}
