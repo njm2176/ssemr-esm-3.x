@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import styles from "../index.scss";
 import { Loading } from "@carbon/react";
 import ChartHeaderComponent from "../shared/chart-header.component";
-import WaterfallPicker from "../../../components/filter/waterfall-picker.component";
+import WaterfallPicker from "../../filter/waterfall-picker.component";
 
 interface D3WaterfallChartProps {
   chartData?: Array<any>;

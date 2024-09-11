@@ -1,6 +1,6 @@
 import React from "react";
 import { SWRConfig } from "swr";
-import HomeDashboard from "./home-dashboard.component";
+import HomeDashboard from "./views/home-dashboard.component";
 import DashboardProvider from "./context/DashboardContext";
 import classnames from "classnames";
 import styles from "./root.scss";

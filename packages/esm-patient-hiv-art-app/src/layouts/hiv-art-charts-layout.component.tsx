@@ -1,11 +1,11 @@
 import styles from "./index.scss";
 import { useARTCharts } from "../hooks/useARTCharts";
-import D3BarChartComponent from "../charts/components/bar-graph/d3-bar-chart.component";
+import D3BarChartComponent from "../components/charts/bar-graph/d3-bar-chart.component";
 import React from "react";
-import D3LineGraphComponent from "../charts/components/line-graph/d3-line-graph.component";
-import D3PieChartComponent from "../charts/components/pie-chart/d3-pie-chart.component";
-import D3WaterfallComponent from "../charts/components/waterfall/d3-waterfall.component";
-import HighViralLoadCascade from "../charts/components/custom/HighViralLoadCascade";
+import D3LineGraphComponent from "../components/charts/line-graph/d3-line-graph.component";
+import D3PieChartComponent from "../components/charts/pie-chart/d3-pie-chart.component";
+import D3WaterfallComponent from "../components/charts/waterfall/d3-waterfall.component";
+import HighViralLoadCascade from "../components/charts/custom/HighViralLoadCascade";
 
 const HivArtChartsLayoutComponent = () => {
   const { chartConfig } = useARTCharts();

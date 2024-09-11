@@ -3,11 +3,11 @@ import {
   getAsyncLifecycle,
   getSyncLifecycle,
 } from "@openmrs/esm-framework";
-import { moduleName } from "./constants";
-import { configSchema } from "./config-schema";
-import { dashboardMeta, homeDashboardMeta } from "./dashboard.meta";
+import { moduleName } from "./config/constants";
+import { configSchema } from "./config/config-schema";
+import { dashboardMeta, homeDashboardMeta } from "./config/dashboard.meta";
 import { createDashboardLink } from "@openmrs/esm-patient-common-lib";
-import { createDashboardLink as createHomeDashboardLink } from "./DashboardLink";
+import { createDashboardLink as createHomeDashboardLink } from "./components/nav/DashboardLink";
 
 const options = {
   featureName: "esm-patient-hiv-art-app",

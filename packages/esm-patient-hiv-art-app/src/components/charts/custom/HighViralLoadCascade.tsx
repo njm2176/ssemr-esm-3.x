@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import "@carbon/charts-react/styles.css";
 import { DashboardContext } from "../../../context/DashboardContext";
 import { useCascade } from "../../../hooks/useCascade";
-import styles from "../../chart-styles/index.scss";
+import styles from "../index.scss";
 import { Loading } from "@carbon/react";
-import CascadeHeader from "../../../components/headers/cascade-header.component";
-import CascadePicker from "../../../components/filter/cascade-picker.component";
-import Tooltip from "../../../components/tabs/cascade-tooltip.component";
+import CascadeHeader from "../../headers/cascade-header.component";
+import CascadePicker from "../../filter/cascade-picker.component";
+import Tooltip from "../../tabs/cascade-tooltip.component";
 
 const SVGChart = () => {
   const {
@@ -75,8 +75,8 @@ const SVGChart = () => {
     const updateWidth = () => {
       if (chartContainerRef.current) {
         setChartContainerWidth(chartContainerRef.current.clientWidth);
-  
-    
+
+
         if (window.innerWidth < 1620) {
           setChartHeight(300);
         } else {

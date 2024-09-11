@@ -2,12 +2,12 @@ import React, { useContext } from "react";
 import { Home } from "@carbon/react/icons";
 import styles from "./home-dashboard.scss";
 import { useTranslation } from "react-i18next";
-import StatCardComponent from "./components/cards/stat-card.component";
+import StatCardComponent from "../components/cards/stat-card.component";
 import "@carbon/charts/styles.css";
-import SSEMRTab from "./components/tabs/SSEMRTab";
-import { DashboardContext } from "./context/DashboardContext";
-import { TimeFilter } from "./components/filter/TimeFilter";
-import HivArtChartsLayoutComponent from "./layouts/hiv-art-charts-layout.component";
+import SSEMRTab from "../components/tabs/SSEMRTab";
+import { DashboardContext } from "../context/DashboardContext";
+import { TimeFilter } from "../components/filter/TimeFilter";
+import HivArtChartsLayoutComponent from "../layouts/hiv-art-charts-layout.component";
 
 const HomeDashboard = () => {
   const { t } = useTranslation();

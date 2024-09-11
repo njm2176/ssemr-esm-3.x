@@ -1,7 +1,77 @@
 @use '@carbon/styles/scss/spacing';
-@use '@carbon/colors';
-@use '@carbon/styles/scss/type';
-@import "../../root.scss";
+@use '@carbon/colors/index';
+//@use '@carbon/styles/scss/type/index';
+@import "../../root";
+
+.container {
+  padding: .8rem;
+  border: 1px solid $primary-color;
+  border-radius: 8px;
+  box-shadow: 5px 5px 5px #D3D3D3;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  gap: 2rem;
+  box-sizing: border-box;
+}
+
+.spinner {
+  position: absolute;
+  display: flex;
+  width: 2rem;
+  height: 2rem;
+  top: 50%;
+  left: 50%;
+  z-index: 5;
+  transform: translateY(-50%) translateX(-50%);
+}
+
+.bars {
+  fill: $primary-color;
+  cursor: pointer;
+}
+
+.horizontalLines {
+  stroke: lightslategray;
+  stroke-dasharray: 4;
+}
+
+.tooltip {
+  pointer-events: none;
+  padding: 6px 8px;
+  position: absolute;
+  background-color: white;
+  border: 1px solid $primary-color;
+  border-radius: 10px;
+  z-index: 10;
+  display: flex;
+  flex-direction: row;
+}
+.headerContainer{
+  display: flex;
+  width: 100%;
+  height: fit-content;
+  margin-bottom: auto;
+  padding: 1rem 1rem 0rem 1rem;
+  justify-content: space-between;
+  gap: 4rem;
+  align-items: flex-start;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.waterfallFilterWrapper{
+  margin-left: auto;
+  max-width: fit-content;
+}
+
 
 .chartContainer {
   height: 100%;
@@ -150,3 +220,4 @@
     font-size: 10px;
   }
 }
+
