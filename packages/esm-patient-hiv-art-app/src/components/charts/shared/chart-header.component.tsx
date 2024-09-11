@@ -1,4 +1,4 @@
-import styles from "../../chart-styles/index.scss";
+import styles from "../index.scss";
 import {
   Modal,
   Table,

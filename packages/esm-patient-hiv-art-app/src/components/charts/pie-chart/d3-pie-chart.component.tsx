@@ -64,11 +64,11 @@ const D3PieChartComponent: React.FC<props> = ({
       });
   };
 
-  const pie = d3.pie().value((d) => d.value)(chartData);
+  const pie = d3.pie().value((d: any) => d.value)(chartData);
 
   const arc = d3.arc().innerRadius(0).outerRadius(chartDimensions.radius);
 
-  const color = d3
+  const color: any = d3
     .scaleOrdinal()
     .domain(chartData.map((d) => d.name))
     .range(d3.schemeCategory10);
@@ -124,7 +124,7 @@ const D3PieChartComponent: React.FC<props> = ({
             chartDimensions.height / 2 - 80
           })`}
         >
-          {pie.map((d, i) => (
+          {pie.map((d: any, i) => (
             <path
               key={i}
               d={arc(d)}

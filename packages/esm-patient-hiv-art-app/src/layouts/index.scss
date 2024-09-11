@@ -3,8 +3,12 @@
 @use '@carbon/styles/scss/type';
 @import "../root";
 
+.chart {
+  width: 100%;
+  height: 700px;
+}
 
-.parent {
+.generic {
   display: grid;
   width: 100%;
   gap: 2rem;
@@ -16,101 +20,137 @@
     "chart3"
     "chart4"
     "chart5"
+}
+
+@media(min-width: 1280px) {
+  .generic {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "chart1 chart2"
+      "chart3 chart4"
+      "chart5";
+  }
+}
+
+
+@media(min-width: 1440px) {
+  .generic {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-areas:
+      "chart1 chart1 chart1 chart2 chart2 chart2"
+      "chart3 chart3 chart4 chart4 chart5 chart5";
+  }
+}
+
+
+.generic-chart {
+ @extend .chart;
+}
+
+.generic-chart:nth-child(1) {
+  grid-area: chart1;
+}
+
+.generic-chart:nth-child(2) {
+  grid-area: chart2;
+}
+
+.generic-chart:nth-child(3) {
+  grid-area: chart3;
+}
+
+.generic-chart:nth-child(4) {
+  grid-area: chart4;
+}
+
+.generic-chart:nth-child(5) {
+  grid-area: chart5;
+}
+
+
+.viral-load {
+  display: grid;
+  width: 100%;
+  gap: 2rem;
+  box-sizing: border-box;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-areas:
     "chart6"
     "chart7"
     "chart8"
     "chart9"
     "chart10"
     "chart11"
-    "chart12";
 }
 
 @media(min-width: 1280px) {
-  .parent {
+  .viral-load {
     grid-template-columns: repeat(2, 1fr);
     grid-template-areas:
-      "chart1 chart2"
-      "chart3 chart4"
-      "chart5 chart6"
-      "chart7 chart8"
-      "chart9 chart10"
+      "chart6 chart7"
+      "chart8 chart9"
+      "chart10"
       "chart11 chart11"
-      "chart12 chart12";
   }
 }
+
 
 @media(min-width: 1440px) {
-  .parent {
+  .viral-load {
     grid-template-columns: repeat(6, 1fr);
     grid-template-areas:
-      "chart1 chart1 chart1 chart2 chart2 chart2"
-      "chart3 chart3 chart4 chart4 chart5 chart5"
       "chart6 chart6 chart6 chart7 chart7 chart7"
       "chart8 chart8 chart9 chart9 chart10 chart10"
-      "chart11 chart11 chart11 chart11 chart11 chart11"
-      "chart12 chart12 chart12 chart12 chart12 chart12";
+      "chart11 chart11 chart11 chart11 chart11 chart11";
   }
 }
 
-.chart {
-  width: 100%;
-  height: 700px;
+
+.viral-load-chart {
+  @extend .chart;
 }
 
-.chart:nth-child(1) {
-  grid-area: chart1;
-}
-
-.chart:nth-child(2) {
-  grid-area: chart2;
-}
-
-.chart:nth-child(3) {
-  grid-area: chart3;
-}
-
-.chart:nth-child(4) {
-  grid-area: chart4;
-}
-
-.chart:nth-child(5) {
-  grid-area: chart5;
-}
-
-.chart:nth-child(6) {
+.viral-load-chart:nth-child(1) {
   grid-area: chart6;
 }
 
-.chart:nth-child(7) {
+.viral-load-chart:nth-child(2) {
   grid-area: chart7;
 }
 
-.chart:nth-child(8) {
+.viral-load-chart:nth-child(3) {
   grid-area: chart8;
 }
 
-.chart:nth-child(9) {
+.viral-load-chart:nth-child(4) {
   grid-area: chart9;
 }
 
-.chart:nth-child(10) {
+.viral-load-chart:nth-child(5) {
   grid-area: chart10;
 }
 
-.chart:nth-child(11) {
+.viral-load-chart:nth-child(6) {
   grid-area: chart11;
 }
 
-.chart:nth-child(12) {
-  grid-area: chart12;
+
+.waterfall {
+  display: grid;
+  width: 100%;
+  gap: 2rem;
+  box-sizing: border-box;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-areas:
+    "chart12"
 }
 
 
-@media screen and (max-width: 1620px) {
-  .chart {
-    height: 500px;
-  }
-  // .chart:nth-child(11) {
-  //   height: 700px;
-  // }
+.waterfall-chart {
+  @extend .chart;
+}
+
+
+.waterfall-chart:nth-child(1) {
+  grid-area: chart12;
 }

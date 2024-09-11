@@ -32,14 +32,13 @@
 .title{
   font-size: xx-small;
   white-space: break-spaces;
-  font-weight: 500;
   text-transform: capitalize;
+  line-height: 18px;
 }
 
 @media (min-width: 1280px) {
   .title {
-    font-size: medium;
-    font-weight: 600;
+    font-size: smaller;
   }
 }
 
