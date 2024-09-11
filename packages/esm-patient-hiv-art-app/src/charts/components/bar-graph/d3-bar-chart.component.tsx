@@ -149,9 +149,11 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
     ticks?.each(function (tick, index) {
       const thisLabel = d3.select(this);
       const nextLabel = d3.select(ticks.nodes()[index + 1]);
+      // @ts-ignore
       const thisLabelWidth = thisLabel.node().getBBox().width;
       maxLabelWidth = Math.max(maxLabelWidth, thisLabelWidth);
       if (!nextLabel.empty()) {
+        // @ts-ignore
         const nextLabelWidth = nextLabel.node().getBBox().width;
         if (thisLabelWidth / 2 + nextLabelWidth / 2 > tickSpacing)
           overlap = true;
