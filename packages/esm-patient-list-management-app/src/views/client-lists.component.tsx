@@ -1,6 +1,6 @@
 import React from "react";
 import classnames from "classnames";
-import { Button, TextInput, Loading } from "@carbon/react";
+import { Button, TextInput, Loading, ProgressBar } from "@carbon/react";
 import styles from "./lists-dashboard.scss";
 import { usePatientListing } from "../hooks/usePatientListing";
 import DataTable from "react-data-table-component";
@@ -81,8 +81,9 @@ const ListsDashboard: React.FC = () => {
             />
           ))}
         </div>
+        {loading && <ProgressBar />}
         <div className={styles.listsTableContainer}>
-          {loading ? (
+          {filteredTableData?.length < 1 ? (
             <div>
               <div className={styles.noRecords}>
                 <p className={styles.noRecordsText}>
