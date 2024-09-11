@@ -112,7 +112,7 @@ export const usePatientListing = () => {
     //reset state variables
     setTableData([]);
     setTableHeaders(defaultTableHeaders);
-    setCurrentPaginationState(prev => ({
+    setCurrentPaginationState((prev) => ({
       ...prev,
       page: 0,
       size: 15,
@@ -183,7 +183,7 @@ export const usePatientListing = () => {
 
       const url = `/ws/rest/v1/ssemr/dashboard/allClients?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=${pageSize}`;
 
-      setCurrentPaginationState(prev => ({...prev, done: false}))
+      setCurrentPaginationState((prev) => ({ ...prev, done: false }));
 
       const { data } = await openmrsFetch(url);
       if (data?.results?.length > 0)
@@ -195,12 +195,12 @@ export const usePatientListing = () => {
           page: ++prev.page,
         }));
 
-      if (data?.results?.length === 0 || data?.results?.length < pageSize)
-        setCurrentPaginationState((prev) => ({...prev, page: 0, done: true}));
+      if (data?.results?.length === 0 || data?.results?.length < pageSize) {
+        setCurrentPaginationState((prev) => ({ ...prev, page: 0, done: true }));
+        setLoading(false);
+      }
     } catch (e) {
       return e;
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -305,6 +305,6 @@ export const usePatientListing = () => {
     setResetPaginationToggle,
     loading,
     filteredTableData,
-    currentPaginationState
+    currentPaginationState,
   };
 };
