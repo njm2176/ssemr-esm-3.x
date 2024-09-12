@@ -5,7 +5,6 @@ import { DashboardContext } from "../../context/DashboardContext";
 const SSEMRTab = ({ name, handler, isActive, index }) => {
   const { setCurrentTopFilterIndex } = useContext(DashboardContext);
   const handleClick = () => {
-    // handler();
     setCurrentTopFilterIndex(index);
   };
 
