@@ -9,11 +9,17 @@ const SsemrListTabComponent = ({
   activeClassName,
   inertClassName,
 }) => {
+  const handleClick = () => {
+    if (!isActive){
+      handler()
+    }
+  }
+
   return (
     <button
       disabled={disabled}
       className={isActive ? styles[activeClassName] : styles[inertClassName]}
-      onClick={handler}
+      onClick={handleClick}
     >
       {name}
     </button>
