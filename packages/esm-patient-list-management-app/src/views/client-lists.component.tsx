@@ -14,6 +14,11 @@ const customDatatableStyles = {
       fontSize: "14px",
     },
   },
+  table: {
+    style: {
+      paddingBottom: "2rem",
+    }
+  }
 };
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
@@ -83,28 +88,35 @@ const ListsDashboard: React.FC = () => {
         </div>
         {loading && <ProgressBar />}
         <div className={styles.listsTableContainer}>
-          {filteredTableData?.length < 1 ? (
-            <div>
-              <div className={styles.noRecords}>
-                <p className={styles.noRecordsText}>
-                  Please wait as we fetch the clients. This may take up to a few
-                  seconds.
-                </p>
-              </div>
-              <Loading small className={styles.spinner} withOverlay={false} />
-            </div>
-          ) : (
-            <DataTable
-              customStyles={customDatatableStyles}
-              paginationPerPage={15}
-              paginationResetDefaultPage={resetPaginationToggle}
-              subHeader
-              subHeaderComponent={SubHeaderComponentMemo}
-              columns={tableHeaders}
-              data={filteredTableData}
-              pagination
-            />
-          )}
+          <DataTable
+            customStyles={customDatatableStyles}
+            paginationPerPage={15}
+            paginationResetDefaultPage={resetPaginationToggle}
+            subHeader
+            subHeaderComponent={SubHeaderComponentMemo}
+            columns={tableHeaders}
+            data={filteredTableData}
+            pagination
+            noDataComponent={
+              filteredTableData?.length < 1 && loading ? (
+                <div>
+                  <div>
+                    <div className={styles.noRecords}>
+                      <p className={styles.noRecordsText}>
+                        Please wait as we fetch the clients. This may take up to a few
+                        seconds.
+                      </p>
+                    </div>
+                    <Loading small className={styles.spinner} withOverlay={false} />
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.noRecords}>
+                  <p className={styles.noRecordsText}>Patient with this Unique ART Number does not exist</p>
+                </div>
+              )
+            }
+          />
         </div>
       </section>
     </main>
