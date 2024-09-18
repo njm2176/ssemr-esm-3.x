@@ -388,7 +388,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   </span>
                 </p>
               </div>
-              
+
             </div> */}
 
             <hr />
@@ -421,8 +421,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 </p>
                 <p>
                   <span className={styles.value}>
-                    {currentUserSession?.user?.person?.display
-                      ? currentUserSession?.user?.person?.display
+                    {data.results[0]?.clinicianName
+                      ? data.results[0]?.clinicianName
                       : t("none", "None")}
                   </span>
                 </p>
@@ -433,8 +433,8 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 </p>
                 <p>
                   <span className={styles.value}>
-                    {currentUserSession?.user?.person?.display
-                      ? currentUserSession?.user?.person?.display
+                    {data.results[0]?.clinicianName
+                      ? data.results[0]?.clinicianName
                       : t("none", "None")}
                   </span>
                 </p>
