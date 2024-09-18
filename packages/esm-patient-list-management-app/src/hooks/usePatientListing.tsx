@@ -285,7 +285,9 @@ export const usePatientListing = () => {
   React.useEffect(() => {
     const filteredItems = tableData
       .filter((row) =>
-        row.name.toLowerCase().includes(filterText.toLowerCase())
+        row?.identifiers?.find((item) =>
+          item?.identifierType?.toLowerCase()?.includes("art")
+        )?.identifier?.toLowerCase()?.includes(filterText.toLowerCase())
       )
       .map((row, index) => ({ ...row, serialNumber: index + 1 }));
     setFilteredTableData(filteredItems);
