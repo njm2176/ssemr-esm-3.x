@@ -104,12 +104,16 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
                 "Eligibility For Viral Load Sample Collection"
               )}
             </p>
-            <p>{eligibilityforvl}</p>
+            <span className={styles.value}>
+                {(data.results[0]?.vlEligibility)}
+              </span>
           </div>
           <div className={styles.content}></div>
           <div className={styles.content}>
             <p>{t("date", "Date")}</p>
-            <p className={styles.value}>{dateVlSampleCollected}</p>
+            <span className={styles.value}>
+                {(data.results[0]?.vlDueDate)}
+              </span>
           </div>
         </div>
       </div>
