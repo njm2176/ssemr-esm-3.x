@@ -1,11 +1,28 @@
 import React from "react";
 import { screen, render } from "@testing-library/react";
+import '@testing-library/jest-dom';
 import ListsDashboard from "./client-lists.component";
 import { usePatientListing } from "../hooks/usePatientListing";
 
 jest.mock("../hooks/usePatientListing");
 
 describe("Lists Dashboard", () => {
+	beforeEach(() => {
+		(usePatientListing as jest.Mock).mockReturnValue({
+			tabs: [],
+			currentTab: 0,
+			tableHeaders: [],
+			handleTabChange: jest.fn(),
+			filterText: "",
+			setFilterText: jest.fn(),
+			resetPaginationToggle: false,
+			setResetPaginationToggle: jest.fn(),
+			loading: false,
+			filteredTableData: [],
+			currentPaginationState: {}
+		})
+	})
+
 	it("component should render without failing", () => {
 		render(<ListsDashboard />);
 		const listsDashboard = screen.getByTestId("patient-list-dashboard");
