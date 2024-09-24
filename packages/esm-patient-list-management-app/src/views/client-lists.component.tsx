@@ -78,7 +78,6 @@ const ListsDashboard: React.FC = () => {
         <div className={styles.tabs}>
           {tabs.map((tab, index) => (
             <SsemrListTabComponent
-              disabled={!currentPaginationState.done}
               name={tab.text}
               activeClassName={tab.activeClassName}
               inertClassName={tab.interClassName}
