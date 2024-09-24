@@ -742,7 +742,7 @@ export const useChartData = () => {
     {
       title: "Newly enrolled clients(TX_NEW)",
       color: "#3271F4",
-      stat: getStat(chartData.newlyEnrolledClients?.raw?.results),
+      stat: chartData.newlyEnrolledClients?.raw?.totalPatients,
       results: filterStatData(chartData.newlyEnrolledClients?.raw?.results),
       loading: chartData.newlyEnrolledClients.loading,
       headers: defaultStatHeaders,
@@ -750,7 +750,7 @@ export const useChartData = () => {
     {
       title: "Active clients (TX_CURR)",
       color: "#3271F4",
-      stat: getStat(chartData.activeClients?.raw?.results),
+      stat: chartData.activeClients?.raw?.totalPatients,
       results: filterStatData(chartData.activeClients?.raw?.results),
       loading: chartData.activeClients.loading,
       headers: txCURRHeaders,
@@ -758,7 +758,7 @@ export const useChartData = () => {
     {
       title: "On appointment",
       color: "#3271F4",
-      stat: getStat(chartData.onAppointment?.raw?.results),
+      stat: chartData.onAppointment?.raw?.totalPatients,
       results: filterStatData(chartData.onAppointment?.raw?.results),
       loading: chartData.onAppointment.loading,
       headers: defaultStatHeaders,
@@ -766,7 +766,7 @@ export const useChartData = () => {
     {
       title: "Missed appointments",
       color: "#FF0000",
-      stat: getStat(chartData.missedAppointment?.raw?.results),
+      stat: chartData.missedAppointment?.raw?.totalPatients,
       results: filterStatData(chartData.missedAppointment?.raw?.results),
       loading: chartData.missedAppointment.loading,
       headers: defaultStatHeaders,
@@ -774,7 +774,7 @@ export const useChartData = () => {
     {
       title: "Interruptions in Treatment(TX_IIT)",
       color: "#FF8503",
-      stat: getStat(chartData.interrupted?.raw?.results),
+      stat: chartData.interrupted?.raw?.totalPatients,
       results: filterStatData(chartData.interrupted?.raw?.results),
       loading: chartData.interrupted.loading,
       headers: defaultStatHeaders,
@@ -782,7 +782,7 @@ export const useChartData = () => {
     {
       title: "Returned to Treatment(TX_RTT)",
       color: "#3271F4",
-      stat: getStat(chartData.returned?.raw?.results),
+      stat: chartData.returned?.raw?.totalPatients,
       results: filterStatData(chartData.returned?.raw?.results),
       loading: chartData.returned.loading,
       headers: defaultStatHeaders,
@@ -790,7 +790,7 @@ export const useChartData = () => {
     {
       title: "Due for viral load",
       color: "#FF8503",
-      stat: getStat(chartData.dueForViralLoad?.raw?.results),
+      stat: chartData.dueForViralLoad?.raw?.totalPatients,
       results: filterStatData(chartData.dueForViralLoad?.raw?.results),
       loading: chartData.dueForViralLoad.loading,
       headers: defaultStatHeaders,
@@ -798,7 +798,7 @@ export const useChartData = () => {
     {
       title: "High viral load (>= 1000 copies/ml)",
       color: "#FF0000",
-      stat: getStat(chartData.highViralLoad?.raw?.results),
+      stat: chartData.highViralLoad?.raw?.totalPatients,
       results: filterStatData(chartData.highViralLoad?.raw?.results),
       loading: chartData.highViralLoad.loading,
       headers: defaultStatHeaders,
