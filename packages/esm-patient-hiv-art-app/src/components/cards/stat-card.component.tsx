@@ -100,9 +100,11 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
   useEffect(() => {
     if (item?.results) {
       const formattedResults = item.results?.map((client) => {
-        const [landMark, village] = client.address
-          .split(",")
-          .map((part) => part?.split(":")[1].trim());
+        const addressParts = client?.address?.split(",") || [];
+
+        // Safely extract landMark and village, ensuring they exist before trimming
+        const landMark = addressParts[0]?.split(":")[1]?.trim() || 'Unknown';
+        const village = addressParts[1]?.split(":")[1]?.trim() || 'Unknown';
 
         return {
           ...client,
