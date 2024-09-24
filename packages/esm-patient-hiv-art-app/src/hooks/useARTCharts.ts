@@ -60,7 +60,7 @@ export const useARTCharts = () => {
       tooltipRenderFunction: (row) => `Clients: ${row.clients}`,
       chartData: newlyEnrolledClients?.processedChartData,
       listData: newlyEnrolledClients?.raw?.results,
-      title: "NewlyEnrolled Clients (TX_NEW)",
+      title: "Newly Enrolled Clients (TX_NEW)",
       headerTableColumns: defaultStatHeaders,
       xKey: currentTimeFilter,
       yKey: "clients",
