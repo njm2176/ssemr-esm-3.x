@@ -212,24 +212,24 @@ export const usePatientListing = () => {
     if (currentTab === 0) {
       setTableHeaders([
         ...defaultTableHeaders,
-        {
-          name: "Clinical Status",
-          button: true,
-          cell: (row) => (
-            <Tag
-              className={
-                styles[getChipClassName({ clinicalStatus: row.clinicalStatus })]
-              }
-              size="md"
-            >
-              {row.clinicalStatus.toLowerCase().includes("interrupt")
-                ? "IIT"
-                : row.clinicalStatus.toLowerCase().includes("transfer")
-                ? "TO"
-                : row.clinicalStatus}
-            </Tag>
-          ),
-        },
+        // {
+        //   name: "Clinical Status",
+        //   button: true,
+        //   cell: (row) => (
+        //     <Tag
+        //       className={
+        //         styles[getChipClassName({ clinicalStatus: row.clinicalStatus })]
+        //       }
+        //       size="md"
+        //     >
+        //       {row.clinicalStatus.toLowerCase().includes("interrupt")
+        //         ? "IIT"
+        //         : row.clinicalStatus.toLowerCase().includes("transfer")
+        //         ? "TO"
+        //         : row.clinicalStatus}
+        //     </Tag>
+        //   ),
+        // },
       ]);
     }
     if (currentPaginationState.page > 0)
