@@ -71,6 +71,7 @@ const ListsDashboard: React.FC = () => {
   return (
     <main
       className={classnames("omrs-main-content", styles.dashboardContainer)}
+      data-testid="patient-list-dashboard"
     >
       <section className={styles.dashboard}>
         <Header />
@@ -87,7 +88,7 @@ const ListsDashboard: React.FC = () => {
           ))}
         </div>
         {loading && <ProgressBar />}
-        <div className={styles.listsTableContainer}>
+        <div className={styles.listsTableContainer} data-testid="patient-list-table">
           <DataTable
             customStyles={customDatatableStyles}
             paginationPerPage={15}
@@ -102,7 +103,7 @@ const ListsDashboard: React.FC = () => {
                 <div>
                   <div>
                     <div className={styles.noRecords}>
-                      <p className={styles.noRecordsText}>
+                      <p className={styles.noRecordsText} data-testid="no-records">
                         Please wait as we fetch the clients. This may take up to a few
                         seconds.
                       </p>

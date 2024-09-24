@@ -8,7 +8,7 @@ const Header: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className={styles.patientListHeader}>
+    <div className={styles.patientListHeader} data-testid="patient-list-header">
       <div className={styles.leftJustifiedItems}>
         <Illustration />
         <div className={styles.pageLabels}>
