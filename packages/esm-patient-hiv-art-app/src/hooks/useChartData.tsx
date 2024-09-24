@@ -175,6 +175,40 @@ export const useChartData = () => {
 
         return obj;
       });
+      fetchRemainingPages({ chartKey, url });
+    }
+  };
+
+  const fetchRemainingPages = async ({ chartKey, url }) => {
+    try {
+      const pageSize = 15;
+      let currentPageSize = 15;
+      let currentPage = 1;
+
+      while (currentPageSize === pageSize) {
+        const { data } = await openmrsFetch(
+          `${url}&page=${currentPage}&size=${pageSize}`
+        );
+        if (data?.results?.length > 0) {
+          if (Object.prototype.hasOwnProperty.call(data.results[0], "sex")) {
+            setChartData((prev) => ({
+              ...prev,
+              [chartKey]: {
+                ...prev[chartKey],
+                raw: {
+                  ...prev[chartKey]?.raw,
+                  results: [...prev[chartKey].raw.results, ...data.results],
+                },
+              },
+            }));
+          }
+        }
+
+        currentPageSize = data?.results?.length;
+        currentPage++;
+      }
+    } catch (e) {
+      return e;
     }
   };
 
