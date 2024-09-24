@@ -190,10 +190,13 @@ export const useChartData = () => {
   };
 
   const formatDataAgainstTime = (data) => {
+    if (data === undefined) return;
     let bottomAxesArray;
     if (data?.summary)
       bottomAxesArray = Object.keys(data?.summary[currentTimeFilter]);
-    else bottomAxesArray = Object.keys(data[currentTimeFilter]);
+    else if (data[currentTimeFilter])
+      bottomAxesArray = Object.keys(data[currentTimeFilter]);
+    else return;
 
     const formattedData = bottomAxesArray.map((item) => {
       const returnObject = {};
