@@ -27,7 +27,7 @@ function DashboardExtension({ dashboardLinkConfig }: { dashboardLinkConfig: Dash
         'active-left-nav-link': navLink.match(name),
       })}
       to={`${spaBasePath}/${name}`}>
-      {t('appointmentLogs', 'Appointment Logs')}
+      {t('appointmentsLogs', 'Appointments Logs')}
     </ConfigurableLink>
   );
 }
