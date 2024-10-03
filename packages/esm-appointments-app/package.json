@@ -1,7 +1,6 @@
 {
   "name": "@ssemr/esm-appointments-app",
   "version": "1.0.2",
-
   "description": "Appointments front-end module for O3",
   "browser": "dist/ssemr-esm-appointments-app.js",
   "main": "src/index.ts",
@@ -55,5 +54,4 @@
     "webpack": "^5.74.0"
   },
   "gitHead": "0249646c7c63ac12546bb70120ce924360130ed4"
-
 }
