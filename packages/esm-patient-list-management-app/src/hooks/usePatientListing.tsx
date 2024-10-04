@@ -131,19 +131,31 @@ export const usePatientListing = () => {
         break;
 
       case 1:
-        getActiveClients();
+        getActiveClients({
+          currentPage: currentPaginationState.page,
+          pageSize: currentPaginationState.size,
+        });
         break;
 
       case 2:
-        getIIT();
+        getIIT({
+          currentPage: currentPaginationState.page,
+          pageSize: currentPaginationState.size,
+        });
         break;
 
       case 3:
-        getTransferredOut();
+        getTransferredOut({
+          currentPage: currentPaginationState.page,
+          pageSize: currentPaginationState.size,
+        });
         break;
 
       case 4:
-        getDeceased();
+        getDeceased({
+          currentPage: currentPaginationState.page,
+          pageSize: currentPaginationState.size,
+        });
         break;
 
       default:
@@ -232,52 +244,159 @@ export const usePatientListing = () => {
         // },
       ]);
     }
-    if (currentPaginationState.page > 0)
-      getAllClients({
-        currentPage: currentPaginationState.page,
-        pageSize: currentPaginationState.size,
-      });
+    if (currentPaginationState.page > 0) {
+      if(currentTab === 0) {
+        getAllClients({
+          currentPage: currentPaginationState.page,
+          pageSize: currentPaginationState.size,
+        })
+      } else if(currentTab === 1) {
+        getActiveClients({
+          currentPage: currentPaginationState.page,
+          pageSize: currentPaginationState.size,
+        })
+      } else if(currentTab === 2) {
+        getIIT({
+          currentPage: currentPaginationState.page,
+          pageSize: currentPaginationState.size,
+        })
+      } else if(currentTab === 3) {
+        getTransferredOut({
+          currentPage: currentPaginationState.page,
+          pageSize: currentPaginationState.size,
+        })
+      } else if(currentTab === 4) {
+        getDeceased({
+          currentPage: currentPaginationState.page,
+          pageSize: currentPaginationState.size,
+        })
+      }
+    }
   }, [currentPaginationState.page, currentTab]);
 
-  const getActiveClients = async () =>
-    getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/activeClients?startDate=${startDate}&endDate=${endDate}`,
-      responseCallback: (data) => {
-        setTableData(data.results);
-        setTableHeaders(defaultTableHeaders);
-      },
-      errorCallBack: (error) => console.error(error),
-    });
+  const getActiveClients = async ({ currentPage, pageSize }) => {
+    try {
+      if (currentPage === 0) {
+        setTableData([]);
+        setLoading(true)
+      };
 
-  const getIIT = async () =>
-    getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/interruptedInTreatment?startDate=${startDate}&endDate=${endDate}`,
-      responseCallback: (data) => {
-        setTableData(data.results);
-        setTableHeaders(defaultTableHeaders);
-      },
-      errorCallBack: (error) => console.error(error),
-    });
+      const url = `/ws/rest/v1/ssemr/dashboard/activeClients?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=${pageSize}`;
 
-  const getTransferredOut = async () =>
-    getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/transferredOut?startDate=${startDate}&endDate=${endDate}`,
-      responseCallback: (data) => {
-        setTableData(data.results);
-        setTableHeaders(defaultTableHeaders);
-      },
-      errorCallBack: (error) => console.error(error),
-    });
+      setCurrentPaginationState((prev) => ({ ...prev, done: false }));
 
-  const getDeceased = async () =>
-    getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/deceased?startDate=${startDate}&endDate=${endDate}`,
-      responseCallback: (data) => {
-        setTableData(data.results);
-        setTableHeaders(defaultTableHeaders);
-      },
-      errorCallBack: (error) => console.error(error),
-    });
+      const { data } = await openmrsFetch(url);
+
+      if (data?.results?.length > 0)
+        setTableData((prev) => [...prev, ...data.results]);
+
+      if (data?.results?.length === pageSize)
+        setCurrentPaginationState((prev) => ({
+          ...prev,
+          page: ++prev.page,
+        }))
+
+      if (data?.results?.length === 0 || data?.results?.length < pageSize) {
+        setCurrentPaginationState((prev) => ({ ...prev, page: 0, done: true }));
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  const getIIT = async ({ currentPage, pageSize }) => {
+    try{
+      if (currentPage === 0) {
+        setTableData([]);
+        setLoading(true)
+      };
+
+      const url = `/ws/rest/v1/ssemr/dashboard/interruptedInTreatment?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=${pageSize}`;
+
+      setCurrentPaginationState((prev) => ({ ...prev, done: false }));
+
+      const { data } = await openmrsFetch(url);
+
+      if (data?.results?.length > 0)
+        setTableData((prev) => [...prev, ...data.results]);
+
+      if (data?.results?.length === pageSize)
+        setCurrentPaginationState((prev) => ({
+          ...prev,
+          page: ++prev.page,
+        }))
+
+      if (data?.results?.length === 0 || data?.results?.length < pageSize) {
+        setCurrentPaginationState((prev) => ({ ...prev, page: 0, done: true }));
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  const getTransferredOut = async ({ currentPage, pageSize }) => {
+    try{
+      if (currentPage === 0) {
+        setTableData([]);
+        setLoading(true)
+      };
+
+      const url = `/ws/rest/v1/ssemr/dashboard/transferredOut?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=${pageSize}`;
+
+      setCurrentPaginationState((prev) => ({ ...prev, done: false }));
+
+      const { data } = await openmrsFetch(url);
+
+      if (data?.results?.length > 0)
+        setTableData((prev) => [...prev, ...data.results]);
+
+      if (data?.results?.length === pageSize)
+        setCurrentPaginationState((prev) => ({
+          ...prev,
+          page: ++prev.page,
+        }))
+
+      if (data?.results?.length === 0 || data?.results?.length < pageSize) {
+        setCurrentPaginationState((prev) => ({ ...prev, page: 0, done: true }));
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  const getDeceased = async ({ currentPage, pageSize }) => {
+    try{
+      if (currentPage === 0) {
+        setTableData([]);
+        setLoading(true)
+      };
+
+      const url = `/ws/rest/v1/ssemr/dashboard/deceased?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=${pageSize}`;
+
+      setCurrentPaginationState((prev) => ({ ...prev, done: false }));
+
+      const { data } = await openmrsFetch(url);
+
+      if (data?.results?.length > 0)
+        setTableData((prev) => [...prev, ...data.results]);
+
+      if (data?.results?.length === pageSize)
+        setCurrentPaginationState((prev) => ({
+          ...prev,
+          page: ++prev.page,
+        }))
+
+      if (data?.results?.length === 0 || data?.results?.length < pageSize) {
+        setCurrentPaginationState((prev) => ({ ...prev, page: 0, done: true }));
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   React.useEffect(() => {
     getAllClients({
