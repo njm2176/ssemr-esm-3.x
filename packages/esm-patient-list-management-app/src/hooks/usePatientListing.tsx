@@ -16,7 +16,7 @@ export const usePatientListing = (initialCategory="allClients") => {
     React.useState(false);
   const [currentPaginationState, setCurrentPaginationState] = React.useState({
     page: 0,
-    size: 15,
+    size: 30,
     done: true,
   });
   const [category, setCategory] = React.useState(initialCategory);
@@ -118,7 +118,7 @@ export const usePatientListing = (initialCategory="allClients") => {
     setCurrentPaginationState((prev) => ({
       ...prev,
       page: 0,
-      size: 15,
+      size: 30,
     }));
 
     switch (selectedIndex) {
@@ -226,32 +226,10 @@ export const usePatientListing = (initialCategory="allClients") => {
       ]);
     }
     if (currentPaginationState.page > 0) {
-      if(currentTab === 0) {
-        getClients({
-          currentPage: currentPaginationState.page,
-          pageSize: currentPaginationState.size,
-        })
-      } else if(currentTab === 1) {
-        getClients({
-          currentPage: currentPaginationState.page,
-          pageSize: currentPaginationState.size,
-        })
-      } else if(currentTab === 2) {
-        getClients({
-          currentPage: currentPaginationState.page,
-          pageSize: currentPaginationState.size,
-        })
-      } else if(currentTab === 3) {
-        getClients({
-          currentPage: currentPaginationState.page,
-          pageSize: currentPaginationState.size,
-        })
-      } else if(currentTab === 4) {
-        getClients({
-          currentPage: currentPaginationState.page,
-          pageSize: currentPaginationState.size,
-        })
-      }
+      getClients({
+        currentPage: currentPaginationState.page,
+        pageSize: currentPaginationState.size,
+      })
     }
   }, [currentPaginationState.page, currentTab]);
 
