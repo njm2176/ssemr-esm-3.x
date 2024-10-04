@@ -9,12 +9,8 @@ export interface ProgramSummaryProps {
   patientUuid: string;
   code: string;
 }
-const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
-  patientUuid,
-}) => {
-  const { data, isLoading, error } = useObservationData(
-    patientUuid,
-  );
+const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
+  const { data, isLoading, error } = useObservationData(patientUuid);
   const { t } = useTranslation();
 
   const isTablet = useLayoutType() == "tablet";
@@ -36,30 +32,13 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
     return null;
   }
 
-  const vlDate = (
-    data.results[0]?.dateVLResultsReceived
-  );
-  const vlResult = (data.results[0]?.vlResults);
-  const vlStatus = data.results[0]?.vlStatus === "Unknown" ? "---" : data.results[0]?.vlStatus;
+  const vlDate = data.results[0]?.dateVLResultsReceived;
+  const vlResult = data.results[0]?.vlResults;
+  const vlStatus =
+    data.results[0]?.vlStatus === "Unknown" ? "---" : data.results[0]?.vlStatus;
 
-
-  const dateVlSampleCollected = (
-    data.results[0]?.dateVlSampleCollected
-  );
-
-  let eligibilityforvl;
-
-  if (dateVlSampleCollected) {
-    const sixMonthsInMs = 6 * 30 * 24 * 60 * 60 * 1000;
-    const currentDate = new Date();
-    const sampleCollectionDate = new Date(dateVlSampleCollected);
-    const timeDifference =
-      currentDate.getTime() - sampleCollectionDate.getTime();
-    const monthsDifference = timeDifference / sixMonthsInMs;
-    eligibilityforvl = monthsDifference >= 6 ? "Eligible" : "Not Eligible";
-  } else {
-    eligibilityforvl = "---";
-  }
+  const vlEligibilityResult = data.results[0]?.vlEligibility;
+  const dateVlSampleCollected = data.results[0]?.vlDueDate;
 
   return (
     <>
@@ -70,7 +49,7 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
             <p>
               {" "}
               <span className={styles.value}>
-                {(data.results[0]?.lastRefillDate)}
+                {data.results[0]?.lastRefillDate}
               </span>
             </p>
           </div>
@@ -104,9 +83,16 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({
                 "Eligibility For Viral Load Sample Collection"
               )}
             </p>
-            <span className={styles.value}>
-                {(data.results[0]?.vlEligibility)}
-              </span>
+
+            <p
+              className={
+                vlEligibilityResult === "Eligible"
+                  ? styles.greenChip
+                  : styles.redChip
+              }
+            >
+              {vlEligibilityResult}
+            </p>
           </div>
           <div className={styles.content}></div>
           <div className={styles.content}>
