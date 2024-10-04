@@ -196,8 +196,11 @@ export const useChartData = () => {
               [chartKey]: {
                 ...prev[chartKey],
                 raw: {
-                  ...prev[chartKey]?.raw,
-                  results: [...prev[chartKey].raw.results, ...data.results],
+                  ...(prev[chartKey]?.raw || []),
+                  results: [
+                    ...(prev[chartKey]?.raw?.results || []),
+                    ...(data?.results || []),
+                  ],
                 },
               },
             }));
