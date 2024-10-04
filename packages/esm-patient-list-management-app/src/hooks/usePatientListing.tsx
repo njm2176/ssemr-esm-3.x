@@ -1,11 +1,9 @@
 import { useTranslation } from "react-i18next";
 import React from "react";
 import { openmrsFetch } from "@openmrs/esm-framework";
-import { Tag } from "@carbon/react";
-import styles from "../views/lists-dashboard.scss";
 import Link from "@carbon/react/lib/components/UIShell/Link";
 
-export const usePatientListing = () => {
+export const usePatientListing = (initialCategory="allClients") => {
   const { t } = useTranslation();
 
   const [currentTab, setCurrentTab] = React.useState(0);
@@ -21,6 +19,7 @@ export const usePatientListing = () => {
     size: 15,
     done: true,
   });
+  const [category, setCategory] = React.useState(initialCategory);
 
   const startDate = `1970-01-01`;
 
@@ -124,45 +123,27 @@ export const usePatientListing = () => {
 
     switch (selectedIndex) {
       case 0:
-        getAllClients({
-          currentPage: currentPaginationState.page,
-          pageSize: currentPaginationState.size,
-        });
+        setCategory("allClients");
         break;
 
       case 1:
-        getActiveClients({
-          currentPage: currentPaginationState.page,
-          pageSize: currentPaginationState.size,
-        });
+        setCategory("activeClients");
         break;
 
       case 2:
-        getIIT({
-          currentPage: currentPaginationState.page,
-          pageSize: currentPaginationState.size,
-        });
+        setCategory("interruptedInTreatment")
         break;
 
       case 3:
-        getTransferredOut({
-          currentPage: currentPaginationState.page,
-          pageSize: currentPaginationState.size,
-        });
+        setCategory("transferredOut")
         break;
 
       case 4:
-        getDeceased({
-          currentPage: currentPaginationState.page,
-          pageSize: currentPaginationState.size,
-        });
+        setCategory("deceased")
         break;
 
       default:
-        getAllClients({
-          currentPage: currentPaginationState.page,
-          pageSize: currentPaginationState.size,
-        });
+        setCategory("allClients");
     }
   };
 
@@ -193,11 +174,11 @@ export const usePatientListing = () => {
     }
   };
 
-  const getAllClients = async ({ currentPage, pageSize }) => {
+  const getClients = async ({ currentPage, pageSize }) => {
     try {
       if (currentPage === 0) setLoading(true);
 
-      const url = `/ws/rest/v1/ssemr/dashboard/allClients?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=${pageSize}`;
+      const url = `/ws/rest/v1/ssemr/dashboard/${category}?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=${pageSize}`;
 
       setCurrentPaginationState((prev) => ({ ...prev, done: false }));
 
@@ -246,27 +227,27 @@ export const usePatientListing = () => {
     }
     if (currentPaginationState.page > 0) {
       if(currentTab === 0) {
-        getAllClients({
+        getClients({
           currentPage: currentPaginationState.page,
           pageSize: currentPaginationState.size,
         })
       } else if(currentTab === 1) {
-        getActiveClients({
+        getClients({
           currentPage: currentPaginationState.page,
           pageSize: currentPaginationState.size,
         })
       } else if(currentTab === 2) {
-        getIIT({
+        getClients({
           currentPage: currentPaginationState.page,
           pageSize: currentPaginationState.size,
         })
       } else if(currentTab === 3) {
-        getTransferredOut({
+        getClients({
           currentPage: currentPaginationState.page,
           pageSize: currentPaginationState.size,
         })
       } else if(currentTab === 4) {
-        getDeceased({
+        getClients({
           currentPage: currentPaginationState.page,
           pageSize: currentPaginationState.size,
         })
@@ -274,136 +255,13 @@ export const usePatientListing = () => {
     }
   }, [currentPaginationState.page, currentTab]);
 
-  const getActiveClients = async ({ currentPage, pageSize }) => {
-    try {
-      if (currentPage === 0) {
-        setTableData([]);
-        setLoading(true)
-      };
-
-      const url = `/ws/rest/v1/ssemr/dashboard/activeClients?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=${pageSize}`;
-
-      setCurrentPaginationState((prev) => ({ ...prev, done: false }));
-
-      const { data } = await openmrsFetch(url);
-
-      if (data?.results?.length > 0)
-        setTableData((prev) => [...prev, ...data.results]);
-
-      if (data?.results?.length === pageSize)
-        setCurrentPaginationState((prev) => ({
-          ...prev,
-          page: ++prev.page,
-        }))
-
-      if (data?.results?.length === 0 || data?.results?.length < pageSize) {
-        setCurrentPaginationState((prev) => ({ ...prev, page: 0, done: true }));
-        setLoading(false);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  const getIIT = async ({ currentPage, pageSize }) => {
-    try{
-      if (currentPage === 0) {
-        setTableData([]);
-        setLoading(true)
-      };
-
-      const url = `/ws/rest/v1/ssemr/dashboard/interruptedInTreatment?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=${pageSize}`;
-
-      setCurrentPaginationState((prev) => ({ ...prev, done: false }));
-
-      const { data } = await openmrsFetch(url);
-
-      if (data?.results?.length > 0)
-        setTableData((prev) => [...prev, ...data.results]);
-
-      if (data?.results?.length === pageSize)
-        setCurrentPaginationState((prev) => ({
-          ...prev,
-          page: ++prev.page,
-        }))
-
-      if (data?.results?.length === 0 || data?.results?.length < pageSize) {
-        setCurrentPaginationState((prev) => ({ ...prev, page: 0, done: true }));
-        setLoading(false);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  const getTransferredOut = async ({ currentPage, pageSize }) => {
-    try{
-      if (currentPage === 0) {
-        setTableData([]);
-        setLoading(true)
-      };
-
-      const url = `/ws/rest/v1/ssemr/dashboard/transferredOut?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=${pageSize}`;
-
-      setCurrentPaginationState((prev) => ({ ...prev, done: false }));
-
-      const { data } = await openmrsFetch(url);
-
-      if (data?.results?.length > 0)
-        setTableData((prev) => [...prev, ...data.results]);
-
-      if (data?.results?.length === pageSize)
-        setCurrentPaginationState((prev) => ({
-          ...prev,
-          page: ++prev.page,
-        }))
-
-      if (data?.results?.length === 0 || data?.results?.length < pageSize) {
-        setCurrentPaginationState((prev) => ({ ...prev, page: 0, done: true }));
-        setLoading(false);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  const getDeceased = async ({ currentPage, pageSize }) => {
-    try{
-      if (currentPage === 0) {
-        setTableData([]);
-        setLoading(true)
-      };
-
-      const url = `/ws/rest/v1/ssemr/dashboard/deceased?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=${pageSize}`;
-
-      setCurrentPaginationState((prev) => ({ ...prev, done: false }));
-
-      const { data } = await openmrsFetch(url);
-
-      if (data?.results?.length > 0)
-        setTableData((prev) => [...prev, ...data.results]);
-
-      if (data?.results?.length === pageSize)
-        setCurrentPaginationState((prev) => ({
-          ...prev,
-          page: ++prev.page,
-        }))
-
-      if (data?.results?.length === 0 || data?.results?.length < pageSize) {
-        setCurrentPaginationState((prev) => ({ ...prev, page: 0, done: true }));
-        setLoading(false);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
 
   React.useEffect(() => {
-    getAllClients({
+    getClients({
       currentPage: currentPaginationState.page,
       pageSize: currentPaginationState.size,
-    });
-  }, []);
+    })
+  }, [category]);
 
   React.useEffect(() => {
     const filteredItems = tableData
