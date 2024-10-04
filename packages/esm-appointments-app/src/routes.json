@@ -94,7 +94,7 @@
         "columns": 1,
         "columnSpan": 1,
         "slot": "patient-chart-appointments-dashboard-slot",
-        "title": "Appointments",
+        "title": "Appointments Logs",
         "path": "Appointments"
       }
     },

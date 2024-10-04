@@ -188,7 +188,7 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
         width={chartDimensions.width}
         height={chartDimensions.height}
       >
-        {xScale && yScale && !loading && chartData.length > 0 && (
+        {xScale && yScale && !loading && chartData?.length > 0 && (
           <>
             {chartData.map((d) => (
               <rect

@@ -8,6 +8,12 @@
   height: 700px;
 }
 
+@media screen and (max-width: 1620px) {
+  .chart {
+    height: 515px;
+  }
+}
+
 .generic {
   display: grid;
   width: 100%;

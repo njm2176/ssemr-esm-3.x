@@ -71,13 +71,13 @@ const ListsDashboard: React.FC = () => {
   return (
     <main
       className={classnames("omrs-main-content", styles.dashboardContainer)}
+      data-testid="patient-list-dashboard"
     >
       <section className={styles.dashboard}>
         <Header />
         <div className={styles.tabs}>
           {tabs.map((tab, index) => (
             <SsemrListTabComponent
-              disabled={!currentPaginationState.done}
               name={tab.text}
               activeClassName={tab.activeClassName}
               inertClassName={tab.interClassName}
@@ -87,7 +87,7 @@ const ListsDashboard: React.FC = () => {
           ))}
         </div>
         {loading && <ProgressBar />}
-        <div className={styles.listsTableContainer}>
+        <div className={styles.listsTableContainer} data-testid="patient-list-table">
           <DataTable
             customStyles={customDatatableStyles}
             paginationPerPage={15}
@@ -102,7 +102,7 @@ const ListsDashboard: React.FC = () => {
                 <div>
                   <div>
                     <div className={styles.noRecords}>
-                      <p className={styles.noRecordsText}>
+                      <p className={styles.noRecordsText} data-testid="no-records">
                         Please wait as we fetch the clients. This may take up to a few
                         seconds.
                       </p>
@@ -112,7 +112,7 @@ const ListsDashboard: React.FC = () => {
                 </div>
               ) : (
                 <div className={styles.noRecords}>
-                  <p className={styles.noRecordsText}>Patient with this Unique ART Number does not exist</p>
+                  <p className={styles.noRecordsText}>This patient does not exist in the system.</p>
                 </div>
               )
             }
