@@ -775,32 +775,32 @@ const AppointmentsForm: React.FC<AppointmentsFormProps> = ({
               name="provider"
               control={control}
               render={({ field: { onChange, value, onBlur, ref } }) => (
-                <TextInput
-                  id="provider"
-                  invalidText="Required"
-                  labelText={t('selectProvider', 'Select a provider')}
-                  placeholder={t('chooseProvider', 'Choose a provider')}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                  ref={ref}
-                />
-                // <Select
+                // <TextInput
                 //   id="provider"
                 //   invalidText="Required"
                 //   labelText={t('selectProvider', 'Select a provider')}
+                //   placeholder={t('chooseProvider', 'Choose a provider')}
                 //   onChange={onChange}
                 //   onBlur={onBlur}
                 //   value={value}
-                //   ref={ref}>
-                //   <SelectItem text={t('chooseProvider', 'Choose a provider')} value="" />
-                //   {providers?.providers?.length > 0 &&
-                //     providers?.providers?.map((provider) => (
-                //       <SelectItem key={provider.uuid} text={provider.display} value={provider.uuid}>
-                //         {provider.display}
-                //       </SelectItem>
-                //     ))}
-                // </Select>
+                //   ref={ref}
+                // />
+                <Select
+                  id="provider"
+                  invalidText="Required"
+                  labelText={t('selectProvider', 'Select a provider')}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  ref={ref}>
+                  <SelectItem text={t('chooseProvider', 'Choose a provider')} value="" />
+                  {providers?.providers?.length > 0 &&
+                    providers?.providers?.map((provider) => (
+                      <SelectItem key={provider.uuid} text={provider.display} value={provider.uuid}>
+                        {provider.display}
+                      </SelectItem>
+                    ))}
+                </Select>
               )}
             />
           </ResponsiveWrapper>
