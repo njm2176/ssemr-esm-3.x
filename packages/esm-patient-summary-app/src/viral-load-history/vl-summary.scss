@@ -3,6 +3,9 @@
 @use '@carbon/colors';
 @import '~@openmrs/esm-styleguide/src/vars';
 
+$success-color: #008000;
+$danger-color: #B22222;
+
 .desktopHeading {
   h4 {
     @include type.type-style('heading-compact-02');
@@ -85,4 +88,24 @@
     @include type.type-style('body-short-02');
     color: colors.$gray-100;
   }
+}
+
+.redChip{
+background-color: $danger-color;
+color: white;
+width: 45%;
+font-weight: 600;
+text-align: center;
+padding: 0.5rem;
+border-radius: 20rem;
+}
+
+.greenChip {
+background-color: $success-color;
+color: white;
+width: 45%;
+font-weight: 600;
+text-align: center;
+padding: 0.5rem;
+border-radius: 20rem;
 }
