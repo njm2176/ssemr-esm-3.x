@@ -147,33 +147,6 @@ export const usePatientListing = (initialCategory="allClients") => {
     }
   };
 
-  const getChartData = async ({ url, responseCallback, errorCallBack }) => {
-    try {
-      setLoading(true);
-      const response = await openmrsFetch(url);
-      responseCallback(response.data);
-    } catch (error) {
-      errorCallBack(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getChipClassName = ({ clinicalStatus }) => {
-    switch (clinicalStatus) {
-      case "ACTIVE":
-        return "greenChip";
-      case "INTERRUPTED_IN_TREATMENT":
-        return "amberChip";
-      case "TRANSFERRED_OUT":
-        return "blueChip";
-      case "DIED":
-        return "redChip";
-      default:
-        return "grayChip";
-    }
-  };
-
   const getClients = async ({ currentPage, pageSize }) => {
     try {
       if (currentPage === 0) setLoading(true);
@@ -203,27 +176,7 @@ export const usePatientListing = (initialCategory="allClients") => {
 
   React.useEffect(() => {
     if (currentTab === 0) {
-      setTableHeaders([
-        ...defaultTableHeaders,
-        // {
-        //   name: "Clinical Status",
-        //   button: true,
-        //   cell: (row) => (
-        //     <Tag
-        //       className={
-        //         styles[getChipClassName({ clinicalStatus: row.clinicalStatus })]
-        //       }
-        //       size="md"
-        //     >
-        //       {row.clinicalStatus.toLowerCase().includes("interrupt")
-        //         ? "IIT"
-        //         : row.clinicalStatus.toLowerCase().includes("transfer")
-        //         ? "TO"
-        //         : row.clinicalStatus}
-        //     </Tag>
-        //   ),
-        // },
-      ]);
+      setTableHeaders([...defaultTableHeaders]);
     }
     if (currentPaginationState.page > 0) {
       getClients({
