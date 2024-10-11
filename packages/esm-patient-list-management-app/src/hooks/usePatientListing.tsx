@@ -147,33 +147,6 @@ export const usePatientListing = (initialCategory="allClients") => {
     }
   };
 
-  const getChartData = async ({ url, responseCallback, errorCallBack }) => {
-    try {
-      setLoading(true);
-      const response = await openmrsFetch(url);
-      responseCallback(response.data);
-    } catch (error) {
-      errorCallBack(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getChipClassName = ({ clinicalStatus }) => {
-    switch (clinicalStatus) {
-      case "ACTIVE":
-        return "greenChip";
-      case "INTERRUPTED_IN_TREATMENT":
-        return "amberChip";
-      case "TRANSFERRED_OUT":
-        return "blueChip";
-      case "DIED":
-        return "redChip";
-      default:
-        return "grayChip";
-    }
-  };
-
   const getClients = async ({ currentPage, pageSize }) => {
     try {
       if (currentPage === 0) setLoading(true);
@@ -201,29 +174,15 @@ export const usePatientListing = (initialCategory="allClients") => {
     }
   };
 
+  const parseDate = (dateStr: string) => {
+    if(!dateStr) return null;
+    const [day, month, year] = dateStr.split("-");
+    return new Date(`${year}-${month}-${day}`);
+  };
+
   React.useEffect(() => {
     if (currentTab === 0) {
-      setTableHeaders([
-        ...defaultTableHeaders,
-        // {
-        //   name: "Clinical Status",
-        //   button: true,
-        //   cell: (row) => (
-        //     <Tag
-        //       className={
-        //         styles[getChipClassName({ clinicalStatus: row.clinicalStatus })]
-        //       }
-        //       size="md"
-        //     >
-        //       {row.clinicalStatus.toLowerCase().includes("interrupt")
-        //         ? "IIT"
-        //         : row.clinicalStatus.toLowerCase().includes("transfer")
-        //         ? "TO"
-        //         : row.clinicalStatus}
-        //     </Tag>
-        //   ),
-        // },
-      ]);
+      setTableHeaders([...defaultTableHeaders]);
     }
     if (currentPaginationState.page > 0) {
       getClients({
@@ -238,7 +197,7 @@ export const usePatientListing = (initialCategory="allClients") => {
     getClients({
       currentPage: currentPaginationState.page,
       pageSize: currentPaginationState.size,
-    })
+    });
   }, [category]);
 
   React.useEffect(() => {
@@ -249,7 +208,18 @@ export const usePatientListing = (initialCategory="allClients") => {
           item?.identifierType?.toLowerCase()?.includes("art")
         )?.identifier?.toLowerCase()?.includes(filterText.toLowerCase())
       )
-      .map((row, index) => ({ ...row, serialNumber: index + 1 }));
+      .map((row, index) => ({ ...row, serialNumber: index + 1 }))
+      .sort((a, b) => {
+        const dateA = parseDate(a.initiationDate);
+        const dateB = parseDate(b.initiationDate);
+
+        if(!dateA && !dateB) return -1;
+        if(!dateA) return 1;
+        if(!dateB) return -1;
+
+        return dateB - dateA;
+
+      });
     setFilteredTableData(filteredItems);
     setResetPaginationToggle((prev) => !prev);
   }, [filterText, tableData]);
