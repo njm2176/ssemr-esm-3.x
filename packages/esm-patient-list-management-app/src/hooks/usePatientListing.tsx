@@ -174,6 +174,12 @@ export const usePatientListing = (initialCategory="allClients") => {
     }
   };
 
+  const parseDate = (dateStr: string) => {
+    if(!dateStr) return null;
+    const [day, month, year] = dateStr.split("-");
+    return new Date(`${year}-${month}-${day}`);
+  };
+
   React.useEffect(() => {
     if (currentTab === 0) {
       setTableHeaders([...defaultTableHeaders]);
@@ -191,7 +197,7 @@ export const usePatientListing = (initialCategory="allClients") => {
     getClients({
       currentPage: currentPaginationState.page,
       pageSize: currentPaginationState.size,
-    })
+    });
   }, [category]);
 
   React.useEffect(() => {
@@ -202,7 +208,18 @@ export const usePatientListing = (initialCategory="allClients") => {
           item?.identifierType?.toLowerCase()?.includes("art")
         )?.identifier?.toLowerCase()?.includes(filterText.toLowerCase())
       )
-      .map((row, index) => ({ ...row, serialNumber: index + 1 }));
+      .map((row, index) => ({ ...row, serialNumber: index + 1 }))
+      .sort((a, b) => {
+        const dateA = parseDate(a.initiationDate);
+        const dateB = parseDate(b.initiationDate);
+
+        if(!dateA && !dateB) return -1;
+        if(!dateA) return 1;
+        if(!dateB) return -1;
+
+        return dateB - dateA;
+
+      });
     setFilteredTableData(filteredItems);
     setResetPaginationToggle((prev) => !prev);
   }, [filterText, tableData]);
