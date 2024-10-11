@@ -95,12 +95,14 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
             </p>
           </div>
           <div className={styles.content}></div>
-          <div className={styles.content}>
-            <p>{t("date", "Date")}</p>
-            <span className={styles.value}>
-                {(data.results[0]?.vlDueDate)}
-              </span>
-          </div>
+          {vlEligibilityResult === "Eligible" && (
+            <div className={styles.content}>
+              <p>{t("date", "Date")}</p>
+              <span className={styles.value}>
+                  {(data.results[0]?.vlDueDate)}
+                </span>
+            </div>
+          )}
         </div>
       </div>
     </>
