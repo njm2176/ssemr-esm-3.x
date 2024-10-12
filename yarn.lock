@@ -1557,19 +1557,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@carbon/pictograms-react@npm:^11.56.1":
-  version: 11.66.0
-  resolution: "@carbon/pictograms-react@npm:11.66.0"
-  dependencies:
-    "@carbon/icon-helpers": ^10.52.0
-    "@ibm/telemetry-js": ^1.5.0
-    prop-types: ^15.7.2
-  peerDependencies:
-    react: ">=16"
-  checksum: 62c017a2dda20ed2872a7831fc69e56ed00029f38e17cd95ff162dd68bf26f861dc4f7bc906abb1d81d7de98aff068a0cb2dcdc8a8bb1cdc72437f708113610a
-  languageName: node
-  linkType: hard
-
 "@carbon/react@npm:^1.12.0, @carbon/react@npm:^1.42.1":
   version: 1.66.0
   resolution: "@carbon/react@npm:1.66.0"
@@ -6219,12 +6206,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ssemr/esm-patient-hiv-art-app@workspace:packages/esm-patient-hiv-art-app"
   dependencies:
-    "@carbon/charts-react": ^1.5.2
-    "@carbon/pictograms-react": ^11.56.1
     "@types/uuid": ^9.0.4
     cross-env: ^7.0.3
+    css-loader: ^7.1.2
     d3: ^7.9.0
     lodash-es: ^4.17.21
+    style-loader: ^4.0.0
     uuid: ^8.3.2
     webpack: ^5.88.2
   peerDependencies:
@@ -6359,7 +6346,6 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.61.0
     "@typescript-eslint/parser": ^5.61.0
     cross-env: ^7.0.3
-    css-loader: ^6.8.1
     dotenv: ^16.0.3
     eslint: ^8.44.0
     eslint-config-prettier: ^8.8.0
@@ -6388,7 +6374,7 @@ __metadata:
     react-to-print: ^2.14.13
     rxjs: ^6.6.7
     styled-components: ^6.1.11
-    swc-loader: ^0.2.3
+    swc-loader: ^0.2.6
     turbo: ^1.10.7
     typescript: ^4.9.5
     webpack: ^5.88.1
@@ -10343,9 +10329,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:^6.8.1":
-  version: 6.11.0
-  resolution: "css-loader@npm:6.11.0"
+"css-loader@npm:^7.1.2":
+  version: 7.1.2
+  resolution: "css-loader@npm:7.1.2"
   dependencies:
     icss-utils: ^5.1.0
     postcss: ^8.4.33
@@ -10357,13 +10343,13 @@ __metadata:
     semver: ^7.5.4
   peerDependencies:
     "@rspack/core": 0.x || 1.x
-    webpack: ^5.0.0
+    webpack: ^5.27.0
   peerDependenciesMeta:
     "@rspack/core":
       optional: true
     webpack:
       optional: true
-  checksum: 5c8d35975a7121334905394e88e28f05df72f037dbed2fb8fec4be5f0b313ae73a13894ba791867d4a4190c35896da84a7fd0c54fb426db55d85ba5e714edbe3
+  checksum: 15bfd90d778ddab90ee1d04c8c8bcc13ea6c0791d01b52b09d1b1c753b3410f7a7788a510d93726a9878e70b7c1a140f21efdf5c96e1857872107551d3897822
   languageName: node
   linkType: hard
 
@@ -21413,6 +21399,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"style-loader@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "style-loader@npm:4.0.0"
+  peerDependencies:
+    webpack: ^5.27.0
+  checksum: 0b751b4cc8394a2fe1df6194bb2f6dd68e859e36f22030994bb7b5220f24f9efb5705e78b2442226e6fa4c90f74b397529c7eb0a1d7326fb016e1e140e90151c
+  languageName: node
+  linkType: hard
+
 "styled-components@npm:^5":
   version: 5.3.11
   resolution: "styled-components@npm:5.3.11"
@@ -21542,7 +21537,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swc-loader@npm:^0.2.3, swc-loader@npm:^0.2.6":
+"swc-loader@npm:^0.2.6":
   version: 0.2.6
   resolution: "swc-loader@npm:0.2.6"
   dependencies:
