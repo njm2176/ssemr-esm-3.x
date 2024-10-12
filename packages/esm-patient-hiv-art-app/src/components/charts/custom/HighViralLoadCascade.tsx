@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import "@carbon/charts-react/styles.css";
 import { DashboardContext } from "../../../context/DashboardContext";
 import { useCascade } from "../../../hooks/useCascade";
 import styles from "../index.scss";
