@@ -32,7 +32,9 @@ export const getMonthStartAndLastDate = (value) => {
   return { startDate: firstDateFormatted, endDate: lastDateFormatted };
 };
 
-export const getThisYearsFirstAndLastDate = (year) => {
+export const getThisYearsFirstAndLastDate = (
+  year = new Date().getFullYear()
+) => {
   const firstDayOfYear = new Date(year, 0, 1);
   const lastDayOfYear = new Date(year, 11, 31);
 
