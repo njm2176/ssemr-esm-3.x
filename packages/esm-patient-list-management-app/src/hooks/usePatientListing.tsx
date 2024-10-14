@@ -16,7 +16,7 @@ export const usePatientListing = (initialCategory="allClients") => {
     React.useState(false);
   const [currentPaginationState, setCurrentPaginationState] = React.useState({
     page: 0,
-    size: 30,
+    size: 15,
     done: true,
   });
   const [category, setCategory] = React.useState(initialCategory);
@@ -118,7 +118,7 @@ export const usePatientListing = (initialCategory="allClients") => {
     setCurrentPaginationState((prev) => ({
       ...prev,
       page: 0,
-      size: 30,
+      size: 15,
     }));
 
     switch (selectedIndex) {
