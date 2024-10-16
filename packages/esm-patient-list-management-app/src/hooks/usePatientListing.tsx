@@ -118,7 +118,7 @@ export const usePatientListing = (initialCategory="allClients") => {
     setCurrentPaginationState((prev) => ({
       ...prev,
       page: 0,
-      size: 30,
+      size: 15,
     }));
 
     switch (selectedIndex) {
