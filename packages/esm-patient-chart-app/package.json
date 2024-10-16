@@ -1,6 +1,6 @@
 {
   "name": "@ssemr/esm-patient-chart-app",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MPL-2.0",
   "description": "Patient dashboard microfrontend for the OpenMRS SPA",
   "browser": "dist/ssemr-esm-patient-chart-app.js",
@@ -58,5 +58,5 @@
     "@types/uuid": "^9.0.4",
     "webpack": "^5.88.2"
   },
-  "gitHead": "069ad80525b434fa410ec6f739fb6741c0c79ef2"
+  "gitHead": "4c1e074df7d3985cc3953a217bc6152dc85aa332"
 }

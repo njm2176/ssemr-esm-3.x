@@ -71,7 +71,7 @@ export function DashboardView({ dashboard, patientUuid, patient }: DashboardView
       <div className={styles.dashboardContainer}>
         <ExtensionSlot key={dashboard.slot} name={dashboard.slot} className={styles.dashboard}>
           {(extension) => {
-            const { fullWidth = false } = widgetMetas[extension.id];
+            const { fullWidth = false } = widgetMetas[extension.id] ?? {};
             return (
               <div className={classNames(styles.extension, fullWidth && styles.fullWidth)}>
                 <Extension state={state} className={styles.extensionWrapper} />
