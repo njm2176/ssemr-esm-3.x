@@ -210,8 +210,8 @@ export const usePatientListing = (initialCategory="allClients") => {
       )
       .map((row, index) => ({ ...row, serialNumber: index + 1 }))
       .sort((a, b) => {
-        const dateA = parseDate(a.initiationDate);
-        const dateB = parseDate(b.initiationDate);
+        const dateA: any = parseDate(a.initiationDate);
+        const dateB: any = parseDate(b.initiationDate);
 
         if(!dateA && !dateB) return -1;
         if(!dateA) return 1;
