@@ -679,7 +679,7 @@ export const useChartData = () => {
         })),
       errorCallBack: (error) => error,
       chartKey: "waterfall",
-      noPagination: true
+      noPagination: true,
     });
 
   const getStat = (dataSet) => {
@@ -699,12 +699,12 @@ export const useChartData = () => {
     {
       index: 1,
       title: "Children and adolescent",
-      filterFunction: (item) => item.childOrAdolescent,
+      filterFunction: (item) => item,
     },
     {
       index: 2,
       title: "pregnant and Breastfeeding Women",
-      filterFunction: (item) => item.pregnantAndBreastfeeding,
+      filterFunction: (item) => item,
     },
   ];
 
@@ -779,6 +779,14 @@ export const useChartData = () => {
     },
   ];
 
+  const iitAndMissedHeaders = [
+    ...defaultStatHeaders,
+    {
+      name: "Next appointment date",
+      selector: "appointmentDate",
+    },
+  ];
+
   const stats = [
     {
       title: "Newly enrolled clients(TX_NEW)",
@@ -810,7 +818,7 @@ export const useChartData = () => {
       stat: chartData.missedAppointment?.raw?.totalPatients,
       results: filterStatData(chartData.missedAppointment?.raw?.results),
       loading: chartData.missedAppointment.loading,
-      headers: defaultStatHeaders,
+      headers: iitAndMissedHeaders,
     },
     {
       title: "Interruptions in Treatment(TX_IIT)",
@@ -818,7 +826,7 @@ export const useChartData = () => {
       stat: chartData.interrupted?.raw?.totalPatients,
       results: filterStatData(chartData.interrupted?.raw?.results),
       loading: chartData.interrupted.loading,
-      headers: defaultStatHeaders,
+      headers: iitAndMissedHeaders,
     },
     {
       title: "Returned to Treatment(TX_RTT)",
