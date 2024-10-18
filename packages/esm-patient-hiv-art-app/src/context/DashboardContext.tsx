@@ -44,11 +44,11 @@ const DashboardProvider = ({ children }) => {
 
   const memoizedGenericChartRequests = useCallback(async () => {
     try {
-      await getNewlyEnrolledClients();
-      await getActiveClients();
-      await getAdultART();
-      await getChildART();
-      await getUnderCareOfCommunityProgram();
+      getNewlyEnrolledClients();
+      getActiveClients();
+      getAdultART();
+      getChildART();
+      getUnderCareOfCommunityProgram();
     } catch (e) {
       return e;
     }
@@ -56,10 +56,10 @@ const DashboardProvider = ({ children }) => {
 
   const memoizedVLChartRequests = useCallback(async () => {
     try {
-      await getViralLoadSamples();
-      await getViralLoadResults();
-      await getViralLoadCoverage();
-      await getViralLoadSuppression();
+      getViralLoadSamples();
+      getViralLoadResults();
+      getViralLoadCoverage();
+      getViralLoadSuppression();
     } catch (e) {
       return e;
     }
@@ -83,14 +83,14 @@ const DashboardProvider = ({ children }) => {
 
   const memoizedInitialBatchOfData = useCallback(async () => {
     try {
-      await getAllClients();
-      await getClientsOnAppointment();
-      await getMissedAppointments();
-      await getInterruptedTreatment();
-      await getReturnedToTreatment();
+      getAllClients();
+      getClientsOnAppointment();
+      getMissedAppointments();
+      getInterruptedTreatment();
+      getReturnedToTreatment();
       //since it's used in stat card
-      await getDueForViralLoad();
-      await getHighViralLoad();
+      getDueForViralLoad();
+      getHighViralLoad();
     } catch (e) {
       return e;
     }

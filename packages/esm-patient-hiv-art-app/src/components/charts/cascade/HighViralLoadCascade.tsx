@@ -71,18 +71,17 @@ const SVGChart = () => {
     (chartContainerWidth - axisPadding * 2 - barWidth * data.length) /
     data.length;
 
-    const updateWidth = () => {
-      if (chartContainerRef.current) {
-        setChartContainerWidth(chartContainerRef.current.clientWidth);
+  const updateWidth = () => {
+    if (chartContainerRef.current) {
+      setChartContainerWidth(chartContainerRef.current.clientWidth);
 
-
-        if (window.innerWidth < 1620) {
-          setChartHeight(300);
-        } else {
-          setChartHeight(500);
-        }
+      if (window.innerWidth < 1620) {
+        setChartHeight(300);
+      } else {
+        setChartHeight(500);
       }
-    };
+    }
+  };
 
   useEffect(() => {
     // Measure the div's width and update the state
