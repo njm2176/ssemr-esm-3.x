@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { DashboardContext } from "../../context/DashboardContext";
-import { DatePicker, DatePickerInput } from "@carbon/react";
+import { DatePicker, DatePickerInput, Button } from "@carbon/react";
+import styles from "./index.scss";
 
 export const TimeFilter = () => {
   const { setTime } = useContext(DashboardContext);
@@ -19,7 +20,7 @@ export const TimeFilter = () => {
     return new Date(date.getTime() - offset);
   };
 
-  useEffect(() => {
+  const handleSUbmit = () => {
     if (dateRangeValue[0] && dateRangeValue[1])
       setTime({
         startDate: adjustToOffset(dateRangeValue[0])
@@ -27,10 +28,10 @@ export const TimeFilter = () => {
           .split("T")[0],
         endDate: adjustToOffset(dateRangeValue[1]).toISOString().split("T")[0],
       });
-  }, [dateRangeValue]);
+  };
 
   return (
-    <div>
+    <div className={styles.parent}>
       <DatePicker
         value={dateRangeValue}
         onChange={changeHandler}
@@ -47,6 +48,7 @@ export const TimeFilter = () => {
           labelText="End date"
         />
       </DatePicker>
+      <Button onClick={handleSUbmit}>Submit</Button>
     </div>
   );
 };
