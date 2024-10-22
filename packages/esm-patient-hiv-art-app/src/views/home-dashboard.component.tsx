@@ -55,10 +55,9 @@ const HomeDashboard = () => {
 
         {/* ...................Stats.................... */}
         <div className={styles.stats}>
-          {stats.map(
-            (stat) =>
-              stat.results && <StatCardComponent item={stat} key={stat.title} />
-          )}
+          {stats.map((stat) => (
+            <StatCardComponent item={stat} key={stat.title} />
+          ))}
         </div>
         <ChartSelectorTabsComponent />
         <Routes>
