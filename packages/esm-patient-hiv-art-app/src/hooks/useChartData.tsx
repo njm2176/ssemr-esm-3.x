@@ -599,6 +599,7 @@ export const useChartData = () => {
         })),
       errorCallBack: (error) => error,
       chartKey: "adultART",
+      noPagination: true,
     });
 
   const getChildART = async () =>
@@ -615,6 +616,7 @@ export const useChartData = () => {
         })),
       errorCallBack: (error) => error,
       chartKey: "childART",
+      noPagination: true,
     });
 
   const getUnderCareOfCommunityProgram = async () =>
@@ -647,6 +649,7 @@ export const useChartData = () => {
         })),
       errorCallBack: (error) => error,
       chartKey: "viralLoadCoverage",
+      noPagination: true,
     });
 
   const getViralLoadSuppression = async () =>
@@ -663,6 +666,7 @@ export const useChartData = () => {
         })),
       errorCallBack: (error) => error,
       chartKey: "viralLoadSuppression",
+      noPagination: true,
     });
 
   const getWaterFallData = async () =>
