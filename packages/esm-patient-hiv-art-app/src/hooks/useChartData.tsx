@@ -768,8 +768,14 @@ export const useChartData = () => {
     },
   ];
 
+  const iitAndMissedHeaders = defaultStatHeaders;
+  iitAndMissedHeaders.splice(4, 0, {
+    name: "Next appointment date",
+    selector: "appointmentDate",
+  });
+
   const txCURRHeaders = [
-    ...defaultStatHeaders,
+    ...iitAndMissedHeaders,
     {
       name: "Eligible for VL",
       selector: "dueForVl",
@@ -780,14 +786,6 @@ export const useChartData = () => {
           </Tag>
         </TableCell>
       ),
-    },
-  ];
-
-  const iitAndMissedHeaders = [
-    ...defaultStatHeaders,
-    {
-      name: "Next appointment date",
-      selector: "appointmentDate",
     },
   ];
 
