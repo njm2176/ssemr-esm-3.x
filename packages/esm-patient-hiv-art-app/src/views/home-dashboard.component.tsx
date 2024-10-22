@@ -57,7 +57,7 @@ const HomeDashboard = () => {
         <div className={styles.stats}>
           {stats.map(
             (stat) =>
-              stat.results && <StatCardComponent item={stat} key={stat.title} />
+              stat?.stat && <StatCardComponent item={stat} key={stat.title} />
           )}
         </div>
         <ChartSelectorTabsComponent />
