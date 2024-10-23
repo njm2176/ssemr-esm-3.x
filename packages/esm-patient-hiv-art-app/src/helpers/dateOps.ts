@@ -89,3 +89,9 @@ export const getThisQuartersRange = () => {
 
   return { start, end };
 };
+
+export const parseDate = (dateStr: string) => {
+  if (!dateStr) return null;
+  const [day, month, year] = dateStr.split("-");
+  return new Date(`${year}-${month}-${day}`);
+};
