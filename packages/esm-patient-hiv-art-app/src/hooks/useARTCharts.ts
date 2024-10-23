@@ -135,7 +135,7 @@ export const useARTCharts = () => {
       headerTableColumns: defaultStatHeaders,
       xKey: currentTimeFilter,
       yKey: "clients",
-      chartType: "line",
+      chartType: "bar",
     },
     {
       loading: viralLoadSamples?.loading,
@@ -146,7 +146,7 @@ export const useARTCharts = () => {
       headerTableColumns: defaultStatHeaders,
       xKey: currentTimeFilter,
       yKey: "clients",
-      chartType: "line",
+      chartType: "bar",
     },
     {
       loading: viralLoadResults?.loading,
@@ -157,7 +157,7 @@ export const useARTCharts = () => {
       headerTableColumns: defaultStatHeaders,
       xKey: currentTimeFilter,
       yKey: "clients",
-      chartType: "line",
+      chartType: "bar",
     },
     {
       loading: viralLoadCoverage.loading,
