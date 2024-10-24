@@ -15,8 +15,15 @@ import ComplexCharts from "../components/chart-sections/complex-charts.component
 const HomeDashboard = () => {
   const { t } = useTranslation();
 
-  const { stats, filterTabs, currentTopFilterIndex } =
+  const { stats, filterTabs, currentTopFilterIndex, setTime } =
     useContext(DashboardContext);
+
+  const timeFilterSubmitHandler = (start: string, end: string) => {
+    setTime({
+      startDate: start,
+      endDate: end,
+    });
+  };
 
   return (
     <div className={styles.container}>
@@ -36,7 +43,7 @@ const HomeDashboard = () => {
             maxWidth: "500px",
           }}
         >
-          <TimeFilter />
+          <TimeFilter submitHandler={timeFilterSubmitHandler} />
         </div>
       </div>
       <div className={styles.artBody}>
