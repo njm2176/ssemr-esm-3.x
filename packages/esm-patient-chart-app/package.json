@@ -57,5 +57,6 @@
   "devDependencies": {
     "@types/uuid": "^9.0.4",
     "webpack": "^5.94.0"
-  }
+  },
+  "gitHead": "cf1d880194b778a183e8c5b19b3c7ae296aa0572"
 }
