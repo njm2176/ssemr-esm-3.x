@@ -1,12 +1,6 @@
-import React, { type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useMatch } from 'react-router-dom';
-import {
-  Extension,
-  type ExtensionData,
-  ExtensionSlot,
-  getExtensionNameFromId,
-  useExtensionSlotMeta,
-} from '@openmrs/esm-framework';
+import { Extension, ExtensionSlot, useExtensionSlotMeta } from '@openmrs/esm-framework';
 import { dashboardPath } from '../../constants';
 import styles from './dashboard-view.scss';
 import { launchPatientWorkspace, launchStartVisitPrompt } from '@openmrs/esm-patient-common-lib';
