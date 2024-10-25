@@ -1,10 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
-import { DashboardContext } from "../../context/DashboardContext";
+import React, { useState } from "react";
 import { DatePicker, DatePickerInput, Button } from "@carbon/react";
 import styles from "./index.scss";
 
-export const TimeFilter = () => {
-  const { setTime } = useContext(DashboardContext);
+interface Props {
+  submitHandler(startDate: string, endDate: string): void;
+}
+
+export const TimeFilter: React.FC<Props> = ({ submitHandler }) => {
 
   const [dateRangeValue, setDateRangeValue] = useState([
     new Date(new Date().getFullYear(), 0, 1),
@@ -20,14 +22,12 @@ export const TimeFilter = () => {
     return new Date(date.getTime() - offset);
   };
 
-  const handleSUbmit = () => {
+  const handleSubmit = () => {
     if (dateRangeValue[0] && dateRangeValue[1])
-      setTime({
-        startDate: adjustToOffset(dateRangeValue[0])
-          .toISOString()
-          .split("T")[0],
-        endDate: adjustToOffset(dateRangeValue[1]).toISOString().split("T")[0],
-      });
+      submitHandler(
+        adjustToOffset(dateRangeValue[0]).toISOString().split("T")[0],
+        adjustToOffset(dateRangeValue[1]).toISOString().split("T")[0]
+      );
   };
 
   return (
@@ -48,7 +48,7 @@ export const TimeFilter = () => {
           labelText="End date"
         />
       </DatePicker>
-      <Button onClick={handleSUbmit}>Submit</Button>
+      <Button onClick={handleSubmit}>Submit</Button>
     </div>
   );
 };
