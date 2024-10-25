@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from "react";
 import styles from "./index.scss";
-import { RadioButton, RadioButtonGroup, Select } from "@carbon/react";
+import { RadioButton, RadioButtonGroup } from "@carbon/react";
 import QuarterPickerComponent from "./quarter-picker.component";
 import { DashboardContext } from "../../context/DashboardContext";
 import MonthlyPickerComponent from "./monthly-picker.component";
