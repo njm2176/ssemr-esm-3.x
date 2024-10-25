@@ -40,8 +40,8 @@ export const useChartData = () => {
   });
 
   const [viralLoadRange, setViralLoadRange] = useState({
-    start: getThisMonthsFirstAndLast().startDate,
-    end: getThisMonthsFirstAndLast().endDate,
+    start: getThisYearsFirstAndLastDate(new Date().getFullYear()).startDate,
+    end: getThisYearsFirstAndLastDate(new Date().getFullYear()).endDate,
   });
 
   const [chartData, setChartData] = useState({
