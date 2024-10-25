@@ -1,15 +1,12 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
+import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { useFormContext, Controller } from 'react-hook-form';
-import classNames from 'classnames';
-import debounce from 'lodash-es/debounce';
-import isEmpty from 'lodash-es/isEmpty';
-import { Layer, RadioButtonGroup, RadioButton, Search, StructuredListSkeleton } from '@carbon/react';
+import { Layer, RadioButton, RadioButtonGroup, Search, StructuredListSkeleton, Tile } from '@carbon/react';
 import { PatientChartPagination } from '@openmrs/esm-patient-common-lib';
-import { useLayoutType, usePagination, type VisitType } from '@openmrs/esm-framework';
+import { useDebounce, useLayoutType, usePagination, type VisitType } from '@openmrs/esm-framework';
 import { type VisitFormData } from './visit-form.resource';
-import styles from './visit-type-overview.scss';
-import { TextInput } from '@carbon/react';
+import styles from './base-visit-type.scss';
 
 interface BaseVisitTypeProps {
   visitTypes: Array<VisitType>;
@@ -17,53 +14,56 @@ interface BaseVisitTypeProps {
 
 const BaseVisitType: React.FC<BaseVisitTypeProps> = ({ visitTypes }) => {
   const { t } = useTranslation();
+  const { control } = useFormContext<VisitFormData>();
   const isTablet = useLayoutType() === 'tablet';
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const { control } = useFormContext<VisitFormData>();
-  const [isOtherSelected, setIsOtherSelected] = useState<boolean>(false);
-  const [otherText, setOtherText] = useState<string>('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const searchResults = useMemo(() => {
-    if (!isEmpty(searchTerm)) {
-      return visitTypes.filter((visitType) => visitType.display.toLowerCase().search(searchTerm.toLowerCase()) !== -1);
-    } else {
+    if (!debouncedSearchTerm.trim()) {
       return visitTypes;
     }
-  }, [searchTerm, visitTypes]);
-
-  const handleSearch = useMemo(() => debounce((searchTerm) => setSearchTerm(searchTerm), 300), []);
+    const lowercasedTerm = debouncedSearchTerm.toLowerCase();
+    return visitTypes.filter((visitType) => visitType.display.toLowerCase().includes(lowercasedTerm));
+  }, [debouncedSearchTerm, visitTypes]);
 
   const { results, currentPage, goTo } = usePagination(searchResults, 5);
+  const hasNoMatchingSearchResults = debouncedSearchTerm.trim() !== '' && searchResults.length === 0;
 
-  const otherSelected = (value: string) => {
-    if (value === '5532b8be-2b98-4bff-997b-66e9873a95bd') {
-      setIsOtherSelected(true);
-    } else {
-      setIsOtherSelected(false);
-    }
-  }
+  const handleSearchTermChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  }, []);
 
   return (
-    <>
-      <div className={classNames(styles.visitTypeOverviewWrapper, isTablet ? styles.tablet : styles.desktop)}>
-        {visitTypes.length ? (
-          <>
-            {isTablet ? (
-              <Layer>
-                <Search
-                  onChange={(event) => handleSearch(event.target.value)}
-                  placeholder={t('searchForAVisitType', 'Search for a visit type')}
-                  labelText=""
-                />
-              </Layer>
-            ) : (
+    <div className={classNames(styles.visitTypeOverviewWrapper, isTablet ? styles.tablet : styles.desktop)}>
+      {visitTypes.length ? (
+        <>
+          {isTablet ? (
+            <Layer>
               <Search
-                onChange={(event) => handleSearch(event.target.value)}
-                placeholder={t('searchForAVisitType', 'Search for a visit type')}
                 labelText=""
+                onChange={handleSearchTermChange}
+                placeholder={t('searchForAVisitType', 'Search for a visit type')}
               />
-            )}
+            </Layer>
+          ) : (
+            <Search
+              labelText=""
+              onChange={handleSearchTermChange}
+              placeholder={t('searchForAVisitType', 'Search for a visit type')}
+            />
+          )}
 
+          {hasNoMatchingSearchResults ? (
+            <div className={styles.tileContainer}>
+              <Tile className={styles.tile}>
+                <div className={styles.tileContent}>
+                  <p className={styles.content}>{t('noVisitTypesToDisplay', 'No visit types to display')}</p>
+                  <p className={styles.helper}>{t('checkFilters', 'Check the filters above')}</p>
+                </div>
+              </Tile>
+            </div>
+          ) : (
             <Controller
               name="visitType"
               control={control}
@@ -71,12 +71,9 @@ const BaseVisitType: React.FC<BaseVisitTypeProps> = ({ visitTypes }) => {
               render={({ field: { onChange, value } }) => (
                 <RadioButtonGroup
                   className={styles.radioButtonGroup}
+                  name="visit-types"
+                  onChange={onChange}
                   orientation="vertical"
-                  onChange={ (val) => {
-                    onChange(val);
-                    otherSelected(val);
-                  }}
-                  name="radio-button-group"
                   valueSelected={value}
                 >
                   {results.map(({ uuid, display, name }) => (
@@ -85,33 +82,24 @@ const BaseVisitType: React.FC<BaseVisitTypeProps> = ({ visitTypes }) => {
                 </RadioButtonGroup>
               )}
             />
+          )}
+
+          {!hasNoMatchingSearchResults && (
             <div className={styles.paginationContainer}>
               <PatientChartPagination
-                pageNumber={currentPage}
-                totalItems={visitTypes?.length}
                 currentItems={results.length}
-                pageSize={5}
                 onPageNumberChange={({ page }) => goTo(page)}
+                pageNumber={currentPage}
+                pageSize={5}
+                totalItems={visitTypes?.length}
               />
             </div>
-          </>
-        ) : (
-          <StructuredListSkeleton />
-        )}
-      </div>
-
-      {isOtherSelected && (
-        <Layer>
-          <TextInput
-            id="other-text-input"
-            labelText={t('specifyOther', 'Please specify')}
-            value={otherText}
-            onChange={(event) => setOtherText(event.target.value)}
-            className={styles.otherTextInput}
-          />
-        </Layer>
+          )}
+        </>
+      ) : (
+        <StructuredListSkeleton className={styles.skeleton} />
       )}
-    </>
+    </div>
   );
 };
 
