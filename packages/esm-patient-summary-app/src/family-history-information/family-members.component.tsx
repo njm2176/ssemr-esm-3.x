@@ -36,8 +36,6 @@ const FamilyHistory: React.FC<FamilyHistoryProps> = ({ code }) => {
   useEffect(() => {
     getPatientUuid();
   }, []);
-
-  // const getObservationData = async () => {
   //   try {
   //     setLoading(true);
 
@@ -140,9 +138,6 @@ const FamilyHistory: React.FC<FamilyHistoryProps> = ({ code }) => {
       },
     },
   };
-
-  console.log("Family Columns", columns)
-  console.log("Family rows", rows)
 
   return (
     <div className={styles.datatable}>
