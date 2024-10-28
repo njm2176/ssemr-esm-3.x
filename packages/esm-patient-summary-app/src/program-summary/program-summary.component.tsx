@@ -59,16 +59,16 @@ const ProgramSummary: React.FC<ProgramSummaryProps> = ({
             </p>
           </div>
           <div className={styles.content}>
-            <p>{t("latestArvRegimen", "Latest ARV Regimen")}</p>
+            <p>{t("lastVisitDate", "Last Visit Date")}</p>
             <p className={styles.value}>
-              {(data.results[0]?.arvRegimen)}
+              {data.results[0]?.lastVisitDate ? data.results[0]?.lastVisitDate : "---"}
             </p>
           </div>
           <div className={styles.content}>
-            <p>{t("lastCD4Count", "Last CD4 count")}</p>
+            <p>{t("nextVisitDate", "Next Visit Date")}</p>
             <p>
               <span className={styles.value}>
-                {(data.results[0]?.lastCD4Count)}
+                {(data.results[0]?.appointmentDate)}
               </span>
             </p>
           </div>
