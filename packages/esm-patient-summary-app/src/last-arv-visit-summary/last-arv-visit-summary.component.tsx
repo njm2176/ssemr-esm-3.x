@@ -39,12 +39,9 @@ const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
       <div className={styles.card}>
         <div className={styles.container}>
           <div className={styles.content}>
-            <p>{t("lastTBStatus", "Last TB status")}</p>
-            <p>
-              {" "}
-              <span className={styles.value}>
-                {(data.results[0]?.tbStatus)}
-              </span>
+            <p>{t("latestArvRegimen", "Latest ARV Regimen")}</p>
+            <p className={styles.value}>
+              {(data.results[0]?.arvRegimen)}
             </p>
           </div>
           <div className={styles.content}>
@@ -56,18 +53,27 @@ const lastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
             </p>
           </div>
           <div className={styles.content}>
-            <p>{t("nextVisitDate", "Next Visit Date")}</p>
-            <p>
-              <span className={styles.value}>
-                {displayField(data.results[0]?.appointmentDate)}
-              </span>
-            </p>
-          </div>
-          <div className={styles.content}>
             <p>{t("whoHivClinicalStage", "WHO HIV Clinical Stage")}</p>
             <p>
               <span className={styles.value}>
                 {(data.results[0]?.whoClinicalStage)}
+              </span>
+            </p>
+          </div>
+          <div className={styles.content}>
+            <p>{t("lastTBStatus", "Last TB status")}</p>
+            <p>
+              {" "}
+              <span className={styles.value}>
+                {(data.results[0]?.tbStatus)}
+              </span>
+            </p>
+          </div>
+          <div className={styles.content}>
+            <p>{t("lastCD4Count", "Last CD4 count")}</p>
+            <p>
+              <span className={styles.value}>
+                {data.results[0]?.lastCD4Count ? data.results[0]?.lastCD4Count : "---"}
               </span>
             </p>
           </div>
