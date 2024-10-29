@@ -28,6 +28,60 @@ const useObservationData = (patientUuid) => {
     fetchData();
   }, [patientUuid]);
 
+  const defaultFamilyTableHeaders = [
+    {
+      name: "Name",
+      selector: (row) => row.name || "---"
+    },
+    {
+      name: "Age",
+      selector: (row) => row.age || "---"
+    },
+    {
+      name: "Sex",
+      selector: (row) => row.sex || "---"
+    },
+    {
+      name: "HIV Status",
+      selector: (row) => row.hivStatus || "---"
+    },
+    {
+      name: "Unique ART No.",
+      selector: (row) => row.artNumber || "---"
+    }
+  ]
+
+  const defaultIndexTableHeaders = [
+    {
+      name: "Name",
+      selector: (row) => row.name || "---"
+    },
+    {
+      name: "Age",
+      selector: (row) => row.age || "---"
+    },
+    {
+      name: "Sex",
+      selector: (row) => row.sex || "---"
+    },
+    {
+      name: "Relationship",
+      selector: (row) => row.relationship || "---"
+    },
+    {
+      name: "HIV Status",
+      selector: (row) => row.hivStatus || "---"
+    },
+    {
+      name: "Phone No.",
+      selector: (row) => row.phone || "---"
+    },
+    {
+      name: "Unique ART No.",
+      selector: (row) => row.uniqueArtNumber || "---"
+    }
+  ]
+
   // const extractObservationData = (data, keyword) => {
   //   if (data && data.results) {
   //     const observation = data.results.find((entry) =>
@@ -39,7 +93,7 @@ const useObservationData = (patientUuid) => {
   //   }
   // };
 
-  return { data, isLoading, setIsLoading, error };
+  return { data, isLoading, setIsLoading, error, defaultFamilyTableHeaders, defaultIndexTableHeaders };
 };
 
 export default useObservationData;

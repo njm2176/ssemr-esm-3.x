@@ -83,7 +83,7 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
                 "Eligibility For Viral Load Sample Collection"
               )}
             </p>
-            <Tag type={vlEligibilityResult === "Eligible" ? "magenta" : "green"}>
+            <Tag type={vlEligibilityResult === "Eligible" ? "green" : "red"} size="md">
               {vlEligibilityResult}
             </Tag>
           </div>
