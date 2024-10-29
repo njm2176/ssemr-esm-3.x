@@ -79,6 +79,9 @@ const IndexFamilyHistory: React.FC<IndexFamilyHistoryProps> = ({ code }) => {
     },
   };
 
+  console.log("columns", columns)
+  console.log("rows", rows)
+
   return (
     <div className={styles.datatable}>
         <DataTable

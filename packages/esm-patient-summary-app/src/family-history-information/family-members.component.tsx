@@ -39,6 +39,7 @@ const FamilyHistory: React.FC<FamilyHistoryProps> = ({ code }) => {
   //   try {
   //     setLoading(true);
 
+<<<<<<< HEAD
   //     const {
   //       data: { results },
   //     } = await axios.get(
@@ -105,6 +106,16 @@ const FamilyHistory: React.FC<FamilyHistoryProps> = ({ code }) => {
         (result) => result.familyMembers || []
       )
 
+=======
+  const getObservationData = () => {
+    if (data && data.results && data.results.length > 0) {
+      setLoading(true)
+
+      const allFamilyMembers = data.results.flatMap(
+        (result) => result.familyMembers || []
+      )
+
+>>>>>>> 5dc1603 (Solve conflicts)
       if(allFamilyMembers.length > 0) {
         setColumns(defaultFamilyTableHeaders)
 
@@ -138,6 +149,9 @@ const FamilyHistory: React.FC<FamilyHistoryProps> = ({ code }) => {
       },
     },
   };
+
+  console.log("Family Columns", columns)
+  console.log("Family rows", rows)
 
   return (
     <div className={styles.datatable}>
