@@ -12,14 +12,10 @@ export interface IndexFamilyHistoryProps {
 const IndexFamilyHistory: React.FC<IndexFamilyHistoryProps> = ({ code }) => {
   const [patientUuid, setPatientUuid] = useState("");
 
-  const [loading, setLoading] = useState(false);
-
-  const [patientData, setPatientData] = useState([]);
-
   const [columns, setColumns] = useState([]);
   const [rows, setRows] = useState([]);
 
-  const { data, defaultIndexTableHeaders } = useObservationData(patientUuid)
+  const { data, defaultIndexTableHeaders } = useObservationData(patientUuid);
 
   const getPatientUuid = () => {
     const currentUrl = window.location.href;
@@ -39,25 +35,17 @@ const IndexFamilyHistory: React.FC<IndexFamilyHistoryProps> = ({ code }) => {
 
   const getObservationData = () => {
     if (data && data.results && data.results.length > 0) {
-      setLoading(true)
-
       const allFamilyMembers = data.results.flatMap(
         (result) => result.indexFamilyMembers || []
       );
 
       if (allFamilyMembers.length > 0) {
         setColumns(defaultIndexTableHeaders);
-  
-        setRows(allFamilyMembers);
-      } else {
-        console.log("No family members found in the data");
-      }
 
-      setLoading(false)
-    } else {
-      console.log("Data is empty or not yet available");
+        setRows(allFamilyMembers);
+      }
     }
-  }
+  };
 
   useEffect(() => {
     if (data) getObservationData();
@@ -81,19 +69,19 @@ const IndexFamilyHistory: React.FC<IndexFamilyHistoryProps> = ({ code }) => {
 
   return (
     <div className={styles.datatable}>
-        <DataTable
-          columns={columns}
-          data={rows}
-          responsive
-          pagination
-          customStyles={customStyles}
-          striped
-          fixedHeader
-          pointerOnHover
-          noDataComponent={
-            <div className={styles.emptyText}>No Index Family Members Found</div>
-          }
-        />
+      <DataTable
+        columns={columns}
+        data={rows}
+        responsive
+        pagination
+        customStyles={customStyles}
+        striped
+        fixedHeader
+        pointerOnHover
+        noDataComponent={
+          <div className={styles.emptyText}>No Index Family Members Found</div>
+        }
+      />
     </div>
   );
 };
