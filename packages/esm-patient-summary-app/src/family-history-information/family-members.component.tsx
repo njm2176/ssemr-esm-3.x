@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import DataTable from "react-data-table-component";
 import styles from "./more-info.scss";
 import useObservationData from "../hooks/useObservationData";
@@ -12,14 +11,10 @@ export interface FamilyHistoryProps {
 const FamilyHistory: React.FC<FamilyHistoryProps> = ({ code }) => {
   const [patientUuid, setPatientUuid] = useState("");
 
-  const [loading, setLoading] = useState(false);
-
-  const [patientData, setPatientData] = useState([]);
-
   const [columns, setColumns] = useState([]);
   const [rows, setRows] = useState([]);
 
-  const { data, defaultFamilyTableHeaders } = useObservationData(patientUuid)
+  const { data, defaultFamilyTableHeaders } = useObservationData(patientUuid);
 
   const getPatientUuid = () => {
     const currentUrl = window.location.href;
@@ -37,28 +32,19 @@ const FamilyHistory: React.FC<FamilyHistoryProps> = ({ code }) => {
     getPatientUuid();
   }, []);
 
-
   const getObservationData = () => {
     if (data && data.results && data.results.length > 0) {
-      setLoading(true)
-
       const allFamilyMembers = data.results.flatMap(
         (result) => result.familyMembers || []
-      )
+      );
 
-      if(allFamilyMembers.length > 0) {
-        setColumns(defaultFamilyTableHeaders)
+      if (allFamilyMembers.length > 0) {
+        setColumns(defaultFamilyTableHeaders);
 
-        setRows(allFamilyMembers)
-      }else {
-        console.log("No family members present")
+        setRows(allFamilyMembers);
       }
-
-      setLoading(false)
-    } else {
-      console.log("Data is empty or not yet available")
     }
-  }
+  };
 
   useEffect(() => {
     if (data) getObservationData();
@@ -82,19 +68,19 @@ const FamilyHistory: React.FC<FamilyHistoryProps> = ({ code }) => {
 
   return (
     <div className={styles.datatable}>
-        <DataTable
-          columns={columns}
-          data={rows}
-          responsive
-          pagination
-          customStyles={customStyles}
-          striped
-          fixedHeader
-          pointerOnHover
-          noDataComponent={
-            <div className={styles.emptyText}>No Family Members Found</div>
-          }
-        />
+      <DataTable
+        columns={columns}
+        data={rows}
+        responsive
+        pagination
+        customStyles={customStyles}
+        striped
+        fixedHeader
+        pointerOnHover
+        noDataComponent={
+          <div className={styles.emptyText}>No Family Members Found</div>
+        }
+      />
     </div>
   );
 };
