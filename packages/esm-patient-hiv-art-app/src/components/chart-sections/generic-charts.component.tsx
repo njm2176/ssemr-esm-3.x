@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import HivArtChartsLayoutComponent from "../../layouts/hiv-art-charts-layout.component";
-import { useARTCharts } from "../../hooks/useARTCharts";
+import { useCharts } from "../../hooks/useCharts";
 import { DashboardContext } from "../../context/DashboardContext";
 
 const GenericCharts = () => {
-  const { genericChartsConfig } = useARTCharts();
+  const { genericChartsConfig } = useCharts();
 
   const { time, categoryFilter, memoizedGenericChartRequests } =
     useContext(DashboardContext);

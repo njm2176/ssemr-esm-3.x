@@ -15,7 +15,7 @@ import ComplexCharts from "../components/chart-sections/complex-charts.component
 const HomeDashboard = () => {
   const { t } = useTranslation();
 
-  const { stats, filterTabs, currentTopFilterIndex, setTime } =
+  const { stats, setTime } =
     useContext(DashboardContext);
 
   const timeFilterSubmitHandler = (start: string, end: string) => {

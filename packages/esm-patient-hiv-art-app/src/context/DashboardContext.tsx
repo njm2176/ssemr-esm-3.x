@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useEffect } from "react";
-import { useChartData } from "../hooks/useChartData";
+import { useART } from "../hooks/useART";
 import { chartRequestConfig } from "../helpers/chartRequestConfig";
 
 export const DashboardContext = createContext(null);
@@ -10,55 +10,34 @@ const DashboardProvider = ({ children }) => {
     time,
     setTime,
     categoryFilter,
-    getChartDatav2,
+    getDashboardData,
     setCategoryFilter,
-    getActiveClients,
-    getAllClients,
-    getNewlyEnrolledClients,
-    getClientsOnAppointment,
-    getMissedAppointments,
-    getInterruptedTreatment,
-    getReturnedToTreatment,
-    getDueForViralLoad,
-    getViralLoadResults,
-    getViralLoadSamples,
-    getHighViralLoad,
-    getAdultART,
-    getChildART,
     stats,
-    getUnderCareOfCommunityProgram,
-    getViralLoadCoverage,
-    getViralLoadSuppression,
-    getHighViralLoadCascade,
-    setWaterFallDateRange,
     waterFallDateRange,
+    setWaterFallDateRange,
     viralLoadRange,
     setViralLoadRange,
-    getWaterFallData,
     defaultStatHeaders,
     txCURRHeaders,
-  } = useChartData();
-
-  console.log("chart data", chartData);
+  } = useART();
 
   const memoizedGenericChartRequests = useCallback(async () => {
     try {
-
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.adultART,
         url: chartRequestConfig.adultART.url({
           time,
         }),
       });
 
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.childART,
         url: chartRequestConfig.childART.url({
           time,
         }),
       });
 
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.underCareOfCommunityProgram,
         url: chartRequestConfig.underCareOfCommunityProgram.url({
           time,
@@ -71,28 +50,28 @@ const DashboardProvider = ({ children }) => {
 
   const memoizedVLChartRequests = useCallback(async () => {
     try {
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.viralLoadSamples,
         url: chartRequestConfig.viralLoadSamples.url({
           time,
         }),
       });
 
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.viralLoadResults,
         url: chartRequestConfig.viralLoadResults.url({
           time,
         }),
       });
 
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.viralLoadCoverage,
         url: chartRequestConfig.viralLoadCoverage.url({
           time,
         }),
       });
 
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.viralLoadSuppression,
         url: chartRequestConfig.viralLoadSuppression.url({
           time,
@@ -105,7 +84,7 @@ const DashboardProvider = ({ children }) => {
 
   const memoizedHVLCascade = useCallback(() => {
     try {
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.highViralLoadCascade,
         url: chartRequestConfig.highViralLoadCascade.url({
           time: viralLoadRange,
@@ -118,7 +97,7 @@ const DashboardProvider = ({ children }) => {
 
   const memoizedWaterFallData = useCallback(() => {
     try {
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.waterfall,
         url: chartRequestConfig.waterfall.url({
           time: waterFallDateRange,
@@ -131,7 +110,7 @@ const DashboardProvider = ({ children }) => {
 
   const memoizedInitialBatchOfData = useCallback(async () => {
     try {
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.newlyEnrolledClients,
         url: chartRequestConfig.newlyEnrolledClients.url({
           time,
@@ -139,7 +118,7 @@ const DashboardProvider = ({ children }) => {
         }),
       });
 
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.activeClients,
         url: chartRequestConfig.activeClients.url({
           time,
@@ -147,13 +126,13 @@ const DashboardProvider = ({ children }) => {
         }),
       });
 
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.allClients,
         url: chartRequestConfig.allClients.url({
           time,
         }),
       });
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.onAppointment,
         url: chartRequestConfig.onAppointment.url({
           time,
@@ -161,35 +140,35 @@ const DashboardProvider = ({ children }) => {
         }),
       });
 
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.missedAppointment,
         url: chartRequestConfig.missedAppointment.url({
           time,
           categoryFilter,
         }),
       });
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.interrupted,
         url: chartRequestConfig.interrupted.url({
           time,
           categoryFilter,
         }),
       });
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.returned,
         url: chartRequestConfig.returned.url({
           time,
           categoryFilter,
         }),
       });
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.dueForViralLoad,
         url: chartRequestConfig.dueForViralLoad.url({
           time,
           categoryFilter,
         }),
       });
-      getChartDatav2({
+      getDashboardData({
         ...chartRequestConfig.highViralLoad,
         url: chartRequestConfig.highViralLoad.url({
           time,
@@ -199,11 +178,11 @@ const DashboardProvider = ({ children }) => {
     } catch (e) {
       return e;
     }
-  }, [time]);
+  }, [time, categoryFilter]);
 
   useEffect(() => {
     memoizedInitialBatchOfData();
-  }, [time]);
+  }, [time, categoryFilter]);
 
   return (
     <DashboardContext.Provider
@@ -218,23 +197,6 @@ const DashboardProvider = ({ children }) => {
         setViralLoadRange,
         defaultStatHeaders,
         txCURRHeaders,
-        //   http requests
-        getNewlyEnrolledClients,
-        getActiveClients,
-        getAdultART,
-        getChildART,
-        getAllClients,
-        getUnderCareOfCommunityProgram,
-        getDueForViralLoad,
-        getViralLoadSamples,
-        getViralLoadResults,
-        getViralLoadCoverage,
-        getViralLoadSuppression,
-        getHighViralLoad,
-        getClientsOnAppointment,
-        getMissedAppointments,
-        getReturnedToTreatment,
-        getInterruptedTreatment,
         memoizedGenericChartRequests,
         memoizedVLChartRequests,
         viralLoadRange,

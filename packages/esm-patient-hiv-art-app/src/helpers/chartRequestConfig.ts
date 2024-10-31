@@ -89,7 +89,7 @@ export const chartRequestConfig = {
   adultART: {
     url: ({ time }) =>
       `/ws/rest/v1/ssemr/dashboard/adultRegimenTreatment?startDate=${time.startDate}&endDate=${time.endDate}`,
-    processor: (data) => data,
+    processor: (data) => data.results,
     chartKey: "adultART",
     noPagination: true,
   },

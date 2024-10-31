@@ -16,7 +16,7 @@ export interface ChartConfigItem {
   total?: number;
 }
 
-export const useARTCharts = () => {
+export const useCharts = () => {
   const {
     chartData: {
       newlyEnrolledClients,

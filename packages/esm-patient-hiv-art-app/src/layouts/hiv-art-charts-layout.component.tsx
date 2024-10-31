@@ -1,5 +1,5 @@
 import styles from "./index.scss";
-import { ChartConfigItem } from "../hooks/useARTCharts";
+import { ChartConfigItem } from "../hooks/useCharts";
 import D3BarChartComponent from "../components/charts/bar-graph/d3-bar-chart.component";
 import React from "react";
 import D3LineGraphComponent from "../components/charts/line-graph/d3-line-graph.component";
