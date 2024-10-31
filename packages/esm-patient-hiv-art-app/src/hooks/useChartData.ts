@@ -1,37 +1,25 @@
 import { openmrsFetch } from "@openmrs/esm-framework";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
-  getThisMonthsFirstAndLast,
   getThisQuartersRange,
   getThisYearsFirstAndLastDate,
-  parseDate,
 } from "../helpers/dateOps";
-import Link from "@carbon/react/lib/components/UIShell/Link";
-import { TableCell, Tag } from "@carbon/react";
+import { initialChartDataState } from "../assets/initialChartDataState";
+import { formatDataAgainstTime } from "../helpers/formatDataAgainstTime";
+import { formatWaterfallData } from "../helpers/formatWaterfallData";
+import { sortLineListByAppointmentDate } from "../helpers/sortLineListByAppointmentDate";
+import {
+  defaultStatHeaders,
+  iitAndMissedHeaders,
+  txCURRHeaders,
+} from "../helpers/statCardHeaders";
 
 export const useChartData = () => {
-  const filterOptions = [
-    {
-      name: "Year",
-      value: "groupYear",
-    },
-    {
-      name: "Month",
-      value: "groupMonth",
-    },
-    {
-      name: "Week",
-      value: "groupWeek",
-    },
-  ];
-
-  const [currentTopFilterIndex, setCurrentTopFilterIndex] = useState(0);
-
-  const [filters, setFilters] = useState(filterOptions[0].value);
+  const [categoryFilter, setCategoryFilter] = useState("");
 
   const [time, setTime] = useState({
-    startDate: getThisYearsFirstAndLastDate(new Date().getFullYear()).startDate,
-    endDate: getThisYearsFirstAndLastDate(new Date().getFullYear()).endDate,
+    startDate: getThisYearsFirstAndLastDate().startDate,
+    endDate: getThisYearsFirstAndLastDate().endDate,
   });
 
   const [waterFallDateRange, setWaterFallDateRange] = useState({
@@ -44,102 +32,7 @@ export const useChartData = () => {
     end: getThisYearsFirstAndLastDate(new Date().getFullYear()).endDate,
   });
 
-  const [chartData, setChartData] = useState({
-    activeClients: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    allClients: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    newlyEnrolledClients: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    onAppointment: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    missedAppointment: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    interrupted: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    returned: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    dueForViralLoad: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    adultART: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    childART: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    viralLoadSamples: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    viralLoadResults: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    highViralLoad: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    underCareOfCommunityProgram: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    viralLoadCoverage: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    viralLoadSuppression: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    highViralLoadCascade: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-    waterfall: {
-      raw: null,
-      processedChartData: [],
-      loading: false,
-    },
-  });
-
-  const [currentTimeFilter, setCurrentTimeFilter] = useState(
-    filterOptions[0].value
-  );
+  const [chartData, setChartData] = useState(initialChartDataState);
 
   const getChartData = async ({
     url,
@@ -149,35 +42,41 @@ export const useChartData = () => {
     noPagination = false,
   }) => {
     try {
-      setChartData((prev) => {
-        const obj = {
-          ...prev,
-        };
-        obj[chartKey] = {
+      /**
+       * Init loading state for  the specific chart
+       */
+      setChartData((prev) => ({
+        ...prev,
+        [chartKey]: {
           ...prev[chartKey],
           loading: true,
-        };
+        },
+      }));
 
-        return obj;
-      });
-
+      /**
+       * send API call
+       */
       const response = await openmrsFetch(url);
+
+      /**
+       * Hit the callbacksasa
+       */
       responseCallback(response.data);
     } catch (error) {
       errorCallBack(error);
     } finally {
-      setChartData((prev) => {
-        const obj = {
-          ...prev,
-        };
-
-        obj[chartKey] = {
+      /**
+       * Turn off the loading state
+       */
+      setChartData((prev) => ({
+        ...prev,
+        [chartKey]: {
           ...prev[chartKey],
           loading: false,
-        };
+        },
+      }));
+dsds
 
-        return obj;
-      });
       !noPagination && fetchRemainingPages({ chartKey, url });
     }
   };
@@ -218,184 +117,12 @@ export const useChartData = () => {
     }
   };
 
-  const formatViralLoadData = (data) => {
-    const processedData = data?.summary?.groupYear?.map((item) => {
-      const keys = Object.keys(item);
-      return {
-        value: item[keys[0]],
-        group: keys[0],
-      };
-    });
-    return processedData;
-  };
-
-  const formatDataAgainstTime = (data) => {
-    if (data === undefined) return;
-    let bottomAxesArray;
-    if (data?.summary)
-      bottomAxesArray = Object.keys(data?.summary[currentTimeFilter]);
-    else if (data[currentTimeFilter])
-      bottomAxesArray = Object.keys(data[currentTimeFilter]);
-    else return;
-
-    const formattedData = bottomAxesArray.map((item) => {
-      const returnObject = {};
-      returnObject[currentTimeFilter] = item;
-
-      let clients;
-      if (data?.summary) clients = data?.summary[currentTimeFilter][item];
-      else clients = data[currentTimeFilter][item];
-      returnObject["clients"] = clients;
-
-      return returnObject;
-    });
-
-    return formattedData;
-  };
-
-  const formatWaterfallData = (data) => {
-    const TX_CURR = data.find((item) => Object.keys(item).includes("TX_CURR"))[
-      "TX_CURR"
-    ];
-
-    const transferIn = data.find((item) =>
-      Object.keys(item).includes("Transfer In")
-    )["Transfer In"];
-
-    const TX_NEW = data.find((item) => Object.keys(item).includes("TX_NEW"))[
-      "TX_NEW"
-    ];
-
-    const TX_RTT = data.find((item) => Object.keys(item).includes("TX_RTT"))[
-      "TX_RTT"
-    ];
-
-    const potentialTXCurr = data.find((item) =>
-      Object.keys(item).includes("Potential TX_CURR")
-    )["Potential TX_CURR"];
-
-    const transferOut = data.find((item) =>
-      Object.keys(item).includes("Transfer Out")
-    )["Transfer Out"];
-
-    const TX_DEATH = data.find((item) =>
-      Object.keys(item).includes("TX_DEATH")
-    )["TX_DEATH"];
-
-    const selfTransfer = data.find((item) =>
-      Object.keys(item).includes("TX_ML_Self Transfer")
-    )["TX_ML_Self Transfer"];
-
-    const refusal = data.find((item) =>
-      Object.keys(item).includes("TX_ML_Refusal/Stopped")
-    )["TX_ML_Refusal/Stopped"];
-
-    const onARTLessThanThree = data.find((item) =>
-      Object.keys(item).includes("TX_ML_IIT (<3 mo)")
-    )["TX_ML_IIT (<3 mo)"];
-
-    const onARTMoreThanThree = data.find((item) =>
-      Object.keys(item).includes("TX_ML_IIT (3+ mo)")
-    )["TX_ML_IIT (3+ mo)"];
-
-    const calculated = data.find((item) =>
-      Object.keys(item).includes("CALCULATED TX_CURR")
-    )["CALCULATED TX_CURR"];
-
-    const processed = [
-      {
-        group: "TX_CURR",
-        value: [0, TX_CURR],
-      },
-      {
-        group: "Transfer In",
-        value: [TX_CURR, transferIn + TX_CURR],
-      },
-      {
-        group: "TX_NEW",
-        value: [transferIn + TX_CURR, transferIn + TX_CURR + TX_NEW],
-      },
-      {
-        group: "TX_RTT",
-        value: [
-          transferIn + TX_CURR + TX_NEW,
-          transferIn + TX_CURR + TX_NEW + TX_RTT,
-        ],
-      },
-      {
-        group: "Potential TX_CURR",
-        value: [0, potentialTXCurr],
-      },
-      {
-        group: "Transfer Out",
-        value: [potentialTXCurr - transferOut, potentialTXCurr],
-      },
-      {
-        group: "TX_DEATH",
-        value: [
-          potentialTXCurr - transferOut - TX_DEATH,
-          potentialTXCurr - transferOut,
-        ],
-      },
-      {
-        group: "TX_ML_Self Transfer",
-        value: [
-          potentialTXCurr - transferOut - TX_DEATH - selfTransfer,
-          potentialTXCurr - transferOut - TX_DEATH,
-        ],
-      },
-      {
-        group: "TX_ML_Refusal/Stopped",
-        value: [
-          potentialTXCurr - transferOut - TX_DEATH - selfTransfer - refusal,
-          potentialTXCurr - transferOut - TX_DEATH - selfTransfer,
-        ],
-      },
-      {
-        group: "TX_ML_IIT (on ART <3 mo)",
-        value: [
-          potentialTXCurr -
-            transferOut -
-            TX_DEATH -
-            selfTransfer -
-            refusal -
-            onARTLessThanThree,
-          potentialTXCurr - transferOut - TX_DEATH - selfTransfer - refusal,
-        ],
-      },
-      {
-        group: "TX_ML_IIT (on ART 3+ mo)",
-        value: [
-          potentialTXCurr -
-            transferOut -
-            TX_DEATH -
-            selfTransfer -
-            refusal -
-            onARTLessThanThree -
-            onARTMoreThanThree,
-          potentialTXCurr -
-            transferOut -
-            TX_DEATH -
-            selfTransfer -
-            refusal -
-            onARTLessThanThree,
-        ],
-      },
-      {
-        group: "Calculated",
-        value: [0, calculated],
-      },
-    ];
-
-    return processed;
-  };
-
   /**
    * AJAX requests defined here to avoid repeating them in individual components
    */
   const getActiveClients = () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/activeClients?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/activeClients?startDate=${time.startDate}&endDate=${time.endDate}&filter=${categoryFilter}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
@@ -427,7 +154,7 @@ export const useChartData = () => {
 
   const getNewlyEnrolledClients = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/newClients?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/newClients?startDate=${time.startDate}&endDate=${time.endDate}&filter=${categoryFilter}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
@@ -443,7 +170,7 @@ export const useChartData = () => {
 
   const getClientsOnAppointment = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/onAppointment?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/onAppointment?startDate=${time.startDate}&endDate=${time.endDate}&filter=${categoryFilter}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
@@ -459,7 +186,7 @@ export const useChartData = () => {
 
   const getMissedAppointments = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/missedAppointment?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/missedAppointment?startDate=${time.startDate}&endDate=${time.endDate}&filter=${categoryFilter}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
@@ -475,7 +202,7 @@ export const useChartData = () => {
 
   const getInterruptedTreatment = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/interruptedInTreatment?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/interruptedInTreatment?startDate=${time.startDate}&endDate=${time.endDate}&filter=${categoryFilter}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
@@ -491,7 +218,7 @@ export const useChartData = () => {
 
   const getReturnedToTreatment = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/returnedToTreatment?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/returnedToTreatment?startDate=${time.startDate}&endDate=${time.endDate}&filter=${categoryFilter}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
@@ -507,7 +234,7 @@ export const useChartData = () => {
 
   const getDueForViralLoad = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/dueForVl?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/dueForVl?startDate=${time.startDate}&endDate=${time.endDate}&filter=${categoryFilter}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
@@ -555,7 +282,7 @@ export const useChartData = () => {
 
   const getHighViralLoad = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/highVl?startDate=${time.startDate}&endDate=${time.endDate}`,
+      url: `/ws/rest/v1/ssemr/dashboard/highVl?startDate=${time.startDate}&endDate=${time.endDate}&filter=${categoryFilter}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
@@ -687,126 +414,14 @@ export const useChartData = () => {
       noPagination: true,
     });
 
-  const getStat = (dataSet) => {
-    const filteredSet = dataSet?.filter((item) =>
-      filterTabs[currentTopFilterIndex].filterFunction(item)
-    );
-
-    return filteredSet?.length;
-  };
-
-  const filterTabs = [
-    {
-      index: 0,
-      title: "All clients",
-      filterFunction: (item) => item,
-    },
-    {
-      index: 1,
-      title: "Children and adolescent",
-      filterFunction: (item) => item,
-    },
-    {
-      index: 2,
-      title: "pregnant and Breastfeeding Women",
-      filterFunction: (item) => item,
-    },
-  ];
-
-  const filterStatData = (stat) => {
-    return stat
-      ?.filter(filterTabs[currentTopFilterIndex].filterFunction)
-      .sort((a, b) => {
-        const dateA: any = parseDate(a?.appointmentDate);
-        const dateB: any = parseDate(b?.appointmentDate);
-
-        if (!dateA && !dateB) return -1;
-        if (!dateA) return 1;
-        if (!dateB) return -1;
-
-        return dateA - dateB;
-      });
-  };
-
-  const defaultStatHeaders = [
-    {
-      name: "Name",
-      selector: "name",
-      cell: (row) => (
-        <TableCell>
-          <Link
-            href={`${window.getOpenmrsSpaBase()}patient/${
-              row?.uuid
-            }/chart/Patient%20Summary`}
-          >
-            {row.name}
-          </Link>
-        </TableCell>
-      ),
-    },
-    {
-      name: "Sex",
-      selector: "sex",
-    },
-    {
-      name: "Date enrolled",
-      selector: "dateEnrolled",
-    },
-    {
-      name: "Last refill date",
-      selector: "lastRefillDate",
-    },
-    {
-      name: "Contact",
-      selector: "contact",
-    },
-    {
-      name: "Village",
-      selector: "village",
-      cell: (row) => (
-        <TableCell>
-          <p className="">{row.address.split(",")[0].split(":")[1]}</p>
-        </TableCell>
-      ),
-    },
-    {
-      name: "Landmark",
-      selector: "landMark",
-      cell: (row) => (
-        <TableCell>
-          <p className="">{row.address.split(",")[1].split(":")[1]}</p>
-        </TableCell>
-      ),
-    },
-  ];
-
-  const iitAndMissedHeaders = defaultStatHeaders;
-  iitAndMissedHeaders.splice(4, 0, {
-    name: "Next appointment date",
-    selector: "appointmentDate",
-  });
-
-  const txCURRHeaders = [
-    ...iitAndMissedHeaders,
-    {
-      name: "Eligible for VL",
-      selector: "dueForVl",
-      cell: (row) => (
-        <TableCell size="sm">
-          <Tag size="md" type={`${row.dueForVl ? "green" : "red"}`}>
-            {row?.dueForVl ? "Eligible" : "Not eligible"}
-          </Tag>
-        </TableCell>
-      ),
-    },
-  ];
-
   const stats = [
     {
       title: "Newly enrolled clients(TX_NEW)",
       color: "#3271F4",
       stat: chartData.newlyEnrolledClients?.raw?.totalPatients,
-      results: filterStatData(chartData.newlyEnrolledClients?.raw?.results),
+      results: sortLineListByAppointmentDate(
+        chartData.newlyEnrolledClients?.raw?.results
+      ),
       loading: chartData.newlyEnrolledClients.loading,
       headers: defaultStatHeaders,
     },
@@ -814,7 +429,9 @@ export const useChartData = () => {
       title: "Active clients (TX_CURR)",
       color: "#3271F4",
       stat: chartData.activeClients?.raw?.totalPatients,
-      results: filterStatData(chartData.activeClients?.raw?.results),
+      results: sortLineListByAppointmentDate(
+        chartData.activeClients?.raw?.results
+      ),
       loading: chartData.activeClients.loading,
       headers: txCURRHeaders,
     },
@@ -822,7 +439,9 @@ export const useChartData = () => {
       title: "On appointment",
       color: "#3271F4",
       stat: chartData.onAppointment?.raw?.totalPatients,
-      results: filterStatData(chartData.onAppointment?.raw?.results),
+      results: sortLineListByAppointmentDate(
+        chartData.onAppointment?.raw?.results
+      ),
       loading: chartData.onAppointment.loading,
       headers: defaultStatHeaders,
     },
@@ -830,7 +449,9 @@ export const useChartData = () => {
       title: "Missed appointments",
       color: "#FF0000",
       stat: chartData.missedAppointment?.raw?.totalPatients,
-      results: filterStatData(chartData.missedAppointment?.raw?.results),
+      results: sortLineListByAppointmentDate(
+        chartData.missedAppointment?.raw?.results
+      ),
       loading: chartData.missedAppointment.loading,
       headers: iitAndMissedHeaders,
     },
@@ -838,7 +459,9 @@ export const useChartData = () => {
       title: "Interruptions in Treatment(TX_IIT)",
       color: "#FF8503",
       stat: chartData.interrupted?.raw?.totalPatients,
-      results: filterStatData(chartData.interrupted?.raw?.results),
+      results: sortLineListByAppointmentDate(
+        chartData.interrupted?.raw?.results
+      ),
       loading: chartData.interrupted.loading,
       headers: iitAndMissedHeaders,
     },
@@ -846,7 +469,7 @@ export const useChartData = () => {
       title: "Returned to Treatment(TX_RTT)",
       color: "#3271F4",
       stat: chartData.returned?.raw?.totalPatients,
-      results: filterStatData(chartData.returned?.raw?.results),
+      results: sortLineListByAppointmentDate(chartData.returned?.raw?.results),
       loading: chartData.returned.loading,
       headers: defaultStatHeaders,
     },
@@ -854,7 +477,9 @@ export const useChartData = () => {
       title: "Due for viral load",
       color: "#FF8503",
       stat: chartData.dueForViralLoad?.raw?.totalPatients,
-      results: filterStatData(chartData.dueForViralLoad?.raw?.results),
+      results: sortLineListByAppointmentDate(
+        chartData.dueForViralLoad?.raw?.results
+      ),
       loading: chartData.dueForViralLoad.loading,
       headers: defaultStatHeaders,
     },
@@ -862,7 +487,9 @@ export const useChartData = () => {
       title: "High viral load (>= 1000 copies/ml)",
       color: "#FF0000",
       stat: chartData.highViralLoad?.raw?.totalPatients,
-      results: filterStatData(chartData.highViralLoad?.raw?.results),
+      results: sortLineListByAppointmentDate(
+        chartData.highViralLoad?.raw?.results
+      ),
       loading: chartData.highViralLoad.loading,
       headers: defaultStatHeaders,
     },
@@ -870,20 +497,13 @@ export const useChartData = () => {
 
   return {
     getChartData,
-    formatViralLoadData,
     setChartData,
     chartData,
-    setCurrentTimeFilter,
-    currentTimeFilter,
     time,
     setTime,
-    currentTopFilterIndex,
-    setCurrentTopFilterIndex,
-    filters,
-    setFilters,
-    formatDataAgainstTime,
+    categoryFilter,
+    setCategoryFilter,
     getActiveClients,
-    getStat,
     getAllClients,
     getNewlyEnrolledClients,
     getClientsOnAppointment,
@@ -897,7 +517,6 @@ export const useChartData = () => {
     getAdultART,
     getChildART,
     stats,
-    filterTabs,
     getUnderCareOfCommunityProgram,
     getViralLoadCoverage,
     getViralLoadSuppression,

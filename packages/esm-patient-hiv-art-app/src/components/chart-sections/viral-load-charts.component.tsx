@@ -8,15 +8,15 @@ const ViralLoadChartsComponent = () => {
 
   const {
     time,
-    currentTimeFilter,
     memoizedVLChartRequests,
     viralLoadRange,
     memoizedHVLCascade,
+    categoryFilter,
   } = useContext(DashboardContext);
 
   useEffect(() => {
     memoizedVLChartRequests();
-  }, [currentTimeFilter, time]);
+  }, [categoryFilter, time]);
 
   useEffect(() => {
     memoizedHVLCascade();

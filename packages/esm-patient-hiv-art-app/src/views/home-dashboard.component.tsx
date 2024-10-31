@@ -3,7 +3,7 @@ import { Home } from "@carbon/react/icons";
 import styles from "./home-dashboard.scss";
 import { useTranslation } from "react-i18next";
 import StatCardComponent from "../components/cards/stat-card.component";
-import SSEMRTab from "../components/tabs/SSEMRTab";
+import CategoryTabs from "../components/tabs/CategoryTabs";
 import { DashboardContext } from "../context/DashboardContext";
 import { TimeFilter } from "../components/filter/TimeFilter";
 import { Routes, Route } from "react-router-dom";
@@ -48,24 +48,13 @@ const HomeDashboard = () => {
       </div>
       <div className={styles.artBody}>
         {/* ..................Tabs................. */}
-        <div className={styles.tabs}>
-          {filterTabs.map((item) => (
-            <SSEMRTab
-              index={item.index}
-              name={item.title}
-              key={item.title}
-              handler={item.filterFunction}
-              isActive={currentTopFilterIndex == item.index}
-            />
-          ))}
-        </div>
+        <CategoryTabs />
 
         {/* ...................Stats.................... */}
         <div className={styles.stats}>
-          {stats.map(
-            (stat) =>
-              stat?.stat && <StatCardComponent item={stat} key={stat.title} />
-          )}
+          {stats.map((stat) => (
+            <StatCardComponent item={stat} key={stat.title} />
+          ))}
         </div>
         <ChartSelectorTabsComponent />
         <Routes>

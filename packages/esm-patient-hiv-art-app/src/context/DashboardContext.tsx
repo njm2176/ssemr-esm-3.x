@@ -6,14 +6,10 @@ export const DashboardContext = createContext(null);
 const DashboardProvider = ({ children }) => {
   const {
     chartData,
-    setCurrentTimeFilter,
-    currentTimeFilter,
     time,
     setTime,
-    currentTopFilterIndex,
-    setCurrentTopFilterIndex,
-    filters,
-    setFilters,
+    categoryFilter,
+    setCategoryFilter,
     getActiveClients,
     getAllClients,
     getNewlyEnrolledClients,
@@ -28,7 +24,6 @@ const DashboardProvider = ({ children }) => {
     getAdultART,
     getChildART,
     stats,
-    filterTabs,
     getUnderCareOfCommunityProgram,
     getViralLoadCoverage,
     getViralLoadSuppression,
@@ -41,7 +36,6 @@ const DashboardProvider = ({ children }) => {
     defaultStatHeaders,
     txCURRHeaders,
   } = useChartData();
-
   const memoizedGenericChartRequests = useCallback(async () => {
     try {
       getNewlyEnrolledClients();
@@ -52,7 +46,7 @@ const DashboardProvider = ({ children }) => {
     } catch (e) {
       return e;
     }
-  }, [currentTimeFilter, time]);
+  }, [time, categoryFilter]);
 
   const memoizedVLChartRequests = useCallback(async () => {
     try {
@@ -63,7 +57,7 @@ const DashboardProvider = ({ children }) => {
     } catch (e) {
       return e;
     }
-  }, [currentTimeFilter, time]);
+  }, [time, categoryFilter]);
 
   const memoizedHVLCascade = useCallback(async () => {
     try {
@@ -94,23 +88,18 @@ const DashboardProvider = ({ children }) => {
     } catch (e) {
       return e;
     }
-  }, [currentTimeFilter, time]);
+  }, [time]);
 
   useEffect(() => {
     memoizedInitialBatchOfData();
-  }, [currentTimeFilter, time]);
+  }, [time]);
 
   return (
     <DashboardContext.Provider
       value={{
-        currentTimeFilter,
-        currentTopFilterIndex,
-        filterTabs,
-        filters,
         chartData,
-        setCurrentTimeFilter,
-        setCurrentTopFilterIndex,
-        setFilters,
+        setCategoryFilter,
+        categoryFilter,
         stats,
         time,
         setTime,

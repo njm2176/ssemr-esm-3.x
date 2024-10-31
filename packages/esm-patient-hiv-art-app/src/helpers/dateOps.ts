@@ -54,8 +54,8 @@ export const getThisMonthsFirstAndLast = (inputDate = null) => {
 export const getThisYearsFirstAndLastDate = (
   year = new Date().getFullYear()
 ) => {
-  const firstDayOfYear = new Date(year, 0, 1);
-  const lastDayOfYear = new Date(year, 11, 31);
+  const firstDayOfYear = new Date(Date.UTC(year, 0, 1));
+  const lastDayOfYear = new Date(Date.UTC(year, 11, 31));
 
   // Format the dates as 'YYYY-MM-DD'
   const firstDayFormatted = firstDayOfYear.toISOString().split("T")[0];

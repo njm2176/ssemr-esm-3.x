@@ -6,12 +6,12 @@ import { DashboardContext } from "../../context/DashboardContext";
 const GenericCharts = () => {
   const { genericChartsConfig } = useARTCharts();
 
-  const { time, currentTimeFilter, memoizedGenericChartRequests } =
+  const { time, categoryFilter, memoizedGenericChartRequests } =
     useContext(DashboardContext);
 
   useEffect(() => {
     memoizedGenericChartRequests();
-  }, [currentTimeFilter, time]);
+  }, [categoryFilter, time]);
 
   return (
     <HivArtChartsLayoutComponent
