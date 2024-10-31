@@ -80,7 +80,7 @@ export const getThisQuartersRange = () => {
       break;
     case month <= 9:
       start = `${new Date().getFullYear()}-07-01`;
-      end = `${new Date().getFullYear()}-09-01`;
+      end = `${new Date().getFullYear()}-09-30`;
       break;
     default:
       start = `${new Date().getFullYear()}-10-01`;

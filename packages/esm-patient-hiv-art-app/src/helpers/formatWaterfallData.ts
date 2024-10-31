@@ -1,49 +1,50 @@
 export const formatWaterfallData = (data) => {
-  const TX_CURR = data.find((item) => Object.keys(item).includes("TX_CURR"))[
+  const results = data.results;
+  const TX_CURR = results.find((item) => Object.keys(item).includes("TX_CURR"))[
     "TX_CURR"
   ];
 
-  const transferIn = data.find((item) =>
+  const transferIn = results.find((item) =>
     Object.keys(item).includes("Transfer In")
   )["Transfer In"];
 
-  const TX_NEW = data.find((item) => Object.keys(item).includes("TX_NEW"))[
+  const TX_NEW = results.find((item) => Object.keys(item).includes("TX_NEW"))[
     "TX_NEW"
   ];
 
-  const TX_RTT = data.find((item) => Object.keys(item).includes("TX_RTT"))[
+  const TX_RTT = results.find((item) => Object.keys(item).includes("TX_RTT"))[
     "TX_RTT"
   ];
 
-  const potentialTXCurr = data.find((item) =>
+  const potentialTXCurr = results.find((item) =>
     Object.keys(item).includes("Potential TX_CURR")
   )["Potential TX_CURR"];
 
-  const transferOut = data.find((item) =>
+  const transferOut = results.find((item) =>
     Object.keys(item).includes("Transfer Out")
   )["Transfer Out"];
 
-  const TX_DEATH = data.find((item) => Object.keys(item).includes("TX_DEATH"))[
+  const TX_DEATH = results.find((item) => Object.keys(item).includes("TX_DEATH"))[
     "TX_DEATH"
   ];
 
-  const selfTransfer = data.find((item) =>
+  const selfTransfer = results.find((item) =>
     Object.keys(item).includes("TX_ML_Self Transfer")
   )["TX_ML_Self Transfer"];
 
-  const refusal = data.find((item) =>
+  const refusal = results.find((item) =>
     Object.keys(item).includes("TX_ML_Refusal/Stopped")
   )["TX_ML_Refusal/Stopped"];
 
-  const onARTLessThanThree = data.find((item) =>
+  const onARTLessThanThree = results.find((item) =>
     Object.keys(item).includes("TX_ML_IIT (<3 mo)")
   )["TX_ML_IIT (<3 mo)"];
 
-  const onARTMoreThanThree = data.find((item) =>
+  const onARTMoreThanThree = results.find((item) =>
     Object.keys(item).includes("TX_ML_IIT (3+ mo)")
   )["TX_ML_IIT (3+ mo)"];
 
-  const calculated = data.find((item) =>
+  const calculated = results.find((item) =>
     Object.keys(item).includes("CALCULATED TX_CURR")
   )["CALCULATED TX_CURR"];
 

@@ -23,13 +23,13 @@ export const useChartData = () => {
   });
 
   const [waterFallDateRange, setWaterFallDateRange] = useState({
-    start: getThisQuartersRange().start,
-    end: getThisQuartersRange().end,
+    startDate: getThisQuartersRange().start,
+    endDate: getThisQuartersRange().end,
   });
 
   const [viralLoadRange, setViralLoadRange] = useState({
-    start: getThisYearsFirstAndLastDate(new Date().getFullYear()).startDate,
-    end: getThisYearsFirstAndLastDate(new Date().getFullYear()).endDate,
+    startDate: getThisYearsFirstAndLastDate(new Date().getFullYear()).startDate,
+    endDate: getThisYearsFirstAndLastDate(new Date().getFullYear()).endDate,
   });
 
   const [chartData, setChartData] = useState(initialChartDataState);
@@ -54,19 +54,13 @@ export const useChartData = () => {
       }));
 
       /**
-       * send API call
+       * send API call and hit the callback
        */
       const response = await openmrsFetch(url);
+      responseCallback(response.data);
 
       /**
-       * Hit the callbacksasa
-       */
-      responseCallback(response.data);
-    } catch (error) {
-      errorCallBack(error);
-    } finally {
-      /**
-       * Turn off the loading state
+       * Turn off the loading state after first page
        */
       setChartData((prev) => ({
         ...prev,
@@ -75,24 +69,21 @@ export const useChartData = () => {
           loading: false,
         },
       }));
-dsds
 
-      !noPagination && fetchRemainingPages({ chartKey, url });
-    }
-  };
+      /**
+       * additional pages
+       */
+      if (!noPagination) {
+        const pageSize = 15;
+        let currentPage = 1;
+        let currentPageSize = pageSize;
 
-  const fetchRemainingPages = async ({ chartKey, url }) => {
-    try {
-      const pageSize = 15;
-      let currentPageSize = 15;
-      let currentPage = 1;
+        while (currentPageSize === pageSize) {
+          const { data } = await openmrsFetch(
+            `${url}&page=${currentPage}&size=${pageSize}`
+          );
 
-      while (currentPageSize === pageSize) {
-        const { data } = await openmrsFetch(
-          `${url}&page=${currentPage}&size=${pageSize}`
-        );
-        if (data?.results?.length > 0) {
-          if (Object.prototype.hasOwnProperty.call(data.results[0], "sex")) {
+          if (data?.results?.length > 0) {
             setChartData((prev) => ({
               ...prev,
               [chartKey]: {
@@ -101,19 +92,96 @@ dsds
                   ...(prev[chartKey]?.raw || []),
                   results: [
                     ...(prev[chartKey]?.raw?.results || []),
-                    ...(data?.results || []),
+                    ...data.results,
                   ],
                 },
               },
             }));
+
+            currentPageSize = data.results.length;
+            currentPage++;
+          } else {
+            break;
           }
         }
-
-        currentPageSize = data?.results?.length;
-        currentPage++;
       }
-    } catch (e) {
-      return e;
+    } catch (error) {
+      errorCallBack(error);
+    }
+  };
+
+  const getChartDatav2 = async ({
+    url,
+    processor,
+    chartKey,
+    noPagination = false,
+  }) => {
+    try {
+      /**
+       * Init loading state for  the specific chart
+       */
+      setChartData((prev) => ({
+        ...prev,
+        [chartKey]: {
+          ...prev[chartKey],
+          loading: true,
+        },
+      }));
+
+      /**
+       * send API call and hit the callback
+       */
+      const response = await openmrsFetch(url);
+
+      /**
+       * Turn off the loading state after first page
+       */
+      setChartData((prev) => ({
+        ...prev,
+        [chartKey]: {
+          raw: response.data,
+          processedChartData: processor(response.data),
+          loading: false,
+        },
+      }));
+
+      /**
+       * additional pages
+       */
+      if (!noPagination) {
+        const pageSize = 15;
+        let currentPage = 1;
+        let currentPageSize = pageSize;
+
+        while (currentPageSize === pageSize) {
+          const { data } = await openmrsFetch(
+            `${url}&page=${currentPage}&size=${pageSize}`
+          );
+
+          if (data?.results?.length > 0) {
+            setChartData((prev) => ({
+              ...prev,
+              [chartKey]: {
+                ...prev[chartKey],
+                raw: {
+                  ...(prev[chartKey]?.raw || []),
+                  results: [
+                    ...(prev[chartKey]?.raw?.results || []),
+                    ...data.results,
+                  ],
+                },
+              },
+            }));
+
+            currentPageSize = data.results.length;
+            currentPage++;
+          } else {
+            break;
+          }
+        }
+      }
+    } catch (error) {
+      return error;
     }
   };
 
@@ -298,7 +366,7 @@ dsds
 
   const getHighViralLoadCascade = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/viralLoadCascade?startDate=${viralLoadRange.start}&endDate=${viralLoadRange.end}`,
+      url: `/ws/rest/v1/ssemr/dashboard/viralLoadCascade?startDate=${viralLoadRange.startDate}&endDate=${viralLoadRange.endDate}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
@@ -399,7 +467,7 @@ dsds
 
   const getWaterFallData = async () =>
     getChartData({
-      url: `/ws/rest/v1/ssemr/dashboard/waterfallAnalysis?startDate=${waterFallDateRange.start}&endDate=${waterFallDateRange.end}`,
+      url: `/ws/rest/v1/ssemr/dashboard/waterfallAnalysis?startDate=${waterFallDateRange.startDate}&endDate=${waterFallDateRange.endDate}`,
       responseCallback: (data) =>
         setChartData((prev) => ({
           ...prev,
@@ -502,6 +570,7 @@ dsds
     time,
     setTime,
     categoryFilter,
+    getChartDatav2,
     setCategoryFilter,
     getActiveClients,
     getAllClients,
