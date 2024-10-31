@@ -1,7 +1,7 @@
-import { useContext } from "react";
-import { DashboardContext } from "../context/DashboardContext";
-import { processWaterfallData } from "../helpers/dataManipulation";
-import { renderWaterfallTooltip } from "../helpers/tooltips";
+import {useContext} from "react";
+import {DashboardContext} from "../context/DashboardContext";
+import {processWaterfallData} from "../helpers/dataManipulation";
+import {renderWaterfallTooltip} from "../helpers/tooltips";
 
 export interface ChartConfigItem {
   chartData?: Array<any>;
@@ -16,7 +16,7 @@ export interface ChartConfigItem {
   total?: number;
 }
 
-export const useARTCharts = () => {
+export const useCharts = () => {
   const {
     chartData: {
       newlyEnrolledClients,
@@ -32,15 +32,16 @@ export const useARTCharts = () => {
       viralLoadSuppression,
       waterfall,
     },
-    currentTimeFilter,
     defaultStatHeaders,
     txCURRHeaders,
   } = useContext(DashboardContext);
 
+  const currentTimeFilter = "groupYear";
+
   const waterfallConfig: Array<ChartConfigItem> = [
     {
       loading: waterfall?.loading,
-      tooltipRenderFunction: ({ currentItem, previousItem }) =>
+      tooltipRenderFunction: ({currentItem, previousItem}) =>
         renderWaterfallTooltip({
           currentValue: currentItem,
           previousValue: previousItem,
@@ -212,5 +213,5 @@ export const useARTCharts = () => {
     },
   ];
 
-  return { waterfallConfig, genericChartsConfig, viralLoadChartsConfig };
+  return {waterfallConfig, genericChartsConfig, viralLoadChartsConfig};
 };

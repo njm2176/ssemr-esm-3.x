@@ -15,7 +15,10 @@ const WaterfallPicker = () => {
 
   const changeCallback = useCallback(
     (range) => {
-      setWaterFallDateRange(range);
+      setWaterFallDateRange({
+        startDate: range.start,
+        endDate: range.end,
+      });
     },
     [waterfallDateRange]
   );

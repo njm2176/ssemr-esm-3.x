@@ -57,9 +57,9 @@ const SVGChart = () => {
   const { generateScale, scale, clearScale } = useCascade();
 
   useEffect(() => {
-    if (highViralLoadCascade?.raw?.length > 0) {
-      generateScale({ dataset: highViralLoadCascade?.raw });
-      setData(highViralLoadCascade.raw);
+    if (highViralLoadCascade?.raw?.results.length > 0) {
+      generateScale({ dataset: highViralLoadCascade.raw.results });
+      setData(highViralLoadCascade.raw.results);
     }
     return () => clearScale();
   }, [highViralLoadCascade]);
@@ -97,8 +97,8 @@ const SVGChart = () => {
 
   const timeFilterSubmitHandler = (start: string, end: string) => {
     setViralLoadRange({
-      start,
-      end,
+      startDate: start,
+      endDate: end,
     });
   };
 
