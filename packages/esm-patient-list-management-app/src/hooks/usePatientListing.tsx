@@ -106,6 +106,11 @@ export const usePatientListing = (initialCategory = "allClients") => {
       name: "Last Refill Date",
       selector: (row) => row.lastRefillDate,
     },
+    ...(tabs[currentTab]?.id === "Died"
+      ? [
+          {
+            name: "Date Died",
+            selector: (row) => row.datePatientDied,
     ...(tabs[currentTab]?.id === "TAD"
       ? [
           {
