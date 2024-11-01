@@ -108,16 +108,19 @@ export const usePatientListing = (initialCategory = "allClients") => {
     },
     ...(tabs[currentTab]?.id === "Died"
       ? [
-          {
-            name: "Date Died",
-            selector: (row) => row.datePatientDied,
+        {
+          name: "Date Died",
+          selector: (row) => row.datePatientDied,
+        },
+      ]
+      : []),
     ...(tabs[currentTab]?.id === "TAD"
       ? [
-          {
-            name: "Date Transferred Out",
-            selector: (row) => row.datePatientTransferredOut,
-          },
-        ]
+        {
+          name: "Date Transferred Out",
+          selector: (row) => row.datePatientTransferredOut,
+        },
+      ]
       : []),
     {
       name: "Next Appointment Date",
