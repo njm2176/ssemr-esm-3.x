@@ -111,6 +111,11 @@ export const usePatientListing = (initialCategory = "allClients") => {
           {
             name: "Date Died",
             selector: (row) => row.datePatientDied,
+    ...(tabs[currentTab]?.id === "TAD"
+      ? [
+          {
+            name: "Date Transferred Out",
+            selector: (row) => row.datePatientTransferredOut,
           },
         ]
       : []),
@@ -201,7 +206,6 @@ export const usePatientListing = (initialCategory = "allClients") => {
 
   React.useEffect(() => {
     setTableHeaders([...defaultTableHeaders]);
-
     if (currentPaginationState.page > 0) {
       getClients({
         currentPage: currentPaginationState.page,
