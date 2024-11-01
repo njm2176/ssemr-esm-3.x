@@ -3,7 +3,7 @@ import React from "react";
 import { openmrsFetch } from "@openmrs/esm-framework";
 import Link from "@carbon/react/lib/components/UIShell/Link";
 
-export const usePatientListing = (initialCategory="allClients") => {
+export const usePatientListing = (initialCategory = "allClients") => {
   const { t } = useTranslation();
 
   const [currentTab, setCurrentTab] = React.useState(0);
@@ -21,7 +21,7 @@ export const usePatientListing = (initialCategory="allClients") => {
   });
   const [category, setCategory] = React.useState(initialCategory);
 
-  const abortControllerRef = React.useRef(null)
+  const abortControllerRef = React.useRef(null);
 
   const startDate = `1970-01-01`;
 
@@ -106,6 +106,14 @@ export const usePatientListing = (initialCategory="allClients") => {
       name: "Last Refill Date",
       selector: (row) => row.lastRefillDate,
     },
+    ...(tabs[currentTab]?.id === "TAD"
+      ? [
+          {
+            name: "Date Transferred Out",
+            selector: (row) => row.datePatientTransferredOut,
+          },
+        ]
+      : []),
     {
       name: "Next Appointment Date",
       selector: (row) => row.appointmentDate,
@@ -133,15 +141,15 @@ export const usePatientListing = (initialCategory="allClients") => {
         break;
 
       case 2:
-        setCategory("interruptedInTreatment")
+        setCategory("interruptedInTreatment");
         break;
 
       case 3:
-        setCategory("transferredOut")
+        setCategory("transferredOut");
         break;
 
       case 4:
-        setCategory("deceased")
+        setCategory("deceased");
         break;
 
       default:
@@ -150,12 +158,12 @@ export const usePatientListing = (initialCategory="allClients") => {
   };
 
   const getClients = async ({ currentPage, pageSize }) => {
-    if(abortControllerRef.current) {
-      abortControllerRef.current.abort()
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
     }
 
-    const controller = new AbortController()
-    abortControllerRef.current = controller
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
 
     try {
       if (currentPage === 0) setLoading(true);
@@ -165,7 +173,7 @@ export const usePatientListing = (initialCategory="allClients") => {
       setCurrentPaginationState((prev) => ({ ...prev, done: false }));
 
       const { data } = await openmrsFetch(url, {
-        signal: controller.signal
+        signal: controller.signal,
       });
       if (data?.results?.length > 0)
         setTableData((prev) => [...prev, ...data.results]);
@@ -186,23 +194,20 @@ export const usePatientListing = (initialCategory="allClients") => {
   };
 
   const parseDate = (dateStr: string) => {
-    if(!dateStr) return null;
+    if (!dateStr) return null;
     const [day, month, year] = dateStr.split("-");
     return new Date(`${year}-${month}-${day}`);
   };
 
   React.useEffect(() => {
-    if (currentTab === 0) {
-      setTableHeaders([...defaultTableHeaders]);
-    }
+    setTableHeaders([...defaultTableHeaders]);
     if (currentPaginationState.page > 0) {
       getClients({
         currentPage: currentPaginationState.page,
         pageSize: currentPaginationState.size,
-      })
+      });
     }
   }, [currentPaginationState.page, currentTab]);
-
 
   React.useEffect(() => {
     getClients({
@@ -213,23 +218,26 @@ export const usePatientListing = (initialCategory="allClients") => {
 
   React.useEffect(() => {
     const filteredItems = tableData
-      .filter((row) =>
-        row?.name?.toLowerCase()?.includes(filterText.toLowerCase()) ||
-        row?.identifiers?.find((item) =>
-          item?.identifierType?.toLowerCase()?.includes("art")
-        )?.identifier?.toLowerCase()?.includes(filterText.toLowerCase())
+      .filter(
+        (row) =>
+          row?.name?.toLowerCase()?.includes(filterText.toLowerCase()) ||
+          row?.identifiers
+            ?.find((item) =>
+              item?.identifierType?.toLowerCase()?.includes("art")
+            )
+            ?.identifier?.toLowerCase()
+            ?.includes(filterText.toLowerCase())
       )
       .map((row, index) => ({ ...row, serialNumber: index + 1 }))
       .sort((a, b) => {
         const dateA: any = parseDate(a.initiationDate);
         const dateB: any = parseDate(b.initiationDate);
 
-        if(!dateA && !dateB) return -1;
-        if(!dateA) return 1;
-        if(!dateB) return -1;
+        if (!dateA && !dateB) return -1;
+        if (!dateA) return 1;
+        if (!dateB) return -1;
 
         return dateB - dateA;
-
       });
     setFilteredTableData(filteredItems);
     setResetPaginationToggle((prev) => !prev);
