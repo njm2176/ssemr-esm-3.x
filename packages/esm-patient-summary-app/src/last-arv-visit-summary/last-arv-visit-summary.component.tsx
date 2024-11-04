@@ -31,6 +31,10 @@ const LastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
         {data?.results && (
           <div className={styles.container}>
             <div className={styles.content}>
+              <p>{t("dateOfEnrollment", "Date of Enrollment")}</p>
+              <p>{data?.results[0]?.enrollmentDate}</p>
+            </div>
+            <div className={styles.content}>
               <p>{t("latestArvRegimen", "Latest ARV Regimen")}</p>
               <p className={styles.value}>{data.results[0]?.arvRegimen}</p>
             </div>
@@ -60,11 +64,11 @@ const LastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
               </p>
             </div>
             <div className={styles.content}>
-              <p>{t("lastCD4Count", "Last CD4 count")}</p>
+              <p>{t("tbNumber", "TB Number")}</p>
               <p>
                 <span className={styles.value}>
-                  {data.results[0]?.lastCD4Count
-                    ? data.results[0]?.lastCD4Count
+                  {data.results[0]?.tbNumber
+                    ? data.results[0]?.tbNumber
                     : "---"}
                 </span>
               </p>

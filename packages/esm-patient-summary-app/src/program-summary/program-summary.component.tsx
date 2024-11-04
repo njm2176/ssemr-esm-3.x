@@ -45,10 +45,6 @@ const ProgramSummary: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
         {data?.results && (
           <div className={styles.container}>
             <div className={styles.content}>
-              <p>{t("dateOfEnrollment", "Date of Enrollment")}</p>
-              <p>{data?.results[0]?.enrollmentDate}</p>
-            </div>
-            <div className={styles.content}>
               <p>{t("lastVisitDate", "Last Visit Date")}</p>
               <p className={styles.value}>
                 {data?.results[0]?.lastVisitDate
@@ -68,6 +64,16 @@ const ProgramSummary: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
               <p>{t("bmiMuac", "BMI/MUAC")}</p>
               <p>
                 <span className={styles.value}>{bmiMuac()}</span>
+              </p>
+            </div>
+            <div className={styles.content}>
+              <p>{t("lastCD4Count", "Last CD4 count")}</p>
+              <p>
+                <span className={styles.value}>
+                  {data.results[0]?.lastCD4Count
+                    ? data.results[0]?.lastCD4Count
+                    : "---"}
+                </span>
               </p>
             </div>
           </div>
