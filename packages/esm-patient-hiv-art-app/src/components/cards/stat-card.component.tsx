@@ -9,6 +9,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  InlineLoading,
 } from "@carbon/react";
 
 interface Client {
@@ -26,12 +27,17 @@ interface header {
   cell: any;
 }
 interface Item {
-  loading: boolean;
+  state: State;
   title: string;
   color: string;
   stat: string;
   results?: Client[];
   headers: header[];
+}
+
+interface State {
+  loading: boolean;
+  lineListComplete: boolean;
 }
 
 interface Address {
@@ -103,8 +109,8 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
         const addressParts = client?.address?.split(",") || [];
 
         // Safely extract landMark and village, ensuring they exist before trimming
-        const landMark = addressParts[0]?.split(":")[1]?.trim() || 'Unknown';
-        const village = addressParts[1]?.split(":")[1]?.trim() || 'Unknown';
+        const landMark = addressParts[0]?.split(":")[1]?.trim() || "Unknown";
+        const village = addressParts[1]?.split(":")[1]?.trim() || "Unknown";
 
         return {
           ...client,
@@ -135,7 +141,8 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
         >
           <path
             fill={item.color}
-            d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
+            d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"
+          />
         </svg>
       )}
 
@@ -144,8 +151,9 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
         onRequestSubmit={handleDownload}
         modalHeading={item.title}
         modalLabel="Do you want to download this as CSV?"
-        primaryButtonText="Download CSV"
+        primaryButtonText={item.state.lineListComplete ? 'Download CSV' : 'Line list incomplete... please wait'}
         secondaryButtonText="Decline"
+        primaryButtonDisabled={!item.state.lineListComplete}
         open={isModalOpen}
         onSecondarySubmit={() => setIsModalOpen(false)}
         onRequestClose={() => setIsModalOpen(false)}
@@ -179,7 +187,7 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
       </Modal>
       <div className={styles.title}>{item.title}</div>
       <div className={styles.stat}>
-        {item.loading ? (
+        {item.state.loading ? (
           <Loading small className={styles.spinner} withOverlay={false} />
         ) : (
           <p className="">{item.stat || 0}</p>
