@@ -1,5 +1,5 @@
 import { openmrsFetch } from "@openmrs/esm-framework";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   getThisQuartersRange,
   getThisYearsFirstAndLastDate,
@@ -31,7 +31,32 @@ export const useART = () => {
   });
 
   const [chartData, setChartData] = useState(initialChartDataState);
+  /**
+   * Abort controller ref to keep track of the controller between renders
+   */
+  const abortControllers = useRef(new Map());
 
+  /**
+   * Effect hook to cancel all requests in flight once the category filter and the time filter changes
+   */
+  useEffect(() => {
+    // abortController.abort();
+
+    return () => {
+      abortControllers.current.forEach((controller) =>
+        controller.abort("admin-override")
+      );
+      abortControllers.current.clear();
+    };
+  }, [categoryFilter,time]);
+
+  /**
+   * Function to make all http requests
+   * @param url
+   * @param processor
+   * @param chartKey
+   * @param noPagination
+   */
   const getDashboardData = async ({
     url,
     processor,
@@ -39,6 +64,18 @@ export const useART = () => {
     noPagination = false,
   }) => {
     try {
+      /**
+       * Abort previous requests if any
+       */
+      if (abortControllers.current.has(chartKey))
+        abortControllers.current.get(chartKey).abort("admin-override");
+
+      /**
+       * Create a new abort controller
+       */
+      const controller = new AbortController();
+      abortControllers.current.set(chartKey, controller);
+
       /**
        * Init loading state for  the specific chart
        */
@@ -53,7 +90,7 @@ export const useART = () => {
       /**
        * send API call and hit the callback
        */
-      const response = await openmrsFetch(url);
+      const response = await openmrsFetch(url, { signal: controller.signal });
 
       /**
        * Turn off the loading state after first page
@@ -67,7 +104,6 @@ export const useART = () => {
         },
       }));
 
-
       /**
        * additional pages
        */
@@ -78,7 +114,8 @@ export const useART = () => {
 
         while (currentPageSize === pageSize) {
           const { data } = await openmrsFetch(
-            `${url}&page=${currentPage}&size=${pageSize}`
+            `${url}&page=${currentPage}&size=${pageSize}`,
+            { signal: controller.signal }
           );
 
           if (data?.results?.length > 0) {
@@ -104,6 +141,17 @@ export const useART = () => {
         }
       }
     } catch (error) {
+      /**
+       * Turn off the loading state after first page
+       */
+      if (error !== "admin-override")
+        setChartData((prev) => ({
+          ...prev,
+          [chartKey]: {
+            ...prev[chartKey],
+            loading: false,
+          },
+        }));
       return error;
     }
   };
