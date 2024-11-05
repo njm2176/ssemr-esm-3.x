@@ -151,7 +151,11 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
         onRequestSubmit={handleDownload}
         modalHeading={item.title}
         modalLabel="Do you want to download this as CSV?"
-        primaryButtonText={item.state.lineListComplete ? 'Download CSV' : 'Line list incomplete... please wait'}
+        primaryButtonText={
+          item.state.lineListComplete
+            ? "Download CSV"
+            : "Line list incomplete... please wait"
+        }
         secondaryButtonText="Decline"
         primaryButtonDisabled={!item.state.lineListComplete}
         open={isModalOpen}
