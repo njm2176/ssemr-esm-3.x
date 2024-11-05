@@ -10,6 +10,7 @@ import {
 } from "@carbon/react";
 import React, { useEffect, useState } from "react";
 import { generateChartCSV } from "../../../helpers/generateChartCSV";
+import {ChartConfigItem} from "../../../hooks/useCharts";
 
 interface ChartHeaderProps {
   isModalOpen: boolean;
@@ -18,6 +19,12 @@ interface ChartHeaderProps {
   headers: Array<any>;
   rows: Array<any>;
   title: string;
+  state: State;
+}
+
+interface State {
+  loading: boolean;
+  lineListComplete: boolean;
 }
 
 const ChartHeaderComponent: React.FC<ChartHeaderProps> = ({
@@ -27,6 +34,7 @@ const ChartHeaderComponent: React.FC<ChartHeaderProps> = ({
   rows,
   title,
   open,
+  state,
 }) => {
   const [formattedRows, setFormattedRows] = useState([]);
 
@@ -70,7 +78,12 @@ const ChartHeaderComponent: React.FC<ChartHeaderProps> = ({
         }
         modalHeading={title}
         modalLabel="Do you want to download this as CSV?"
-        primaryButtonText="Download CSV"
+        primaryButtonText={
+          state?.lineListComplete
+            ? "Download CSV"
+            : "Line list incomplete... please wait"
+        }
+        primaryButtonDisabled={!state?.lineListComplete}
         secondaryButtonText="Decline"
         open={isModalOpen}
         onSecondarySubmit={close}

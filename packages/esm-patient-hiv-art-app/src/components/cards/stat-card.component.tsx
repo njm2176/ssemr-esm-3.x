@@ -9,7 +9,6 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  InlineLoading,
 } from "@carbon/react";
 
 interface Client {

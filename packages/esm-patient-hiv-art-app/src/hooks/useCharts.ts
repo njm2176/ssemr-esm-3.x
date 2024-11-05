@@ -1,7 +1,7 @@
-import {useContext} from "react";
-import {DashboardContext} from "../context/DashboardContext";
-import {processWaterfallData} from "../helpers/dataManipulation";
-import {renderWaterfallTooltip} from "../helpers/tooltips";
+import { useContext } from "react";
+import { DashboardContext } from "../context/DashboardContext";
+import { processWaterfallData } from "../helpers/dataManipulation";
+import { renderWaterfallTooltip } from "../helpers/tooltips";
 
 export interface ChartConfigItem {
   chartData?: Array<any>;
@@ -14,6 +14,12 @@ export interface ChartConfigItem {
   loading?: boolean;
   chartType: string;
   total?: number;
+  state?: State;
+}
+
+interface State {
+  loading: boolean;
+  lineListComplete: boolean;
 }
 
 export const useCharts = () => {
@@ -41,7 +47,8 @@ export const useCharts = () => {
   const waterfallConfig: Array<ChartConfigItem> = [
     {
       loading: waterfall?.loading,
-      tooltipRenderFunction: ({currentItem, previousItem}) =>
+      state: waterfall,
+      tooltipRenderFunction: ({ currentItem, previousItem }) =>
         renderWaterfallTooltip({
           currentValue: currentItem,
           previousValue: previousItem,
@@ -55,9 +62,10 @@ export const useCharts = () => {
     },
   ];
 
-  const genericChartsConfig = [
+  const genericChartsConfig: Array<ChartConfigItem> = [
     {
       loading: newlyEnrolledClients?.loading,
+      state: newlyEnrolledClients,
       tooltipRenderFunction: (row) => `Clients: ${row.clients}`,
       chartData: newlyEnrolledClients?.processedChartData,
       listData: newlyEnrolledClients?.raw?.results,
@@ -69,6 +77,7 @@ export const useCharts = () => {
     },
     {
       loading: activeClients?.loading,
+      state: activeClients,
       tooltipRenderFunction: (row) => `Clients: ${row.clients}`,
       chartData: activeClients?.processedChartData,
       listData: activeClients?.raw?.results,
@@ -80,6 +89,7 @@ export const useCharts = () => {
     },
     {
       loading: adultART?.loading,
+      state: adultART,
       tooltipRenderFunction: (row) => `Clients: ${row.total}`,
       chartData: adultART?.processedChartData,
       listData: [],
@@ -91,6 +101,7 @@ export const useCharts = () => {
     },
     {
       loading: childART?.loading,
+      state: childART,
       tooltipRenderFunction: (row) => `Clients: ${row.total}`,
       chartData: childART?.processedChartData,
       listData: [],
@@ -102,6 +113,7 @@ export const useCharts = () => {
     },
     {
       loading: underCareOfCommunityProgram.loading,
+      state: underCareOfCommunityProgram,
       tooltipRenderFunction: (item) =>
         `${item.data.name}: ${Math.round(
           (item.data.value / allClients?.raw?.results?.length) * 100
@@ -126,9 +138,10 @@ export const useCharts = () => {
     },
   ];
 
-  const viralLoadChartsConfig = [
+  const viralLoadChartsConfig: Array<ChartConfigItem> = [
     {
       loading: dueForViralLoad?.loading,
+      state: dueForViralLoad,
       tooltipRenderFunction: (row) => `Clients: ${row.clients}`,
       chartData: dueForViralLoad?.processedChartData,
       listData: dueForViralLoad?.raw?.results,
@@ -140,6 +153,7 @@ export const useCharts = () => {
     },
     {
       loading: viralLoadSamples?.loading,
+      state: viralLoadSamples,
       tooltipRenderFunction: (row) => `Clients: ${row.clients}`,
       chartData: viralLoadSamples?.processedChartData,
       listData: viralLoadSamples?.raw?.results,
@@ -151,6 +165,7 @@ export const useCharts = () => {
     },
     {
       loading: viralLoadResults?.loading,
+      state: viralLoadResults,
       tooltipRenderFunction: (row) => `Clients: ${row.clients}`,
       chartData: viralLoadResults?.processedChartData,
       listData: viralLoadResults?.raw?.results,
@@ -162,6 +177,7 @@ export const useCharts = () => {
     },
     {
       loading: viralLoadCoverage.loading,
+      state: viralLoadCoverage,
       tooltipRenderFunction: (item) =>
         `${item.data.name}: ${Math.round(
           (item.data.value / allClients?.raw?.results?.length) * 100
@@ -186,6 +202,7 @@ export const useCharts = () => {
     },
     {
       loading: viralLoadSuppression.loading,
+      state: viralLoadSuppression,
       tooltipRenderFunction: (item) =>
         `${item.data.name}: ${Math.round(
           (item.data.value / viralLoadCoverage?.raw?.results?.length) * 100
@@ -213,5 +230,5 @@ export const useCharts = () => {
     },
   ];
 
-  return {waterfallConfig, genericChartsConfig, viralLoadChartsConfig};
+  return { waterfallConfig, genericChartsConfig, viralLoadChartsConfig };
 };
