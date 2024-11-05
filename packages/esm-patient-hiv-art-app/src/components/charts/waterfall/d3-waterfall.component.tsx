@@ -13,6 +13,12 @@ interface D3WaterfallChartProps {
   headerTableColumns?: Array<any>;
   xKey?: string;
   loading?: boolean;
+  state?: State;
+}
+
+interface State {
+  loading: boolean;
+  lineListComplete: boolean;
 }
 
 const D3WaterfallComponent: React.FC<D3WaterfallChartProps> = ({
@@ -23,6 +29,7 @@ const D3WaterfallComponent: React.FC<D3WaterfallChartProps> = ({
   headerTableColumns,
   xKey,
   loading,
+  state,
 }) => {
   /**
    * State for x and y scales
@@ -161,6 +168,7 @@ const D3WaterfallComponent: React.FC<D3WaterfallChartProps> = ({
           <WaterfallPicker />
         </div>
         <ChartHeaderComponent
+          state={state}
           isModalOpen={isModalOpen}
           rows={listData}
           headers={headerTableColumns}
