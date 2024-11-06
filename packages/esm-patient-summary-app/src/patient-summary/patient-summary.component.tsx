@@ -354,12 +354,11 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                     "Eligibility for VL Sample Collection"
                   )}
                 </p>
-                <Tag
-                  type={vlEligibilityResult === "Eligible" ? "green" : "red"}
-                  size="md"
-                >
-                  {vlEligibilityResult}
-                </Tag>
+                <p>
+                  <span>
+                    {vlEligibilityResult}
+                  </span>
+                </p>
               </div>
               <div className={styles.content}></div>
               {vlEligibilityResult === "Eligible" && (
