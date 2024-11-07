@@ -5,19 +5,21 @@ import DashboardProvider from "./context/DashboardContext";
 import classnames from "classnames";
 import styles from "./root.scss";
 import { BrowserRouter } from "react-router-dom";
+import RouteProtectionComponent from "./components/auth/route-protection.component";
 
 const RootComponent: React.FC = () => {
   const baseName = window.getOpenmrsSpaBase() + "home/hivcare-and-art";
-
   return (
     <main
       className={classnames("omrs-main-content", styles.dashboardContainer)}
     >
       <SWRConfig>
         <BrowserRouter basename={baseName}>
-          <DashboardProvider>
-            <HomeDashboard />
-          </DashboardProvider>
+          <RouteProtectionComponent requiredPrivilege="dashboard-rights">
+            <DashboardProvider>
+              <HomeDashboard />
+            </DashboardProvider>
+          </RouteProtectionComponent>
         </BrowserRouter>
       </SWRConfig>
     </main>
