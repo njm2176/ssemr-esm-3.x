@@ -5,7 +5,7 @@ import DashboardProvider from "./context/DashboardContext";
 import classnames from "classnames";
 import styles from "./root.scss";
 import { BrowserRouter } from "react-router-dom";
-import RouteProtectionComponent from "./components/auth/route-protection.component";
+import { RouteProtectionComponent } from "@ssemr/esm-route-protection-app";
 
 const RootComponent: React.FC = () => {
   const baseName = window.getOpenmrsSpaBase() + "home/hivcare-and-art";
