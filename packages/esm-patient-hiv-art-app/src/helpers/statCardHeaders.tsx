@@ -75,7 +75,7 @@ export const txCURRHeaders = [
   },
 ];
 
-export const rttHeaders = defaultStatHeaders;
+export const rttHeaders = [...defaultStatHeaders];
 rttHeaders.splice(4, 0, {
   name: "Date returned to treatment",
   selector: "dateReturnedToTreatment",
