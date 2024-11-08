@@ -10,6 +10,7 @@ import {
   defaultStatHeaders,
   iitAndMissedHeaders,
   txCURRHeaders,
+  rttHeaders
 } from "../helpers/statCardHeaders";
 
 export const useART = () => {
@@ -229,7 +230,7 @@ export const useART = () => {
       stat: chartData.returned?.raw?.totalPatients,
       results: sortLineListByAppointmentDate(chartData.returned?.raw?.results),
       state: chartData.returned,
-      headers: defaultStatHeaders,
+      headers: rttHeaders,
     },
     {
       title: "Due for viral load",
