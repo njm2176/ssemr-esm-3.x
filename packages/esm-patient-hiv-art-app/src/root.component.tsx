@@ -15,7 +15,7 @@ const RootComponent: React.FC = () => {
     >
       <SWRConfig>
         <BrowserRouter basename={baseName}>
-          <RouteProtectionComponent requiredPrivilege="dashboard-rights">
+          <RouteProtectionComponent requiredPrivilege="View Dashboards And Reports">
             <DashboardProvider>
               <HomeDashboard />
             </DashboardProvider>
