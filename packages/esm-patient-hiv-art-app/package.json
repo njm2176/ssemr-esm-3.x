@@ -37,7 +37,6 @@
     "url": "https://github.com/IntelliSOFT-Consulting/ssemr-esm-3.x/tree/main/packages/esm-patient-hiv-art-app/issues"
   },
   "dependencies": {
-    "@ssemr/esm-route-protection-app": "1.1.2",
     "d3": "^7.9.0",
     "lodash-es": "^4.17.21",
     "uuid": "^8.3.2"
