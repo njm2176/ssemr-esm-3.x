@@ -5,11 +5,12 @@ import {
   getThisYearsFirstAndLastDate,
 } from "../helpers/dateOps";
 import { initialChartDataState } from "../assets/initialChartDataState";
-import { sortLineListByAppointmentDate } from "../helpers/sortLineListByAppointmentDate";
+import { sortLineListByAppointmentDate, sortLineListByAppointmentDateDescending } from "../helpers/sortLineListByAppointmentDate";
 import {
   defaultStatHeaders,
   iitAndMissedHeaders,
   txCURRHeaders,
+  rttHeaders
 } from "../helpers/statCardHeaders";
 
 export const useART = () => {
@@ -207,7 +208,7 @@ export const useART = () => {
       title: "Missed appointments",
       color: "#FF0000",
       stat: chartData.missedAppointment?.raw?.totalPatients,
-      results: sortLineListByAppointmentDate(
+      results: sortLineListByAppointmentDateDescending(
         chartData.missedAppointment?.raw?.results
       ),
       state: chartData.missedAppointment,
@@ -217,7 +218,7 @@ export const useART = () => {
       title: "Interruptions in Treatment(TX_IIT)",
       color: "#FF8503",
       stat: chartData.interrupted?.raw?.totalPatients,
-      results: sortLineListByAppointmentDate(
+      results: sortLineListByAppointmentDateDescending(
         chartData.interrupted?.raw?.results
       ),
       state: chartData.interrupted,
@@ -229,7 +230,7 @@ export const useART = () => {
       stat: chartData.returned?.raw?.totalPatients,
       results: sortLineListByAppointmentDate(chartData.returned?.raw?.results),
       state: chartData.returned,
-      headers: defaultStatHeaders,
+      headers: rttHeaders,
     },
     {
       title: "Due for viral load",
