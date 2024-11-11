@@ -13,6 +13,12 @@ interface D3BarChartProps {
   xKey?: string;
   yKey?: string;
   loading?: boolean;
+  state?: State;
+}
+
+interface State {
+  loading: boolean;
+  lineListComplete: boolean;
 }
 
 const D3BarChartComponent: React.FC<D3BarChartProps> = ({
@@ -24,6 +30,7 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
   xKey,
   yKey,
   loading,
+  state,
 }) => {
   /**
    * State for x and y scales
@@ -174,6 +181,7 @@ const D3BarChartComponent: React.FC<D3BarChartProps> = ({
         <p className={styles.title}>{title}</p>
         {!loading && (
           <ChartHeaderComponent
+            state={state}
             isModalOpen={isModalOpen}
             rows={listData}
             headers={headerTableColumns}

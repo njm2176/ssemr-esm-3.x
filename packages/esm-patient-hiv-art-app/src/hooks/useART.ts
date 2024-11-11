@@ -1,15 +1,16 @@
 import { openmrsFetch } from "@openmrs/esm-framework";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   getThisQuartersRange,
   getThisYearsFirstAndLastDate,
 } from "../helpers/dateOps";
 import { initialChartDataState } from "../assets/initialChartDataState";
-import { sortLineListByAppointmentDate } from "../helpers/sortLineListByAppointmentDate";
+import { sortLineListByAppointmentDate, sortLineListByAppointmentDateDescending } from "../helpers/sortLineListByAppointmentDate";
 import {
   defaultStatHeaders,
   iitAndMissedHeaders,
   txCURRHeaders,
+  rttHeaders
 } from "../helpers/statCardHeaders";
 
 export const useART = () => {
@@ -31,7 +32,30 @@ export const useART = () => {
   });
 
   const [chartData, setChartData] = useState(initialChartDataState);
+  /**
+   * Abort controller ref to keep track of the controller between renders
+   */
+  const abortControllers = useRef(new Map());
 
+  /**
+   * Effect hook to cancel all requests in flight once the category filter and the time filter changes
+   */
+  useEffect(() => {
+    return () => {
+      abortControllers.current.forEach((controller) =>
+        controller.abort("admin-override")
+      );
+      abortControllers.current.clear();
+    };
+  }, [categoryFilter, time]);
+
+  /**
+   * Function to make all http requests
+   * @param url
+   * @param processor
+   * @param chartKey
+   * @param noPagination
+   */
   const getDashboardData = async ({
     url,
     processor,
@@ -39,6 +63,18 @@ export const useART = () => {
     noPagination = false,
   }) => {
     try {
+      /**
+       * Abort previous requests if any
+       */
+      if (abortControllers.current.has(chartKey))
+        abortControllers.current.get(chartKey).abort("admin-override");
+
+      /**
+       * Create a new abort controller
+       */
+      const controller = new AbortController();
+      abortControllers.current.set(chartKey, controller);
+
       /**
        * Init loading state for  the specific chart
        */
@@ -51,9 +87,16 @@ export const useART = () => {
       }));
 
       /**
+       * Page sizes
+       */
+      const pageSize = 15;
+
+      /**
        * send API call and hit the callback
        */
-      const response = await openmrsFetch(url);
+      const response = await openmrsFetch(`${url}&page=0&size=${pageSize}`, {
+        signal: controller.signal,
+      });
 
       /**
        * Turn off the loading state after first page
@@ -64,21 +107,22 @@ export const useART = () => {
           raw: response.data,
           processedChartData: processor(response.data),
           loading: false,
+          lineListComplete: noPagination || response?.data?.pageSize < pageSize,
         },
       }));
-
 
       /**
        * additional pages
        */
-      const pageSize = 15;
+
       if (!noPagination && response?.data?.pageSize === pageSize) {
         let currentPage = 1;
         let currentPageSize = pageSize;
 
         while (currentPageSize === pageSize) {
           const { data } = await openmrsFetch(
-            `${url}&page=${currentPage}&size=${pageSize}`
+            `${url}&page=${currentPage}&size=${pageSize}`,
+            { signal: controller.signal }
           );
 
           if (data?.results?.length > 0) {
@@ -102,8 +146,29 @@ export const useART = () => {
             break;
           }
         }
+        /**
+         * set the line list as complete for that chart-key
+         */
+        setChartData((prev) => ({
+          ...prev,
+          [chartKey]: {
+            ...prev[chartKey],
+            lineListComplete: true,
+          },
+        }));
       }
     } catch (error) {
+      /**
+       * Turn off the loading state after first page
+       */
+      if (error !== "admin-override")
+        setChartData((prev) => ({
+          ...prev,
+          [chartKey]: {
+            ...prev[chartKey],
+            loading: false,
+          },
+        }));
       return error;
     }
   };
@@ -116,7 +181,7 @@ export const useART = () => {
       results: sortLineListByAppointmentDate(
         chartData.newlyEnrolledClients?.raw?.results
       ),
-      loading: chartData.newlyEnrolledClients.loading,
+      state: chartData.newlyEnrolledClients,
       headers: defaultStatHeaders,
     },
     {
@@ -126,7 +191,7 @@ export const useART = () => {
       results: sortLineListByAppointmentDate(
         chartData.activeClients?.raw?.results
       ),
-      loading: chartData.activeClients.loading,
+      state: chartData.activeClients,
       headers: txCURRHeaders,
     },
     {
@@ -136,27 +201,27 @@ export const useART = () => {
       results: sortLineListByAppointmentDate(
         chartData.onAppointment?.raw?.results
       ),
-      loading: chartData.onAppointment.loading,
+      state: chartData.onAppointment,
       headers: defaultStatHeaders,
     },
     {
       title: "Missed appointments",
       color: "#FF0000",
       stat: chartData.missedAppointment?.raw?.totalPatients,
-      results: sortLineListByAppointmentDate(
+      results: sortLineListByAppointmentDateDescending(
         chartData.missedAppointment?.raw?.results
       ),
-      loading: chartData.missedAppointment.loading,
+      state: chartData.missedAppointment,
       headers: iitAndMissedHeaders,
     },
     {
       title: "Interruptions in Treatment(TX_IIT)",
       color: "#FF8503",
       stat: chartData.interrupted?.raw?.totalPatients,
-      results: sortLineListByAppointmentDate(
+      results: sortLineListByAppointmentDateDescending(
         chartData.interrupted?.raw?.results
       ),
-      loading: chartData.interrupted.loading,
+      state: chartData.interrupted,
       headers: iitAndMissedHeaders,
     },
     {
@@ -164,8 +229,8 @@ export const useART = () => {
       color: "#3271F4",
       stat: chartData.returned?.raw?.totalPatients,
       results: sortLineListByAppointmentDate(chartData.returned?.raw?.results),
-      loading: chartData.returned.loading,
-      headers: defaultStatHeaders,
+      state: chartData.returned,
+      headers: rttHeaders,
     },
     {
       title: "Due for viral load",
@@ -174,7 +239,7 @@ export const useART = () => {
       results: sortLineListByAppointmentDate(
         chartData.dueForViralLoad?.raw?.results
       ),
-      loading: chartData.dueForViralLoad.loading,
+      state: chartData.dueForViralLoad,
       headers: defaultStatHeaders,
     },
     {
@@ -184,7 +249,7 @@ export const useART = () => {
       results: sortLineListByAppointmentDate(
         chartData.highViralLoad?.raw?.results
       ),
-      loading: chartData.highViralLoad.loading,
+      state: chartData.highViralLoad,
       headers: defaultStatHeaders,
     },
   ];

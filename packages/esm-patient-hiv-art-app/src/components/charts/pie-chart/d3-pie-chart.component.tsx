@@ -11,6 +11,12 @@ interface props {
   tooltipRenderFunction?: (item: any) => string;
   headerTableColumns?: Array<any>;
   loading?: boolean;
+  state?: State;
+}
+
+interface State {
+  loading: boolean;
+  lineListComplete: boolean;
 }
 
 const D3PieChartComponent: React.FC<props> = ({
@@ -20,6 +26,7 @@ const D3PieChartComponent: React.FC<props> = ({
   tooltipRenderFunction,
   headerTableColumns,
   loading,
+  state,
 }) => {
   /**
    * Tooltip state
@@ -109,6 +116,7 @@ const D3PieChartComponent: React.FC<props> = ({
         <p className={styles.title}>{title}</p>
         {!loading && (
           <ChartHeaderComponent
+            state={state}
             isModalOpen={isModalOpen}
             rows={listData}
             headers={headerTableColumns}

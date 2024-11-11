@@ -55,7 +55,7 @@ export const defaultStatHeaders = [
 ];
 
 export const iitAndMissedHeaders = defaultStatHeaders;
-iitAndMissedHeaders.splice(4, 0, {
+iitAndMissedHeaders.splice(5, 0, {
   name: "Next appointment date",
   selector: "appointmentDate",
 });
@@ -74,3 +74,14 @@ export const txCURRHeaders = [
     ),
   },
 ];
+
+export const rttHeaders = [...defaultStatHeaders];
+rttHeaders.splice(4, 0, {
+  name: "Date returned to treatment",
+  selector: "dateReturnedToTreatment",
+  cell: (row) => (
+    <TableCell size="sm">
+      <span>{row?.dateReturnedToTreatment ? row.dateReturnedToTreatment : "---"}</span>
+    </TableCell>
+  )
+});

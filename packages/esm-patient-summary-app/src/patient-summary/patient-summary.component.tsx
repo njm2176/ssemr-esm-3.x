@@ -15,6 +15,7 @@ import useObservationData from "../hooks/useObservationData";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import logo from "../assets/primary-navigation-ssemr.png"
+import { Tag } from "@carbon/react";
 
 interface PatientSummaryProps {
   patientUuid: string;
@@ -114,6 +115,14 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
 
   const displayField = (field, defaultValue = "---") => field ?? defaultValue;
 
+  const vlEligibilityResult =
+    data &&
+    data.results &&
+    data.results.length > 0 &&
+    data.results[0].vlEligibility
+      ? data.results[0]?.vlEligibility
+      : "---";
+
   if (isLoading) return <p>Loading...</p>;
   if (error || !data || !data.results) return <p>Error loading data</p>;
 
@@ -204,40 +213,44 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
             <hr />
 
             <div className={styles.container}>
-              <div className={styles.content}>
+              {/* <div className={styles.content}>
                 <p className={styles.label}>
                   {t("dateOfEnrollment", "Date of Enrollment")}
                 </p>
                 <p>{displayField(data.results[0]?.enrollmentDate)}</p>
-              </div>
+              </div> */}
               <div className={styles.content}>
-                <p className={styles.label}>
-                  {t("latestArvRegimen", "Latest ARV Regimen")}
-                </p>
+                <p className={styles.label}>{t("lastVisitDate", "Last Visit Date")}</p>
                 <p>
-                  {displayField(data.results[0]?.arvRegimen)}
+                  {data?.results[0]?.lastVisitDate
+                    ? data?.results[0]?.lastVisitDate
+                    : "---"}
                 </p>
               </div>
               <div className={styles.content}>
-                <p className={styles.label}>
-                  {t("lastCD4Count", "Last CD4 count")}
-                </p>
+                <p className={styles.label}>{t("nextVisitDate", "Next Visit Date")}</p>
                 <p>
                   <span>
-                    {displayField(data.results[0]?.lastCD4Count)}
+                    {data?.results[0]?.appointmentDate}
                   </span>
                 </p>
               </div>
               <div className={styles.content}>
-            <p className={styles.label}>
-              {displayField("bmiMuac", "BMI/MUAC")}
-              </p>
-            <p>
-              <span>
-                {bmiMuac()}
-              </span>
-            </p>
-          </div>
+                <p className={styles.label}>{t("bmiMuac", "BMI/MUAC")}</p>
+                <p>
+                  <span>{bmiMuac()}</span>
+                </p>
+              </div>
+              <div className={styles.content}>
+                <p className={styles.label}>{t("lastCD4Count", "Last CD4 count")}</p>
+                <p>
+                  <span>
+                    {data.results[0]?.lastCD4Count
+                      ? data.results[0]?.lastCD4Count
+                      : "---"}
+                  </span>
+                </p>
+              </div>
             </div>
 
             <hr />
@@ -245,42 +258,46 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
             <div className={styles.container}>
               <div className={styles.content}>
                 <p className={styles.label}>
-                  {t("lastTBStatus", "Last TB status")}
+                  {t("dateOfEnrollment", "Date of Enrollment")}
                 </p>
+                <p>{displayField(data.results[0]?.enrollmentDate)}</p>
+              </div>
+              <div className={styles.content}>
+                <p className={styles.label}>{t("latestArvRegimen", "Latest ARV Regimen")}</p>
+                <p>{data.results[0]?.arvRegimen}</p>
+              </div>
+              <div className={styles.content}>
+                <p className={styles.label}>{t("lastArvRegimenDose", "Last ARV Regimen Dose")}</p>
+                <p>
+                  <span>
+                    {data.results[0]?.arvRegimenDose}
+                  </span>
+                </p>
+              </div>
+              <div className={styles.content}>
+                <p className={styles.label}>{t("whoHivClinicalStage", "WHO HIV Clinical Stage")}</p>
+                <p>
+                  <span>
+                    {data.results[0]?.whoClinicalStage}
+                  </span>
+                </p>
+              </div>
+              <div className={styles.content}>
+                <p className={styles.label}>{t("lastTBStatus", "Last TB status")}</p>
                 <p>
                   {" "}
                   <span>
-                    {displayField(data.results[0]?.tbStatus)}
+                    {data.results[0]?.tbStatus}
                   </span>
                 </p>
               </div>
               <div className={styles.content}>
-                <p className={styles.label}>
-                  {t("lastArvRegimenDose", "Last ARV Regimen Dose")}
-                </p>
+                <p className={styles.label}>{t("tbNumber", "TB Number")}</p>
                 <p>
                   <span>
-                    {displayField(data.results[0]?.arvRegimenDose)}
-                  </span>
-                </p>
-              </div>
-              <div className={styles.content}>
-                <p className={styles.label}>
-                  {t("nextVisitDate", "Next Visit Date")}
-                </p>
-                <p>
-                  <span>
-                  {displayField(data.results[0]?.appointmentDate)}
-                  </span>
-                </p>
-              </div>
-              <div className={styles.content}>
-                <p className={styles.label}>
-                  {t("whoHivClinicalStage", "WHO HIV Clinical Stage")}
-                </p>
-                <p>
-                  <span>
-                    {displayField(data.results[0]?.whoClinicalStage)}
+                    {data.results[0]?.tbNumber
+                      ? data.results[0]?.tbNumber
+                      : "---"}
                   </span>
                 </p>
               </div>
@@ -330,6 +347,28 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   </span>
                 </p>
               </div>
+              <div className={styles.content}>
+                <p className={styles.label}>
+                  {t(
+                    "eligibilityForVL",
+                    "Eligibility for VL Sample Collection"
+                  )}
+                </p>
+                <p>
+                  <span>
+                    {vlEligibilityResult}
+                  </span>
+                </p>
+              </div>
+              <div className={styles.content}></div>
+              {vlEligibilityResult === "Eligible" && (
+                <div className={styles.content}>
+                  <p>{t("date", "Date")}</p>
+                  <span className={styles.value}>
+                    {data.results[0]?.vlDueDate}
+                  </span>
+                </div>
+              )}
             </div>
 
             <hr />
