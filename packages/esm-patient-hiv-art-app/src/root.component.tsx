@@ -14,13 +14,13 @@ const RootComponent: React.FC = () => {
       className={classnames("omrs-main-content", styles.dashboardContainer)}
     >
       <SWRConfig>
-        <BrowserRouter basename={baseName}>
-          <RouteProtectionComponent requiredPrivilege="View Dashboards And Reports">
+        <RouteProtectionComponent requiredPrivilege="View Dashboards And Reports">
+          <BrowserRouter basename={baseName}>
             <DashboardProvider>
               <HomeDashboard />
             </DashboardProvider>
-          </RouteProtectionComponent>
-        </BrowserRouter>
+          </BrowserRouter>
+        </RouteProtectionComponent>
       </SWRConfig>
     </main>
   );
