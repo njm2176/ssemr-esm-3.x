@@ -66,5 +66,5 @@
       "^.+\\.tsx?$": "babel-jest"
     }
   },
-  "gitHead": "1fcfa4962c756ee4c62d6c3a70e09d525bdc706a"
+  "gitHead": "b73b45560441926fd747025a2206c17c079e3d5a"
 }
