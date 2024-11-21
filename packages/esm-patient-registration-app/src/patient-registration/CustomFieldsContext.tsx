@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect } from "react";
+import React, { useState, createContext } from "react";
 
 export const CustomFieldsContext = createContext(null);
 
@@ -20,10 +20,6 @@ const CustomFieldsProvider = ({ children }) => {
   const changeART = (number: string) => {
     setARTNumber(number);
   };
-
-  useEffect(() => {
-    console.log("phones", phones);
-  }, [phones]);
 
   return (
     <CustomFieldsContext.Provider
