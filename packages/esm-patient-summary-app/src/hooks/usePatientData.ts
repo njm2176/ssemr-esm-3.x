@@ -1,9 +1,11 @@
+import { openmrsFetch } from "@openmrs/esm-framework";
 import { useState, useEffect } from "react";
 
 const usePatientData = (patientUuid) => {
   const [patientData, setPatientData] = useState(null);
   const [Loading, setIsLoading] = useState(false);
   const [isError, setError] = useState(null);
+  const [flags, setFlags] = useState([]);
 
   useEffect(() => {
     const fetchPatientData = async () => {
@@ -29,7 +31,25 @@ const usePatientData = (patientUuid) => {
     }
   }, [patientUuid]);
 
-  return { patientData, Loading, isError };
+  useEffect(() => {
+    const fetchClientEligibility = async () => {
+      try {
+        const { data } = await openmrsFetch(`ws/rest/v1/ssemr/flags?patientUuid=${patientUuid}`);
+
+        setFlags(data?.results);
+      } catch (error) {
+        setError(error);
+      }
+    }
+
+    if (patientUuid) {
+      fetchClientEligibility();
+    }
+
+    console.log(flags);
+  }, [patientUuid]);
+
+  return { patientData, Loading, isError, flags };
 };
 
 export default usePatientData;
