@@ -20,7 +20,6 @@ import { SavePatientForm, SavePatientTransactionManager } from "./form-manager";
 import { usePatientPhoto } from "./patient-registration.resource";
 import { DummyDataInput } from "./input/dummy-data/dummy-data-input.component";
 import {
-  appendArtObject,
   cancelRegistration,
   filterUndefinedPatientIdenfier,
   scrollIntoView,
@@ -54,7 +53,6 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
 }) => {
   const { currentSession, addressTemplate, identifierTypes } =
     useContext(ResourcesContext);
-  const { artNumber, phones } = useContext(CustomFieldsContext);
   const { search } = useLocation();
   const config = useConfig() as RegistrationConfig;
   const [target, setTarget] = useState<undefined | string>();
@@ -82,29 +80,6 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
   const savePatientTransactionManager = useRef(
     new SavePatientTransactionManager()
   );
-  const fieldDefinition = config?.fieldDefinitions?.filter(
-    (def) => def.type === "address"
-  );
-  const [defaultLocation, setDefaultLocation] = useState(location);
-  const [initialState, setInitialState] = useState<any>('');
-  const [initialFacilty, setInitialFacility] = useState<any>('');
-
-  useEffect(() => {
-    async function fetchLocation() {
-      const { data } = await openmrsFetch(
-        `/ws/rest/v1/location/${defaultLocation}`
-      );
-
-      console.log(data)
-
-      setInitialState(data?.stateProvince);
-      setInitialFacility(data?.display);
-    }
-
-    if (defaultLocation) {
-      fetchLocation();
-    }
-  })
 
   useEffect(() => {
     exportedInitialFormValuesForTesting = initialFormValues;
@@ -128,58 +103,6 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
     helpers.setSubmitting(true);
 
     const filteredValues = filterUndefinedPatientIdenfier(values.identifiers);
-
-    const artObject = {
-      identifierTypeUuid: "e6baf185-38ed-4815-9476-f98d2cc2b331",
-      identifierName: "Unique ART Number",
-      preferred: false,
-      initialValue: "",
-      required: false,
-      identifierValue: artNumber,
-      selectedSource: {
-        name: "",
-        autoGeneration: "",
-        uuid: "",
-      },
-    };
-
-    const primaryPhoneObject = {
-      attributeTypeUuid: "8f0a2a16-c073-4622-88ad-a11f2d6966ad",
-      attributeName: "MobileNumber",
-      preferred: false,
-      initialValue: "",
-      required: false,
-      attributeValue: phones.primary.code + phones.primary.number,
-      selectedSource: {
-        name: "",
-        autoGeneration: "",
-        uuid: "",
-      },
-    };
-
-    const secondaryPhoneObject = {
-      attributeTypeUuid: "be6d2471-4152-42f5-904d-3f2274f35fe4",
-      attributeName: "AltTelephoneNo",
-      preferred: false,
-      initialValue: "",
-      required: false,
-      attributeValue: phones.secondary.code + phones.secondary.number,
-      selectedSource: {
-        name: "",
-        autoGeneration: "",
-        uuid: "",
-      },
-    };
-
-    filteredValues["uniqueArtNumber"] = artObject;
-
-    // phones.primary.number && phones.primary.code
-    //   ? (filteredValues["AltTelephoneNo"] = primaryPhoneObject)
-    //   : null;
-    //
-    // phones.secondary.number && phones.secondary.code
-    //   ? (filteredValues["AltTelephoneNo"] = secondaryPhoneObject)
-    //   : null;
 
     const updatedFormValues = {
       ...values,

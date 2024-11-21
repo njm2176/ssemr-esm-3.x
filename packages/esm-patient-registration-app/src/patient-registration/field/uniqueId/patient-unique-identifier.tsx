@@ -12,6 +12,9 @@ import styles from "./patient-unique-identifier.scss";
 import { FormikProps, FormikValues } from "formik";
 import { facilities } from "./assets/identifier-assets";
 import { CustomFieldsContext } from "../../CustomFieldsContext";
+import { openmrsFetch } from "@openmrs/esm-framework";
+import { ResourcesContext } from "../../../offline.resources";
+import { findFacilityMetadata } from "../../helpers/findFacilityMetadata";
 
 interface PatientIdentifierProps {
   props: FormikProps<FormikValues>;
@@ -27,7 +30,6 @@ interface PatientIdentifierProps {
 interface CustomInputProps {
   value: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  onBlur: () => void;
   id: string;
   name: string;
   labelText: string;
@@ -38,7 +40,6 @@ interface CustomInputProps {
 const CustomInput: React.FC<CustomInputProps> = ({
   value,
   onChange,
-  onBlur,
   id,
   name,
   labelText,
@@ -55,7 +56,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
     <TextInput
       value={value}
       onChange={onChange}
-      onBlur={onBlur}
       onKeyDown={handleKeyDown}
       id={id}
       name={name}
@@ -72,6 +72,8 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   const { t } = useTranslation();
 
   const states = Object.keys(facilities[0]);
+  const [allFacilities, setAllFacilities] = useState([]);
+  const [allStates, setAllStates] = useState([]);
   const [selectedState, setSelectedState] = useState<string>("State1");
   const [selectedFacility, setSelectedFacility] = useState<string>("");
   const [artNumber, setArtNumber] = useState<string>("");
@@ -81,6 +83,72 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   const [transferIn, setTransferIn] = useState(false);
 
   const [combinedValue, setCombinedValue] = useState<string>("");
+
+  const { currentSession } = useContext(ResourcesContext);
+
+  const location = currentSession?.sessionLocation?.display;
+
+  async function* fetchLocationsWithPagination(url: string) {
+    let hasMorePages = true;
+    let currentUrl = url;
+
+    while (hasMorePages) {
+      try {
+        const { data } = await openmrsFetch(`${currentUrl}`);
+        yield data.results;
+        /**
+         * check if there's a next page based on the returned links (or pagination attributes)
+         *
+         */
+        if (data?.links?.length > 0 && data.links[0].rel === "next") {
+          currentUrl = data.links[0].uri.split("openmrs")[1];
+        } else {
+          hasMorePages = false;
+        }
+      } catch (e) {
+        hasMorePages = false;
+      }
+    }
+  }
+
+  const getAllFacilities = async () => {
+    const generator = fetchLocationsWithPagination(
+      `/ws/rest/v1/location?tag=Login Location`
+    );
+
+    for await (const states of generator) {
+      setAllFacilities((prev) => [...prev, ...states]);
+    }
+  };
+
+  const getAllStates = async () => {
+    const generator = fetchLocationsWithPagination(
+      `/ws/rest/v1/location?tag=South Sudan States`
+    );
+
+    for await (const states of generator) {
+      setAllStates((prev) => [...prev, ...states]);
+    }
+  };
+
+  const getCurrentLocation = async () => {
+    try {
+      const { data } = await openmrsFetch(`/ws/rest/v1/location/${location}`);
+      const metadata = findFacilityMetadata(data.display);
+      if (metadata) {
+        setSelectedState(metadata.state);
+        setSelectedFacility(metadata.facility.code);
+      }
+    } catch (e) {
+      return e;
+    }
+  };
+
+  useEffect(() => {
+    getAllStates();
+    getAllFacilities();
+    getCurrentLocation();
+  }, [transferIn]);
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newState = event.target.value;
@@ -100,10 +168,6 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   ) => {
     const newArtNumber = event.target.value;
     setArtNumber(newArtNumber);
-  };
-
-  const handleBlur = () => {
-    console.log("Input blurred");
   };
 
   const { changeART } = useContext(CustomFieldsContext);
@@ -148,6 +212,7 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
             <Tile className={styles.wrapper}>
               <Layer>
                 <Select
+                  disabled={!transferIn}
                   value={selectedState}
                   onChange={handleStateChange}
                   id="states"
@@ -161,6 +226,7 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
               </Layer>
               <Layer>
                 <Select
+                  disabled={!transferIn}
                   value={selectedFacility}
                   onChange={handleFacilityChange}
                   id="facility"
@@ -180,7 +246,6 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
                 <CustomInput
                   value={artNumber}
                   onChange={handleArtNumberChange}
-                  onBlur={handleBlur}
                   id="artNumber"
                   name="artNumber"
                   labelText={t("number", "Number")}
