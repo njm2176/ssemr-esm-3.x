@@ -198,6 +198,8 @@ export const usePatientListing = (initialCategory = "allClients") => {
       }
     } catch (e) {
       return e;
+    } finally {
+      setLoading(false);
     }
   };
 

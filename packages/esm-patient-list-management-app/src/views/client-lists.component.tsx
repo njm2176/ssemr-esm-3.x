@@ -111,7 +111,7 @@ const ListsDashboard: React.FC = () => {
                 </div>
               ) : (
                 <div className={styles.noRecords}>
-                  <p className={styles.noRecordsText}>This patient does not exist in the system.</p>
+                  <p className={styles.noRecordsText}>No records found</p>
                 </div>
               )
             }
