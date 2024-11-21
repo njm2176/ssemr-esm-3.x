@@ -3,12 +3,14 @@ import styles from "./vl-summary.scss";
 import { useTranslation } from "react-i18next";
 import { StructuredListSkeleton, Tag, Tile } from "@carbon/react";
 import useObservationData from "../hooks/useObservationData";
+import usePatientData from "../hooks/usePatientData";
 export interface ProgramSummaryProps {
   patientUuid: string;
   code: string;
 }
 const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
   const { data, error, isLoading } = useObservationData(patientUuid);
+  const { flags } = usePatientData(patientUuid);
   const { t } = useTranslation();
 
   if (isLoading) {
@@ -36,13 +38,15 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
         : data.results[0].vlStatus
       : "---";
 
-  const vlEligibilityResult =
-    data &&
-    data.results &&
-    data.results.length > 0 &&
-    data.results[0].vlEligibility
-      ? data.results[0]?.vlEligibility
-      : "---";
+  // const vlEligibilityResult =
+  //   data &&
+  //   data.results &&
+  //   data.results.length > 0 &&
+  //   data.results[0].vlEligibility
+  //     ? data.results[0]?.vlEligibility
+  //     : "---";
+
+  const vlEligibilityResult = flags.includes("DUE_FOR_VL")
 
   return (
     <>
@@ -90,14 +94,14 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
                   )}
                 </p>
                 <Tag
-                  type={vlEligibilityResult === "Eligible" ? "green" : "red"}
+                  type={vlEligibilityResult ? "green" : "red"}
                   size="md"
                 >
-                  {vlEligibilityResult}
+                  {vlEligibilityResult ? "Eligible" : "Not Eligible"}
                 </Tag>
               </div>
               <div className={styles.content}></div>
-              {vlEligibilityResult === "Eligible" && (
+              {vlEligibilityResult && (
                 <div className={styles.content}>
                   <p>{t("date", "Date")}</p>
                   <span className={styles.value}>
