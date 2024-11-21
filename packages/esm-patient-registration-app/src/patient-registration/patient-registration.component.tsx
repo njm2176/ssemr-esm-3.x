@@ -11,6 +11,7 @@ import {
   useConfig,
   interpolateUrl,
   usePatient,
+  openmrsFetch,
 } from "@openmrs/esm-framework";
 import { validationSchema as initialSchema } from "./validation/patient-registration-validation";
 import { FormValues, CapturePhotoProps } from "./patient-registration.types";
@@ -69,7 +70,7 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
   const [initialAddressFieldValues] =
     useInitialAddressFieldValues(uuidOfPatientToEdit);
   const [patientUuidMap] = usePatientUuidMap(uuidOfPatientToEdit);
-  const location = currentSession?.sessionLocation?.uuid;
+  const location = currentSession?.sessionLocation?.display;
   const inEditMode = isLoadingPatientToEdit
     ? undefined
     : !!(uuidOfPatientToEdit && patientToEdit);
@@ -84,6 +85,26 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
   const fieldDefinition = config?.fieldDefinitions?.filter(
     (def) => def.type === "address"
   );
+  const [defaultLocation, setDefaultLocation] = useState(location);
+  const [initialState, setInitialState] = useState<any>('');
+  const [initialFacilty, setInitialFacility] = useState<any>('');
+
+  useEffect(() => {
+    async function fetchLocation() {
+      const { data } = await openmrsFetch(
+        `/ws/rest/v1/location/${defaultLocation}`
+      );
+
+      console.log(data)
+
+      setInitialState(data?.stateProvince);
+      setInitialFacility(data?.display);
+    }
+
+    if (defaultLocation) {
+      fetchLocation();
+    }
+  })
 
   useEffect(() => {
     exportedInitialFormValuesForTesting = initialFormValues;
