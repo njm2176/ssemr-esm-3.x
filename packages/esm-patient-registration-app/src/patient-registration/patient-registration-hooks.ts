@@ -31,7 +31,7 @@ import { useInitialPatientRelationships } from "./section/patient-relationships/
 import dayjs from "dayjs";
 
 export function useInitialFormValues(
-  patientUuid: string,
+  patientUuid: string
 ): [FormValues, Dispatch<FormValues>] {
   const { isLoading: isLoadingPatientToEdit, patient: patientToEdit } =
     usePatient(patientUuid);
@@ -65,6 +65,8 @@ export function useInitialFormValues(
     identifiers: {},
     address: {},
   });
+
+  const [category, setCategory] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -335,4 +337,10 @@ function getPatientAttributeUuidMapForPatient(
       attribute?.uuid;
   });
   return attributeUuidMap;
+}
+
+async function getLocations (category: string) {
+  const { data } = await openmrsFetch(`/ws/rest/v1/location?q=${category}&v=default`,)
+
+  return data
 }
