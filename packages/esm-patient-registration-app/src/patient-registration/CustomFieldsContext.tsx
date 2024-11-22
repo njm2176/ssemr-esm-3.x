@@ -3,7 +3,10 @@ import React, { useState, createContext } from "react";
 export const CustomFieldsContext = createContext(null);
 
 const CustomFieldsProvider = ({ children }) => {
-  const [artNumber, setARTNumber] = useState("");
+  const [artNumber, setARTNumber] = useState({
+    identifierValue: "",
+    identifierUuid: null,
+  });
   const [phones, setPhones] = useState({
     primary: {
       dial_code: "",
@@ -17,8 +20,12 @@ const CustomFieldsProvider = ({ children }) => {
     },
   });
 
-  const changeART = (number: string) => {
-    setARTNumber(number);
+  const changeART = (identifierValue: string, identifierUuid?: string) => {
+    setARTNumber((prev) => ({
+      ...prev,
+      identifierValue: identifierValue,
+      ...(identifierUuid && { identifierUuid }),
+    }));
   };
 
   return (
