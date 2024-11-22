@@ -4,6 +4,7 @@ import { RegistrationConfig } from "../config-schema";
 import { FormValues, CapturePhotoProps } from "./patient-registration.types";
 
 export interface PatientRegistrationContextProps {
+  isLoading: boolean;
   identifierTypes: Array<any>;
   values: FormValues;
   validationSchema: any;

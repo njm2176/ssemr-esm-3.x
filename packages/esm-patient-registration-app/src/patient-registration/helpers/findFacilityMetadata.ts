@@ -15,3 +15,16 @@ export const findFacilityMetadata = (facilityName: string) => {
   }
   return null;
 };
+
+export const getStateAndFacilityByCode = (code) => {
+  for (const stateGroup of facilities) {
+    for (const [stateName, facilityList] of Object.entries(stateGroup)) {
+      for (const facility of facilityList) {
+        if (facility.code === code) {
+          return { state: stateName, facility: facility.name };
+        }
+      }
+    }
+  }
+  return null;
+};

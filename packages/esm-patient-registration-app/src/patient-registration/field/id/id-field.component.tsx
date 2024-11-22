@@ -75,7 +75,7 @@ export function deleteIdentifierType(
 export const Identifiers: React.FC = () => {
   const { identifierTypes } = useContext(ResourcesContext);
   const isLoading = !identifierTypes;
-  const { values, setFieldValue, initialFormValues, isOffline } = useContext(
+  const { values, setFieldValue, initialFormValues, isOffline, inEditMode } = useContext(
     PatientRegistrationContext
   );
   const { t } = useTranslation();
@@ -150,38 +150,43 @@ export const Identifiers: React.FC = () => {
 
   return (
     <div className={styles.halfWidthInDesktopView}>
-      <UserHasAccess
-        privilege={["Get Identifier Types", "Add Patient Identifiers"]}
-      >
-        <div className={styles.identifierLabelText}>
-          <h4 className={styles.productiveHeading02Light}>
-            {t("idFieldLabelText", "Identifiers")}
-          </h4>
-          <Button
-            kind="ghost"
-            className={styles.setIDNumberButton}
-            onClick={() => setShowIdentifierOverlay(true)}
-            size={isDesktop(layout) ? "sm" : "md"}
+      {inEditMode ? null : (
+        <>
+          <UserHasAccess
+            privilege={["Get Identifier Types", "Add Patient Identifiers"]}
           >
-            {t("configure", "Configure")} <ArrowRight size={16} />
-          </Button>
-        </div>
-      </UserHasAccess>
-      <div>
-        {Object.entries(values.identifiers).map(([fieldName, identifier]) => (
-          <IdentifierInput
-            key={fieldName}
-            fieldName={fieldName}
-            patientIdentifier={identifier}
-          />
-        ))}
-        {showIdentifierOverlay && (
-          <IdentifierSelectionOverlay
-            setFieldValue={setFieldValue}
-            closeOverlay={closeIdentifierSelectionOverlay}
-          />
-        )}
-      </div>
+            <div className={styles.identifierLabelText}>
+              <h4 className={styles.productiveHeading02Light}>
+                {t("idFieldLabelText", "Identifiers")}
+              </h4>
+              <Button
+                kind="ghost"
+                className={styles.setIDNumberButton}
+                onClick={() => setShowIdentifierOverlay(true)}
+                size={isDesktop(layout) ? "sm" : "md"}
+              >
+                {t("configure", "Configure")} <ArrowRight size={16} />
+              </Button>
+            </div>
+          </UserHasAccess>
+          <div>
+            {Object.entries(values.identifiers).map(([fieldName, identifier]) => (
+              <IdentifierInput
+                key={fieldName}
+                fieldName={fieldName}
+                patientIdentifier={identifier}
+              />
+            ))}
+            {showIdentifierOverlay && (
+              <IdentifierSelectionOverlay
+                setFieldValue={setFieldValue}
+                closeOverlay={closeIdentifierSelectionOverlay}
+              />
+            )}
+          </div>
+        </>
+      )}
+
     </div>
   );
 };

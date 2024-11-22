@@ -207,6 +207,9 @@ export async function fetchPerson(
     }),
     openmrsFetch(`/ws/rest/v1/person?q=${query}`, {
       signal: abortController.signal,
+      headers: {
+        "Cache-Control": "no-cache",
+      },
     }),
   ]);
 

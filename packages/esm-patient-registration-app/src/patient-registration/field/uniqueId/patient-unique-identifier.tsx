@@ -7,6 +7,7 @@ import {
   SelectItem,
   TextInput,
   Checkbox,
+  SkeletonPlaceholder,
 } from "@carbon/react";
 import styles from "./patient-unique-identifier.scss";
 import { FormikProps, FormikValues } from "formik";
@@ -14,7 +15,12 @@ import { facilities } from "./assets/identifier-assets";
 import { CustomFieldsContext } from "../../CustomFieldsContext";
 import { openmrsFetch } from "@openmrs/esm-framework";
 import { ResourcesContext } from "../../../offline.resources";
-import { findFacilityMetadata } from "../../helpers/findFacilityMetadata";
+import {
+  findFacilityMetadata,
+  getStateAndFacilityByCode,
+} from "../../helpers/findFacilityMetadata";
+import { PatientRegistrationContext } from "../../patient-registration-context";
+import { extractCode, isValidART } from "../../helpers/findValidART";
 
 interface PatientIdentifierProps {
   props: FormikProps<FormikValues>;
@@ -71,12 +77,47 @@ export { CustomInput };
 export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   const { t } = useTranslation();
 
+  const { changeART, artNumber: contextArt } = useContext(CustomFieldsContext);
+  const { currentSession, identifierTypes } = useContext(ResourcesContext);
+  const { isLoading, inEditMode, initialFormValues } = useContext(
+    PatientRegistrationContext
+  );
+
+  /**
+   * useEffect to initialize the ART NUMBER if it exists in the initial form values
+   */
+  useEffect(() => {
+    if (initialFormValues?.identifiers?.uniqueArtNumber) {
+      changeART(
+        initialFormValues.identifiers.uniqueArtNumber.identifierValue,
+        initialFormValues.identifiers.uniqueArtNumber.identifierUuid
+      );
+    }
+  }, [initialFormValues]);
+
   const states = Object.keys(facilities[0]);
-  const [allFacilities, setAllFacilities] = useState([]);
-  const [allStates, setAllStates] = useState([]);
   const [selectedState, setSelectedState] = useState<string>("State1");
   const [selectedFacility, setSelectedFacility] = useState<string>("");
-  const [artNumber, setArtNumber] = useState<string>("");
+  const [artNumber, setArtNumber] = useState<string>(
+    contextArt.identifierValue.split("/").at(-1)
+  );
+
+  useEffect(() => {
+    if (isValidART(contextArt.identifierValue)) {
+      if (contextArt?.identifierValue.includes("TI-")) {
+        setTransferIn(true);
+      }
+      const code = extractCode(contextArt.identifierValue);
+      const artNumberStateAndFacility = getStateAndFacilityByCode(code);
+
+      setSelectedState(artNumberStateAndFacility.state);
+
+      setSelectedFacility(code);
+
+      setArtNumber(contextArt.identifierValue.split("/").at(-1));
+    }
+  }, [contextArt]);
+
   const [facilitiesForSelectedState, setfacilitiesForSelectedState] = useState<
     string[]
   >([""]);
@@ -84,10 +125,12 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
 
   const [combinedValue, setCombinedValue] = useState<string>("");
 
-  const { currentSession } = useContext(ResourcesContext);
-
   const location = currentSession?.sessionLocation?.display;
 
+  /**
+   * We will use these when we load locations in the database
+   * @param url
+   */
   async function* fetchLocationsWithPagination(url: string) {
     let hasMorePages = true;
     let currentUrl = url;
@@ -111,31 +154,11 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
     }
   }
 
-  const getAllFacilities = async () => {
-    const generator = fetchLocationsWithPagination(
-      `/ws/rest/v1/location?tag=Login Location`
-    );
-
-    for await (const states of generator) {
-      setAllFacilities((prev) => [...prev, ...states]);
-    }
-  };
-
-  const getAllStates = async () => {
-    const generator = fetchLocationsWithPagination(
-      `/ws/rest/v1/location?tag=South Sudan States`
-    );
-
-    for await (const states of generator) {
-      setAllStates((prev) => [...prev, ...states]);
-    }
-  };
-
   const getCurrentLocation = async () => {
     try {
       const { data } = await openmrsFetch(`/ws/rest/v1/location/${location}`);
       const metadata = findFacilityMetadata(data.display);
-      if (metadata) {
+      if (metadata && !contextArt.identifierUuid) {
         setSelectedState(metadata.state);
         setSelectedFacility(metadata.facility.code);
       }
@@ -145,9 +168,8 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   };
 
   useEffect(() => {
-    getAllStates();
-    getAllFacilities();
-    getCurrentLocation();
+    if (!inEditMode)
+      getCurrentLocation();
   }, [transferIn]);
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -170,10 +192,9 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
     setArtNumber(newArtNumber);
   };
 
-  const { changeART } = useContext(CustomFieldsContext);
-
   useEffect(() => {
     const value = `${transferIn ? "TI-" : ""}${selectedFacility}${artNumber}`;
+
     setCombinedValue(value);
     changeART(value);
   }, [selectedFacility, artNumber, transferIn]);
@@ -184,80 +205,79 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
     }
   }, [selectedState]);
 
-  // TO-DO - Extract patientUuid from the URL
-  const segments = window.location.pathname.split("/");
-
-  // TO-DO - Check if the URL pattern has edit
-  const shouldRenderSection = segments.includes("edit");
-
   return (
     <div>
-      {!shouldRenderSection && (
-        <div id="patientIdentifier">
-          <h6
-            className={styles.productiveHeading01}
-            style={{ color: "#161616", marginTop: "1rem" }}
-          >
-            {t("uniqueArtNumber", "Unique ART Number")}
-          </h6>
-          <div>
-            <Tile className={styles.wrapper}>
-              <Checkbox
-                value={transferIn}
-                onChange={() => setTransferIn((prev) => !prev)}
-                labelText="Transfer In"
-                id="transfer"
-              />
-            </Tile>
-            <Tile className={styles.wrapper}>
-              <Layer>
-                <Select
-                  disabled={!transferIn}
-                  value={selectedState}
-                  onChange={handleStateChange}
-                  id="states"
-                  labelText={t("states", "State")}
-                >
-                  <SelectItem value="" text="" />
-                  {states.map((state) => (
-                    <SelectItem value={state} text={state} key={state} />
-                  ))}
-                </Select>
-              </Layer>
-              <Layer>
-                <Select
-                  disabled={!transferIn}
-                  value={selectedFacility}
-                  onChange={handleFacilityChange}
-                  id="facility"
-                  labelText={t("facilities", "Facilities")}
-                >
-                  <SelectItem value="" text="" />
-                  {facilitiesForSelectedState?.map((facility: any) => (
-                    <SelectItem
-                      value={facility?.code}
-                      text={facility?.name}
-                      key={facility?.code}
-                    />
-                  ))}
-                </Select>
-              </Layer>
-              <Layer>
-                <CustomInput
-                  value={artNumber}
-                  onChange={handleArtNumberChange}
-                  id="artNumber"
-                  name="artNumber"
-                  labelText={t("number", "Number")}
-                  light={true}
-                  required={true}
+      <div id="patientIdentifier">
+        <h6
+          className={styles.productiveHeading01}
+          style={{ color: "#161616", marginTop: "1rem" }}
+        >
+          {t("uniqueArtNumber", "Unique ART Number")}
+        </h6>
+        <div>
+          {isLoading || !identifierTypes ? (
+            <SkeletonPlaceholder className={styles.skeleton} />
+          ) : (
+            <>
+              <Tile className={styles.wrapper}>
+                <Checkbox
+                  checked={transferIn}
+                  value={transferIn}
+                  onChange={() => setTransferIn((prev) => !prev)}
+                  labelText="Transfer In"
+                  id="transfer"
                 />
-              </Layer>
-            </Tile>
-          </div>
-          <div>ART Number: {combinedValue}</div>
+              </Tile>
+              <Tile className={styles.wrapper}>
+                <Layer>
+                  <Select
+                    disabled={!transferIn && !inEditMode}
+                    value={selectedState}
+                    onChange={handleStateChange}
+                    id="states"
+                    labelText={t("states", "State")}
+                  >
+                    <SelectItem value="" text="" />
+                    {states.map((state) => (
+                      <SelectItem value={state} text={state} key={state} />
+                    ))}
+                  </Select>
+                </Layer>
+                <Layer>
+                  <Select
+                    disabled={!transferIn && !inEditMode}
+                    value={selectedFacility}
+                    onChange={handleFacilityChange}
+                    id="facility"
+                    labelText={t("facilities", "Facilities")}
+                  >
+                    <SelectItem value="" text="" />
+                    {facilitiesForSelectedState?.map((facility: any) => (
+                      <SelectItem
+                        value={facility?.code}
+                        text={facility?.name}
+                        key={facility?.code}
+                      />
+                    ))}
+                  </Select>
+                </Layer>
+                <Layer>
+                  <CustomInput
+                    value={artNumber}
+                    onChange={handleArtNumberChange}
+                    id="artNumber"
+                    name="artNumber"
+                    labelText={t("number", "Number")}
+                    light={true}
+                    required={true}
+                  />
+                </Layer>
+              </Tile>
+            </>
+          )}
         </div>
-      )}
+        <div>ART Number: {combinedValue}</div>
+      </div>
     </div>
   );
 };

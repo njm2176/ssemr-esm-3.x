@@ -11,13 +11,15 @@ import {
   useConfig,
   interpolateUrl,
   usePatient,
-  openmrsFetch,
 } from "@openmrs/esm-framework";
 import { validationSchema as initialSchema } from "./validation/patient-registration-validation";
 import { FormValues, CapturePhotoProps } from "./patient-registration.types";
 import { PatientRegistrationContext } from "./patient-registration-context";
 import { SavePatientForm, SavePatientTransactionManager } from "./form-manager";
-import { usePatientPhoto } from "./patient-registration.resource";
+import {
+  updatePatientIdentifier,
+  usePatientPhoto,
+} from "./patient-registration.resource";
 import { DummyDataInput } from "./input/dummy-data/dummy-data-input.component";
 import {
   cancelRegistration,
@@ -51,32 +53,49 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
   savePatientForm,
   isOffline,
 }) => {
-  const { currentSession, addressTemplate, identifierTypes } =
-    useContext(ResourcesContext);
+  const { currentSession, identifierTypes } = useContext(ResourcesContext);
+
+  const { artNumber } = useContext(CustomFieldsContext);
+
   const { search } = useLocation();
+
   const config = useConfig() as RegistrationConfig;
+
   const [target, setTarget] = useState<undefined | string>();
+
   const [validationSchema, setValidationSchema] = useState(initialSchema);
+
   const { patientUuid: uuidOfPatientToEdit } = useParams();
+
   const { isLoading: isLoadingPatientToEdit, patient: patientToEdit } =
     usePatient(uuidOfPatientToEdit);
+
   const { t } = useTranslation();
+
   const [capturePhotoProps, setCapturePhotoProps] =
     useState<CapturePhotoProps | null>(null);
+
   const [initialFormValues, setInitialFormValues] =
     useInitialFormValues(uuidOfPatientToEdit);
+
   const [initialAddressFieldValues] =
     useInitialAddressFieldValues(uuidOfPatientToEdit);
+
   const [patientUuidMap] = usePatientUuidMap(uuidOfPatientToEdit);
+
   const location = currentSession?.sessionLocation?.display;
+
   const inEditMode = isLoadingPatientToEdit
     ? undefined
     : !!(uuidOfPatientToEdit && patientToEdit);
+
   const showDummyData = useMemo(
     () => localStorage.getItem("openmrs:devtools") === "true" && !inEditMode,
     [inEditMode]
   );
+
   const { data: photo } = usePatientPhoto(patientToEdit?.id);
+
   const savePatientTransactionManager = useRef(
     new SavePatientTransactionManager()
   );
@@ -95,6 +114,11 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
       .filter((s) => s);
   }, [config.sections, config.sectionDefinitions]);
 
+  /**
+   * Submit handler for the registration form
+   * @param values
+   * @param helpers
+   */
   const onFormSubmit = async (
     values: FormValues,
     helpers: FormikHelpers<FormValues>
@@ -102,7 +126,44 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
     const abortController = new AbortController();
     helpers.setSubmitting(true);
 
+    const artObject = {
+      identifierTypeUuid: "e6baf185-38ed-4815-9476-f98d2cc2b331",
+      identifierName: "Unique ART Number",
+      preferred: false,
+      initialValue: "",
+      required: false,
+      identifierValue: artNumber.identifierValue,
+      selectedSource: {
+        name: "",
+        autoGeneration: "",
+        uuid: "",
+      },
+      ...(artNumber?.identifierUuid?.length > 0 && {
+        identifierUuid: artNumber.identifierUuid,
+      }),
+    };
+
     const filteredValues = filterUndefinedPatientIdenfier(values.identifiers);
+    /**
+     * If there's an identifier uuid in context that means this is an existing ART number and we need to update it instead of adding it.
+     */
+    if (artNumber.identifierUuid) {
+      try {
+        const res = await updatePatientIdentifier(
+          uuidOfPatientToEdit,
+          artNumber.identifierUuid,
+          artNumber.identifierValue
+        );
+      } catch (e) {
+        showSnackbar({
+          title: "An error occured",
+          subtitle: e?.message,
+          kind: "error",
+        });
+      }
+    } else {
+      filteredValues["uniqueArtNumber"] = artObject;
+    }
 
     const updatedFormValues = {
       ...values,
@@ -274,6 +335,7 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({
             <div className={styles.infoGrid}>
               <PatientRegistrationContext.Provider
                 value={{
+                  isLoading: isLoadingPatientToEdit,
                   identifierTypes: identifierTypes,
                   validationSchema,
                   setValidationSchema,

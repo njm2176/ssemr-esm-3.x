@@ -15,11 +15,11 @@ export function CustomField({ name }: CustomFieldProps) {
     (def) => def.id == name,
   )[0];
 
-  if (fieldDefinition.type === "person attribute") {
+  if (fieldDefinition?.type === "person attribute") {
     return <PersonAttributeField fieldDefinition={fieldDefinition} />;
-  } else if (fieldDefinition.type === "obs") {
+  } else if (fieldDefinition?.type === "obs") {
     return <ObsField fieldDefinition={fieldDefinition} />;
-  } else if (fieldDefinition.type === "address") {
+  } else if (fieldDefinition?.type === "address") {
     return <AddressField fieldDefinition={fieldDefinition} />;
   } else {
     return <div>Error: Unknown field type {fieldDefinition.type}</div>;
