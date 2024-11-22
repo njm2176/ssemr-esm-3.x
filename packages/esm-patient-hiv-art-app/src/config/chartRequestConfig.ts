@@ -1,5 +1,5 @@
-import { formatDataAgainstTime } from "./formatDataAgainstTime";
-import { formatWaterfallData } from "./formatWaterfallData";
+import { formatDataAgainstTime } from "../helpers/formatDataAgainstTime";
+import { formatWaterfallData } from "../helpers/formatWaterfallData";
 
 export const chartRequestConfig = {
   allClients: {
@@ -105,13 +105,6 @@ export const chartRequestConfig = {
       `/ws/rest/v1/ssemr/dashboard/underCareOfCommunityProgrammes?startDate=${time.startDate}&endDate=${time.endDate}`,
     processor: formatDataAgainstTime,
     chartKey: "underCareOfCommunityProgram",
-  },
-  viralLoadCoverage: {
-    url: ({ time }) =>
-      `/ws/rest/v1/ssemr/dashboard/viralLoadCoverage?startDate=${time.startDate}&endDate=${time.endDate}`,
-    processor: formatDataAgainstTime,
-    chartKey: "viralLoadCoverage",
-    noPagination: true,
   },
   viralLoadSuppression: {
     url: ({ time }) =>

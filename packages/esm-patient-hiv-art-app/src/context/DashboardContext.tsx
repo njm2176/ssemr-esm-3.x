@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useEffect } from "react";
 import { useART } from "../hooks/useART";
-import { chartRequestConfig } from "../helpers/chartRequestConfig";
+import { chartRequestConfig } from "../config/chartRequestConfig";
 
 export const DashboardContext = createContext(null);
 
@@ -60,13 +60,6 @@ const DashboardProvider = ({ children }) => {
       getDashboardData({
         ...chartRequestConfig.viralLoadResults,
         url: chartRequestConfig.viralLoadResults.url({
-          time,
-        }),
-      });
-
-      getDashboardData({
-        ...chartRequestConfig.viralLoadCoverage,
-        url: chartRequestConfig.viralLoadCoverage.url({
           time,
         }),
       });

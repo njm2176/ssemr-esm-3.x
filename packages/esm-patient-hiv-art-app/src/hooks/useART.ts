@@ -10,7 +10,7 @@ import {
   defaultStatHeaders,
   iitAndMissedHeaders,
   txCURRHeaders,
-  rttHeaders
+  rttHeaders,
 } from "../helpers/statCardHeaders";
 
 export const useART = () => {
