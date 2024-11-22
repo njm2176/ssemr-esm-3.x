@@ -34,7 +34,6 @@ export const useCharts = () => {
       dueForViralLoad,
       viralLoadSamples,
       viralLoadResults,
-      viralLoadCoverage,
       viralLoadSuppression,
       waterfall,
     },
@@ -176,8 +175,8 @@ export const useCharts = () => {
       chartType: "bar",
     },
     {
-      loading: viralLoadCoverage.loading,
-      state: viralLoadCoverage,
+      loading: viralLoadSamples.loading,
+      state: viralLoadSamples,
       tooltipRenderFunction: (item) =>
         `${item.data.name}: ${Math.round(
           (item.data.value / allClients?.raw?.results?.length) * 100
@@ -187,14 +186,14 @@ export const useCharts = () => {
           name: "Not covered",
           value:
             allClients?.raw?.results?.length -
-            viralLoadCoverage?.raw?.results?.length,
+            viralLoadSamples?.raw?.results?.length,
         },
         {
           name: "Covered",
-          value: viralLoadCoverage?.raw?.results?.length,
+          value: viralLoadSamples?.raw?.results?.length,
         },
       ],
-      listData: viralLoadCoverage?.raw?.results,
+      listData: viralLoadSamples?.raw?.results,
       title: "Viral Load Coverage",
       total: allClients?.raw?.results?.length,
       headerTableColumns: defaultStatHeaders,
@@ -205,13 +204,13 @@ export const useCharts = () => {
       state: viralLoadSuppression,
       tooltipRenderFunction: (item) =>
         `${item.data.name}: ${Math.round(
-          (item.data.value / viralLoadCoverage?.raw?.results?.length) * 100
+          (item.data.value / viralLoadSamples?.raw?.results?.length) * 100
         )}%`,
       chartData: [
         {
           name: "Unsuppressed",
           value:
-            viralLoadCoverage?.raw?.results?.length -
+            viralLoadSamples?.raw?.results?.length -
             viralLoadSuppression?.raw?.results?.length,
         },
         {
@@ -221,7 +220,7 @@ export const useCharts = () => {
       ],
       listData: viralLoadSuppression?.raw?.results,
       title: "Viral Load Suppression",
-      total: viralLoadCoverage?.raw?.results?.length,
+      total: viralLoadSamples?.raw?.results?.length,
       headerTableColumns: defaultStatHeaders,
       chartType: "pie",
     },

@@ -83,12 +83,6 @@ export const initialChartDataState = {
     loading: false,
     lineListComplete: true,
   },
-  viralLoadCoverage: {
-    raw: null,
-    processedChartData: [],
-    loading: false,
-    lineListComplete: true,
-  },
   viralLoadSuppression: {
     raw: null,
     processedChartData: [],
