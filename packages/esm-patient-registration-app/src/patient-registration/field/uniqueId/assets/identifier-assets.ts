@@ -288,7 +288,7 @@ export const facilities = [
         code: "CES/DON/",
       },
       {
-        name: "El-Sabah Children",
+        name: "Al-Sabah Children Hospital",
         code: "CES/ALS/",
       },
       {
