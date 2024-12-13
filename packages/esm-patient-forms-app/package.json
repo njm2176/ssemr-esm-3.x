@@ -1,6 +1,6 @@
 {
   "name": "@ssemr/esm-patient-forms-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MPL-2.0",
   "description": "Patient forms microfrontend for the SSEMR SPA",
   "browser": "dist/ssemr-esm-patient-forms-app.js",
@@ -56,5 +56,5 @@
     "@openmrs/esm-patient-common-lib": "*",
     "webpack": "^5.94.0"
   },
-  "gitHead": "97b096f0f6755a55f3b7ee71bf7536e4e1f59340"
+  "gitHead": "cb06aae4e93d1a92db19912965fc239d5d05df30"
 }
