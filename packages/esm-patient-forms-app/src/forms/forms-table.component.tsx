@@ -33,7 +33,7 @@ const FormsTable = ({ tableHeaders, tableRows, handleSearch, handleFormOpen }: F
       cell: (row) => (
         <a
           className={styles.formName}
-          onClick={() => handleFormOpen(row.formUuid, row.encounterUuid, row.formName)}
+          onClick={() => handleFormOpen(row.formUuid, '', row.formName)}
           style={{
             cursor: 'pointer',
             textDecoration: 'underline',
