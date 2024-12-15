@@ -132,3 +132,35 @@
   padding-top: 0.188rem;
   border-bottom: 0.375rem solid var(--brand-03);
 }
+
+.formName {
+  color: #0f62fe;
+}
+
+.toolbarWrapper{
+  width: 100%;
+  padding: 0 1.5rem;
+
+  &:focus-within {
+    border: 2px solid #ff832b;
+  }
+}
+
+.search {
+  width: 100%;
+  border: none;
+}
+
+.search:focus {
+  outline: none;
+}
+
+.search::placeholder {
+  color: $text-03;
+}
+
+.searchIcon {
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+}

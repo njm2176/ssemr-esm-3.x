@@ -1,94 +1,135 @@
 import React from 'react';
+import DataTable, { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
-import {
-  DataTable,
-  Link,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableHeader,
-  TableRow,
-  TableToolbar,
-  TableToolbarContent,
-  TableToolbarSearch,
-} from '@carbon/react';
 import styles from './forms-table.scss';
+
+interface TableRow {
+  id: string;
+  lastCompleted: string;
+  formName: string;
+  formUuid: string;
+  encounterUuid: string;
+}
 
 interface FormsTableProps {
   tableHeaders: Array<{
     header: string;
     key: string;
   }>;
-  tableRows: Array<{
-    id: string;
-    lastCompleted: string;
-    formName: string;
-    formUuid: string;
-    encounterUuid: string;
-  }>;
-  isTablet: boolean;
+  tableRows: Array<TableRow>;
   handleSearch: (search: string) => void;
   handleFormOpen: (formUuid: string, encounterUuid: string, formName: string) => void;
 }
 
-const FormsTable = ({ tableHeaders, tableRows, isTablet, handleSearch, handleFormOpen }: FormsTableProps) => {
+const FormsTable = ({ tableHeaders, tableRows, handleSearch, handleFormOpen }: FormsTableProps) => {
   const { t } = useTranslation();
+
+  const timeRegex = /(Today|Yesterday|[0-9]{2}-[A-Za-z]{3}-[0-9]{4})?,? \d{1,2}:\d{2} [APap][Mm]/;
+
+  const columns: TableColumn<TableRow>[] = [
+    {
+      name: t('formName', 'Form Name (A-Z)'),
+      selector: (row) => row.formName,
+      cell: (row) => (
+        <a
+          className={styles.formName}
+          onClick={() => handleFormOpen(row.formUuid, row.encounterUuid, row.formName)}
+          style={{
+            cursor: 'pointer',
+            textDecoration: 'underline',
+            color: timeRegex.test(row.lastCompleted) ? 'white' : '#007BFF',
+          }}
+        >
+          {row.formName}
+        </a>
+      ),
+    },
+    {
+      name: t('lastCompleted', 'Last Completed'),
+      selector: (row) => row.lastCompleted || t('never', 'Never'),
+    },
+  ];
+
+  const conditionalRowStyles = [
+    {
+      when: (row: TableRow) => timeRegex.test(row.lastCompleted),
+      style: {
+        backgroundColor: '#008080',
+        color: 'white',
+      },
+    },
+    {
+      when: (row: TableRow) => !timeRegex.test(row.lastCompleted),
+      style: {
+        backgroundColor: 'white',
+        color: 'black',
+      },
+    },
+  ];
+
+  const customStyles = {
+    headRow: {
+      style: {
+        backgroundColor: '#e0e0e0', 
+        color: '#525252', 
+        fontWeight: 'bold', 
+        fontSize: '14px', 
+        padding: '4px 8px', 
+        lineHeight: '1',
+        height: '10px',
+      },
+    },
+    headCells: {
+      style: {
+        padding: '4px 8px', 
+      },
+    },
+    rows: {
+      style: {
+        minHeight: '30px',
+        padding: '4px 8px',
+        lineHeight: '1.2',
+      },
+    },
+    cells: {
+      style: {
+        padding: '4px 8px',
+      },
+    },
+  };
+
   return (
-    <DataTable rows={tableRows} headers={tableHeaders} size={isTablet ? 'lg' : 'sm'} useZebraStyles>
-      {({ rows, headers, getTableProps, getHeaderProps, getRowProps }) => (
-        <>
-          <TableContainer className={styles.tableContainer}>
-            <div className={styles.toolbarWrapper}>
-              <TableToolbar className={styles.tableToolbar}>
-                <TableToolbarContent>
-                  <TableToolbarSearch
-                    className={styles.search}
-                    expanded
-                    onChange={(event: React.ChangeEvent<HTMLFormElement>) => handleSearch(event.target.value)}
-                    placeholder={t('searchThisList', 'Search this list')}
-                    size="sm"
-                  />
-                </TableToolbarContent>
-              </TableToolbar>
-            </div>
-            {rows.length > 0 && (
-              <Table aria-label="forms" {...getTableProps()} className={styles.table}>
-                <TableHead>
-                  <TableRow>
-                    {headers.map((header) => (
-                      <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row, i) => (
-                    <TableRow {...getRowProps({ row })}>
-                      <TableCell key={row.cells[0].id}>
-                        <Link
-                          style={{ cursor: 'pointer' }}
-                          onClick={() => {
-                            handleFormOpen(row.id, '', tableRows[i].formName);
-                          }}
-                          role="presentation"
-                          className={styles.formName}
-                        >
-                          {tableRows[i]?.formName}
-                        </Link>
-                      </TableCell>
-                      <TableCell className={styles.editCell}>
-                        <label>{row.cells[1].value ?? t('never', 'Never')}</label>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </TableContainer>
-        </>
-      )}
-    </DataTable>
+    <div className={styles.tableContainer}>
+      <div className={styles.toolbarWrapper}>
+        <span className={styles.searchIcon}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20"
+            width="20"
+            viewBox="0 0 24 24"
+            fill="#757575"
+          >
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+          </svg>
+        </span>
+        
+        <input
+          type="text"
+          className={styles.search}
+          placeholder={t('searchThisList', 'Search this list')}
+          onChange={(event) => handleSearch(event.target.value)}
+        />
+      </div>
+
+      <DataTable
+        columns={columns}
+        data={tableRows}
+        conditionalRowStyles={conditionalRowStyles}
+        customStyles={customStyles}
+        noHeader
+        className={styles.dataTable}
+      />
+    </div>
   );
 };
 
