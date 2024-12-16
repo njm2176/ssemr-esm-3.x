@@ -12,6 +12,7 @@ import type { ConfigObject } from '../config-schema';
 import type { ListResponse, Form, EncounterWithFormRef, CompletedFormInfo } from '../types';
 import { customEncounterRepresentation, formEncounterUrl, formEncounterUrlPoc } from '../constants';
 import { isValidOfflineFormEncounter } from '../offline-forms/offline-form-helpers';
+import axios from 'axios';
 
 export function useFormEncounters(cachedOfflineFormsOnly = false, patientUuid: string = '') {
   const { customFormsUrl, showHtmlFormEntryForms } = useConfig<ConfigObject>();
@@ -64,6 +65,7 @@ interface ExternalFormResponse {
     };
     lastFilledDate: string;
   }>;
+  latestVisitDate: string;
 }
 
 // Create a SWR-compatible fetcher wrapper for `openmrsFetch`
@@ -155,4 +157,14 @@ function mapToFormCompletedInfo(
       lastCompletedDate,
     };
   });
+}
+
+
+export async function useVisitTime(patientUuid: string) {
+  const externalFormsApiUrl = `${restBaseUrl}/ssemr/forms?patientUuid=${patientUuid}`;
+  const data = await openmrsFetch<ExternalFormResponse>(externalFormsApiUrl);
+
+  const latestVisit = data.data?.latestVisitDate;
+
+  return latestVisit;
 }
