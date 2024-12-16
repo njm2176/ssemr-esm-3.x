@@ -1,6 +1,6 @@
 {
   "name": "@ssemr/esm-patient-forms-app",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "license": "MPL-2.0",
   "description": "Patient forms microfrontend for the SSEMR SPA",
   "browser": "dist/ssemr-esm-patient-forms-app.js",
