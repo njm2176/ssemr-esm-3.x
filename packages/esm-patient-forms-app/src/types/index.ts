@@ -74,6 +74,7 @@ export interface CompletedFormInfo {
   form: Form;
   associatedEncounters: Array<EncounterWithFormRef>;
   lastCompletedDate?: Date;
+  latestVisitDate?: string;
 }
 
 export interface FormsSection {

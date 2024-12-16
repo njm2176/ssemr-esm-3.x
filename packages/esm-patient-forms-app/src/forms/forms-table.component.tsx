@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
+import {
+  TableRow
+} from '@carbon/react';
 import styles from './forms-table.scss';
+import dayjs from 'dayjs';
+import { getPatientUuidFromUrl } from '@openmrs/esm-patient-common-lib';
+import { useVisitTime } from '../hooks/use-forms';
+
+interface TableRow {
+  id: string;
+  lastCompleted: string;
+  formName: string;
+  formUuid: string;
+  encounterUuid: string;
+}
 
 interface TableRow {
   id: string;
@@ -19,13 +33,41 @@ interface FormsTableProps {
   tableRows: Array<TableRow>;
   handleSearch: (search: string) => void;
   handleFormOpen: (formUuid: string, encounterUuid: string, formName: string) => void;
+  latestVisitDate: string;
 }
 
 const FormsTable = ({ tableHeaders, tableRows, handleSearch, handleFormOpen }: FormsTableProps) => {
   const { t } = useTranslation();
 
+  const patientUuid = getPatientUuidFromUrl();
+  const [latestVisit, setLatestVisit] = useState(null);
+
+  useEffect(() => {
+    const fetchLatestVisit = async () => {
+      const visit = await useVisitTime(patientUuid);
+      setLatestVisit(visit);
+    };
+    fetchLatestVisit();
+  }, [ patientUuid ]);
+
   const timeRegex = /(Today|Yesterday|[0-9]{2}-[A-Za-z]{3}-[0-9]{4})?,? \d{1,2}:\d{2} [APap][Mm]/;
 
+  const isGreenBackground = (row: TableRow, latestVisit: string | null): boolean => {
+    if (!latestVisit || !row.lastCompleted) return false;
+  
+    let normalizedLastCompleted: string | null = null;
+  
+    if (row.lastCompleted.includes('Today')) {
+      normalizedLastCompleted = dayjs().format('YYYY-MM-DDTHH:mm:ss');
+    } else if (row.lastCompleted.includes('Yesterday')) {
+      normalizedLastCompleted = dayjs().subtract(1, 'day').format('YYYY-MM-DDTHH:mm:ss');
+    } else if (dayjs(row.lastCompleted, 'DD-MMM-YYYY, hh:mm A', true).isValid()) {
+      normalizedLastCompleted = dayjs(row.lastCompleted, 'DD-MMM-YYYY, hh:mm A').format('YYYY-MM-DDTHH:mm:ss');
+    }
+  
+    return normalizedLastCompleted && dayjs(normalizedLastCompleted).isAfter(dayjs(latestVisit));
+  };
+  
   const columns: TableColumn<TableRow>[] = [
     {
       name: t('formName', 'Form Name (A-Z)'),
@@ -37,7 +79,7 @@ const FormsTable = ({ tableHeaders, tableRows, handleSearch, handleFormOpen }: F
           style={{
             cursor: 'pointer',
             textDecoration: 'underline',
-            color: timeRegex.test(row.lastCompleted) ? 'white' : '#007BFF',
+            color: isGreenBackground(row, latestVisit) ? 'white' : '#007BFF',
           }}
         >
           {row.formName}
@@ -52,14 +94,54 @@ const FormsTable = ({ tableHeaders, tableRows, handleSearch, handleFormOpen }: F
 
   const conditionalRowStyles = [
     {
-      when: (row: TableRow) => timeRegex.test(row.lastCompleted),
+      when: (row: TableRow) => {
+        if (!latestVisit) return false; 
+  
+        let normalizedLastCompleted: string | null = null;
+  
+        const lastCompleted = row.lastCompleted || '';
+  
+        if (lastCompleted.includes('Today')) {
+          normalizedLastCompleted = dayjs().format('YYYY-MM-DDTHH:mm:ss');
+        } else if (lastCompleted.includes('Yesterday')) {
+          normalizedLastCompleted = dayjs().subtract(1, 'day').format('YYYY-MM-DDTHH:mm:ss');
+        } else if (dayjs(lastCompleted, 'DD-MMM-YYYY, hh:mm A', true).isValid()) {
+          normalizedLastCompleted = dayjs(lastCompleted, 'DD-MMM-YYYY, hh:mm A').format('YYYY-MM-DDTHH:mm:ss');
+        } else {
+          normalizedLastCompleted = null; 
+        }
+  
+        return normalizedLastCompleted && dayjs(normalizedLastCompleted).isAfter(dayjs(latestVisit));
+      },
       style: {
-        backgroundColor: '#008080',
+        backgroundColor: '#008080', 
         color: 'white',
       },
     },
     {
-      when: (row: TableRow) => !timeRegex.test(row.lastCompleted),
+      when: (row: TableRow) => {
+        if (!latestVisit) return true;
+  
+        let normalizedLastCompleted: string | null = null;
+  
+        const lastCompleted = row.lastCompleted || '';
+  
+        if (lastCompleted.includes('Today')) {
+          normalizedLastCompleted = dayjs().format('YYYY-MM-DDTHH:mm:ss');
+        } else if (lastCompleted.includes('Yesterday')) {
+          normalizedLastCompleted = dayjs().subtract(1, 'day').format('YYYY-MM-DDTHH:mm:ss');
+        } else if (dayjs(lastCompleted, 'DD-MMM-YYYY, hh:mm A', true).isValid()) {
+          normalizedLastCompleted = dayjs(lastCompleted, 'DD-MMM-YYYY, hh:mm A').format('YYYY-MM-DDTHH:mm:ss');
+        } else {
+          normalizedLastCompleted = null; 
+        }
+  
+        return (
+          !normalizedLastCompleted ||
+          dayjs(normalizedLastCompleted).isBefore(dayjs(latestVisit)) ||
+          row.lastCompleted === t('never', 'Never')
+        );
+      },
       style: {
         backgroundColor: 'white',
         color: 'black',
@@ -121,14 +203,16 @@ const FormsTable = ({ tableHeaders, tableRows, handleSearch, handleFormOpen }: F
         />
       </div>
 
-      <DataTable
-        columns={columns}
-        data={tableRows}
-        conditionalRowStyles={conditionalRowStyles}
-        customStyles={customStyles}
-        noHeader
-        className={styles.dataTable}
-      />
+      {latestVisit && (
+        <DataTable
+          columns={columns}
+          data={tableRows}
+          conditionalRowStyles={conditionalRowStyles}
+          customStyles={customStyles}
+          noHeader
+          className={styles.dataTable}
+        />
+      )}
     </div>
   );
 };
