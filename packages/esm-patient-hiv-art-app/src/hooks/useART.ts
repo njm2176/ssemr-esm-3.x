@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   getThisQuartersRange,
   getThisYearsFirstAndLastDate,
+  getThisYearsFirstAndLastDateForCurrentMonth
 } from "../helpers/dateOps";
 import { initialChartDataState } from "../assets/initialChartDataState";
 import { sortLineListByAppointmentDate, sortLineListByAppointmentDateDescending } from "../helpers/sortLineListByAppointmentDate";
@@ -17,8 +18,8 @@ export const useART = () => {
   const [categoryFilter, setCategoryFilter] = useState("");
 
   const [time, setTime] = useState({
-    startDate: getThisYearsFirstAndLastDate().startDate,
-    endDate: getThisYearsFirstAndLastDate().endDate,
+    startDate: getThisYearsFirstAndLastDateForCurrentMonth().startDate,
+    endDate: getThisYearsFirstAndLastDateForCurrentMonth().endDate,
   });
 
   const [waterFallDateRange, setWaterFallDateRange] = useState({
@@ -27,8 +28,8 @@ export const useART = () => {
   });
 
   const [viralLoadRange, setViralLoadRange] = useState({
-    startDate: getThisYearsFirstAndLastDate(new Date().getFullYear()).startDate,
-    endDate: getThisYearsFirstAndLastDate(new Date().getFullYear()).endDate,
+    startDate: getThisYearsFirstAndLastDateForCurrentMonth().startDate,
+    endDate: getThisYearsFirstAndLastDateForCurrentMonth().endDate,
   });
 
   const [chartData, setChartData] = useState(initialChartDataState);
