@@ -215,7 +215,7 @@ export const useART = () => {
       headers: iitAndMissedHeaders,
     },
     {
-      title: "Interruptions in Treatment(TX_IIT)",
+      title: "Cumulative Interruptions in Treatment(TX_IIT)",
       color: "#FF8503",
       stat: chartData.interrupted?.raw?.totalPatients,
       results: sortLineListByAppointmentDateDescending(

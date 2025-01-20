@@ -10,7 +10,7 @@ export const TimeFilter: React.FC<Props> = ({ submitHandler }) => {
 
   const [dateRangeValue, setDateRangeValue] = useState([
     new Date(new Date().getFullYear(), 0, 1),
-    new Date(new Date().getFullYear(), 11, 31),
+    new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
   ]);
 
   const changeHandler = (range: Date[]) => {
@@ -36,15 +36,16 @@ export const TimeFilter: React.FC<Props> = ({ submitHandler }) => {
         value={dateRangeValue}
         onChange={changeHandler}
         datePickerType="range"
+        dateFormat="d/m/Y"
       >
         <DatePickerInput
           id="date-picker-input-id-start"
-          placeholder="mm/dd/yyyy"
+          placeholder="dd/mm/yyyy"
           labelText="Start date"
         />
         <DatePickerInput
           id="date-picker-input-id-finish"
-          placeholder="mm/dd/yyyy"
+          placeholder="dd/mm/yyyy"
           labelText="End date"
         />
       </DatePicker>
