@@ -64,6 +64,20 @@ export const getThisYearsFirstAndLastDate = (
   return { startDate: firstDayFormatted, endDate: lastDayFormatted };
 };
 
+export const getThisYearsFirstAndLastDateForCurrentMonth = (
+  year = new Date().getFullYear()
+) => {
+  const firstDayOfYear = new Date(Date.UTC(year, 0, 1));
+  const now = new Date();
+  const lastDayOfCurrentMonth = new Date(Date.UTC(year, now.getMonth() + 1, 0));
+
+  // Format the dates as 'YYYY-MM-DD'
+  const firstDayFormatted = firstDayOfYear.toISOString().split("T")[0];
+  const lastDayFormatted = lastDayOfCurrentMonth.toISOString().split("T")[0];
+
+  return { startDate: firstDayFormatted, endDate: lastDayFormatted };
+};
+
 export const getThisQuartersRange = () => {
   const month = new Date().getMonth() + 1;
   let start;
