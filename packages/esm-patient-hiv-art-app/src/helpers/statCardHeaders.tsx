@@ -1,6 +1,28 @@
 import { TableCell, Tag } from "@carbon/react";
 import Link from "@carbon/react/lib/components/UIShell/Link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import usePatientData from "../hooks/usePatientData";
+
+const VlEligibilityCell = ({ patientUuid }) => {
+  const [dueForVl, setDueForVl] = useState(false);
+  const { flags } = usePatientData(patientUuid);
+
+  useEffect(() => {
+    if (flags?.includes("DUE_FOR_VL")) {
+      setDueForVl(true);
+    } else {
+      setDueForVl(false);
+    }
+  }, [flags]);
+
+  return (
+    <TableCell size="sm">
+      <Tag size="md" type={dueForVl ? "green" : "red"}>
+        {dueForVl ? "Eligible" : "Not eligible"}
+      </Tag>
+    </TableCell>
+  );
+};
 
 export const defaultStatHeaders = [
   {
@@ -65,13 +87,7 @@ export const txCURRHeaders = [
   {
     name: "Eligible for VL",
     selector: "dueForVl",
-    cell: (row) => (
-      <TableCell size="sm">
-        <Tag size="md" type={`${row.dueForVl ? "green" : "red"}`}>
-          {row?.dueForVl ? "Eligible" : "Not eligible"}
-        </Tag>
-      </TableCell>
-    ),
+    cell: (row) => <VlEligibilityCell patientUuid={row.uuid} />, // Use the new component here
   },
 ];
 

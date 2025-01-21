@@ -1,6 +1,6 @@
 {
   "name": "@ssemr/esm-patient-hiv-art-app",
-  "version": "6.4.3",
+  "version": "6.4.5",
   "license": "MPL-2.0",
   "description": "Patient dashboard microfrontend for the OpenMRS SPA",
   "browser": "dist/ssemr-esm-patient-hiv-art-app.js",
@@ -61,5 +61,5 @@
     "style-loader": "^4.0.0",
     "webpack": "^5.88.2"
   },
-  "gitHead": "ba46723561ebef279ff4cd784ce8211e703b2126"
+  "gitHead": "cc2aea7d74b25acca28480389c183f4a3cafbe42"
 }
