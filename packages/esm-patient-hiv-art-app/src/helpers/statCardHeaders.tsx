@@ -10,6 +10,8 @@ const VlEligibilityCell = ({ patientUuid }) => {
   useEffect(() => {
     if (flags?.includes("DUE_FOR_VL")) {
       setDueForVl(true);
+    } else {
+      setDueForVl(false);
     }
   }, [flags]);
 
