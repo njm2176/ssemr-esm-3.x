@@ -10,7 +10,7 @@ import { sortLineListByAppointmentDate, sortLineListByAppointmentDateDescending 
 import {
   defaultStatHeaders,
   iitAndMissedHeaders,
-  txCURRHeaders,
+  // txCURRHeaders,
   rttHeaders,
 } from "../helpers/statCardHeaders";
 
@@ -193,7 +193,8 @@ export const useART = () => {
         chartData.activeClients?.raw?.results
       ),
       state: chartData.activeClients,
-      headers: txCURRHeaders,
+      // headers: txCURRHeaders,
+      headers: iitAndMissedHeaders
     },
     {
       title: "On appointment",
@@ -268,6 +269,6 @@ export const useART = () => {
     viralLoadRange,
     setViralLoadRange,
     defaultStatHeaders,
-    txCURRHeaders,
+    // txCURRHeaders,
   };
 };

@@ -18,7 +18,7 @@ const DashboardProvider = ({ children }) => {
     viralLoadRange,
     setViralLoadRange,
     defaultStatHeaders,
-    txCURRHeaders,
+    // txCURRHeaders,
   } = useART();
 
   const memoizedGenericChartRequests = useCallback(async () => {
@@ -189,7 +189,7 @@ const DashboardProvider = ({ children }) => {
         setWaterFallDateRange,
         setViralLoadRange,
         defaultStatHeaders,
-        txCURRHeaders,
+        // txCURRHeaders,
         memoizedGenericChartRequests,
         memoizedVLChartRequests,
         viralLoadRange,

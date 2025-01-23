@@ -3,26 +3,26 @@ import Link from "@carbon/react/lib/components/UIShell/Link";
 import React, { useEffect, useState } from "react";
 import usePatientData from "../hooks/usePatientData";
 
-const VlEligibilityCell = ({ patientUuid }) => {
-  const [dueForVl, setDueForVl] = useState(false);
-  const { flags } = usePatientData(patientUuid);
+// const VlEligibilityCell = ({ patientUuid }) => {
+//   const [dueForVl, setDueForVl] = useState(false);
+//   const { flags } = usePatientData(patientUuid);
 
-  useEffect(() => {
-    if (flags?.includes("DUE_FOR_VL")) {
-      setDueForVl(true);
-    } else {
-      setDueForVl(false);
-    }
-  }, [flags]);
+//   useEffect(() => {
+//     if (flags?.includes("DUE_FOR_VL")) {
+//       setDueForVl(true);
+//     } else {
+//       setDueForVl(false);
+//     }
+//   }, [flags]);
 
-  return (
-    <TableCell size="sm">
-      <Tag size="md" type={dueForVl ? "green" : "red"}>
-        {dueForVl ? "Eligible" : "Not eligible"}
-      </Tag>
-    </TableCell>
-  );
-};
+//   return (
+//     <TableCell size="sm">
+//       <Tag size="md" type={dueForVl ? "green" : "red"}>
+//         {dueForVl ? "Eligible" : "Not eligible"}
+//       </Tag>
+//     </TableCell>
+//   );
+// };
 
 export const defaultStatHeaders = [
   {
@@ -82,14 +82,14 @@ iitAndMissedHeaders.splice(5, 0, {
   selector: "appointmentDate",
 });
 
-export const txCURRHeaders = [
-  ...iitAndMissedHeaders,
-  {
-    name: "Eligible for VL",
-    selector: "dueForVl",
-    cell: (row) => <VlEligibilityCell patientUuid={row.uuid} />, // Use the new component here
-  },
-];
+// export const txCURRHeaders = [
+//   ...iitAndMissedHeaders,
+//   {
+//     name: "Eligible for VL",
+//     selector: "dueForVl",
+//     cell: (row) => <VlEligibilityCell patientUuid={row.uuid} />, // Use the new component here
+//   },
+// ];
 
 export const rttHeaders = [...defaultStatHeaders];
 rttHeaders.splice(4, 0, {
