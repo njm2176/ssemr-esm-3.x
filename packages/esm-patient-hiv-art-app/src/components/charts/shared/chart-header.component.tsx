@@ -93,7 +93,7 @@ const ChartHeaderComponent: React.FC<ChartHeaderProps> = ({
           <Table size="lg" useZebraStyles={false}>
             <TableHead>
               <TableRow>
-                {headers.map((header) => (
+                {headers?.map((header) => (
                   <TableHeader id={header} key={header}>
                     {header.name}
                   </TableHeader>
@@ -103,7 +103,7 @@ const ChartHeaderComponent: React.FC<ChartHeaderProps> = ({
             <TableBody>
               {rows.map((row, index) => (
                 <TableRow key={index}>
-                  {headers.map((header) => (
+                  {headers?.map((header) => (
                     <>
                       {header.cell ? (
                         header.cell(row)
