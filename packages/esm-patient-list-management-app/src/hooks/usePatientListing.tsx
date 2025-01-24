@@ -169,6 +169,7 @@ export const usePatientListing = (initialCategory = "allClients") => {
   const getClients = async ({ currentPage, pageSize }) => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
+      abortControllerRef.current = null;
     }
 
     const controller = new AbortController();
