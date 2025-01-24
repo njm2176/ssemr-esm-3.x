@@ -23,7 +23,7 @@ export const usePatientListing = (initialCategory = "allClients") => {
 
   const abortControllerRef = React.useRef(null);
 
-  const startDate = `1970-01-01`;
+  const startDate = `${new Date().getFullYear()}-01-01`;
 
   const endDate = `${new Date().getFullYear()}-${
     new Date().getMonth() + 1
