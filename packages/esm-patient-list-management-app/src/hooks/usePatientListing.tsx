@@ -12,6 +12,7 @@ export const usePatientListing = (initialCategory = "allClients") => {
   const [filteredTableData, setFilteredTableData] = React.useState([]);
   const [filterText, setFilterText] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+  const [isFetchingAllPages, setIsFetchingAllPages] = React.useState(false);
   const [resetPaginationToggle, setResetPaginationToggle] =
     React.useState(false);
   const [currentPaginationState, setCurrentPaginationState] = React.useState({
@@ -23,7 +24,7 @@ export const usePatientListing = (initialCategory = "allClients") => {
 
   const abortControllerRef = React.useRef(null);
 
-  const startDate = `1970-01-01`;
+  const startDate = `${new Date().getFullYear()}-01-01`;
 
   const endDate = `${new Date().getFullYear()}-${
     new Date().getMonth() + 1
@@ -168,13 +169,17 @@ export const usePatientListing = (initialCategory = "allClients") => {
   const getClients = async ({ currentPage, pageSize }) => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
+      abortControllerRef.current = null;
     }
 
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
     try {
-      if (currentPage === 0) setLoading(true);
+      if (currentPage === 0) {
+        setLoading(true)
+        setIsFetchingAllPages(true);
+      };
 
       const url = `/ws/rest/v1/ssemr/dashboard/${category}?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=${pageSize}`;
 
@@ -195,6 +200,7 @@ export const usePatientListing = (initialCategory = "allClients") => {
       if (data?.results?.length === 0 || data?.results?.length < pageSize) {
         setCurrentPaginationState((prev) => ({ ...prev, page: 0, done: true }));
         setLoading(false);
+        setIsFetchingAllPages(false);
       }
     } catch (e) {
       return e;
@@ -269,7 +275,7 @@ export const usePatientListing = (initialCategory = "allClients") => {
     setFilterText,
     resetPaginationToggle,
     setResetPaginationToggle,
-    loading,
+    loading: isFetchingAllPages,
     filteredTableData,
     currentPaginationState,
   };
