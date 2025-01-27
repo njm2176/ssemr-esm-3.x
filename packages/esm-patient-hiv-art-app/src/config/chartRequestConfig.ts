@@ -44,6 +44,13 @@ export const chartRequestConfig = {
     chartKey: "interrupted",
     noPagination: false,
   },
+  interruptedWithRange: {
+    url: ({ time }) =>
+      `ws/rest/v1/ssemr/dashboard/interruptedInTreatmentWithinRange?startDate=${time.startDate}&endDate=${time.endDate}`,
+    processor: formatDataAgainstTime,
+    chartKey: "interruptedWithRange",
+    noPagination: false,
+  },
   returned: {
     url: ({ time, categoryFilter }) =>
       `/ws/rest/v1/ssemr/dashboard/returnedToTreatment?startDate=${time.startDate}&endDate=${time.endDate}&filter=${categoryFilter}`,
