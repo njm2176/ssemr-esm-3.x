@@ -26,6 +26,14 @@ import usePatientData from "../hooks/usePatientData";
 
 export const defaultStatHeaders = [
   {
+    name: "SN",
+    cell: (row) => (
+      <TableCell>
+        {row.serial}
+      </TableCell>
+    ),
+  },
+  {
     name: "Name",
     selector: "name",
     cell: (row) => (
@@ -80,6 +88,12 @@ export const iitAndMissedHeaders = defaultStatHeaders;
 iitAndMissedHeaders.splice(5, 0, {
   name: "Next appointment date",
   selector: "appointmentDate",
+});
+
+export const iitHeaders = [...iitAndMissedHeaders];
+iitHeaders.splice(5, 0, {
+  name: "Date Became IIT",
+  selector: "dateClientBecameIIT",
 });
 
 // export const txCURRHeaders = [

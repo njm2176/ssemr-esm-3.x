@@ -35,6 +35,12 @@ export const initialChartDataState = {
     loading: false,
     lineListComplete: true,
   },
+  interruptedWithRange: {
+    raw: null,
+    processedChartData: [],
+    loading: false,
+    lineListComplete: true,
+  },
   returned: {
     raw: null,
     processedChartData: [],

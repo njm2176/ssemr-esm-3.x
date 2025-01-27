@@ -148,6 +148,12 @@ const DashboardProvider = ({ children }) => {
         }),
       });
       getDashboardData({
+        ...chartRequestConfig.interruptedWithRange,
+        url: chartRequestConfig.interruptedWithRange.url({
+          time
+        })
+      })
+      getDashboardData({
         ...chartRequestConfig.returned,
         url: chartRequestConfig.returned.url({
           time,

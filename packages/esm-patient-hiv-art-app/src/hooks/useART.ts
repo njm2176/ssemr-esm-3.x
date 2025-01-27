@@ -12,7 +12,9 @@ import {
   iitAndMissedHeaders,
   // txCURRHeaders,
   rttHeaders,
+  iitHeaders
 } from "../helpers/statCardHeaders";
+import { addSerialNoToLineList } from "../helpers/dataManipulation";
 
 export const useART = () => {
   const [categoryFilter, setCategoryFilter] = useState("");
@@ -179,9 +181,10 @@ export const useART = () => {
       title: "Newly enrolled clients(TX_NEW)",
       color: "#3271F4",
       stat: chartData.newlyEnrolledClients?.raw?.totalPatients,
-      results: sortLineListByAppointmentDate(
-        chartData.newlyEnrolledClients?.raw?.results
-      ),
+      results: addSerialNoToLineList(
+        sortLineListByAppointmentDate(
+          chartData.newlyEnrolledClients?.raw?.results
+      )),
       state: chartData.newlyEnrolledClients,
       headers: defaultStatHeaders,
     },
@@ -189,9 +192,10 @@ export const useART = () => {
       title: "Active clients (TX_CURR)",
       color: "#3271F4",
       stat: chartData.activeClients?.raw?.totalPatients,
-      results: sortLineListByAppointmentDate(
-        chartData.activeClients?.raw?.results
-      ),
+      results: addSerialNoToLineList(
+        sortLineListByAppointmentDate(
+          chartData.activeClients?.raw?.results
+      )),
       state: chartData.activeClients,
       // headers: txCURRHeaders,
       headers: iitAndMissedHeaders
@@ -200,9 +204,10 @@ export const useART = () => {
       title: "On appointment",
       color: "#3271F4",
       stat: chartData.onAppointment?.raw?.totalPatients,
-      results: sortLineListByAppointmentDate(
-        chartData.onAppointment?.raw?.results
-      ),
+      results: addSerialNoToLineList(
+        sortLineListByAppointmentDate(
+          chartData.onAppointment?.raw?.results
+      )),
       state: chartData.onAppointment,
       headers: defaultStatHeaders,
     },
@@ -210,27 +215,43 @@ export const useART = () => {
       title: "Missed appointments",
       color: "#FF0000",
       stat: chartData.missedAppointment?.raw?.totalPatients,
-      results: sortLineListByAppointmentDateDescending(
-        chartData.missedAppointment?.raw?.results
-      ),
+      results: addSerialNoToLineList(
+        sortLineListByAppointmentDateDescending(
+          chartData.missedAppointment?.raw?.results
+      )),
       state: chartData.missedAppointment,
       headers: iitAndMissedHeaders,
+    },
+    {
+      title: "Interruptions in Treatment(TX_IIT)",
+      color: "#FF8503",
+      stat: chartData.interruptedWithRange?.raw?.totalPatients,
+      results: addSerialNoToLineList(
+        sortLineListByAppointmentDateDescending(
+          chartData.interruptedWithRange?.raw?.results
+      )),
+      state: chartData.interruptedWithRange,
+      headers: iitHeaders,
     },
     {
       title: "Cumulative Interruptions in Treatment(TX_IIT)",
       color: "#FF8503",
       stat: chartData.interrupted?.raw?.totalPatients,
-      results: sortLineListByAppointmentDateDescending(
-        chartData.interrupted?.raw?.results
-      ),
+      results: addSerialNoToLineList(
+        sortLineListByAppointmentDateDescending(
+          chartData.interrupted?.raw?.results
+      )),
       state: chartData.interrupted,
-      headers: iitAndMissedHeaders,
+      headers: iitHeaders,
     },
     {
       title: "Returned to Treatment(TX_RTT)",
       color: "#3271F4",
       stat: chartData.returned?.raw?.totalPatients,
-      results: sortLineListByAppointmentDate(chartData.returned?.raw?.results),
+      results: addSerialNoToLineList(
+        sortLineListByAppointmentDate(
+          chartData.returned?.raw?.results
+      )),
       state: chartData.returned,
       headers: rttHeaders,
     },
@@ -238,9 +259,10 @@ export const useART = () => {
       title: "Due for viral load",
       color: "#FF8503",
       stat: chartData.dueForViralLoad?.raw?.totalPatients,
-      results: sortLineListByAppointmentDate(
-        chartData.dueForViralLoad?.raw?.results
-      ),
+      results: addSerialNoToLineList(
+        sortLineListByAppointmentDate(
+          chartData.dueForViralLoad?.raw?.results
+      )),
       state: chartData.dueForViralLoad,
       headers: defaultStatHeaders,
     },
@@ -248,9 +270,10 @@ export const useART = () => {
       title: "High viral load (>= 1000 copies/ml)",
       color: "#FF0000",
       stat: chartData.highViralLoad?.raw?.totalPatients,
-      results: sortLineListByAppointmentDate(
-        chartData.highViralLoad?.raw?.results
-      ),
+      results: addSerialNoToLineList(
+        sortLineListByAppointmentDate(
+          chartData.highViralLoad?.raw?.results
+      )),
       state: chartData.highViralLoad,
       headers: defaultStatHeaders,
     },
