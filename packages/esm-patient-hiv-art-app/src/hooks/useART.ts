@@ -12,7 +12,8 @@ import {
   iitAndMissedHeaders,
   // txCURRHeaders,
   rttHeaders,
-  iitHeaders
+  iitHeaders,
+  vlDueHeaders
 } from "../helpers/statCardHeaders";
 import { addSerialNoToLineList } from "../helpers/dataManipulation";
 
@@ -264,7 +265,7 @@ export const useART = () => {
           chartData.dueForViralLoad?.raw?.results
       )),
       state: chartData.dueForViralLoad,
-      headers: defaultStatHeaders,
+      headers: vlDueHeaders,
     },
     {
       title: "High viral load (>= 1000 copies/ml)",

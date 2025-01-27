@@ -96,6 +96,12 @@ iitHeaders.splice(5, 0, {
   selector: "dateClientBecameIIT",
 });
 
+export const vlDueHeaders = [...defaultStatHeaders];
+vlDueHeaders.splice(6, 0, {
+  name: "Date VL due",
+  selector: "vlDueDate",
+});
+
 // export const txCURRHeaders = [
 //   ...iitAndMissedHeaders,
 //   {
