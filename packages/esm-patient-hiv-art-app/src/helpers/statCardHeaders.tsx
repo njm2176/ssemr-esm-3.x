@@ -82,6 +82,12 @@ iitAndMissedHeaders.splice(5, 0, {
   selector: "appointmentDate",
 });
 
+export const iitHeaders = [...iitAndMissedHeaders];
+iitHeaders.splice(5, 0, {
+  name: "Date Became IIT",
+  selector: "dateClientBecameIIT",
+});
+
 // export const txCURRHeaders = [
 //   ...iitAndMissedHeaders,
 //   {

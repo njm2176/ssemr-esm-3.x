@@ -12,6 +12,7 @@ import {
   iitAndMissedHeaders,
   // txCURRHeaders,
   rttHeaders,
+  iitHeaders
 } from "../helpers/statCardHeaders";
 
 export const useART = () => {
@@ -224,7 +225,7 @@ export const useART = () => {
         chartData.interrupted?.raw?.results
       ),
       state: chartData.interrupted,
-      headers: iitAndMissedHeaders,
+      headers: iitHeaders,
     },
     {
       title: "Returned to Treatment(TX_RTT)",
