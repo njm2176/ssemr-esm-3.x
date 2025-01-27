@@ -26,6 +26,14 @@ import usePatientData from "../hooks/usePatientData";
 
 export const defaultStatHeaders = [
   {
+    name: "SN",
+    cell: (row) => (
+      <TableCell>
+        {row.serial}
+      </TableCell>
+    ),
+  },
+  {
     name: "Name",
     selector: "name",
     cell: (row) => (
