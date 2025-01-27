@@ -60,33 +60,27 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
   const [csvData, setCsvData] = useState<string | null>(null);
 
   const generateCSV = () => {
-    const data = [
-      [
-        "Name",
-        "Sex",
-        "Date enrolled",
-        "Last Refill Date",
-        "Contact",
-        "Village",
-        "Land Mark",
-      ],
-    ];
+    if (!item.headers || item.headers.length === 0 || rows.length === 0) {
+      setCsvData("");
+      return;
+    }
+
+    const headerRow = item.headers.map((header) => header.name);
+    const data = [headerRow];
+
     rows.forEach((row) => {
-      const values = [
-        row.name,
-        row.sex,
-        row.dateEnrolled,
-        row.lastRefillDate,
-        row.contact,
-        row.landMark,
-        row.village,
-      ];
-      data.push(values);
+      const rowValues = item.headers.map((header) => {
+        if (header.selector) {
+          return row[header.selector] ?? "";
+        }
+        return "";
+      });
+      data.push(rowValues);
     });
 
     let csv = "";
-    data.forEach((row) => {
-      csv += row.join(",") + "\n";
+    data.forEach((rowArray) => {
+      csv += rowArray.join(",") + "\n";
     });
 
     setCsvData(csv);
