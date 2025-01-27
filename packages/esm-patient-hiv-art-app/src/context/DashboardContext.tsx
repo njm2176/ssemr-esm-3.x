@@ -150,7 +150,8 @@ const DashboardProvider = ({ children }) => {
       getDashboardData({
         ...chartRequestConfig.interruptedWithRange,
         url: chartRequestConfig.interruptedWithRange.url({
-          time
+          time,
+          categoryFilter,
         })
       })
       getDashboardData({
