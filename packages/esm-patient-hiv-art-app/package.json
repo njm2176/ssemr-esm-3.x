@@ -61,5 +61,5 @@
     "style-loader": "^4.0.0",
     "webpack": "^5.88.2"
   },
-  "gitHead": "720eb062a2680320ba2983158673334f84ef26e6"
+  "gitHead": "e29dd1d74a484445fa85fcf8fd5080232e30b800"
 }
