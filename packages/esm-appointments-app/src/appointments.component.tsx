@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import { omrsDateFormat } from './constants';
 import AppointmentTabs from './appointments/appointment-tabs.component';
 import AppointmentsHeader from './header/appointments-header.component';
 import AppointmentMetrics from './metrics/appointments-metrics.component';
-import { useParams } from 'react-router-dom';
 import SelectedDateContext from './hooks/selectedDateContext';
-import { omrsDateFormat } from './constants';
 
 const Appointments: React.FC = () => {
   const { t } = useTranslation();
-  const [appointmentServiceType, setAppointmentServiceType] = useState<string>('');
-  const [selectedDate, setSelectedDate] = useState<string>(dayjs().startOf('day').format(omrsDateFormat));
+  const [appointmentServiceType, setAppointmentServiceType] = useState<string[]>([]);
+  const [selectedDate, setSelectedDate] = useState(dayjs().startOf('day').format(omrsDateFormat));
 
-  let params = useParams();
+  const params = useParams();
 
   useEffect(() => {
     if (params.date) {
@@ -23,16 +23,16 @@ const Appointments: React.FC = () => {
 
   useEffect(() => {
     if (params.serviceType) {
-      setAppointmentServiceType(params.serviceType);
+      setAppointmentServiceType([params.serviceType]);
     }
   }, [params.serviceType]);
 
   return (
     <SelectedDateContext.Provider value={{ selectedDate, setSelectedDate }}>
       <AppointmentsHeader
-        title={t('home', 'Home')}
         appointmentServiceType={appointmentServiceType}
         onChange={setAppointmentServiceType}
+        title={t('appointments', 'Appointments')}
       />
       <AppointmentMetrics appointmentServiceType={appointmentServiceType} />
       <AppointmentTabs appointmentServiceType={appointmentServiceType} />

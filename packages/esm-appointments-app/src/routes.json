@@ -3,12 +3,6 @@
   "backendDependencies": {
     "webservices.rest": "^2.2.0"
   },
-  "modals": [
-    {
-      "name": "end-appointment-modal",
-      "component": "endAppointmentModal"
-    }
-  ],
   "extensions": [
     {
       "name": "home-appointments",
@@ -36,11 +30,7 @@
       "slot": "calendar-dashboard-slot",
       "component": "appointmentsCalendarDashboardLink"
     },
-    {
-      "name": "check-in-appointment-modal",
-      "slot": "todays-appointment-slot",
-      "component": "checkInModal"
-    },
+
     {
       "name": "todays-appointments-dashboard",
       "slot": "todays-appointment-slot",
@@ -94,7 +84,7 @@
         "columns": 1,
         "columnSpan": 1,
         "slot": "patient-chart-appointments-dashboard-slot",
-        "title": "Appointments Logs",
+        "title": "Appointments",
         "path": "Appointments"
       }
     },
@@ -109,15 +99,11 @@
     {
       "name": "patient-upcoming-appointment-widget",
       "component": "patientUpcomingAppointmentsWidget",
-      "slot": "upcoming-appointment-slot"
-    },
-    {
-      "name": "patient-appointment-cancel-confirmation-dialog",
-      "component": "patientAppointmentsCancelConfirmationDialog"
+      "slot": "visit-form-top-slot"
     },
     {
       "name": "edit-appointments-form",
-      "component": "appointementForm",
+      "component": "appointmentsForm",
       "meta": {
         "title":{
           "key":"editAppointment",
@@ -131,7 +117,7 @@
    },
     {
       "name": "create-appointment",
-      "component": "appointementForm",
+      "component": "appointmentsForm",
       "meta": {
         "title": {
           "key":"appointmentForm",
@@ -141,7 +127,7 @@
     },
     {
       "name": "add-appointment",
-      "component": "appointementForm",
+      "component": "appointmentsForm",
       "meta": {
         "title": {
           "key": "createNewAppointment",
@@ -153,6 +139,16 @@
       "name": "home-appointments-tile",
       "slot": "home-metrics-tiles-slot",
       "component": "homeAppointmentsTile"
+    }
+  ],
+  "modals": [
+    {
+      "name": "end-appointment-modal",
+      "component": "endAppointmentModal"
+    },
+    {
+      "name": "patient-appointment-cancel-confirmation-dialog",
+      "component": "patientAppointmentsCancelConfirmationDialog"
     }
   ]
 }

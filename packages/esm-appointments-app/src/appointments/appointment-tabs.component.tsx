@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Tab, TabList, Tabs, TabPanel, TabPanels } from '@carbon/react';
-
-import { type ConfigObject } from '../config-schema';
 import { useConfig } from '@openmrs/esm-framework';
+import { type ConfigObject } from '../config-schema';
 import ScheduledAppointments from './scheduled/scheduled-appointments.component';
 import UnscheduledAppointments from './unscheduled/unscheduled-appointments.component';
 import styles from './appointment-tabs.scss';
 
 interface AppointmentTabsProps {
-  appointmentServiceType: string;
+  appointmentServiceType: string[];
 }
 
 const AppointmentTabs: React.FC<AppointmentTabsProps> = ({ appointmentServiceType }) => {
   const { t } = useTranslation();
-  const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
   const { showUnscheduledAppointmentsTab } = useConfig<ConfigObject>();
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   const handleTabChange = ({ selectedIndex }: { selectedIndex: number }) => {
     setActiveTabIndex(selectedIndex);

@@ -7,7 +7,6 @@ import {
 } from '@openmrs/esm-framework';
 import { configSchema } from './config-schema';
 import { createDashboardLink } from './createDashboardLink.component';
-import { createDashboardLink as createPatientChartDashboardLink } from '@openmrs/esm-patient-common-lib';
 import { dashboardMeta, appointmentCalendarDashboardMeta, patientChartDashboardMeta } from './dashboard.meta';
 import {
   cancelledAppointmentsPanelConfigSchema,
@@ -17,17 +16,6 @@ import {
   expectedAppointmentsPanelConfigSchema,
   missedAppointmentsPanelConfigSchema,
 } from './scheduled-appointments-config-schema';
-import rootComponent from './root.component';
-import appointmentsDashboardComponent from './appointments.component';
-import homeAppointmentsComponent from './home/home-appointments.component';
-import appointmentsListComponent from './appointments/scheduled/appointments-list.component';
-import earlyAppointmentsComponent from './appointments/scheduled/early-appointments.component';
-import patientAppointmentsDetailedSummaryComponent from './patient-appointments/patient-appointments-detailed-summary.component';
-import patientAppointmentsOverviewComponent from './patient-appointments/patient-appointments-overview.component';
-import patientUpcomingAppointmentsComponent from './patient-appointments/patient-upcoming-appointments-card.component';
-import appointementsForm from './form/appointments-form.component';
-import patientSearch from './patient-search/patient-search.component';
-export const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
 const moduleName = '@ssemr/esm-appointments-app';
 
@@ -35,6 +23,8 @@ const options = {
   featureName: 'appointments',
   moduleName,
 };
+
+export const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
 export function startupApp() {
   const appointmentsBasePath = `${window.spaBase}/home/appointments`;
@@ -62,7 +52,7 @@ export function startupApp() {
   ]);
 }
 
-export const root = getSyncLifecycle(rootComponent, options);
+export const root = getAsyncLifecycle(() => import('./root.component'), options);
 
 export const appointmentsDashboardLink = getSyncLifecycle(createDashboardLink(dashboardMeta), options);
 
@@ -71,32 +61,44 @@ export const appointmentsCalendarDashboardLink = getSyncLifecycle(
   options,
 );
 
-export const appointmentsDashboard = getSyncLifecycle(appointmentsDashboardComponent, options);
+export const appointmentsDashboard = getAsyncLifecycle(() => import('./appointments.component'), options);
 
-export const homeAppointments = getSyncLifecycle(homeAppointmentsComponent, options);
+export const homeAppointments = getAsyncLifecycle(() => import('./home/home-appointments.component'), options);
 
-export const appointmentsList = getSyncLifecycle(appointmentsListComponent, options);
+export const appointmentsList = getAsyncLifecycle(
+  () => import('./appointments/scheduled/appointments-list.component'),
+  options,
+);
 
-export const earlyAppointments = getSyncLifecycle(earlyAppointmentsComponent, options);
+export const earlyAppointments = getAsyncLifecycle(
+  () => import('./appointments/scheduled/early-appointments.component'),
+  options,
+);
 
-export const appointementForm = getSyncLifecycle(appointementsForm, options);
+export const appointmentsForm = getAsyncLifecycle(() => import('./form/appointments-form.component'), options);
 
-export const searchPatient = getSyncLifecycle(patientSearch, options);
+export const searchPatient = getAsyncLifecycle(() => import('./patient-search/patient-search.component'), options);
 
 // t('Appointments', 'Appointments')
-export const patientAppointmentsSummaryDashboardLink = getSyncLifecycle(
-  createPatientChartDashboardLink({ ...patientChartDashboardMeta, moduleName }),
+export const patientAppointmentsSummaryDashboardLink = getAsyncLifecycle(async () => {
+  const commonLib = await import('@openmrs/esm-patient-common-lib');
+  return { default: commonLib.createDashboardLink({ ...patientChartDashboardMeta, moduleName }) };
+}, options);
+
+export const patientAppointmentsDetailedSummary = getAsyncLifecycle(
+  () => import('./patient-appointments/patient-appointments-detailed-summary.component'),
   options,
 );
 
-export const patientAppointmentsDetailedSummary = getSyncLifecycle(
-  patientAppointmentsDetailedSummaryComponent,
+export const patientAppointmentsOverview = getAsyncLifecycle(
+  () => import('./patient-appointments/patient-appointments-overview.component'),
   options,
 );
 
-export const patientAppointmentsOverview = getSyncLifecycle(patientAppointmentsOverviewComponent, options);
-
-export const patientUpcomingAppointmentsWidget = getSyncLifecycle(patientUpcomingAppointmentsComponent, options);
+export const patientUpcomingAppointmentsWidget = getAsyncLifecycle(
+  () => import('./patient-appointments/patient-upcoming-appointments-card.component'),
+  options,
+);
 
 export const patientAppointmentsCancelConfirmationDialog = getAsyncLifecycle(
   () => import('./patient-appointments/patient-appointments-cancel.modal'),
