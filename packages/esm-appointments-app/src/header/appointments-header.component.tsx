@@ -61,7 +61,7 @@ const AppointmentsHeader: React.FC<AppointmentHeaderProps> = ({ title, appointme
 
   useEffect(() => {
     onChange?.('');
-  }, [])
+  }, [onChange])
 
   return (
     <PageHeader className={styles.header} data-testid="appointments-header">
