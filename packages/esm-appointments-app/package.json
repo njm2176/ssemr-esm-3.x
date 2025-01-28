@@ -59,5 +59,6 @@
   "devDependencies": {
     "@openmrs/esm-patient-common-lib": "next",
     "webpack": "^5.74.0"
-  }
+  },
+  "gitHead": "2b29876c4b89ca9413831ae8780f55b724c1e383"
 }
