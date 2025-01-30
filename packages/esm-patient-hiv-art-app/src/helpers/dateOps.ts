@@ -69,11 +69,10 @@ export const getThisYearsFirstAndLastDateForCurrentMonth = (
 ) => {
   const firstDayOfYear = new Date(Date.UTC(year, 0, 1));
   const now = new Date();
-  const lastDayOfCurrentMonth = new Date(Date.UTC(year, now.getMonth() + 1, 0));
 
   // Format the dates as 'YYYY-MM-DD'
   const firstDayFormatted = firstDayOfYear.toISOString().split("T")[0];
-  const lastDayFormatted = lastDayOfCurrentMonth.toISOString().split("T")[0];
+  const lastDayFormatted = now.toISOString().split("T")[0];
 
   return { startDate: firstDayFormatted, endDate: lastDayFormatted };
 };

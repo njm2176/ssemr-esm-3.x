@@ -10,7 +10,8 @@ export const TimeFilter: React.FC<Props> = ({ submitHandler }) => {
 
   const [dateRangeValue, setDateRangeValue] = useState([
     new Date(new Date().getFullYear(), 0, 1),
-    new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
+    // new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
+    new Date(),
   ]);
 
   const changeHandler = (range: Date[]) => {
