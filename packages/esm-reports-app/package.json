@@ -1,6 +1,6 @@
 {
   "name": "@ssemr/esm-reports-dashboard",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "license": "MPL-2.0",
   "description": "Reports dashboard microfrontend for the OpenMRS SPA",
   "browser": "dist/ssemr-esm-reports-app.js",
@@ -43,7 +43,7 @@
   },
   "peerDependencies": {
     "@carbon/react": "1.x",
-    "@openmrs/esm-framework": "5.x",
+    "@openmrs/esm-framework": "*",
     "@openmrs/esm-patient-common-lib": "*",
     "dayjs": "1.x",
     "lodash-es": "4.x",
@@ -66,5 +66,5 @@
       "^.+\\.tsx?$": "babel-jest"
     }
   },
-  "gitHead": "b73b45560441926fd747025a2206c17c079e3d5a"
+  "gitHead": "92ad06b2bac2331a131b753fcdef852b9757e586"
 }
