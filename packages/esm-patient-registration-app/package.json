@@ -49,7 +49,7 @@
     "yup": "^0.29.1"
   },
   "peerDependencies": {
-    "@openmrs/esm-framework": "5.x",
+    "@openmrs/esm-framework": "*",
     "dayjs": "1.x",
     "react": "18.x",
     "react-i18next": "11.x",
