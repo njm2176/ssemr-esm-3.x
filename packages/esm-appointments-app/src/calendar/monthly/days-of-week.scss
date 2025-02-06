@@ -1,7 +1,7 @@
 @use '@carbon/colors';
 @use '@carbon/layout';
 @use '@carbon/type';
-@import '~@openmrs/esm-styleguide/src/vars';
+@use '@openmrs/esm-styleguide/src/vars' as *;
 
 .tileContainer {
   height: layout.$spacing-10;
@@ -10,6 +10,11 @@
   width: 100%;
   align-items: center;
   border: 1px solid colors.$gray-20;
+  border-right: none;
+
+  &:last-child {
+    border-right: 1px solid colors.$gray-20;
+  }
 
   & > span {
     font-size: layout.$spacing-05;

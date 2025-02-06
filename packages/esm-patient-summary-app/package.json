@@ -45,8 +45,8 @@
     "swr": "2.x"
   },
   "peerDependencies": {
-    "@openmrs/esm-framework": "5.x",
-    "@openmrs/esm-patient-common-lib": "5.x",
+    "@openmrs/esm-framework": "*",
+    "@openmrs/esm-patient-common-lib": "*",
     "react": "^18.1.0",
     "react-i18next": "11.x",
     "react-router-dom": "6.x"

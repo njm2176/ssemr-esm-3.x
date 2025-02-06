@@ -1,78 +1,114 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
-import { DatePicker, DatePickerInput, Dropdown } from '@carbon/react';
-import { Location } from '@carbon/react/icons';
-import { useSession } from '@openmrs/esm-framework';
-import { useAppointmentServices } from '../hooks/useAppointmentService';
-import AppointmentsIllustration from './appointments-illustration.component';
-import styles from './appointments-header.scss';
-import SelectedDateContext from '../hooks/selectedDateContext';
+import { 
+  DatePicker, 
+  DatePickerInput,
+  MenuItemSelectable,
+  MenuItemDivider,
+  MenuItemGroup,
+  MenuButton
+} from '@carbon/react';
+import { PageHeader, PageHeaderContent, AppointmentsPictogram } from '@openmrs/esm-framework';
 import { omrsDateFormat } from '../constants';
+import { useAppointmentServices } from '../hooks/useAppointmentService';
+import SelectedDateContext from '../hooks/selectedDateContext';
+import styles from './appointments-header.scss';
 
 interface AppointmentHeaderProps {
   title: string;
-  appointmentServiceType?: string;
+  appointmentServiceType?: string[];
   onChange?: (evt) => void;
 }
 
 const AppointmentsHeader: React.FC<AppointmentHeaderProps> = ({ title, appointmentServiceType, onChange }) => {
   const { t } = useTranslation();
-  const session = useSession();
   const { selectedDate, setSelectedDate } = useContext(SelectedDateContext);
-  const location = session?.sessionLocation?.display;
   const { serviceTypes } = useAppointmentServices();
 
+  const items = [{ name: 'All', uuid: '' }, ...serviceTypes];
+  const [selectedItems, setSelectedItems] = useState([items[0]]);
+
+  const handleMenuItemChange = (itemUuid: string) => {
+    if (itemUuid === '') {
+      setSelectedItems([items[0]]);
+      onChange?.('');
+    } else {
+      let updatedSelectedItems;
+      const isAlreadySelected = selectedItems.some((item) => item.uuid === itemUuid);
+
+      if (isAlreadySelected) {
+        updatedSelectedItems = selectedItems.filter((item) => item.uuid !== itemUuid);
+      } else {
+        updatedSelectedItems = selectedItems.filter((item) => item.uuid !== '').concat(
+          items.find((item) => item.uuid === itemUuid)!
+        );
+      }
+
+      if (updatedSelectedItems.length === 0) {
+        updatedSelectedItems = [items[0]]; 
+        onChange?.(''); 
+      } else {
+        const selectedUuids = updatedSelectedItems.map((item) => item.uuid);
+        onChange?.(selectedUuids);
+      }
+
+      setSelectedItems(updatedSelectedItems);
+    }
+  };
+
+
+
+  useEffect(() => {
+    onChange?.('');
+  }, [onChange])
+
   return (
-    <div className={styles.header} data-testid="appointments-header">
-      <div className={styles['left-justified-items']}>
-        <AppointmentsIllustration />
-        <div className={styles['page-labels']}>
-          <p>{t('appointments', 'Appointments')}</p>
-          <p className={styles['page-name']}>{title}</p>
-        </div>
+    <PageHeader className={styles.header} data-testid="appointments-header">
+      <PageHeaderContent illustration={<AppointmentsPictogram />} title={title} />
+      <div className={styles.rightJustifiedItems}>
+        <DatePicker
+          dateFormat="d-M-Y"
+          datePickerType="single"
+          onChange={([date]) => setSelectedDate(dayjs(date).startOf('day').format(omrsDateFormat))}
+          value={dayjs(selectedDate).format('DD MMM YYYY')}>
+          <DatePickerInput
+            style={{ cursor: 'pointer', backgroundColor: 'transparent', border: 'none', maxWidth: '10rem' }}
+            id="appointment-date-picker"
+            labelText=""
+            placeholder="DD-MMM-YYYY"
+            type="text"
+          />
+        </DatePicker>
+        {typeof onChange === 'function' && (
+          <MenuButton
+            label={t('filterByServiceType', 'Filter by service type')}
+            kind="ghost"
+            size="sm"
+            menuAlignment="bottom-end"
+            className={styles.menuButton}
+          >
+            <MenuItemGroup
+              aria-label={t('filterByServiceType', 'Filter by service type')}
+              id="serviceMenu"
+            >
+              {items.map((item) => (
+                <React.Fragment key={item.uuid}>
+                  <MenuItemSelectable
+                    key={item.uuid}
+                    label={item.name}
+                    defaultSelected={selectedItems.some((selectedItem) => selectedItem.uuid === item.uuid)}
+                    onChange={() => handleMenuItemChange(item.uuid)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <MenuItemDivider />
+                </React.Fragment>
+              ))}
+            </MenuItemGroup>
+          </MenuButton>
+        )}
       </div>
-      <div className={styles['right-justified-items']}>
-        <div className={styles['date-and-location']}>
-          <Location size={16} />
-          <span className={styles.value}>{location}</span>
-          <span className={styles.middot}>&middot;</span>
-          <DatePicker
-            onChange={([date]) => setSelectedDate(dayjs(date).startOf('day').format(omrsDateFormat))}
-            value={dayjs(selectedDate).format('DD MMM YYYY')}
-            dateFormat="d-M-Y"
-            datePickerType="single">
-            <DatePickerInput
-              style={{ cursor: 'pointer', backgroundColor: 'transparent', border: 'none', maxWidth: '10rem' }}
-              id="appointment-date-picker"
-              placeholder="DD-MMM-YYYY"
-              labelText=""
-              type="text"
-            />
-          </DatePicker>
-        </div>
-        <div className={styles.dropdownContainer}>
-          {typeof onChange === 'function' && (
-            <Dropdown
-              className={styles.dropdown}
-              aria-label="Select service type"
-              id="serviceDropdown"
-              selectedItem={
-                serviceTypes.find((service) => service.uuid === appointmentServiceType) || { name: 'All', uuid: '' }
-              }
-              items={[{ name: 'All', uuid: '' }, ...serviceTypes]}
-              itemToString={(item) => (item ? item.name : '')}
-              label={t('selectServiceType', 'Select service type')}
-              type="inline"
-              size="sm"
-              direction="bottom"
-              titleText={t('view', 'View')}
-              onChange={({ selectedItem }) => onChange(selectedItem?.uuid)}
-            />
-          )}
-        </div>
-      </div>
-    </div>
+    </PageHeader>
   );
 };
 
