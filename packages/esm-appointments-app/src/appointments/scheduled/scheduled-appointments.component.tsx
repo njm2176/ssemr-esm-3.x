@@ -18,7 +18,7 @@ import styles from './scheduled-appointments.scss';
 dayjs.extend(isSameOrBefore);
 
 interface ScheduledAppointmentsProps {
-  appointmentServiceType?: string;
+  appointmentServiceType?: string[];
 }
 
 type DateType = 'pastDate' | 'today' | 'futureDate';
@@ -35,7 +35,7 @@ const ScheduledAppointments: React.FC<ScheduledAppointmentsProps> = ({ appointme
   // t('checkedIn', 'Checked in');
   // t('expected', 'Expected');
 
-  const [currentTab, setCurrentTab] = useState<string>(null);
+  const [currentTab, setCurrentTab] = useState(null);
   const [dateType, setDateType] = useState<DateType>('today');
   const scheduledAppointmentPanels = useConnectedExtensions(scheduledAppointmentsPanelsSlot);
   const { allowedExtensions, showExtension, hideExtension } = useAllowedExtensions();
@@ -141,7 +141,7 @@ function ExtensionWrapper({
 }: {
   extension: ConnectedExtension;
   currentTab: string;
-  appointmentServiceType: string;
+  appointmentServiceType: string[];
   date: string;
   dateType: DateType;
   showExtensionTab: (extension: string) => void;

@@ -37,14 +37,13 @@ import {
 } from '@openmrs/esm-framework';
 import { Download } from '@carbon/react/icons';
 import { EmptyState } from '../../empty-state/empty-state.component';
-import { downloadAppointmentsAsExcel } from '../../helpers/excel';
+import { exportAppointmentsToSpreadsheet } from '../../helpers/excel';
 import { useTodaysVisits } from '../../hooks/useTodaysVisits';
 import { type Appointment } from '../../types';
 import { type ConfigObject } from '../../config-schema';
 import { getPageSizes, useAppointmentSearchResults } from '../utils';
 import AppointmentActions from './appointments-actions.component';
 import AppointmentDetails from '../details/appointment-details.component';
-import PatientSearch from '../../patient-search/patient-search.component';
 import styles from './appointments-table.scss';
 
 dayjs.extend(utc);
@@ -154,7 +153,7 @@ const AppointmentsTable: React.FC<AppointmentsTableProps> = ({ appointments, isL
                   noToday: true,
                 })
               : null;
-            downloadAppointmentsAsExcel(appointments, `${tableHeading}_appointments_${date}`);
+            exportAppointmentsToSpreadsheet(appointments, rowData, `${tableHeading}_appointments_${date}`);
           }}>
           {t('download', 'Download')}
         </Button>

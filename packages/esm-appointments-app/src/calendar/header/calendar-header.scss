@@ -1,12 +1,12 @@
-@use '@carbon/styles/scss/type';
 @use '@carbon/colors';
-@use '@carbon/styles/scss/spacing';
+@use '@carbon/layout';
+@use '@carbon/type';
 
 .titleContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 1rem;
+  margin-left: layout.$spacing-05;
 
   & > p {
     @include type.type-style('heading-02');
@@ -24,9 +24,21 @@
   align-items: center;
 }
 
+.backButton {
+  svg {
+    order: 1;
+    margin-right: layout.$spacing-03;
+    margin-left: 0 !important;
+  }
+
+  span {
+    order: 2;
+  }
+}
+
 // Overriding styles for RTL support
 html[dir='rtl'] {
   .titleContent {
-    margin-left: 1rem;
+    margin-left: layout.$spacing-05;
   }
 }

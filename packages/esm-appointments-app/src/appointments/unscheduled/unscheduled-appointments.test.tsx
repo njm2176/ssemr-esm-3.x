@@ -3,18 +3,28 @@ import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
 import { type ConfigObject, configSchema } from '../../config-schema';
+import { exportUnscheduledAppointmentsToSpreadsheet } from '../../helpers/excel';
 import { getByTextWithMarkup } from 'tools';
 import { useUnscheduledAppointments } from '../../hooks/useUnscheduledAppointments';
-import { downloadUnscheduledAppointments } from '../../helpers/excel';
 import UnscheduledAppointments from './unscheduled-appointments.component';
 
-const mockDownloadAppointmentsAsExcel = jest.mocked(downloadUnscheduledAppointments);
+const mockExportUnscheduledAppointmentsToSpreadsheet = jest.mocked(exportUnscheduledAppointmentsToSpreadsheet);
 const mockUseUnscheduledAppointments = jest.mocked(useUnscheduledAppointments);
 const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
 
-jest.mock('../../helpers/excel');
-jest.mock('../../hooks/useOverlay');
-jest.mock('../../hooks/useUnscheduledAppointments');
+jest.mock('../../helpers/excel', () => {
+  return {
+    ...jest.requireActual('../../helpers/excel'),
+    exportUnscheduledAppointmentsToSpreadsheet: jest.fn(),
+  };
+});
+
+jest.mock('../../hooks/useUnscheduledAppointments', () => {
+  return {
+    ...jest.requireActual('../../hooks/useUnscheduledAppointments'),
+    useUnscheduledAppointments: jest.fn(),
+  };
+});
 
 const mockUnscheduledAppointments = [
   {
@@ -44,6 +54,11 @@ describe('UnscheduledAppointments', () => {
     mockUseConfig.mockReturnValue({
       ...getDefaultsFromConfigSchema(configSchema),
       customPatientChartUrl: 'someUrl',
+    });
+    mockUseUnscheduledAppointments.mockReturnValue({
+      isLoading: false,
+      data: mockUnscheduledAppointments,
+      error: null,
     });
   });
 
@@ -113,7 +128,7 @@ describe('UnscheduledAppointments', () => {
     const downloadButton = await screen.findByText('Download');
     expect(downloadButton).toBeInTheDocument();
     await user.click(downloadButton);
-    expect(mockDownloadAppointmentsAsExcel).toHaveBeenCalledWith(mockUnscheduledAppointments);
+    expect(mockExportUnscheduledAppointmentsToSpreadsheet).toHaveBeenCalledWith(mockUnscheduledAppointments);
   });
 
   it('renders a message if there are no unscheduled appointments', async () => {

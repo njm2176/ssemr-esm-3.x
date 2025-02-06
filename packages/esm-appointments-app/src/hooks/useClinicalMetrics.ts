@@ -45,11 +45,13 @@ export function useAllAppointmentsByDate() {
     openmrsFetch,
   );
 
-  const providersArray = data?.data?.filter(({ providers }) => providers !== null) ?? [];
-  const providersCount = uniqBy(
-    providersArray.map(({ providers }) => providers).flat(),
-    (provider) => provider.uuid,
-  ).length;
+  const providersArray = data?.data?.flatMap(({ providers }) => providers ?? []) ?? [];
+
+  const validProviders = providersArray.filter((provider) => provider.response === 'ACCEPTED');
+
+  const uniqueProviders = uniqBy(validProviders, (provider) => provider.uuid);
+  const providersCount = uniqueProviders.length;
+
   return {
     totalProviders: providersCount ? providersCount : 0,
     isLoading,
@@ -59,7 +61,7 @@ export function useAllAppointmentsByDate() {
   };
 }
 
-export const useScheduledAppointment = (serviceUuid: string) => {
+export const useScheduledAppointment = (serviceUuid: string[]) => {
   const { selectedDate } = useContext(SelectedDateContext);
   const url = `${restBaseUrl}/appointment/all?forDate=${selectedDate}`;
 
@@ -68,7 +70,7 @@ export const useScheduledAppointment = (serviceUuid: string) => {
   }>(url, openmrsFetch);
 
   const totalScheduledAppointments = !isEmpty(serviceUuid)
-    ? data?.data?.filter((appt) => appt?.service?.uuid === serviceUuid)?.length ?? 0
+    ? data?.data?.filter((appt) => serviceUuid.includes(appt?.service?.uuid))?.length ?? 0
     : data?.data?.length ?? 0;
 
   return {
