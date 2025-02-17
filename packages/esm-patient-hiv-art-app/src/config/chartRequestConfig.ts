@@ -113,6 +113,13 @@ export const chartRequestConfig = {
     processor: formatDataAgainstTime,
     chartKey: "underCareOfCommunityProgram",
   },
+  viralLoadCoverage: {
+    url: ({ time }) =>
+      `/ws/rest/v1/ssemr/dashboard/viralLoadCoverage?startDate=${time.startDate}&endDate=${time.endDate}`,
+    processor: formatDataAgainstTime,
+    chartKey: "viralLoadCoverage",
+    noPagination: true,
+  },
   viralLoadSuppression: {
     url: ({ time }) =>
       `/ws/rest/v1/ssemr/dashboard/viralLoadSuppression?startDate=${time.startDate}&endDate=${time.endDate}`,
