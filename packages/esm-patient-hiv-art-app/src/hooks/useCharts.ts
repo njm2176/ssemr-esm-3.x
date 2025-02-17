@@ -34,6 +34,7 @@ export const useCharts = () => {
       dueForViralLoad,
       viralLoadSamples,
       viralLoadResults,
+      viralLoadCoverage,
       viralLoadSuppression,
       waterfall,
     },
@@ -175,52 +176,48 @@ export const useCharts = () => {
       chartType: "bar",
     },
     {
-      loading: viralLoadSamples.loading,
-      state: viralLoadSamples,
+      state: viralLoadCoverage,
       tooltipRenderFunction: (item) =>
         `${item.data.name}: ${Math.round(
-          (item.data.value / allClients?.raw?.results?.length) * 100
+          (item.data.value / viralLoadCoverage?.raw?.totalPatients) * 100
         )}%`,
       chartData: [
         {
           name: "Not covered",
-          value:
-            allClients?.raw?.results?.length -
-            viralLoadSamples?.raw?.results?.length,
+          value: viralLoadCoverage?.raw?.notVlCovered,
         },
         {
           name: "Covered",
-          value: viralLoadSamples?.raw?.results?.length,
+          value: viralLoadCoverage?.raw?.vlCoverage,
         },
       ],
       listData: viralLoadSamples?.raw?.results,
       title: "Viral Load Coverage",
-      total: allClients?.raw?.results?.length,
+      total: viralLoadCoverage?.raw?.totalPatients,
       headerTableColumns: defaultStatHeaders,
       chartType: "pie",
     },
     {
-      loading: viralLoadSuppression.loading,
       state: viralLoadSuppression,
       tooltipRenderFunction: (item) =>
         `${item.data.name}: ${Math.round(
-          (item.data.value / viralLoadSamples?.raw?.results?.length) * 100
+          (item.data.value / viralLoadSuppression?.raw?.vlCoverage) * 100
         )}%`,
       chartData: [
         {
           name: "Unsuppressed",
           value:
-            viralLoadSamples?.raw?.results?.length -
-            viralLoadSuppression?.raw?.results?.length,
+            viralLoadSuppression?.raw?.vlCoverage -
+            viralLoadSuppression?.raw?.vlSuppressed,
         },
         {
           name: "Suppressed",
-          value: viralLoadSuppression?.raw?.results?.length,
+          value: viralLoadSuppression?.raw?.vlSuppressed,
         },
       ],
-      listData: viralLoadSuppression?.raw?.results,
+      listData: viralLoadSamples?.raw?.results,
       title: "Viral Load Suppression",
-      total: viralLoadSamples?.raw?.results?.length,
+      total: viralLoadSuppression?.raw?.totalPatients,
       headerTableColumns: defaultStatHeaders,
       chartType: "pie",
     },

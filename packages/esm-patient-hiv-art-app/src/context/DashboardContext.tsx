@@ -65,6 +65,13 @@ const DashboardProvider = ({ children }) => {
       });
 
       getDashboardData({
+        ...chartRequestConfig.viralLoadCoverage,
+        url: chartRequestConfig.viralLoadCoverage.url({
+          time,
+        }),
+      });
+
+      getDashboardData({
         ...chartRequestConfig.viralLoadSuppression,
         url: chartRequestConfig.viralLoadSuppression.url({
           time,
@@ -152,8 +159,8 @@ const DashboardProvider = ({ children }) => {
         url: chartRequestConfig.interruptedWithRange.url({
           time,
           categoryFilter,
-        })
-      })
+        }),
+      });
       getDashboardData({
         ...chartRequestConfig.returned,
         url: chartRequestConfig.returned.url({
