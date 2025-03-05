@@ -30,8 +30,28 @@ const PatientFlags: React.FC<PatientFlagsProps> = ({ patientUuid }) => {
         return "mustardTag";
       case "DUE_FOR_VL":
         return "greenTag";
+      case "NEW_CLIENT":
+        return "greenTag";
+      case "HIGH_VL":
+        return "mustardTag";
+      case "RTT":
+        return "greenTag";
+      case "TX_CURR":
       default:
         return "tag";
+    }
+  };
+
+  const getDisplayText = (flag: string) => {
+    switch (flag) {
+      case "NEW_CLIENT":
+        return "NEW CLIENT: Prioritize linkage to CHW";
+      case "HIGH_VL":
+        return "HIGH VL: Prioritize linkage to CHW";
+      case "RTT":
+        return "RTT: Prioritize linkage to CHW";
+      default:
+        return flag.replaceAll("_", " ");
     }
   };
 
@@ -46,7 +66,7 @@ const PatientFlags: React.FC<PatientFlagsProps> = ({ patientUuid }) => {
           className={styles[pickTagClassname(patientFlag)]}
           key={patientFlag}
         >
-          {patientFlag?.replaceAll("_", " ")}
+          {getDisplayText(patientFlag)}
         </Tag>
       ))}
     </div>
