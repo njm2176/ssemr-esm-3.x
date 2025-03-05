@@ -1,6 +1,6 @@
 {
   "name": "@ssemr/esm-patient-flags-app",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Patient flags microfrontend for the OpenMRS SPA",
   "browser": "dist/ssemr-esm-patient-flags-app.js",
   "main": "src/index.ts",
