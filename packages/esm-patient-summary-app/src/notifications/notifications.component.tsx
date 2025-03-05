@@ -18,8 +18,10 @@ const Notifications: React.FC<NotificationsProps> = ({ patientUuid }) => {
     const notifications = [];
     let count = 1;
     const observation = data.results[0];
+    const indexFamily = observation.indexFamilyMembers[0];
 
     if (!observation) return;
+    if (!indexFamily) return;
 
     if (observation.cd4Done === null) {
       notifications.push({
@@ -61,12 +63,28 @@ const Notifications: React.FC<NotificationsProps> = ({ patientUuid }) => {
     }
 
     if (
-      observation.whoStage &&
-      (observation.whoStage === 3 || observation.whoStage === 4)
+      observation.whoClinicalStage &&
+      (observation.whoClinicalStage === "Stage 3" ||
+        observation.whoClinicalStage === "Stage 4")
     ) {
       notifications.push({
         id: count++,
         message: "Risk of cryptococcal Meningitis, test for sCrAg.",
+        icon: <Warning className={styles.mustardTag} />,
+      });
+    }
+
+    if (
+      indexFamily.relationship &&
+      (indexFamily.relationship === "Sexual" ||
+        indexFamily.relationship === "Child") &&
+      indexFamily.hivStatusKnown &&
+      indexFamily.hivStatusKnown === "Unknown"
+    ) {
+      notifications.push({
+        id: count++,
+        message:
+          "Client has sexual partner /child with unknow HIV status, please test the contact",
         icon: <Warning className={styles.mustardTag} />,
       });
     }
