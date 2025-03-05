@@ -5,15 +5,14 @@ import {
 } from "@openmrs/esm-framework";
 import { configSchema } from "./config-schema";
 import { dashboardMeta } from "./dashboard.meta";
-import {
-  createDashboardLink,
-} from "@openmrs/esm-patient-common-lib";
+import { createDashboardLink } from "@openmrs/esm-patient-common-lib";
 import carePanelComponent from "./patient-summary-widget/care-panel.component";
 import carePanelPatientSummaryComponent from "./patient-summary/patient-summary.component";
 import VlPanelComponent from "./vl-history-widget/vl-panel.component";
 import CommunityLinkagePanelComponent from "./community-linkage-widget/community-linkage-panel.component";
 import ClientFamilyInfoPanelComponent from "./family-history-information-widget/more-client-info-panel.component";
 import IndexFamilyHistoryPanelComponent from "./index-family-history-information-widget/index-family-history-panel.component";
+import NotificationsPanelComponent from "./notifications-widget/notifications-panel.component";
 
 const moduleName = "@ssemr/esm-patient-panel-app";
 
@@ -58,6 +57,11 @@ export const linkageToCHW = getSyncLifecycle(
 
 export const indexFamilyHistory = getSyncLifecycle(
   IndexFamilyHistoryPanelComponent,
+  options
+);
+
+export const notifications = getSyncLifecycle(
+  NotificationsPanelComponent,
   options
 );
 
