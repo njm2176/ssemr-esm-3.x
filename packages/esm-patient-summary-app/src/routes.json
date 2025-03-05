@@ -25,9 +25,31 @@
       }
     },
     {
+      "name": "notification-dashboard-table",
+      "slot": "notification-dashboard-slot",
+      "component": "notificationsDashboardTable",
+      "order": 1,
+      "meta": {
+        "columnSpan": 4
+      }
+    },
+    {
+      "name": "notification-table-dashboard-link",
+      "component": "notificationsDashboardLink",
+      "slot": "patient-chart-dashboard-slot",
+      "order": 0,
+      "meta": {
+        "columns": 1,
+        "columnSpan": 1,
+        "slot": "notification-dashboard-slot",
+        "title": "Notifications",
+        "path": "Notifications"
+      }
+    },
+    {
       "name": "patient-notification",
       "slot": "patient-chart-summary-dashboard-slot",
-      "component": "notifications",
+      "component": "notificationsPanel",
       "order": 1,
       "meta": {
         "columnSpan": 4
