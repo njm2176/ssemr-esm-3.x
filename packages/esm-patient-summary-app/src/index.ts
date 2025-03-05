@@ -4,7 +4,7 @@ import {
   registerBreadcrumbs,
 } from "@openmrs/esm-framework";
 import { configSchema } from "./config-schema";
-import { dashboardMeta } from "./dashboard.meta";
+import { dashboardMeta, notificationsDashboardMeta } from "./dashboard.meta";
 import { createDashboardLink } from "@openmrs/esm-patient-common-lib";
 import carePanelComponent from "./patient-summary-widget/care-panel.component";
 import carePanelPatientSummaryComponent from "./patient-summary/patient-summary.component";
@@ -13,6 +13,7 @@ import CommunityLinkagePanelComponent from "./community-linkage-widget/community
 import ClientFamilyInfoPanelComponent from "./family-history-information-widget/more-client-info-panel.component";
 import IndexFamilyHistoryPanelComponent from "./index-family-history-information-widget/index-family-history-panel.component";
 import NotificationsPanelComponent from "./notifications-widget/notifications-panel.component";
+import Notifications from "./notifications/notifications.component";
 
 const moduleName = "@ssemr/esm-patient-panel-app";
 
@@ -60,13 +61,23 @@ export const indexFamilyHistory = getSyncLifecycle(
   options
 );
 
-export const notifications = getSyncLifecycle(
+export const notificationsPanel = getSyncLifecycle(
   NotificationsPanelComponent,
+  options
+);
+
+export const notificationsDashboardTable = getSyncLifecycle(
+  Notifications,
   options
 );
 
 // t('carePanel', 'Care panel')
 export const carePanelSummaryDashboardLink = getSyncLifecycle(
   createDashboardLink({ ...dashboardMeta, moduleName }),
+  options
+);
+
+export const notificationsDashboardLink = getSyncLifecycle(
+  createDashboardLink({ ...notificationsDashboardMeta, moduleName }),
   options
 );
