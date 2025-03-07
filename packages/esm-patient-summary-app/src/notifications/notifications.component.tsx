@@ -93,7 +93,9 @@ const Notifications: React.FC<NotificationsProps> = ({ patientUuid }) => {
   }, [data]);
 
   const customStyles = {
-    rows: { style: { minHeight: "72px", fontSize: "14px", fontWeight: "500" } },
+    rows: {
+      style: { minHeight: "72px", fontSize: "14px", fontWeight: "1000" },
+    },
     cells: { style: { padding: "10px" } },
   };
 
