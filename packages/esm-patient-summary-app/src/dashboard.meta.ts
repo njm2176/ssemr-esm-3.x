@@ -3,6 +3,7 @@ export const dashboardMeta = {
   columns: 1,
   title: "Downloadable Client Summary",
   path: "Downloadable Client Summary",
+  icon: "omrs-icon-printer",
 };
 
 export const notificationsDashboardMeta = {
@@ -10,4 +11,5 @@ export const notificationsDashboardMeta = {
   columns: 1,
   title: "Notifications",
   path: "Notifications",
+  icon: "omrs-icon-warning",
 };
