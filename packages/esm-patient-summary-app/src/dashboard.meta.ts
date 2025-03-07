@@ -8,7 +8,6 @@ export const dashboardMeta = {
 
 export const notificationsDashboardMeta = {
   slot: "notification-dashboard-slot",
-  columns: 1,
   title: "Notifications",
   path: "Notifications",
   icon: "omrs-icon-warning",
