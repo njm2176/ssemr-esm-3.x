@@ -31,11 +31,11 @@ const PatientFlags: React.FC<PatientFlagsProps> = ({ patientUuid }) => {
       case "DUE_FOR_VL":
         return "greenTag";
       case "NEW_CLIENT":
-        return "greenTag";
+        return "redTag";
       case "HIGH_VL":
-        return "mustardTag";
+        return "redTag";
       case "RTT":
-        return "greenTag";
+        return "redTag";
       case "TX_CURR":
       default:
         return "tag";
