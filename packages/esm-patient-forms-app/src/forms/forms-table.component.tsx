@@ -6,7 +6,7 @@ import {
 } from '@carbon/react';
 import styles from './forms-table.scss';
 import dayjs from 'dayjs';
-import { getPatientUuidFromUrl } from '@openmrs/esm-patient-common-lib';
+import { getPatientUuidFromStore } from '@openmrs/esm-patient-common-lib';
 import { useVisitTime } from '../hooks/use-forms';
 
 interface TableRow {
@@ -39,7 +39,7 @@ interface FormsTableProps {
 const FormsTable = ({ tableHeaders, tableRows, handleSearch, handleFormOpen }: FormsTableProps) => {
   const { t } = useTranslation();
 
-  const patientUuid = getPatientUuidFromUrl();
+  const patientUuid = getPatientUuidFromStore();
   const [latestVisit, setLatestVisit] = useState(null);
 
   useEffect(() => {
