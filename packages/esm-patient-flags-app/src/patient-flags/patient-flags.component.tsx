@@ -36,7 +36,6 @@ const PatientFlags: React.FC<PatientFlagsProps> = ({ patientUuid }) => {
         return "redTag";
       case "RTT":
         return "redTag";
-      case "TX_CURR":
       default:
         return "tag";
     }
