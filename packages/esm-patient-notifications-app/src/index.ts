@@ -29,7 +29,7 @@ export const notificationsLaunchButton = getSyncLifecycle(
 );
 
 export const notificationWorkspace = getAsyncLifecycle(
-  () => import("./components/notification.component"),
+  () => import("./notification-workspace/notification-workspace.component"),
   options
 );
 

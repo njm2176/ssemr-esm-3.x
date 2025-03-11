@@ -4,7 +4,7 @@ import { ActionMenuButton } from "@openmrs/esm-framework";
 import { Notification } from "@carbon/react/icons";
 import { useLaunchWorkspaceRequiringVisit } from "@openmrs/esm-patient-common-lib";
 
-const AiModelActionButton: React.FC = () => {
+const NotificationActionButton: React.FC = () => {
   const { t } = useTranslation();
   const launchNotificationWorkSpace =
     useLaunchWorkspaceRequiringVisit("notifications");
@@ -20,4 +20,4 @@ const AiModelActionButton: React.FC = () => {
   );
 };
 
-export default AiModelActionButton;
+export default NotificationActionButton;

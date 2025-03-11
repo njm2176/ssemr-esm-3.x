@@ -1,0 +1,38 @@
+@use '@carbon/colors';
+@use '@carbon/layout';
+
+.flagContainer {
+  margin: layout.$spacing-05;
+}
+
+.tag {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.greenTag{
+  @extend .tag;
+  color: colors.$white;
+  background-color: colors.$green-80;
+  width: 30%;
+}
+
+.mustardTag{
+  @extend .tag;
+  color: colors.$white;
+  background-color: colors.$yellow-40;
+  width: 30%;
+}
+
+.redTag{
+  @extend .tag;
+  color: colors.$white;
+  background-color: colors.$red-70;
+  width: 50%;
+}
+
+.loading {
+  padding: 3rem;
+  font-weight: 600;
+}
