@@ -12,11 +12,13 @@ const NotificationWorkspace: React.FC = () => {
   const patientUuid = getPatientUuidFromStore();
   return (
     <div>
-      <CardHeader
-        title={t("patientFlags", "Patient Flags")}
-        children={""}
-      ></CardHeader>
-      <PatientFlag patientUuid={patientUuid} />
+      <div style={{ marginBottom: "10px" }}>
+        <CardHeader
+          title={t("patientFlags", "Patient Flags")}
+          children={""}
+        ></CardHeader>
+        <PatientFlag patientUuid={patientUuid} />
+      </div>
       <CardHeader
         title={t("notification", "Notification")}
         children={""}
