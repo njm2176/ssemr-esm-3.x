@@ -4,7 +4,7 @@ import {
   registerBreadcrumbs,
 } from "@openmrs/esm-framework";
 import { configSchema } from "./config-schema";
-import { dashboardMeta, notificationsDashboardMeta } from "./dashboard.meta";
+import { dashboardMeta } from "./dashboard.meta";
 import { createDashboardLink } from "@openmrs/esm-patient-common-lib";
 import carePanelComponent from "./patient-summary-widget/care-panel.component";
 import carePanelPatientSummaryComponent from "./patient-summary/patient-summary.component";
@@ -74,10 +74,5 @@ export const notificationsDashboardTable = getSyncLifecycle(
 // t('carePanel', 'Care panel')
 export const carePanelSummaryDashboardLink = getSyncLifecycle(
   createDashboardLink({ ...dashboardMeta, moduleName }),
-  options
-);
-
-export const notificationsDashboardLink = getSyncLifecycle(
-  createDashboardLink({ ...notificationsDashboardMeta, moduleName }),
   options
 );
