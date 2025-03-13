@@ -6840,6 +6840,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@ssemr/esm-patient-notifications-app@workspace:packages/esm-patient-notifications-app":
+  version: 0.0.0-use.local
+  resolution: "@ssemr/esm-patient-notifications-app@workspace:packages/esm-patient-notifications-app"
+  dependencies:
+    "@carbon/react": ^1.42.1
+    "@openmrs/esm-patient-common-lib": next
+    lodash-es: ^4.17.15
+    webpack: ^5.74.0
+  peerDependencies:
+    "@openmrs/esm-framework": "*"
+    "@openmrs/esm-patient-common-lib": "*"
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+  languageName: unknown
+  linkType: soft
+
 "@ssemr/esm-patient-registration-app@workspace:packages/esm-patient-registration-app":
   version: 0.0.0-use.local
   resolution: "@ssemr/esm-patient-registration-app@workspace:packages/esm-patient-registration-app"
