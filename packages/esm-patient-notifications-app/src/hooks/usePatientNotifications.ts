@@ -22,7 +22,7 @@ const usePatientNotifications = (patientUuid?: string) => {
     const observationRules = [
       {
         condition: (obs: any) => obs.cd4Done === null,
-        message: "Perform a CD4 test for the patient.",
+        message: "CD4 count was not done. Please perform CD4 count.",
       },
       {
         condition: (obs: any) =>
@@ -32,7 +32,8 @@ const usePatientNotifications = (patientUuid?: string) => {
       },
       {
         condition: (obs: any) => obs.tbStatus === "ND - TB Screening not done",
-        message: "Perform a TB screening for the patient.",
+        message:
+          "TB screening was not done. Perform a TB screening for the patient.",
       },
       {
         condition: (obs: any) => obs.tbStatus === "Pr TB - Presumptive TB",
@@ -42,7 +43,8 @@ const usePatientNotifications = (patientUuid?: string) => {
         condition: (obs: any) =>
           obs.whoClinicalStage === "Stage 3" ||
           obs.whoClinicalStage === "Stage 4",
-        message: "Risk of cryptococcal Meningitis, test for sCrAg.",
+        message:
+          "CLient has WHO stage 3 or 4. Risk of cryptococcal Meningitis, test for sCrAg.",
       },
     ];
 

@@ -10,7 +10,6 @@ export interface NotificationsProps {
   code: string;
 }
 
-
 interface Notification {
   id: number;
   message: string;
@@ -33,7 +32,7 @@ const Notifications: React.FC<NotificationsProps> = ({ patientUuid }) => {
     const observationRules = [
       {
         condition: (obs: any) => obs.cd4Done === null,
-        message: "Perform a CD4 test for the patient.",
+        message: "CD4 count was not done. Please perform CD4 count.",
         icon: <Warning className={styles.mustardTag} />,
       },
       {
@@ -45,8 +44,9 @@ const Notifications: React.FC<NotificationsProps> = ({ patientUuid }) => {
       },
       {
         condition: (obs: any) => obs.tbStatus === "ND - TB Screening not done",
-        message: "Perform a TB screening for the patient.",
-        icon: <Warning className={styles.mustardTag}/>,
+        message:
+          "TB screening was not done. Perform a TB screening for the patient.",
+        icon: <Warning className={styles.mustardTag} />,
       },
       {
         condition: (obs: any) => obs.tbStatus === "Pr TB - Presumptive TB",
@@ -57,7 +57,8 @@ const Notifications: React.FC<NotificationsProps> = ({ patientUuid }) => {
         condition: (obs: any) =>
           obs.whoClinicalStage === "Stage 3" ||
           obs.whoClinicalStage === "Stage 4",
-        message: "Risk of cryptococcal Meningitis, test for sCrAg.",
+        message:
+          "CLient has WHO stage 3 or 4. Risk of cryptococcal Meningitis, test for sCrAg.",
         icon: <Warning className={styles.mustardTag} />,
       },
     ];
@@ -106,7 +107,11 @@ const Notifications: React.FC<NotificationsProps> = ({ patientUuid }) => {
   };
 
   const columns: TableColumn<Notification>[] = [
-    { name: "", selector: (row: Notification) => row.id.toString(), width: "50px" },
+    {
+      name: "",
+      selector: (row: Notification) => row.id.toString(),
+      width: "50px",
+    },
     { name: "", selector: (row: Notification) => row.message, wrap: true },
     { name: "", cell: (row: Notification) => row.icon, width: "50px" },
   ];
