@@ -5,10 +5,3 @@ export const dashboardMeta = {
   path: "Downloadable Client Summary",
   icon: "omrs-icon-printer",
 };
-
-export const notificationsDashboardMeta = {
-  slot: "notification-dashboard-slot",
-  title: "Notifications",
-  path: "Notifications",
-  icon: "omrs-icon-warning",
-};
