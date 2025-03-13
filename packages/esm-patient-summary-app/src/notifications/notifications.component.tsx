@@ -40,7 +40,7 @@ const Notifications: React.FC<NotificationsProps> = ({ patientUuid }) => {
           obs.vlResults && parseFloat(obs.vlResults) >= 1000,
         message:
           "Patient's viral load is Unsuppressed. Consider EAC and possible regimen change.",
-        icon: <Warning className={styles.mustardTag} />,
+        icon: <Warning className={styles.redTag} />,
       },
       {
         condition: (obs: any) => obs.tbStatus === "ND - TB Screening not done",
@@ -51,7 +51,7 @@ const Notifications: React.FC<NotificationsProps> = ({ patientUuid }) => {
       {
         condition: (obs: any) => obs.tbStatus === "Pr TB - Presumptive TB",
         message: "Presumptive TB, test for Urine LAM / GeneXpert.",
-        icon: <Warning className={styles.mustardTag} />,
+        icon: <Warning className={styles.redTag} />,
       },
       {
         condition: (obs: any) =>
@@ -59,7 +59,7 @@ const Notifications: React.FC<NotificationsProps> = ({ patientUuid }) => {
           obs.whoClinicalStage === "Stage 4",
         message:
           "Client has WHO stage 3 or 4. Risk of cryptococcal Meningitis, test for sCrAg.",
-        icon: <Warning className={styles.mustardTag} />,
+        icon: <Warning className={styles.redTag} />,
       },
     ];
 
@@ -82,14 +82,14 @@ const Notifications: React.FC<NotificationsProps> = ({ patientUuid }) => {
               id: idCounter++,
               message:
                 "Client has a Child with unknown HIV status, please test the child.",
-              icon: <Warning className={styles.mustardTag} />,
+              icon: <Warning className={styles.redTag} />,
             });
           } else if (member.relationship === "Sexual") {
             notificationsList.push({
               id: idCounter++,
               message:
                 "Client has sexual partner with unknown HIV status, please test the contact.",
-              icon: <Warning className={styles.mustardTag} />,
+              icon: <Warning className={styles.redTag} />,
             });
           }
         }
