@@ -80,6 +80,25 @@ const useObservationData = (patientUuid) => {
     },
   ];
 
+  const defaultCHWHeaders = [
+    {
+      name: "Cadre",
+      selector: (row) => row.cadre || "---",
+    },
+    {
+      name: "Name",
+      selector: (row) => row.name || "---",
+    },
+    {
+      name: "Phone",
+      selector: (row) => row.phone || "---",
+    },
+    {
+      name: "Address",
+      selector: (row) => row.address || "---",
+    }
+  ]
+
   return {
     data,
     isLoading,
@@ -87,6 +106,7 @@ const useObservationData = (patientUuid) => {
     error,
     defaultFamilyTableHeaders,
     defaultIndexTableHeaders,
+    defaultCHWHeaders,
   };
 };
 
