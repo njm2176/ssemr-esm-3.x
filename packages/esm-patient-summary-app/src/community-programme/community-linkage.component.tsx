@@ -2,12 +2,23 @@ import React from "react";
 import styles from "./community-linkage.scss";
 import { useTranslation } from "react-i18next";
 import useObservationData from "../hooks/useObservationData";
-import { StructuredListSkeleton, Tile } from "@carbon/react";
+import {
+  StructuredListSkeleton,
+  Tile,
+  DataTable,
+  Table,
+  TableHead,
+  TableRow,
+  TableHeader,
+  TableBody,
+  TableCell,
+} from "@carbon/react";
 
 export interface CommunityLinkageProps {
   patientUuid: string;
   code: string;
 }
+
 const CommunityLinkage: React.FC<CommunityLinkageProps> = ({ patientUuid }) => {
   const { data, isLoading, error } = useObservationData(patientUuid);
   const { t } = useTranslation();
@@ -27,41 +38,65 @@ const CommunityLinkage: React.FC<CommunityLinkageProps> = ({ patientUuid }) => {
   }
 
   if (!data || Object.keys(data).length === 0) {
-    return null;
+    return (
+      <Tile>
+        <p className={styles.emptyState}>
+          {t("noCHWRecord", "No Community Health Worker (CHW) record found.")}
+        </p>
+      </Tile>
+    );
   }
 
+  // Get CHW list and assign unique IDs to each
+  const chwListRaw = data?.results[0]?.chw || [];
+  const chwList = chwListRaw.map((item, index) => ({
+    id: `chw-${index}`,
+    ...item,
+  }));
+
+  const headers = [
+    { key: "cadre", header: t("cadre", "Cadre") },
+    { key: "name", header: t("name", "Name") },
+    { key: "phone", header: t("phone", "Phone") },
+    { key: "address", header: t("address", "Address") },
+  ];
+
   return (
-    <>
-      <div className={styles.card}>
-        {data.results && (
-          <div className={styles.container}>
-            <div className={styles.content}>
-              <p style={{ marginRight: "15px" }}>
-                {t("nameOfCHW", "Name of the Community Health Worker (CHW)")}
-              </p>
-              <p>{data?.results[0]?.chwName}</p>
-            </div>
-            <div className={styles.content}>
-              <p>{t("telephoneNumber", "Telephone Number")}</p>
-              <p className={styles.value}>{data?.results[0]?.chwPhone}</p>
-            </div>
-            <div className={styles.content}>
-              <p>
-                {t(
-                  "chwAddress",
-                  "LandMark/Address Of Community Health Worker (CHW)"
-                )}
-              </p>
-              <p>
-                <span className={styles.value}>
-                  {data?.results[0].chwAddress}
-                </span>
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-    </>
+    <div className={styles.card}>
+      {chwList.length > 0 ? (
+        <DataTable rows={chwList} headers={headers} isSortable={false}>
+          {({ rows, headers, getHeaderProps, getRowProps }) => (
+            <Table>
+              <TableHead>
+                <TableRow>
+                  {headers.map((header) => (
+                    <TableHeader key={header.key} {...getHeaderProps({ header })}>
+                      {header.header}
+                    </TableHeader>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow key={row.id} {...getRowProps({ row })}>
+                    {row.cells.map((cell) => (
+                      <TableCell key={cell.id}>{cell.value || "---"}</TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </DataTable>
+      ) : (
+        <Tile>
+          <p className={styles.emptyState}>
+            {t("noCHWRecord", "No Community Health Worker (CHW) record found.")}
+          </p>
+        </Tile>
+      )}
+    </div>
   );
 };
+
 export default CommunityLinkage;
