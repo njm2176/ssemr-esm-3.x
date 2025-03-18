@@ -61,19 +61,18 @@ const ProgramSummary: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
               </p>
             </div>
             <div className={styles.content}>
-              <p>{t("bmiMuac", "BMI/MUAC")}</p>
+              <p>{t("lastArvRefillDate", "Last ARV Refill Date")}</p>
               <p>
-                <span className={styles.value}>{bmiMuac()}</span>
+                {" "}
+                <span className={styles.value}>
+                  {data.results[0]?.lastRefillDate}
+                </span>
               </p>
             </div>
             <div className={styles.content}>
-              <p>{t("lastCD4Count", "Last CD4 count")}</p>
+              <p>{t("bmiMuac", "BMI/MUAC")}</p>
               <p>
-                <span className={styles.value}>
-                  {data.results[0]?.lastCD4Count
-                    ? data.results[0]?.lastCD4Count
-                    : "---"}
-                </span>
+                <span className={styles.value}>{bmiMuac()}</span>
               </p>
             </div>
           </div>
