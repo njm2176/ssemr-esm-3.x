@@ -5,6 +5,7 @@ import {
 } from "@openmrs/esm-framework";
 import { configSchema } from "./config-schema";
 import NotificationsActionButton from "./notification-action-button/notification-action-button.extension";
+import NotificationToastWrapper from "./notification-wrapper/notification-toast-wrapper.component";
 
 const moduleName = "@ssemr/esm-patient-notifications-app";
 
@@ -24,7 +25,7 @@ export const importTranslation = require.context(
 // export const patientFlag = getSyncLifecycle(patientFlagsComponent, options);
 
 export const notificationsLaunchButton = getSyncLifecycle(
-  NotificationsActionButton,
+  NotificationToastWrapper,
   options
 );
 

@@ -1,0 +1,17 @@
+@keyframes glow {
+    0% {
+      box-shadow: 0 0 5px #bd3e0c;
+    }
+    50% {
+      box-shadow: 0 0 15px #bd3e0c;
+    }
+    100% {
+      box-shadow: 0 0 5px #bd3e0c;
+    }
+  }
+  
+  .glowButton {
+    animation: glow 1.5s infinite;
+    border-radius: 4px;
+    display: inline-block;
+  }
