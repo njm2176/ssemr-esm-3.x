@@ -28,16 +28,16 @@ const NotificationToastWrapper: React.FC = () => {
           style={{
             position: "absolute",
             zIndex: 9999,
-            marginTop: "5px",
-            right: buttonRef.current?.offsetLeft ?? 0,
+            marginTop: "2px",
+            left: buttonRef.current?.offsetLeft ?? 0,
             top: buttonRef.current?.offsetTop ?? 0,
-            transform: "translateY(-120%)",
+            transform: "translate(-100%, -60%)",
           }}
         >
            <ActionableNotification
             kind="error"
             lowContrast={false}
-            title={t("notificationsAlert", "Patient Notifications")}
+            title={t("notificationsAlert", "Patient Notifications:")}
             subtitle={t("notificationsSubtitle", "This patient has notifications that need your attention.")}
             actionButtonLabel={t("viewNotifications", "View Notifications")}
             onActionButtonClick={() => {
