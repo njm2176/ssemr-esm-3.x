@@ -61,16 +61,6 @@ export const indexFamilyHistory = getSyncLifecycle(
   options
 );
 
-export const notificationsPanel = getSyncLifecycle(
-  NotificationsPanelComponent,
-  options
-);
-
-export const notificationsDashboardTable = getSyncLifecycle(
-  Notifications,
-  options
-);
-
 // t('carePanel', 'Care panel')
 export const carePanelSummaryDashboardLink = getSyncLifecycle(
   createDashboardLink({ ...dashboardMeta, moduleName }),

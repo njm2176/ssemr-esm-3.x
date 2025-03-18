@@ -18,6 +18,7 @@ const NotificationActionButton: React.FC = () => {
 
   return (
     <ActionMenuButton
+      data-testid="notification-alert-button"
       getIcon={() => <Notification />}
       label={t("notifiations", "Notifications")}
       iconDescription={t("notifications", "Notifications")}
