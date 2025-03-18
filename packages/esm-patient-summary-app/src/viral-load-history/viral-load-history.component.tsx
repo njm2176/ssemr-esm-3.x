@@ -55,19 +55,6 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
           <div className={styles.card}>
             <div className={styles.container}>
               <div className={styles.content}>
-                <p>{t("lastArvRefillDate", "Last ARV Refill Date")}</p>
-                <p>
-                  {" "}
-                  <span className={styles.value}>
-                    {data.results[0]?.lastRefillDate}
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className={styles.card}>
-            <div className={styles.container}>
-              <div className={styles.content}>
                 <p>{t("dateVLRecieved", "Date Viral Load Results Received")}</p>
                 <p>{data?.results[0]?.dateVLResultsReceived}</p>
               </div>

@@ -55,6 +55,16 @@ const LastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
               </p>
             </div>
             <div className={styles.content}>
+              <p>{t("lastCD4Count", "Last CD4 count")}</p>
+              <p>
+                <span className={styles.value}>
+                  {data.results[0]?.lastCD4Count
+                    ? data.results[0]?.lastCD4Count
+                    : "---"}
+                </span>
+              </p>
+            </div>
+            <div className={styles.content}>
               <p>{t("lastTBStatus", "Last TB status")}</p>
               <p>
                 {" "}
