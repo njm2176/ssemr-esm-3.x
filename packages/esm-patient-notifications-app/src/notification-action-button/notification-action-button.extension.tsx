@@ -7,6 +7,7 @@ import {
   getPatientUuidFromStore,
 } from "@openmrs/esm-patient-common-lib";
 import usePatientNotifications from "../hooks/usePatientNotifications";
+import styles from "./notification.scss";
 
 const NotificationActionButton: React.FC = () => {
   const { t } = useTranslation();
@@ -16,15 +17,19 @@ const NotificationActionButton: React.FC = () => {
   const patientUuid = getPatientUuidFromStore();
   const { notifications } = usePatientNotifications(patientUuid);
 
+  const hasNotifications = notifications?.length > 0;
+
   return (
-    <ActionMenuButton
-      getIcon={() => <Notification />}
-      label={t("notifiations", "Notifications")}
-      iconDescription={t("notifications", "Notifications")}
-      handler={launchNotificationWorkSpace}
-      type={"button"}
-      tagContent={notifications?.length > 0 ? notifications?.length : null}
-    />
+    <div className={hasNotifications ? styles.glowButton : ""}>
+      <ActionMenuButton
+        getIcon={() => <Notification />}
+        label={t("notifiations", "Notifications")}
+        iconDescription={t("notifications", "Notifications")}
+        handler={launchNotificationWorkSpace}
+        type="button"
+        tagContent={hasNotifications ? notifications.length : null}
+      />
+    </div>
   );
 };
 
