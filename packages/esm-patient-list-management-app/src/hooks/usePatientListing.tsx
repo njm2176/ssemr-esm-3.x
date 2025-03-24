@@ -107,6 +107,14 @@ export const usePatientListing = (initialCategory = "allClients") => {
       name: "Last Refill Date",
       selector: (row) => row.lastRefillDate,
     },
+    ...(tabs[currentTab]?.id === "IIT"
+      ? [
+          {
+            name: "Date Became IIT",
+            selector: (row) => row.dateClientBecameIIT,
+          },
+        ]
+      : []),
     ...(tabs[currentTab]?.id === "Died"
       ? [
           {
