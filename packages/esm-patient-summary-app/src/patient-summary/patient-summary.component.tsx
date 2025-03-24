@@ -16,6 +16,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import logo from "../assets/primary-navigation-ssemr.png"
 import { Tag } from "@carbon/react";
+import CommunityLinkage from "../community-programme/community-linkage.component";
 
 interface PatientSummaryProps {
   patientUuid: string;
@@ -32,7 +33,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
 
   const { t } = useTranslation();
   const isTablet = useLayoutType() == "tablet";
-  const { patientData, Loading, isError } = usePatientData(patientUuid);
+  const { patientData, flags, Loading, isError } = usePatientData(patientUuid);
   const { data, isLoading, error } = useObservationData(
     patientUuid,
   );
@@ -115,13 +116,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
 
   const displayField = (field, defaultValue = "---") => field ?? defaultValue;
 
-  const vlEligibilityResult =
-    data &&
-    data.results &&
-    data.results.length > 0 &&
-    data.results[0].vlEligibility
-      ? data.results[0]?.vlEligibility
-      : "---";
+  const vlEligibilityResult = flags.includes("DUE_FOR_VL")
 
   if (isLoading) return <p>Loading...</p>;
   if (error || !data || !data.results) return <p>Error loading data</p>;
@@ -236,21 +231,17 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                 </p>
               </div>
               <div className={styles.content}>
-                <p className={styles.label}>{t("bmiMuac", "BMI/MUAC")}</p>
-                <p>
-                  <span>{bmiMuac()}</span>
+                <p className={styles.label}>
+                {t("lastArvRefillDate", "Last ARV Refill Date")}
                 </p>
-              </div>
-              <div className={styles.content}>
-                <p className={styles.label}>{t("lastCD4Count", "Last CD4 count")}</p>
                 <p>
+                  {" "}
                   <span>
-                    {data.results[0]?.lastCD4Count
-                      ? data.results[0]?.lastCD4Count
-                      : "---"}
+                    {displayField(data.results[0]?.lastRefillDate)}
                   </span>
                 </p>
               </div>
+            
             </div>
 
             <hr />
@@ -301,22 +292,37 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   </span>
                 </p>
               </div>
+              <div className={styles.content}>
+                <p className={styles.label}>{t("bmiMuac", "BMI/MUAC")}</p>
+                <p>
+                  <span>{bmiMuac()}</span>
+                </p>
+              </div>
+              <div className={styles.content}>
+                <p className={styles.label}>{t("lastCD4Count", "Last CD4 count")}</p>
+                <p>
+                  <span>
+                    {data.results[0]?.lastCD4Count
+                      ? data.results[0]?.lastCD4Count
+                      : "---"}
+                  </span>
+                </p>
+              </div>
+              <div className={styles.content}>
+                <p className={styles.label}>{t("iitRecurrence", "Recurrence of IIT")}</p>
+                <p>
+                   <span>
+                    {data.results[0]?.iitRecurrence
+                      ? data.results[0]?.iitRecurrence
+                      : "---"}
+                  </span>
+                </p>
+              </div>
             </div>
 
             <hr />
 
             <div className={styles.container}>
-              <div className={styles.content}>
-                <p className={styles.label}>
-                {t("lastArvRefillDate", "Last ARV Refill Date")}
-                </p>
-                <p>
-                  {" "}
-                  <span>
-                    {displayField(data.results[0]?.lastRefillDate)}
-                  </span>
-                </p>
-              </div>
               <div className={styles.content}>
                 <p className={styles.label}>
                 {t("dateVLRecieved", "Date Viral Load Results Received")}
@@ -355,16 +361,18 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   )}
                 </p>
                 <p>
-                  <span>
-                    {vlEligibilityResult}
-                  </span>
+                  <Tag
+                    type={vlEligibilityResult ? "green" : "red"}
+                    size="md"
+                  >
+                    {vlEligibilityResult ? "Eligible" : "Not Eligible"}
+                  </Tag>
                 </p>
               </div>
-              <div className={styles.content}></div>
-              {vlEligibilityResult === "Eligible" && (
+               {vlEligibilityResult && (
                 <div className={styles.content}>
-                  <p>{t("date", "Date")}</p>
-                  <span className={styles.value}>
+                  <p className={styles.label}>{t("vlEligibilityDate", "VL EligibilityDate")}</p>
+                  <span>
                     {data.results[0]?.vlDueDate}
                   </span>
                 </div>
@@ -373,62 +381,9 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
 
             <hr />
 
-            <div className={styles.container}>
-              <div className={styles.patientSummary}>
-                <p className={styles.label}>
-                {t("nameOfCHW", "Name of the Community Health Worker (CHW)")}
-                </p>
-                <p>
-                  {" "}
-                  <span>
-                    {displayField(data.results[0]?.chwName)}
-                  </span>
-                </p>
-              </div>
-              <div className={styles.patientSummary}>
-                <p className={styles.label}>
-                {t("telephoneNumber", "Telephone Number")}
-                </p>
-                <p>
-                  <span>
-                    {displayField(data.results[0]?.chwPhone)}
-                  </span>
-                </p>
-              </div>
-              <div className={styles.patientSummary}>
-                <p className={styles.label}>
-                {t(
-                "chwAddress",
-                "LandMark/Address Of Community Health Worker (CHW)"
-              )}
-                </p>
-                <p>
-                  <span>
-                    {displayField(data.results[0]?.chwAddress)}
-                  </span>
-                </p>
-              </div>
+            <div style={{ width: "100%", minHeight: "5rem" }}>
+              <CommunityLinkage patientUuid={patientUuid} code={""} />
             </div>
-
-            {/* <div className={styles.container}>
-              <div className={styles.content}>
-                <p className={styles.label}>{t("weight", "Weight")}</p>
-                <p>
-                  <span className={styles.value}>
-                    {(data.results[0]?.weight)}
-                  </span>
-                </p>
-              </div>
-              <div className={styles.content}>
-                <p className={styles.label}>{t("height", "Height")}</p>
-                <p>
-                  <span className={styles.value}>
-                    {(data.results[0]?.height)}
-                  </span>
-                </p>
-              </div>
-
-            </div> */}
 
             <hr />
 
