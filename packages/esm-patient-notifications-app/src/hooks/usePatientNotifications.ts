@@ -21,19 +21,19 @@ const usePatientNotifications = (patientUuid?: string) => {
 
     const observationRules = [
       {
-        condition: (obs: any) => obs.cd4Done === null,
+        condition: (obs: any) => obs.cd4Done === null || obs.cd4Done === "No",
         message: "CD4 count was not done. Please perform CD4 count.",
       },
       {
         condition: (obs: any) =>
           obs.vlResults && parseFloat(obs.vlResults) >= 1000,
         message:
-          "Patient's viral load is Unsuppressed. Consider EAC and possible regimen change.",
+          "Patient's Viral Load is Unsuppressed. Consider EAC and possible regimen change.",
       },
       {
         condition: (obs: any) => obs.tbStatus === "ND - TB Screening not done",
         message:
-          "TB screening was not done. Perform a TB screening for the patient.",
+          "TB Screening was not done. Perform a TB screening for the patient.",
       },
       {
         condition: (obs: any) => obs.tbStatus === "Pr TB - Presumptive TB",
@@ -43,7 +43,7 @@ const usePatientNotifications = (patientUuid?: string) => {
         condition: (obs: any) =>
           obs.whoClinicalStage === "Stage 3",
         message:
-          "Client has WHO stage 3. Risk of cryptococcal Meningitis, test for sCrAg.",
+          "Client has WHO stage 3. Risk of Cryptococcal Meningitis, test for sCrAg.",
       },
       {
         condition: (obs: any) =>
