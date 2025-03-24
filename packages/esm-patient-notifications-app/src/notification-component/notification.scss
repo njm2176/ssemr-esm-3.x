@@ -93,6 +93,17 @@
   border: 1px solid $ui-03;
 }
 
+// :global(.rdt_TableRow) {
+//   min-height: 72px;
+//   font-size: 14px;
+//   font-weight: 1000;
+// }
+
+:global(.rdt_TableCell) {
+  padding: 10px;
+  color: red;
+}
+
 .emptyText {
   padding: 3rem;
   font-weight: 600;

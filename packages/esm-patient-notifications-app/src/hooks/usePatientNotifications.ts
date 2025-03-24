@@ -43,13 +43,13 @@ const usePatientNotifications = (patientUuid?: string) => {
         condition: (obs: any) =>
           obs.whoClinicalStage === "Stage 3",
         message:
-          "Client has WHO stage 3. Risk of Cryptococcal Meningitis, test for sCrAg.",
+          "Client has WHO Stage 3. Risk of Cryptococcal Meningitis, test for sCrAg.",
       },
       {
         condition: (obs: any) =>
           obs.whoClinicalStage === "Stage 4",
         message:
-          "Client has WHO stage 4. Risk of cryptococcal Meningitis, test for sCrAg.",
+          "Client has WHO Stage 4. Risk of Cryptococcal Meningitis, test for sCrAg.",
       }
     ];
 
