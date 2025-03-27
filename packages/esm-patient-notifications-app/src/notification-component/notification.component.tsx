@@ -2,7 +2,7 @@ import React from "react";
 import DataTable from "react-data-table-component";
 import { useTranslation } from "react-i18next";
 import usePatientNotifications from "../hooks/usePatientNotifications";
-import "./notification.scss";
+import styles from "./notification.scss"
 
 export interface NotificationsProps {
   patientUuid: string;
@@ -30,7 +30,7 @@ const Notifications: React.FC<NotificationsProps> = ({ patientUuid }) => {
   }
 
   return (
-    <div className="datatable">
+    <div className={styles.datatable}>
       <DataTable
         columns={columns}
         data={notifications}
@@ -38,12 +38,12 @@ const Notifications: React.FC<NotificationsProps> = ({ patientUuid }) => {
         striped
         progressPending={isLoading}
         progressComponent={
-          <div className="loading">
+          <div className={styles.loading}>
             {t("loadingNotifications", "Loading notifications...")}
           </div>
         }
         noDataComponent={
-          <div className="emptyText">
+          <div className={styles.emptyText}>
             {t("noNotifications", "No Notifications")}
           </div>
         }
