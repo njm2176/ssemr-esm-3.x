@@ -50,7 +50,43 @@ const usePatientNotifications = (patientUuid?: string) => {
           obs.whoClinicalStage === "Stage 4",
         message:
           "Client has WHO Stage 4. Risk of Cryptococcal Meningitis, test for sCrAg.",
-      }
+      },
+      {
+        condition: (obs: any) =>
+          obs.temperature < 35,
+        message:
+          "Low temperature (Hypopyrexia), treat immediately",
+      },
+      {
+        condition: (obs: any) =>
+          obs.temperature > 38,
+        message:
+          "High temperature (Hyperpyrexia), treat immediately",
+      },
+      {
+        condition: (obs: any) => {
+          if (!obs.blood_pressure) return false;
+          const parts = obs.blood_pressure.split('/');
+          if (parts.length !== 2) return false;
+          const systolic = parseFloat(parts[0]);
+          const diastolic = parseFloat(parts[1]);
+          return systolic < 90 || diastolic < 60;
+        },
+        message:
+          "Low BP (Hypotension), treat immediately",
+      },
+      {
+        condition: (obs: any) => {
+          if (!obs.blood_pressure) return false;
+          const parts = obs.blood_pressure.split('/');
+          if (parts.length !== 2) return false;
+          const systolic = parseFloat(parts[0]);
+          const diastolic = parseFloat(parts[1]);
+          return systolic > 120 || diastolic > 80;
+        },
+        message:
+          "Elevated BP (risk of Hypertension), treat immediately",
+      },
     ];
 
     observationRules.forEach((rule) => {
