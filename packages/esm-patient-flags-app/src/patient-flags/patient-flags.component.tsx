@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useMemo} from "react";
 import { Tag } from "@carbon/react";
 import { useTranslation } from "react-i18next";
 import { usePatientFlags } from "../hooks/usePatientFlags";
 import styles from "./patient-flags.scss";
+import useObservationData from "../hooks/useObservationData";
 
 interface PatientFlagsProps {
   patientUuid: string;
@@ -11,6 +12,17 @@ interface PatientFlagsProps {
 const PatientFlags: React.FC<PatientFlagsProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
   const { patientFlags, error } = usePatientFlags(patientUuid);
+  const { data: observationData } = useObservationData(patientUuid);
+  const observation = observationData?.results?.[0];
+
+  const filteredFlags = useMemo(() => {
+    if (observation && observation.chw && observation.chw.length > 0) {
+      return patientFlags.filter(
+        (flag) => !["NEW_CLIENT", "HIGH_VL", "RTT"].includes(flag)
+      );
+    }
+    return patientFlags;
+  }, [patientFlags, observation]);
 
   const pickTagClassname = (flag: string) => {
     switch (flag) {
@@ -55,12 +67,16 @@ const PatientFlags: React.FC<PatientFlagsProps> = ({ patientUuid }) => {
   };
 
   if (error) {
-    return <span>{t("errorPatientFlags", "Error loading patient flags")}</span>;
+    return (
+      <span>
+        {t("errorPatientFlags", "Error loading patient flags")}
+      </span>
+    );
   }
 
   return (
     <div className={styles.flagContainer}>
-      {patientFlags.map((patientFlag) => (
+      {filteredFlags.map((patientFlag) => (
         <Tag
           className={styles[pickTagClassname(patientFlag)]}
           key={patientFlag}
@@ -73,3 +89,4 @@ const PatientFlags: React.FC<PatientFlagsProps> = ({ patientUuid }) => {
 };
 
 export default PatientFlags;
+

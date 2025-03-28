@@ -1,16 +1,28 @@
-import React from "react";
+import React, {useMemo} from "react";
 import { Tag } from "@carbon/react";
 import { useTranslation } from "react-i18next";
 import { usePatientFlags } from "../hooks/usePatientFlags";
 import styles from "./patient-flag.scss";
+import useObservationData from "../hooks/useObservationData";
 
 interface PatientFlagsProps {
   patientUuid: string;
 }
 
-const PatientFlag: React.FC<PatientFlagsProps> = ({ patientUuid }) => {
+const PatientFlags: React.FC<PatientFlagsProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
-  const { patientFlags, isLoading, error } = usePatientFlags(patientUuid);
+  const { patientFlags, error } = usePatientFlags(patientUuid);
+  const { data: observationData } = useObservationData(patientUuid);
+  const observation = observationData?.results?.[0];
+
+  const filteredFlags = useMemo(() => {
+    if (observation && observation.chw && observation.chw.length > 0) {
+      return patientFlags.filter(
+        (flag) => !["NEW_CLIENT", "HIGH_VL", "RTT"].includes(flag)
+      );
+    }
+    return patientFlags;
+  }, [patientFlags, observation]);
 
   const pickTagClassname = (flag: string) => {
     switch (flag) {
@@ -54,21 +66,17 @@ const PatientFlag: React.FC<PatientFlagsProps> = ({ patientUuid }) => {
     }
   };
 
-  if (isLoading) {
+  if (error) {
     return (
-      <span className={styles.loading}>
-        {t("loadingPatientFlags", "Loading patient flags")}
+      <span>
+        {t("errorPatientFlags", "Error loading patient flags")}
       </span>
     );
   }
 
-  if (error) {
-    return <span>{t("errorPatientFlags", "Error loading patient flags")}</span>;
-  }
-
   return (
     <div className={styles.flagContainer}>
-      {patientFlags.map((patientFlag) => (
+      {filteredFlags.map((patientFlag) => (
         <Tag
           className={styles[pickTagClassname(patientFlag)]}
           key={patientFlag}
@@ -80,4 +88,4 @@ const PatientFlag: React.FC<PatientFlagsProps> = ({ patientUuid }) => {
   );
 };
 
-export default PatientFlag;
+export default PatientFlags;
