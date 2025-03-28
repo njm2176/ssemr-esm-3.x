@@ -36,7 +36,7 @@ const usePatientNotifications = (patientUuid?: string) => {
           "TB Screening was not done. Perform a TB screening for the patient.",
       },
       {
-        condition: (obs: any) => obs.tbStatus === "Pr TB - Presumptive TB",
+        condition: (obs: any) => obs.onTb === "No" && obs.tbStatus === "Pr TB - Presumptive TB",
         message: "Presumptive TB, test for Urine LAM / GeneXpert.",
       },
       {
