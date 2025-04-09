@@ -1,6 +1,6 @@
 {
   "name": "@ssemr/esm-patient-notifications-app",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "Patient notifications microfrontend for the OpenMRS SPA",
   "browser": "dist/ssemr-esm-patient-notifications-app.js",
   "main": "src/index.ts",
@@ -51,5 +51,5 @@
     "@openmrs/esm-patient-common-lib": "next",
     "webpack": "^5.74.0"
   },
-  "gitHead": "8c3ac4dbb6760d350c97d6a80f45207fc75d72ea"
+  "gitHead": "c121964684c73d2920d52fda36b22d5472a227b6"
 }

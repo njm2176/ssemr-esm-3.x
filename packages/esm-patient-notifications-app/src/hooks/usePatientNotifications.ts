@@ -53,7 +53,7 @@ const usePatientNotifications = (patientUuid?: string) => {
       },
       {
         condition: (obs: any) =>
-          obs.temperature < 35,
+          obs.temperature != null && obs.temperature < 35,
         message:
           "Low temperature (Hypopyrexia), treat immediately",
       },
