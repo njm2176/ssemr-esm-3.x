@@ -1,18 +1,16 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { ActionMenuButton } from "@openmrs/esm-framework";
+import { ActionMenuButton, launchWorkspace } from "@openmrs/esm-framework";
 import { Notification } from "@carbon/react/icons";
-import {
-  useLaunchWorkspaceRequiringVisit,
-  getPatientUuidFromStore,
-} from "@openmrs/esm-patient-common-lib";
+import { getPatientUuidFromStore } from "@openmrs/esm-patient-common-lib";
 import usePatientNotifications from "../hooks/usePatientNotifications";
 import styles from "./notification.scss";
 
 const NotificationActionButton: React.FC = () => {
   const { t } = useTranslation();
-  const launchNotificationWorkSpace =
-    useLaunchWorkspaceRequiringVisit("notifications");
+  const launchNotificationWorkSpace = useCallback(() => {
+    launchWorkspace("notifications");
+  }, []);
 
   const patientUuid = getPatientUuidFromStore();
   const { notifications } = usePatientNotifications(patientUuid);
