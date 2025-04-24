@@ -11,12 +11,13 @@ export const generateChartCSV = ({ rows, fileName }) => {
     ],
   ];
   rows.forEach((row) => {
+    const contact = `="${row.contact ?? ""}"`; 
     const values = [
       row.name,
       row.sex,
       row.dateEnrolled,
       row.lastRefillDate,
-      row.contact,
+      contact,
       row.landMark,
       row.village,
     ];
