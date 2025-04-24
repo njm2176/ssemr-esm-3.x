@@ -155,7 +155,7 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
         onSecondarySubmit={() => setIsModalOpen(false)}
         onRequestClose={() => setIsModalOpen(false)}
       >
-        <Table size="xl" useZebraStyles={false}>
+        <Table size="lg" useZebraStyles={false}>
           <TableHead>
             <TableRow>
               {item.headers.map((header) => (
