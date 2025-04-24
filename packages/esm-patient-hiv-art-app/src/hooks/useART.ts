@@ -3,17 +3,21 @@ import { useEffect, useRef, useState } from "react";
 import {
   getThisQuartersRange,
   getThisYearsFirstAndLastDate,
-  getThisYearsFirstAndLastDateForCurrentMonth
+  getThisYearsFirstAndLastDateForCurrentMonth,
 } from "../helpers/dateOps";
 import { initialChartDataState } from "../assets/initialChartDataState";
-import { sortLineListByAppointmentDate, sortLineListByAppointmentDateDescending } from "../helpers/sortLineListByAppointmentDate";
+import {
+  sortLineListByAppointmentDate,
+  sortLineListByAppointmentDateDescending,
+} from "../helpers/sortLineListByAppointmentDate";
 import {
   defaultStatHeaders,
   iitAndMissedHeaders,
   // txCURRHeaders,
   rttHeaders,
   iitHeaders,
-  vlDueHeaders
+  vlDueHeaders,
+  appointmentHeaders,
 } from "../helpers/statCardHeaders";
 import { addSerialNoToLineList } from "../helpers/dataManipulation";
 
@@ -185,7 +189,8 @@ export const useART = () => {
       results: addSerialNoToLineList(
         sortLineListByAppointmentDate(
           chartData.newlyEnrolledClients?.raw?.results
-      )),
+        )
+      ),
       state: chartData.newlyEnrolledClients,
       headers: defaultStatHeaders,
     },
@@ -194,23 +199,21 @@ export const useART = () => {
       color: "#3271F4",
       stat: chartData.activeClients?.raw?.totalPatients,
       results: addSerialNoToLineList(
-        sortLineListByAppointmentDate(
-          chartData.activeClients?.raw?.results
-      )),
+        sortLineListByAppointmentDate(chartData.activeClients?.raw?.results)
+      ),
       state: chartData.activeClients,
       // headers: txCURRHeaders,
-      headers: iitAndMissedHeaders
+      headers: iitAndMissedHeaders,
     },
     {
       title: "On appointment",
       color: "#3271F4",
       stat: chartData.onAppointment?.raw?.totalPatients,
       results: addSerialNoToLineList(
-        sortLineListByAppointmentDate(
-          chartData.onAppointment?.raw?.results
-      )),
+        sortLineListByAppointmentDate(chartData.onAppointment?.raw?.results)
+      ),
       state: chartData.onAppointment,
-      headers: defaultStatHeaders,
+      headers: appointmentHeaders,
     },
     {
       title: "Missed appointments",
@@ -219,9 +222,10 @@ export const useART = () => {
       results: addSerialNoToLineList(
         sortLineListByAppointmentDateDescending(
           chartData.missedAppointment?.raw?.results
-      )),
+        )
+      ),
       state: chartData.missedAppointment,
-      headers: iitAndMissedHeaders,
+      headers: appointmentHeaders,
     },
     {
       title: "Interruptions in Treatment(TX_IIT)",
@@ -230,7 +234,8 @@ export const useART = () => {
       results: addSerialNoToLineList(
         sortLineListByAppointmentDateDescending(
           chartData.interruptedWithRange?.raw?.results
-      )),
+        )
+      ),
       state: chartData.interruptedWithRange,
       headers: iitHeaders,
     },
@@ -241,7 +246,8 @@ export const useART = () => {
       results: addSerialNoToLineList(
         sortLineListByAppointmentDateDescending(
           chartData.interrupted?.raw?.results
-      )),
+        )
+      ),
       state: chartData.interrupted,
       headers: iitHeaders,
     },
@@ -250,9 +256,8 @@ export const useART = () => {
       color: "#3271F4",
       stat: chartData.returned?.raw?.totalPatients,
       results: addSerialNoToLineList(
-        sortLineListByAppointmentDate(
-          chartData.returned?.raw?.results
-      )),
+        sortLineListByAppointmentDate(chartData.returned?.raw?.results)
+      ),
       state: chartData.returned,
       headers: rttHeaders,
     },
@@ -261,9 +266,8 @@ export const useART = () => {
       color: "#FF8503",
       stat: chartData.dueForViralLoad?.raw?.totalPatients,
       results: addSerialNoToLineList(
-        sortLineListByAppointmentDate(
-          chartData.dueForViralLoad?.raw?.results
-      )),
+        sortLineListByAppointmentDate(chartData.dueForViralLoad?.raw?.results)
+      ),
       state: chartData.dueForViralLoad,
       headers: vlDueHeaders,
     },
@@ -272,9 +276,8 @@ export const useART = () => {
       color: "#FF0000",
       stat: chartData.highViralLoad?.raw?.totalPatients,
       results: addSerialNoToLineList(
-        sortLineListByAppointmentDate(
-          chartData.highViralLoad?.raw?.results
-      )),
+        sortLineListByAppointmentDate(chartData.highViralLoad?.raw?.results)
+      ),
       state: chartData.highViralLoad,
       headers: defaultStatHeaders,
     },

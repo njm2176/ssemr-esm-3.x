@@ -27,11 +27,7 @@ import usePatientData from "../hooks/usePatientData";
 export const defaultStatHeaders = [
   {
     name: "SN",
-    cell: (row) => (
-      <TableCell>
-        {row.serial}
-      </TableCell>
-    ),
+    cell: (row) => <TableCell>{row.serial}</TableCell>,
   },
   {
     name: "Name",
@@ -90,18 +86,6 @@ iitAndMissedHeaders.splice(5, 0, {
   selector: "appointmentDate",
 });
 
-export const iitHeaders = [...iitAndMissedHeaders];
-iitHeaders.splice(5, 0, {
-  name: "Date Became IIT",
-  selector: "dateClientBecameIIT",
-});
-
-export const vlDueHeaders = [...defaultStatHeaders];
-vlDueHeaders.splice(6, 0, {
-  name: "Date VL due",
-  selector: "vlDueDate",
-});
-
 // export const txCURRHeaders = [
 //   ...iitAndMissedHeaders,
 //   {
@@ -117,7 +101,45 @@ rttHeaders.splice(4, 0, {
   selector: "dateReturnedToTreatment",
   cell: (row) => (
     <TableCell size="sm">
-      <span>{row?.dateReturnedToTreatment ? row.dateReturnedToTreatment : "---"}</span>
+      <span>
+        {row?.dateReturnedToTreatment ? row.dateReturnedToTreatment : "---"}
+      </span>
     </TableCell>
-  )
+  ),
+});
+
+export const ageHeaders = [...defaultStatHeaders];
+ageHeaders.splice(2, 0, {
+  name: "Age",
+  selector: "age",
+});
+
+export const uanHeaders = [...ageHeaders];
+uanHeaders.splice(4, 0, {
+  name: "UAN",
+  selector: "uan",
+});
+
+export const chwHeaders = [...uanHeaders];
+chwHeaders.splice(11, 0, {
+  name: "CHW Name",
+  selector: "chwName",
+});
+
+export const appointmentHeaders = [...chwHeaders];
+appointmentHeaders.splice(12, 0, {
+  name: "CHW Telephone Number",
+  selector: "chwTelephoneNumber",
+});
+
+export const vlDueHeaders = [...appointmentHeaders];
+vlDueHeaders.splice(8, 0, {
+  name: "Date VL due",
+  selector: "vlDueDate",
+});
+
+export const iitHeaders = [...appointmentHeaders];
+iitHeaders.splice(7, 0, {
+  name: "Date Became IIT",
+  selector: "dateClientBecameIIT",
 });
