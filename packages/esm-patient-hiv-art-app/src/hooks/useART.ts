@@ -225,7 +225,7 @@ export const useART = () => {
         )
       ),
       state: chartData.missedAppointment,
-      headers: iitAndMissedHeaders,
+      headers: appointmentHeaders,
     },
     {
       title: "Interruptions in Treatment(TX_IIT)",

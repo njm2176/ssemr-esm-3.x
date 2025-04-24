@@ -86,11 +86,11 @@ iitAndMissedHeaders.splice(5, 0, {
   selector: "appointmentDate",
 });
 
-export const iitHeaders = [...iitAndMissedHeaders];
-iitHeaders.splice(5, 0, {
-  name: "Date Became IIT",
-  selector: "dateClientBecameIIT",
-});
+// export const iitHeaders = [...iitAndMissedHeaders];
+// iitHeaders.splice(5, 0, {
+//   name: "Date Became IIT",
+//   selector: "dateClientBecameIIT",
+// });
 
 // export const txCURRHeaders = [
 //   ...iitAndMissedHeaders,
@@ -139,7 +139,13 @@ appointmentHeaders.splice(12, 0, {
 });
 
 export const vlDueHeaders = [...appointmentHeaders];
-vlDueHeaders.splice(6, 0, {
+vlDueHeaders.splice(8, 0, {
   name: "Date VL due",
   selector: "vlDueDate",
+});
+
+export const iitHeaders = [...appointmentHeaders];
+iitHeaders.splice(7, 0, {
+  name: "Date Became IIT",
+  selector: "dateClientBecameIIT",
 });
