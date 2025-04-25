@@ -48,9 +48,7 @@ export const defaultStatHeaders = [
     name: "UAN",
     selector: "uan",
     cell: (row) => (
-      <TableCell>
-        {row.identifiers?.[0]?.identifier || "N/A"}
-      </TableCell>
+      <TableCell>{row.identifiers?.[0]?.identifier || "N/A"}</TableCell>
     ),
   },
   {
@@ -94,7 +92,7 @@ export const defaultStatHeaders = [
         <p className="">{row.address.split(",")[1].split(":")[1]}</p>
       </TableCell>
     ),
-  }
+  },
 ];
 
 export const iitAndMissedHeaders = defaultStatHeaders;
@@ -131,13 +129,7 @@ ageHeaders.splice(2, 0, {
   selector: "age",
 });
 
-export const uanHeaders = [...ageHeaders];
-uanHeaders.splice(4, 0, {
-  name: "UAN",
-  selector: "uan",
-});
-
-export const chwHeaders = [...uanHeaders];
+export const chwHeaders = [...ageHeaders];
 
 export const appointmentHeaders = [...chwHeaders];
 
