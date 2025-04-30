@@ -120,6 +120,22 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
     generateCSV();
   }, [rows]);
 
+  const groupMap = [
+    {
+      title: "Client Tracking",
+      members: [
+        "Date of 1st Attempt",
+        "Date of 2nd Attempt",
+        "Date of 3rd Attempt",
+      ],
+    },
+    {
+      title: "Output",
+      members: [
+        "(1=Refilled,2=Transferred Out,3=Died,4=Not Reachable,5=Others(specify))",
+      ],
+    },
+  ];
   return (
     <div
       style={{ color: item.color, borderColor: item.color }}
@@ -157,6 +173,34 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
       >
         <Table size="lg" useZebraStyles={false}>
           <TableHead>
+            <TableRow>
+              {(() => {
+                const renderedIndexes: number[] = [];
+                return item.headers.map((header, index) => {
+                  if (renderedIndexes.includes(index)) return null;
+                  const group = groupMap.find((g) =>
+                    g.members.includes(header.name)
+                  );
+                  if (group) {
+                    const groupIndexes = item.headers
+                      .map((h, i) => (group.members.includes(h.name) ? i : -1))
+                      .filter((i) => i !== -1);
+                    renderedIndexes.push(...groupIndexes);
+                    return (
+                      <TableHeader
+                        key={`group-${group.title}`}
+                        colSpan={groupIndexes.length}
+                        className="group-header"
+                      >
+                        {group.title}
+                      </TableHeader>
+                    );
+                  }
+
+                  return <TableHeader key={`header-${index}`} />;
+                });
+              })()}
+            </TableRow>
             <TableRow>
               {item.headers.map((header) => (
                 <TableHeader id={header} key={header}>
