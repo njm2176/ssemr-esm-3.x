@@ -93,6 +93,22 @@ export const defaultStatHeaders = [
       </TableCell>
     ),
   },
+  {
+    name: "Date of 1st Attempt",
+    selector: "",
+  },
+  {
+    name: "Date of 2nd Attempt",
+    selector: "",
+  },
+  {
+    name: "Date of 3rd Attempt",
+    selector: "",
+  },
+  {
+    name: "(1=Refilled,2=Transferred Out,3=Died,4=Not Reachable,5=Others(specify))",
+    selector: "",
+  },
 ];
 
 export const iitAndMissedHeaders = defaultStatHeaders;
