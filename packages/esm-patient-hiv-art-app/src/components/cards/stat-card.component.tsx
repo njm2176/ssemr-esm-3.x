@@ -15,10 +15,15 @@ interface Client {
   name: string;
   uuid: string;
   sex: string;
+  identifiers: Identifiers[];
   dateEnrolled: string;
   lastRefillDate: string;
   contact: string;
   address: string;
+}
+interface Identifiers {
+  identifier: string;
+  identifierType: string;
 }
 interface header {
   name: string;
@@ -105,10 +110,16 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
         const landMark = addressParts[0]?.split(":")[1]?.trim() || "Unknown";
         const village = addressParts[1]?.split(":")[1]?.trim() || "Unknown";
 
+        const uan =
+          client?.identifiers.find(
+            (id) => id.identifierType === "Unique ART Number"
+          )?.identifier || "";
+
         return {
           ...client,
           landMark,
           village,
+          uan,
         };
       });
 
