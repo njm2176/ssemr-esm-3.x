@@ -15,10 +15,15 @@ interface Client {
   name: string;
   uuid: string;
   sex: string;
+  identifiers: Identifiers[];
   dateEnrolled: string;
   lastRefillDate: string;
   contact: string;
   address: string;
+}
+interface Identifiers {
+  identifier: string;
+  identifierType: string;
 }
 interface header {
   name: string;
@@ -58,6 +63,22 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rows, setRows] = useState<Address[]>([]);
   const [csvData, setCsvData] = useState<string | null>(null);
+  const groupMap = [
+    {
+      title: "Client Tracking",
+      members: [
+        "Date of 1st Attempt",
+        "Date of 2nd Attempt",
+        "Date of 3rd Attempt",
+      ],
+    },
+    {
+      title: "Output",
+      members: [
+        "1=Refilled 2=Transferred Out 3=Died 4=Not Reachable 5=Others(specify)",
+      ],
+    },
+  ];
 
   const generateCSV = () => {
     if (!item.headers || item.headers.length === 0 || rows.length === 0) {
@@ -65,23 +86,26 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
       return;
     }
 
-    const headerRow = item.headers.map((header) => header.name);
-    const data = [headerRow];
-
-    rows.forEach((row) => {
-      const rowValues = item.headers.map((header) => {
-        if (header.selector) {
-          return row[header.selector] ?? "";
-        }
-        return "";
-      });
-      data.push(rowValues);
+    const headers = item.headers;
+    const headerGroups = headers.map((h) => {
+      const group = groupMap.find((g) => g.members.includes(h.name));
+      return group ? group.title : "";
     });
 
-    let csv = "";
-    data.forEach((rowArray) => {
-      csv += rowArray.join(",") + "\n";
+    const headerRow = headerGroups.map((group, i) => {
+      if (!group) return "";
+      if (i === 0 || group !== headerGroups[i - 1]) return group;
+      return "";
     });
+    const csvHeaders = headers.map((h) => h.name);
+
+    const csvRows = rows.map((row) =>
+      headers.map((h) => row[h.selector as keyof Address] ?? "")
+    );
+
+    const csv = [headerRow, csvHeaders, ...csvRows]
+      .map((row) => row.join(","))
+      .join("\n");
 
     setCsvData(csv);
   };
@@ -105,10 +129,21 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
         const landMark = addressParts[0]?.split(":")[1]?.trim() || "Unknown";
         const village = addressParts[1]?.split(":")[1]?.trim() || "Unknown";
 
+        const uan =
+          client?.identifiers.find(
+            (id) => id.identifierType === "Unique ART Number"
+          )?.identifier || "N/A";
+
+        const actionMessage = client?.contact
+          ? ""
+          : "Prioritize Updating Contact";
+
         return {
           ...client,
           landMark,
           village,
+          uan,
+          actionMessage,
         };
       });
 
@@ -120,22 +155,6 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
     generateCSV();
   }, [rows]);
 
-  const groupMap = [
-    {
-      title: "Client Tracking",
-      members: [
-        "Date of 1st Attempt",
-        "Date of 2nd Attempt",
-        "Date of 3rd Attempt",
-      ],
-    },
-    {
-      title: "Output",
-      members: [
-        "(1=Refilled,2=Transferred Out,3=Died,4=Not Reachable,5=Others(specify))",
-      ],
-    },
-  ];
   return (
     <div
       style={{ color: item.color, borderColor: item.color }}

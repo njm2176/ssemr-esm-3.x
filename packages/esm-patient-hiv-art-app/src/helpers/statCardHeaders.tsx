@@ -76,6 +76,10 @@ export const defaultStatHeaders = [
     selector: "chwPhone",
   },
   {
+    name: "Action",
+    selector: "actionMessage",
+  },
+  {
     name: "Village",
     selector: "village",
     cell: (row) => (
@@ -106,7 +110,7 @@ export const defaultStatHeaders = [
     selector: "",
   },
   {
-    name: "(1=Refilled,2=Transferred Out,3=Died,4=Not Reachable,5=Others(specify))",
+    name: "1=Refilled 2=Transferred Out 3=Died 4=Not Reachable 5=Others(specify)",
     selector: "",
   },
 ];
