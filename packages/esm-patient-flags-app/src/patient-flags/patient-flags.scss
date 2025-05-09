@@ -7,6 +7,9 @@
 
 .tag {
   cursor: pointer;
+  width: auto;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 .greenTag{
