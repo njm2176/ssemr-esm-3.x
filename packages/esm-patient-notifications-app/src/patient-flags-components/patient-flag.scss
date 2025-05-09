@@ -29,7 +29,8 @@
   @extend .tag;
   color: colors.$white;
   background-color: colors.$red-70;
-  width: 50%;
+  width: auto;
+  max-width: 50%;
 }
 
 .loading {
