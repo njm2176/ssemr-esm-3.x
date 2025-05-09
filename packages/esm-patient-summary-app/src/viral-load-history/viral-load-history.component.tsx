@@ -38,15 +38,27 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
         : data.results[0].vlStatus
       : "---";
 
-  // const vlEligibilityResult =
-  //   data &&
-  //   data.results &&
-  //   data.results.length > 0 &&
-  //   data.results[0].vlEligibility
-  //     ? data.results[0]?.vlEligibility
-  //     : "---";
+      const vlDueDateStr = data?.results?.[0]?.vlDueDate;
 
-  const vlEligibilityResult = flags.includes("DUE_FOR_VL")
+      const parseDMY = (dateStr) => {
+        if (!dateStr) return null;
+        const [day, month, year] = dateStr.split("-");
+        return new Date(Number(year), Number(month) - 1, Number(day));
+      };
+
+      const vlDueDate = parseDMY(vlDueDateStr);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (vlDueDate) vlDueDate.setHours(0, 0, 0, 0);
+
+      const hasDueFlag = flags.includes("DUE_FOR_VL");
+      const isFutureDueDate = vlDueDate && vlDueDate > today;
+      const isPastOrToday = vlDueDate && vlDueDate <= today;
+
+      const isEligible = isPastOrToday && hasDueFlag;
+      const tagType = isEligible ? "green" : "red";
+      const tagText = isEligible ? "Eligible" : "Not Eligible";
+      const dateLabel = isFutureDueDate ? "Next Due Date" : "Date";
 
   return (
     <>
@@ -80,20 +92,15 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
                     "Eligibility For Viral Load Sample Collection"
                   )}
                 </p>
-                <Tag
-                  type={vlEligibilityResult ? "green" : "red"}
-                  size="md"
-                >
-                  {vlEligibilityResult ? "Eligible" : "Not Eligible"}
+                <Tag type={tagType} size="md">
+                  {tagText}
                 </Tag>
               </div>
               <div className={styles.content}></div>
-              {vlEligibilityResult && (
+              {vlDueDateStr && (
                 <div className={styles.content}>
-                  <p>{t("date", "Date")}</p>
-                  <span className={styles.value}>
-                    {data.results[0]?.vlDueDate}
-                  </span>
+                  <p>{t("vlDueDateLabel", dateLabel)}</p>
+                  <span className={styles.value}>{vlDueDateStr}</span>
                 </div>
               )}
             </div>
