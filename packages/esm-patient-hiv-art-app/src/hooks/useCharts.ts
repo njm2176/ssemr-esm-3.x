@@ -120,13 +120,13 @@ export const useCharts = () => {
         )}%`,
       chartData: [
         {
-          name: "Not Linked to Community",
+          name: "Not Linked to CHW",
           value:
             allClients?.raw?.results?.length -
             underCareOfCommunityProgram?.raw?.results?.length,
         },
         {
-          name: "Linked to Community",
+          name: "Linked to CHW",
           value: underCareOfCommunityProgram?.raw?.results?.length,
         },
       ],
