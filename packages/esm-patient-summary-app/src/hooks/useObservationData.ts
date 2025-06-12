@@ -21,11 +21,87 @@ const useObservationData = (patientUuid) => {
     // }
   });
 
+  const defaultFamilyTableHeaders = [
+    {
+      name: "Name",
+      selector: (row) => row.name || "---",
+    },
+    {
+      name: "Age",
+      selector: (row) => row.age || "---",
+    },
+    {
+      name: "Sex",
+      selector: (row) => row.sex || "---",
+    },
+    {
+      name: "HIV Status",
+      selector: (row) => row.hivStatus || "---",
+    },
+    {
+      name: "Unique ART No.",
+      selector: (row) => row.artNumber || "---",
+    },
+  ];
+
+  const defaultIndexTableHeaders = [
+    {
+      name: "Name",
+      selector: (row) => row.name || "---",
+    },
+    {
+      name: "Age",
+      selector: (row) => row.age || "---",
+    },
+    {
+      name: "Sex",
+      selector: (row) => row.sex || "---",
+    },
+    {
+      name: "Relationship",
+      selector: (row) => row.relationship || "---",
+    },
+    {
+      name: "HIV Status",
+      selector: (row) => row.hivStatus || "---",
+    },
+    {
+      name: "Phone No.",
+      selector: (row) => row.phone || "---",
+    },
+    {
+      name: "Unique ART No.",
+      selector: (row) => row.uniqueArtNumber || "---",
+    },
+  ];
+
+  const defaultCHWHeaders = [
+    {
+      name: "Cadre",
+      selector: (row) => row.cadre || "---",
+    },
+    {
+      name: "Name",
+      selector: (row) => row.name || "---",
+    },
+    {
+      name: "Phone",
+      selector: (row) => row.phone || "---",
+    },
+    {
+      name: "Address",
+      selector: (row) => row.address || "---",
+    }
+  ]
+
   return {
     data,
     isLoading,
     error,
     refetch: mutate,
+    defaultFamilyTableHeaders,
+    defaultIndexTableHeaders,
+    defaultCHWHeaders,
   };
 };
 
