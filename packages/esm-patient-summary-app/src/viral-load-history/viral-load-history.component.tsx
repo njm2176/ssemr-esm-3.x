@@ -67,6 +67,10 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
           <div className={styles.card}>
             <div className={styles.container}>
               <div className={styles.content}>
+                <p>{t("dateVLCollected", "Date Viral Load Sample Collected")}</p>
+                <p>{data?.results[0]?.dateVLSampleCollected}</p>
+              </div>
+              <div className={styles.content}>
                 <p>{t("dateVLRecieved", "Date Viral Load Results Received")}</p>
                 <p>{data?.results[0]?.dateVLResultsReceived}</p>
               </div>
