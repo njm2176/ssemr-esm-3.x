@@ -60,5 +60,5 @@
     "@openmrs/esm-patient-common-lib": "next",
     "webpack": "^5.74.0"
   },
-  "gitHead": "24299d416f15842055a3df45b99fe54201cf584c"
+  "gitHead": "94c3794e6b0c75a72e3814f1b3c22254de893252"
 }
