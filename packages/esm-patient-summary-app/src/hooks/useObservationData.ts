@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import useSWR from 'swr';
 
 const fetcher = async (url) => {
@@ -8,18 +9,54 @@ const fetcher = async (url) => {
   return response.json();
 };
 
-const useObservationData = (patientUuid) => {
+const useObservationData = (patientUuid, flags) => {
   const swrKey = patientUuid ? `/openmrs/ws/rest/v1/ssemr/dashboard/obs?patientUuid=${patientUuid}` : null;
 
   const { data, error, isLoading, mutate } = useSWR(swrKey, fetcher, {
     revalidateOnFocus: true, 
-    revalidateOnReconnect: true,
-    // refreshInterval: 5000,                             
-    // onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
-    //   if (retryCount >= 3) return;
-    //   setTimeout(() => revalidate(), 5000);
-    // }
+    revalidateOnReconnect: true
   });
+
+  const eligibilityDetails = useMemo(() => {
+    const latestResult = data?.results?.[0];
+
+    if (!latestResult || !flags) {
+      return null;
+    }
+
+    const isPendingResults = latestResult.vlDueDate === "Pending Results";
+
+    if (isPendingResults) {
+      return {
+        tagType: "gray",
+        tagText: "Pending VL Results",
+        dateLabel: null,
+        displayDate: null,
+      };
+    }
+
+    const parseDMY = (dateStr) => {
+      if (!dateStr) return null;
+      const [day, month, year] = dateStr.split("-");
+      return new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)));
+    };
+
+    const vlDueDate = parseDMY(latestResult.vlDueDate);
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+
+    const hasDueFlag = flags.includes("DUE_FOR_VL");
+    const isFutureDueDate = vlDueDate && vlDueDate > today;
+    const isPastOrToday = vlDueDate && vlDueDate <= today;
+    const isEligible = isPastOrToday && hasDueFlag;
+
+    return {
+      tagType: isEligible ? "green" : "red",
+      tagText: isEligible ? "Eligible" : "Not Eligible",
+      dateLabel: isFutureDueDate ? "Next Due Date" : "Date",
+      displayDate: latestResult.vlDueDate,
+    };
+  }, [data, flags]);
 
   const defaultFamilyTableHeaders = [
     {
@@ -99,6 +136,7 @@ const useObservationData = (patientUuid) => {
     isLoading,
     error,
     refetch: mutate,
+    eligibilityDetails,
     defaultFamilyTableHeaders,
     defaultIndexTableHeaders,
     defaultCHWHeaders,
