@@ -9,8 +9,8 @@ export interface ProgramSummaryProps {
   code: string;
 }
 const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
-  const { data, error, isLoading } = useObservationData(patientUuid);
   const { flags } = usePatientData(patientUuid);
+  const { data, error, isLoading, eligibilityDetails } = useObservationData(patientUuid, flags);
   const { t } = useTranslation();
 
   if (isLoading) {
@@ -23,42 +23,20 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
 
   if (error) {
     return (
-      <span>{t("errorPatientSummary", "Error loading Patient summary")}</span>
+      <span style={{ color: "red" }}>
+        {t("errorPatientSummary", "Error loading Patient summary")}
+      </span>
     );
   }
 
-  if (!data || Object.keys(data).length === 0) {
+  const latestResult = data?.results?.[0];
+
+  if (!latestResult || !eligibilityDetails) {
     return null;
   }
 
-  const vlStatus =
-    data && data.results && data.results.length > 0
-      ? data.results[0].vlStatus === "Unknown"
-        ? "---"
-        : data.results[0].vlStatus
-      : "---";
-
-      const vlDueDateStr = data?.results?.[0]?.vlDueDate;
-
-      const parseDMY = (dateStr) => {
-        if (!dateStr) return null;
-        const [day, month, year] = dateStr.split("-");
-        return new Date(Number(year), Number(month) - 1, Number(day));
-      };
-
-      const vlDueDate = parseDMY(vlDueDateStr);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      if (vlDueDate) vlDueDate.setHours(0, 0, 0, 0);
-
-      const hasDueFlag = flags.includes("DUE_FOR_VL");
-      const isFutureDueDate = vlDueDate && vlDueDate > today;
-      const isPastOrToday = vlDueDate && vlDueDate <= today;
-
-      const isEligible = isPastOrToday && hasDueFlag;
-      const tagType = isEligible ? "green" : "red";
-      const tagText = isEligible ? "Eligible" : "Not Eligible";
-      const dateLabel = isFutureDueDate ? "Next Due Date" : "Date";
+  const isPendingResults = latestResult.vlDueDate === "Pending Results";
+  const vlStatus = latestResult.vlStatus === "Unknown" ? "---" : latestResult.vlStatus || "---";
 
   return (
     <>
@@ -70,41 +48,43 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
                 <p>{t("dateVLCollected", "Date Viral Load Sample Collected")}</p>
                 <p>{data?.results[0]?.dateVLSampleCollected}</p>
               </div>
-              <div className={styles.content}>
-                <p>{t("dateVLRecieved", "Date Viral Load Results Received")}</p>
-                <p>{data?.results[0]?.dateVLResultsReceived}</p>
-              </div>
-              <div className={styles.content}>
-                <p>{t("lastVLResult", "Last VL Result")}</p>
-                <p className={styles.value}>{data?.results[0]?.vlResults}</p>
-              </div>
-              <div className={styles.content}>
-                <p>{t("vlStatus", "VL Status")}</p>
-                <p>
-                  <span className={styles.value}>{vlStatus}</span>
-                </p>
-              </div>
+              {isPendingResults ? (
+                <div className={styles.content}>
+                  <p>{t("status", "Status")}</p>
+                  <p className={styles.value}>{t("pendingVLResults", "Pending VL Results")}</p>
+                </div>
+              ) : (
+                <>
+                  <div className={styles.content}>
+                    <p>{t("dateVLRecieved", "Date Viral Load Results Received")}</p>
+                    <p>{latestResult.dateVLResultsReceived || "---"}</p>
+                  </div>
+                  <div className={styles.content}>
+                    <p>{t("lastVLResult", "Last VL Result")}</p>
+                    <p className={styles.value}>{latestResult.vlResults || "---"}</p>
+                  </div>
+                  <div className={styles.content}>
+                    <p>{t("vlStatus", "VL Status")}</p>
+                    <p><span className={styles.value}>{vlStatus}</span></p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
           <hr style={{ margin: "20px" }} />
           <div className={styles.card}>
             <div className={styles.container}>
               <div className={styles.content}>
-                <p>
-                  {t(
-                    "eligibilityForVL",
-                    "Eligibility For Viral Load Sample Collection"
-                  )}
-                </p>
-                <Tag type={tagType} size="md">
-                  {tagText}
+                <p>{t("eligibilityForVL", "Eligibility For Viral Load Sample Collection")}</p>
+                <Tag type={eligibilityDetails.tagType} size="md">
+                  {eligibilityDetails.tagText}
                 </Tag>
               </div>
               <div className={styles.content}></div>
-              {vlDueDateStr && (
+              {eligibilityDetails.displayDate && (
                 <div className={styles.content}>
-                  <p>{t("vlDueDateLabel", dateLabel)}</p>
-                  <span className={styles.value}>{vlDueDateStr}</span>
+                  <p>{eligibilityDetails.dateLabel}</p>
+                  <span className={styles.value}>{eligibilityDetails.displayDate}</span>
                 </div>
               )}
             </div>
