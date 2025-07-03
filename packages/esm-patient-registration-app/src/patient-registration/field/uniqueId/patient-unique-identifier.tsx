@@ -1,4 +1,10 @@
-import React, { useState, useEffect, ChangeEvent, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  ChangeEvent,
+  useContext,
+  useMemo,
+} from "react";
 import { useTranslation } from "react-i18next";
 import {
   Tile,
@@ -43,7 +49,6 @@ interface CustomInputProps {
   labelText: string;
   light: boolean;
   required?: boolean;
-  disabled?: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -54,7 +59,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
   labelText,
   light,
   required = false,
-  disabled = false,
 }) => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -72,7 +76,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
       labelText={labelText}
       light={light}
       required={required}
-      disabled={disabled}
     />
   );
 };
@@ -106,6 +109,7 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   const [artNumber, setArtNumber] = useState<string>(
     contextArt.identifierValue.split("/").at(-1)
   );
+  const [manualEdit, setManualEdit] = useState<boolean>(false);
   const { data: filteredPatients } = useGetFilteredPatients(selectedFacility);
 
   useEffect(() => {
@@ -191,6 +195,7 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
     const newState = event.target.value;
     setSelectedState(newState);
     setSelectedFacility("");
+    setManualEdit(false);
   };
 
   const handleFacilityChange = (
@@ -198,21 +203,29 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   ) => {
     const newFacility = event.target.value;
     setSelectedFacility(newFacility);
+    setManualEdit(false);
   };
 
   const handleArtNumberChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newArtNumber = event.target.value;
+    setManualEdit(true);
     setArtNumber(newArtNumber);
   };
 
-  useEffect(() => {
+  const nextUANNumber = useMemo(() => {
     if (!transferIn && selectedFacility && artNumbers) {
-      const nextArt = getNextARTNumber(artNumbers, selectedFacility);
-      setArtNumber(nextArt.split("/")[3]);
+      return getNextARTNumber(artNumbers, selectedFacility).split("/")[3];
     }
+    return "";
   }, [selectedFacility, artNumbers, transferIn]);
+
+  useEffect(() => {
+    if (nextUANNumber && !manualEdit) {
+      setArtNumber(nextUANNumber);
+    }
+  }, [nextUANNumber, manualEdit]);
 
   useEffect(() => {
     if (selectedState) {
@@ -222,13 +235,15 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
 
   useEffect(() => {
     if (selectedFacility && artNumber) {
-      const combined = `${selectedFacility}${artNumber}`;
+      const combined = `${
+        transferIn ? "TI-" : ""
+      }${selectedFacility}${artNumber}`;
       setCombinedValue(combined);
       changeART(combined, contextArt.identifierUuid);
     } else {
       setCombinedValue("");
     }
-  }, [selectedFacility, artNumber]);
+  }, [selectedFacility, artNumber, transferIn]);
 
   return (
     <div>
@@ -295,7 +310,6 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
                     labelText={t("number", "Number")}
                     light={true}
                     required={true}
-                    disabled={!transferIn && !inEditMode}
                   />
                 </Layer>
               </Tile>
