@@ -69,6 +69,7 @@ const FormsList: React.FC<FormsListProps> = ({ completedForms, error, sectionNam
           formName: formData.form.display ?? formData.form.name,
           formUuid: formData.form.uuid,
           encounterUuid: formData?.associatedEncounters[0]?.uuid,
+          form: formData.form,
         };
       }) ?? [],
     [filteredForms],
