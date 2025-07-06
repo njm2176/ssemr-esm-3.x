@@ -6,7 +6,7 @@ import {
 } from '@carbon/react';
 import styles from './forms-table.scss';
 import dayjs from 'dayjs';
-import { getPatientUuidFromStore } from '@openmrs/esm-patient-common-lib';
+import { Form, getPatientUuidFromStore } from '@openmrs/esm-patient-common-lib';
 import { useVisitTime } from '../hooks/use-forms';
 
 interface TableRow {
@@ -15,6 +15,7 @@ interface TableRow {
   formName: string;
   formUuid: string;
   encounterUuid: string;
+  form: Form;
 }
 
 interface TableRow {
@@ -23,6 +24,7 @@ interface TableRow {
   formName: string;
   formUuid: string;
   encounterUuid: string;
+  form: Form;
 }
 
 interface FormsTableProps {
@@ -32,7 +34,7 @@ interface FormsTableProps {
   }>;
   tableRows: Array<TableRow>;
   handleSearch: (search: string) => void;
-  handleFormOpen: (formUuid: string, encounterUuid: string, formName: string) => void;
+  handleFormOpen: (form: Form, encounterUuid: string) => void;
   latestVisitDate: string;
 }
 
@@ -75,7 +77,7 @@ const FormsTable = ({ tableHeaders, tableRows, handleSearch, handleFormOpen }: F
       cell: (row) => (
         <a
           className={styles.formName}
-          onClick={() => handleFormOpen(row.formUuid, '', row.formName)}
+          onClick={() => handleFormOpen(row.form, '')}
           style={{
             cursor: 'pointer',
             textDecoration: 'underline',
