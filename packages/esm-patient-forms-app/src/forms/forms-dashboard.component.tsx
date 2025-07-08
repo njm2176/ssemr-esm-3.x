@@ -12,6 +12,7 @@ import type { ConfigObject } from '../config-schema';
 import { useForms } from '../hooks/use-forms';
 import FormsList from './forms-list.component';
 import styles from './forms-dashboard.scss';
+import { Form } from '../types';
 
 interface FormsDashboardProps extends DefaultPatientWorkspaceProps {
   clinicalFormsWorkspaceName?: string;
@@ -34,14 +35,13 @@ const FormsDashboard: React.FC<FormsDashboardProps> = ({
   const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
 
   const handleFormOpen = useCallback(
-    (formUuid: string, encounterUuid: string, formName: string) => {
+    (form: Form, encounterUuid: string) => {
       launchFormEntryOrHtmlForms(
         htmlFormEntryForms,
-        fetchedPatientUuid,
-        formUuid,
+        patientUuid,
+        form,
         currentVisit?.uuid,
         encounterUuid,
-        formName,
         currentVisit?.visitType.uuid,
         currentVisit?.startDatetime,
         currentVisit?.stopDatetime,
