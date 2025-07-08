@@ -18,21 +18,13 @@ interface TableRow {
   form: Form;
 }
 
-interface TableRow {
-  id: string;
-  lastCompleted: string;
-  formName: string;
-  formUuid: string;
-  encounterUuid: string;
-  form: Form;
-}
-
 interface FormsTableProps {
   tableHeaders: Array<{
     header: string;
     key: string;
   }>;
   tableRows: Array<TableRow>;
+  isTablet: boolean;
   handleSearch: (search: string) => void;
   handleFormOpen: (form: Form, encounterUuid: string) => void;
   latestVisitDate: string;
