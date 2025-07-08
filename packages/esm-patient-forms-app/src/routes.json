@@ -86,7 +86,7 @@
       "title": "clinicalForms",
       "component": "clinicalFormsWorkspace",
       "type": "clinical-forms",
-      "width": "wider"
+      "width": "extra-wide"
     }
   ]
 }

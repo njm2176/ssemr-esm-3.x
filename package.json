@@ -16,6 +16,7 @@
     "verify": "turbo run lint && turbo run typescript && turbo run test --color --concurrency=5"
   },
   "devDependencies": {
+    "@openmrs/esm-form-engine-lib": "latest",
     "@openmrs/esm-framework": "next",
     "@openmrs/esm-patient-common-lib": "next",
     "@openmrs/esm-styleguide": "next",
@@ -70,7 +71,7 @@
   "resolutions": {
     "sass": "^1.54.3"
   },
-  "packageManager": "yarn@3.6.3",
+  "packageManager": "yarn@4.9.1",
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
     "@ssemr/esm-route-protection-app": "1.1.2",
