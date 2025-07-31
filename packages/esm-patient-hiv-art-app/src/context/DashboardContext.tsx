@@ -43,6 +43,13 @@ const DashboardProvider = ({ children }) => {
           time,
         }),
       });
+
+      getDashboardData({
+        ...chartRequestConfig.underCareOfCommunityChart,
+        url: chartRequestConfig.underCareOfCommunityChart.url({
+          time,
+        }),
+      });
     } catch (e) {
       return e;
     }
@@ -65,8 +72,8 @@ const DashboardProvider = ({ children }) => {
       });
 
       getDashboardData({
-        ...chartRequestConfig.viralLoadCoverage,
-        url: chartRequestConfig.viralLoadCoverage.url({
+        ...chartRequestConfig.viralLoadChartCoverage,
+        url: chartRequestConfig.viralLoadChartCoverage.url({
           time,
         }),
       });

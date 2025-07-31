@@ -113,16 +113,29 @@ export const chartRequestConfig = {
     processor: formatDataAgainstTime,
     chartKey: "underCareOfCommunityProgram",
   },
-  viralLoadCoverage: {
+  underCareOfCommunityChart: {
     url: ({ time }) =>
-      `/ws/rest/v1/ssemr/dashboard/viralLoadCoverage?startDate=${time.startDate}&endDate=${time.endDate}`,
+      `/ws/rest/v1/ssemr/chart/underCareOfCommunityProgrammes?startDate=${time.startDate}&endDate=${time.endDate}`,
     processor: formatDataAgainstTime,
-    chartKey: "viralLoadCoverage",
+    chartKey: "underCareOfCommunityChart",
+  },
+  // viralLoadCoverage: {
+  //   url: ({ time }) =>
+  //     `/ws/rest/v1/ssemr/dashboard/viralLoadCoverage?startDate=${time.startDate}&endDate=${time.endDate}`,
+  //   processor: formatDataAgainstTime,
+  //   chartKey: "viralLoadCoverage",
+  //   noPagination: true,
+  // },
+  viralLoadChartCoverage: {
+    url: ({ time }) =>
+      `/ws/rest/v1/ssemr/chart/viralLoadCoverage?startDate=${time.startDate}&endDate=${time.endDate}`,
+    processor: formatDataAgainstTime,
+    chartKey: "viralLoadChartCoverage",
     noPagination: true,
   },
   viralLoadSuppression: {
     url: ({ time }) =>
-      `/ws/rest/v1/ssemr/dashboard/viralLoadSuppression?startDate=${time.startDate}&endDate=${time.endDate}`,
+      `/ws/rest/v1/ssemr/chart/viralLoadSuppression?startDate=${time.startDate}&endDate=${time.endDate}`,
     processor: formatDataAgainstTime,
     chartKey: "viralLoadSuppression",
     noPagination: true,
