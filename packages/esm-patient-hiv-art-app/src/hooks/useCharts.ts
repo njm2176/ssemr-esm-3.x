@@ -30,11 +30,12 @@ export const useCharts = () => {
       adultART,
       childART,
       underCareOfCommunityProgram,
+      underCareOfCommunityChart,
       allClients,
       dueForViralLoad,
       viralLoadSamples,
       viralLoadResults,
-      viralLoadCoverage,
+      viralLoadChartCoverage,
       viralLoadSuppression,
       waterfall,
     },
@@ -113,26 +114,21 @@ export const useCharts = () => {
     },
     {
       loading: underCareOfCommunityProgram.loading,
-      state: underCareOfCommunityProgram,
-      tooltipRenderFunction: (item) =>
-        `${item.data.name}: ${Math.round(
-          (item.data.value / allClients?.raw?.results?.length) * 100
-        )}%`,
+      state: underCareOfCommunityChart,
+      tooltipRenderFunction: (item) => `${item.data.name}: ${item.data.value}%`,
       chartData: [
         {
           name: "Not Linked to CHW",
-          value:
-            allClients?.raw?.results?.length -
-            underCareOfCommunityProgram?.raw?.results?.length,
+          value: underCareOfCommunityChart?.raw?.notLinkedToCHW,
         },
         {
           name: "Linked to CHW",
-          value: underCareOfCommunityProgram?.raw?.results?.length,
+          value: underCareOfCommunityChart?.raw?.linkedToCHW,
         },
       ],
       listData: underCareOfCommunityProgram?.raw?.results,
       title: "Under Care Of Community Programmes",
-      total: allClients?.raw?.results?.length,
+      total: underCareOfCommunityChart?.raw?.totalPatients,
       headerTableColumns: defaultStatHeaders,
       chartType: "pie",
     },
@@ -176,43 +172,35 @@ export const useCharts = () => {
       chartType: "bar",
     },
     {
-      state: viralLoadCoverage,
-      tooltipRenderFunction: (item) =>
-        `${item.data.name}: ${Math.round(
-          (item.data.value / viralLoadCoverage?.raw?.totalPatients) * 100
-        )}%`,
+      state: viralLoadChartCoverage,
+      tooltipRenderFunction: (item) => `${item.data.name}: ${item.data.value}%`,
       chartData: [
         {
           name: "Not covered",
-          value: viralLoadCoverage?.raw?.notVlCovered,
+          value: viralLoadChartCoverage?.raw?.notCovered,
         },
         {
           name: "Covered",
-          value: viralLoadCoverage?.raw?.vlCoverage,
+          value: viralLoadChartCoverage?.raw?.covered,
         },
       ],
       listData: viralLoadSamples?.raw?.results,
       title: "Viral Load Coverage",
-      total: viralLoadCoverage?.raw?.totalPatients,
+      total: viralLoadChartCoverage?.raw?.totalPatients,
       headerTableColumns: defaultStatHeaders,
       chartType: "pie",
     },
     {
       state: viralLoadSuppression,
-      tooltipRenderFunction: (item) =>
-        `${item.data.name}: ${Math.round(
-          (item.data.value / viralLoadSuppression?.raw?.vlCoverage) * 100
-        )}%`,
+      tooltipRenderFunction: (item) => `${item.data.name}: ${item.data.value}%`,
       chartData: [
         {
           name: "Unsuppressed",
-          value:
-            viralLoadSuppression?.raw?.vlCoverage -
-            viralLoadSuppression?.raw?.vlSuppressed,
+          value: viralLoadSuppression?.raw?.unSuppressed,
         },
         {
           name: "Suppressed",
-          value: viralLoadSuppression?.raw?.vlSuppressed,
+          value: viralLoadSuppression?.raw?.suppressed,
         },
       ],
       listData: viralLoadSamples?.raw?.results,
