@@ -126,8 +126,8 @@ const StatCardComponent: React.FC<StatCardProps> = ({ item }) => {
         const addressParts = client?.address?.split(",") || [];
 
         // Safely extract landMark and village, ensuring they exist before trimming
-        const landMark = addressParts[0]?.split(":")[1]?.trim() || "Unknown";
-        const village = addressParts[1]?.split(":")[1]?.trim() || "Unknown";
+        const village = addressParts[0]?.split(":")[1]?.trim() || "Unknown";
+        const landMark = addressParts[1]?.split(":")[1]?.trim() || "Unknown";
 
         const uan =
           client?.identifiers.find(
