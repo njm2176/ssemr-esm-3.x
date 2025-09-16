@@ -73,8 +73,11 @@
   },
   "packageManager": "yarn@4.9.1",
   "dependencies": {
+    "@carbon/charts": "^1.23.17",
+    "@carbon/charts-react": "^1.23.17",
     "@hookform/resolvers": "^3.3.1",
     "@ssemr/esm-route-protection-app": "1.1.2",
+    "carbon": "^0.5.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "pdfmake": "^0.2.12",
