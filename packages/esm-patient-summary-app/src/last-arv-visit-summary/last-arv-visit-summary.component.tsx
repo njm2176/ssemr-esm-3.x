@@ -84,11 +84,21 @@ const LastArtVisitSummary: React.FC<lastArtVisitSummaryProps> = ({
               </p>
             </div>
             <div className={styles.content}>
-              <p>{t("iitRecurrence", "Recurrence of IIT")}</p>
+              <p>{t("iitRecurrence", "Count of IIT")}</p>
               <p>
                 <span className={styles.value}>
                   {data.results[0]?.iitRecurrence
                     ? data.results[0]?.iitRecurrence
+                    : "---"}
+                </span>
+              </p>
+            </div>
+            <div className={styles.content}>
+              <p>{t("hvlRecurrence", "Count of HVL")}</p>
+              <p>
+                <span className={styles.value}>
+                  {data.results[0]?.hvlRecurrence
+                    ? data.results[0]?.hvlRecurrence
                     : "---"}
                 </span>
               </p>

@@ -318,6 +318,16 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({
                   </span>
                 </p>
               </div>
+              <div className={styles.content}>
+                <p className={styles.label}>{t("hvlRecurrence", "Recurrence of HVL")}</p>
+                <p>
+                   <span>
+                    {data.results[0]?.hvlRecurrence
+                      ? data.results[0]?.hvlRecurrence
+                      : "---"}
+                  </span>
+                </p>
+              </div>
             </div>
 
             <hr />
